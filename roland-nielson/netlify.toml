@@ -52,3 +52,6 @@
   for = "/llms.txt"
   [headers.values]
     Content-Type = "text/plain; charset=utf-8"
+
+[functions]
+  directory = "netlify/functions"
