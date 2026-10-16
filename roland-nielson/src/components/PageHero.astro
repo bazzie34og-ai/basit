@@ -1,0 +1,27 @@
+---
+// Typographic hero for inner pages: big serif headline on navy with a brass rule.
+import Breadcrumbs from './Breadcrumbs.astro';
+interface Props { eyebrow: string; title: string; lead?: string; crumbs?: { name: string; path: string }[]; updated?: string; }
+const { eyebrow, title, lead, crumbs, updated } = Astro.props;
+const fmt = (d: string) => new Date(d + 'T12:00:00').toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+---
+<section class="page-hero dark grain" aria-labelledby="page-h1">
+  <div class="wrap">
+    {crumbs && <Breadcrumbs crumbs={crumbs} />}
+    <div class={Astro.slots.has('aside') ? 'grid-2 wide-left hero-cols' : ''}>
+      <div>
+        <p class="eyebrow">{eyebrow}</p>
+        <h1 id="page-h1">{title}</h1>
+        <hr class="rule" />
+        {lead && <p class="lead">{lead}</p>}
+        <slot />
+        {updated && <p class="updated">Last updated <time datetime={updated}>{fmt(updated)}</time></p>}
+      </div>
+      {Astro.slots.has('aside') && <div class="hero-aside"><slot name="aside" /></div>}
+    </div>
+  </div>
+</section>
+<style>
+  .hero-cols { align-items: end; }
+  .hero-aside { max-width: 420px; justify-self: end; width: 100%; }
+</style>

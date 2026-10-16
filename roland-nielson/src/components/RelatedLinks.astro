@@ -1,0 +1,21 @@
+---
+// Sibling-service links with descriptive anchors (internal linking).
+interface Link { href: string; title: string; text: string; }
+interface Props { links: Link[]; heading?: string; }
+const { links, heading = 'Keep reading' } = Astro.props;
+---
+<section class="section sand" aria-labelledby="related-h">
+  <div class="wrap">
+    <p class="eyebrow">Related</p>
+    <h2 id="related-h">{heading}</h2>
+    <div class="grid-3">
+      {links.map((l) => (
+        <a class="card" href={l.href}>
+          <h3>{l.title}</h3>
+          <p>{l.text}</p>
+          <span class="more">Read more</span>
+        </a>
+      ))}
+    </div>
+  </div>
+</section>

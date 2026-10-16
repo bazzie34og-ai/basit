@@ -1,0 +1,27 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import CrisisBox from '../components/CrisisBox.astro';
+import Icon from '../components/Icon.astro';
+import { site, tel } from '../config/site';
+---
+<Base path="/thank-you/" cta={false}>
+  <PageHero eyebrow="Message received" title="Thanks. I got your message." lead="Roland replies within 24 hours, usually the same evening." />
+  <section class="section">
+    <div class="wrap narrow prose">
+      <h2>What happens next</h2>
+      <ol>
+        <li><strong>I read every message myself.</strong> No assistants, no auto-replies.</li>
+        <li><strong>I'll reach out</strong> the way you asked: call, text or email.</li>
+        <li><strong>We set up a free 20-minute call</strong> to talk about what's going on and whether coaching fits.</li>
+      </ol>
+      <p>Don't want to wait? Grab a time now:</p>
+      <div class="btn-row">
+        <a class="btn brass" href={site.booking} rel="noopener"><Icon name="calendar" />Book the Free Discovery Call</a>
+        <a class="btn ghost" href={tel}><Icon name="phone" />Call {site.phone.display}</a>
+      </div>
+      <div class="mt-m"><CrisisBox /></div>
+      <p class="mt-m">While you wait: <a href="/blog/what-to-do-on-a-bad-tuesday/">what to do on a bad Tuesday</a>.</p>
+    </div>
+  </section>
+</Base>

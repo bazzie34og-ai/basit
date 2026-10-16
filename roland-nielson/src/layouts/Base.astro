@@ -1,0 +1,139 @@
+---
+import '../styles/global.css';
+import frauncesUrl from '../fonts/fraunces-latin-wght.woff2?url';
+import manropeUrl from '../fonts/manrope-latin-wght.woff2?url';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import StickyBar from '../components/StickyBar.astro';
+import CtaBand from '../components/CtaBand.astro';
+import { site, abs } from '../config/site';
+import { pages, ogSlug } from '../data/pages';
+import { baseGraph, webPage, breadcrumbs } from '../lib/schema';
+
+interface Props {
+  path: string;
+  title?: string;
+  description?: string;
+  ogImage?: string;
+  ogType?: 'website' | 'article';
+  noindex?: boolean;
+  crumbs?: { name: string; path: string }[]; // inner pages; Home is added automatically
+  schema?: Record<string, unknown>[];
+  pageType?: string;
+  dateModified?: string;
+  preload?: { srcset: string; sizes: string; type: string };
+  cta?: false | { heading?: string; text?: string };
+  article?: { published: string; updated: string };
+}
+const p = Astro.props;
+const meta = pages.find((x) => x.path === p.path);
+const title = p.title ?? meta?.title ?? site.name;
+const description = p.description ?? meta?.description ?? site.description;
+const noindex = p.noindex ?? meta?.noindex ?? false;
+const canonical = abs(p.path);
+const ogImage = abs(p.ogImage ?? `/og/${ogSlug(p.path)}.png`);
+const crumbs = p.crumbs ? [{ name: 'Home', path: '/' }, ...p.crumbs] : null;
+
+const graph = [
+  ...baseGraph(),
+  webPage({ path: p.path, title, description, type: p.pageType, image: ogImage, dateModified: p.dateModified ?? meta?.lastmod }),
+  ...(crumbs ? [breadcrumbs(crumbs)] : []),
+  ...(p.schema ?? []),
+];
+const jsonLd = JSON.stringify({ '@context': 'https://schema.org', '@graph': graph }).replace(/</g, '\\u003c');
+const ga = site.ga4Id;
+---
+<!doctype html>
+<html lang={site.lang}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <meta name="robots" content={noindex ? 'noindex, follow' : 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1'} />
+    <link rel="preload" href={frauncesUrl} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={manropeUrl} as="font" type="font/woff2" crossorigin />
+    {p.preload && <link rel="preload" as="image" imagesrcset={p.preload.srcset} imagesizes={p.preload.sizes} type={p.preload.type} fetchpriority="high" />}
+    <meta name="theme-color" content={site.themeColor} />
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <link rel="alternate" type="application/rss+xml" title={`${site.shortName} – Blog`} href="/blog/rss.xml" />
+    {site.gscToken && <meta name="google-site-verification" content={site.gscToken} />}
+    <meta name="geo.region" content="US-NE" />
+    <meta name="geo.placename" content="Omaha" />
+
+    <meta property="og:type" content={p.ogType ?? 'website'} />
+    <meta property="og:site_name" content={site.name} />
+    <meta property="og:locale" content={site.locale} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={title} />
+    {p.article && <meta property="article:published_time" content={p.article.published} />}
+    {p.article && <meta property="article:modified_time" content={p.article.updated} />}
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@catchyname4_u" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+
+    <slot name="head" />
+    <script type="application/ld+json" set:html={jsonLd} />
+    <script is:inline>document.documentElement.classList.add('js');</script>
+    {ga && (
+      <>
+        <script is:inline define:vars={{ ga }}>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          window.gtag = gtag;
+          var c = null; try { c = localStorage.getItem('rn-consent'); } catch (e) {}
+          gtag('consent', 'default', { ad_storage: 'denied', ad_user_data: 'denied', ad_personalization: 'denied', analytics_storage: c === 'granted' ? 'granted' : 'denied' });
+          gtag('js', new Date());
+          gtag('config', ga, { anonymize_ip: true });
+        </script>
+        <script is:inline async src={`https://www.googletagmanager.com/gtag/js?id=${ga}`}></script>
+      </>
+    )}
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <Header />
+    <main id="main" tabindex="-1">
+      <slot />
+    </main>
+    {p.cta !== false && <CtaBand {...(p.cta || {})} />}
+    <Footer />
+    <StickyBar />
+    {ga && (
+      <div class="consent-bar" data-consent hidden role="region" aria-label="Cookie notice">
+        <p>This site uses Google Analytics cookies to see which pages help. No ads, no selling data. <a href="/privacy/">Privacy</a></p>
+        <div class="btn-row">
+          <button class="btn brass" type="button" data-consent-choice="granted">OK</button>
+          <button class="btn ghost" type="button" data-consent-choice="denied">No thanks</button>
+        </div>
+      </div>
+    )}
+    <script>
+      import '../scripts/main.ts';
+    </script>
+  </body>
+</html>
+
+<style is:global>
+  main:focus { outline: none; }
+  .consent-bar {
+    position: fixed; left: 1rem; right: 1rem; bottom: 84px; z-index: 60; max-width: 520px; background: var(--ink); color: var(--bone);
+    border: 1px solid var(--brass); border-radius: var(--radius); padding: 1rem 1.2rem; font-size: 0.92rem;
+  }
+  .consent-bar p { margin: 0 0 0.8rem; }
+  .consent-bar a { color: var(--brass-light); }
+  .consent-bar .btn { min-height: 44px; padding: 0.4rem 1.1rem; }
+  .consent-bar .btn.ghost { color: var(--bone); border-color: rgba(245, 241, 234, 0.4); }
+  @media (min-width: 900px) { .consent-bar { bottom: 1rem; } }
+</style>

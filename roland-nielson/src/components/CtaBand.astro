@@ -1,0 +1,37 @@
+---
+import ShortForm from './ShortForm.astro';
+import CrisisBox from './CrisisBox.astro';
+import Icon from './Icon.astro';
+import { site, tel, sms, hoursText } from '../config/site';
+interface Props { heading?: string; text?: string; }
+const {
+  heading = 'Tell me what keeps happening.',
+  text = "You don't need to clean it up first. Book a free 20-minute call, or leave your name and number and I'll reach out, usually the same evening.",
+} = Astro.props;
+---
+<section class="section navy grain cta-band" aria-labelledby="cta-h">
+  <div class="wrap grid-2 top">
+    <div>
+      <p class="eyebrow">Free 20-minute discovery call</p>
+      <h2 id="cta-h">{heading}</h2>
+      <p class="lead">{text}</p>
+      <div class="btn-row">
+        <a class="btn brass" href={site.booking} rel="noopener"><Icon name="calendar" />Book a Free Discovery Call</a>
+        <a class="btn ghost" href={tel}><Icon name="phone" />Call {site.phone.display}</a>
+        <a class="btn ghost" href={sms}><Icon name="text" />Text</a>
+      </div>
+      <p class="hours-note">Hours: {hoursText}. In person in Omaha, by video or by phone.</p>
+      <CrisisBox compact />
+    </div>
+    <div class="form-card">
+      <h3>Or leave a quick note</h3>
+      <ShortForm />
+    </div>
+  </div>
+</section>
+<style>
+  .cta-band h2 { max-width: 12em; }
+  .hours-note { color: #b9c2cf; font-size: 0.95rem; margin: 1.4rem 0; }
+  .form-card { background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(176, 141, 87, 0.35); border-radius: var(--radius); padding: var(--space-m); }
+  .form-card h3 { font-size: var(--step-1); }
+</style>

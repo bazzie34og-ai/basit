@@ -1,0 +1,34 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import { site, mailto } from '../config/site';
+const updated = site.contentUpdated;
+---
+<Base path="/privacy/" crumbs={[{ name: 'Privacy', path: '/privacy/' }]} cta={false}>
+  <PageHero eyebrow="Legal" title="Privacy policy" lead={`How ${site.legalName} handles what you share. Plain language, no selling of your data.`} crumbs={[{ name: 'Home', path: '/' }, { name: 'Privacy', path: '/privacy/' }]} updated={updated} />
+  <section class="section">
+    <div class="wrap narrow prose">
+      <h2>Who we are</h2>
+      <p>This website is run by {site.legalName}, doing business as {site.name}, based in {site.locality}. Questions about privacy: <a href={mailto}>{site.email}</a> or {site.phone.display}.</p>
+      <h2>What we collect</h2>
+      <ul>
+        <li><strong>Messages you send.</strong> When you use a form, we receive your name, phone, email (if given), your message, your contact preferences, the page you sent it from and any campaign tags in the link you clicked (UTM codes). Forms are processed by our host, Netlify.</li>
+        <li><strong>Bookings.</strong> If you book a call, Calendly handles the booking under its own privacy policy.</li>
+        <li><strong>Calls and texts.</strong> If you call or text, your number and message are stored on Roland's phone.</li>
+        {site.ga4Id && <li><strong>Analytics.</strong> With your consent, Google Analytics measures which pages are used. It does not tell us who you are.</li>}
+      </ul>
+      <h2>Third-party content</h2>
+      <p>Videos from YouTube load only when you press play, using YouTube's privacy-enhanced mode. The Google Map loads only when you choose to show it. Each service has its own privacy policy.</p>
+      <h2>How we use it</h2>
+      <p>Only to reply to you, schedule calls and provide coaching. We do not sell, rent or trade your information. We do not add you to a mailing list without asking.</p>
+      <h2>Coaching conversations</h2>
+      <p>What you share in coaching stays private, except where someone is at risk of serious harm or the law requires disclosure. Coaching conversations are not legally privileged. Details are covered on your first call and in the <a href="/terms/">coaching terms</a>.</p>
+      <h2>How long we keep it</h2>
+      <p>Form messages are kept as long as needed to respond and for basic business records, then deleted. You can ask us to delete your information at any time.</p>
+      <h2>Your choices</h2>
+      <p>Email <a href={mailto}>{site.email}</a> to see, correct or delete what we have about you.</p>
+      <h2>Children</h2>
+      <p>This site and coaching are for adults. We do not knowingly collect information from anyone under 18.</p>
+    </div>
+  </section>
+</Base>

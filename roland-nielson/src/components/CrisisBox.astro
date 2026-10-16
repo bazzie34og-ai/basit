@@ -1,0 +1,11 @@
+---
+interface Props { compact?: boolean; }
+const { compact } = Astro.props;
+---
+<aside class="crisis" aria-label="Crisis help" data-scope>
+  <p>
+    <strong>Need immediate crisis help?</strong> Call or text <a href="tel:988">988</a>.
+    <strong>Need local services or resources?</strong> Call <a href="tel:211">211</a>.
+    {!compact && <span> Coaching is not crisis support. If you are in danger, call 911.</span>}
+  </p>
+</aside>

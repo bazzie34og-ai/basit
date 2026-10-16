@@ -1,0 +1,29 @@
+---
+// Self-hosted recovery story video with captions and an indexable transcript.
+import { site } from '../config/site';
+import data from '../data/recovery-video.json';
+interface Props { transcriptOpen?: boolean; headingLevel?: 'h2' | 'h3'; }
+const { transcriptOpen = false } = Astro.props;
+const v = site.videos.recovery;
+const base = `/videos/${v.slug}`;
+---
+<figure class="recovery-video">
+  <div class="media-frame ratio-9x16 video-vertical">
+    <video controls preload="none" playsinline poster="/videos/roland-recovery-story-poster.webp" width="720" height="1280" data-video="recovery-story" aria-describedby="recovery-video-desc">
+      <source src={`${base}.webm`} type="video/webm" />
+      <source src={`${base}.mp4`} type="video/mp4" />
+      {data.hasCaptions && <track kind="captions" srclang="en" label="English" src={`${base}.en.vtt`} default />}
+      <a href={`${base}.mp4`}>Download the video (MP4)</a>
+    </video>
+  </div>
+  <figcaption class="caption" id="recovery-video-desc">Roland's recovery story, {Math.round(data.durationSeconds)} seconds. Captions on.</figcaption>
+  {data.transcript.length > 0 && (
+    <details class="transcript" open={transcriptOpen}>
+      <summary>Read the transcript</summary>
+      {data.transcript.map((p) => <p>{p}</p>)}
+    </details>
+  )}
+</figure>
+<style>
+  .recovery-video { margin: 0; max-width: 380px; }
+</style>

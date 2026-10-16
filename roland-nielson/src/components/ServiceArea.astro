@@ -1,0 +1,79 @@
+---
+// Service-area block: a drawn map of the metro (no third-party request) plus an
+// on-demand Google Map. Once {{GBP_CID}} is set the map shows the Business Profile;
+// once an office address is set it shows the office.
+import { site, hasOffice, areaNames } from '../config/site';
+interface Props { heading?: string; intro?: string; headingId?: string; }
+const { heading = 'Where I coach', intro, headingId = 'area-h' } = Astro.props;
+
+const pts = site.serviceArea;
+const lats = pts.map((p) => p.lat), lngs = pts.map((p) => p.lng);
+const [minLat, maxLat, minLng, maxLng] = [Math.min(...lats), Math.max(...lats), Math.min(...lngs), Math.max(...lngs)];
+const W = 600, H = 420, pad = 70;
+const kx = Math.cos((41.25 * Math.PI) / 180);
+const sx = (W - pad * 2) / ((maxLng - minLng) * kx), sy = (H - pad * 2) / (maxLat - minLat);
+const s = Math.min(sx, sy);
+const ox = (W - (maxLng - minLng) * kx * s) / 2, oy = (H - (maxLat - minLat) * s) / 2;
+const xy = (lat: number, lng: number) => [ox + (lng - minLng) * kx * s, oy + (maxLat - lat) * s];
+const omaha = pts.find((p) => p.name === 'Omaha')!;
+const [cx, cy] = xy(omaha.lat, omaha.lng);
+const riverX = xy(41.25, -95.895)[0];
+
+const mapQuery = hasOffice
+  ? `https://www.google.com/maps?q=${encodeURIComponent(`${site.office.streetAddress}, ${site.city}, ${site.region} ${site.office.postalCode}`)}&output=embed`
+  : site.gbp.cid
+    ? `https://www.google.com/maps?cid=${site.gbp.cid}&output=embed`
+    : 'https://www.google.com/maps?q=Omaha,+NE&output=embed';
+---
+<div class="area grid-2">
+  <div>
+    <p class="eyebrow">Service area</p>
+    <h2 id={headingId}>{heading}</h2>
+    {intro && <p class="lead">{intro}</p>}
+    <ul class="tag-row">{areaNames.map((n) => <li>{n}</li>)}</ul>
+    <p class="mt-m">{site.inPersonNote}</p>
+  </div>
+  <div class="map-card" data-map>
+    <svg viewBox={`0 0 ${W} ${H}`} role="img" aria-labelledby="map-title" class="map-svg">
+      <title id="map-title">Drawn map of the Omaha metro area Roland Nielson serves: {areaNames.join(', ')}.</title>
+      <defs>
+        <radialGradient id="glow" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stop-color="#B08D57" stop-opacity="0.35" />
+          <stop offset="100%" stop-color="#B08D57" stop-opacity="0" />
+        </radialGradient>
+      </defs>
+      <rect width={W} height={H} fill="#13294A" />
+      {[1, 2, 3].map((r) => <circle cx={cx} cy={cy} r={r * 85} fill="none" stroke="#3B5F86" stroke-opacity="0.45" stroke-dasharray="2 6" />)}
+      <circle cx={cx} cy={cy} r="150" fill="url(#glow)" />
+      <path d={`M${riverX + 18} 0 C ${riverX - 30} ${H * 0.25}, ${riverX + 40} ${H * 0.5}, ${riverX - 5} ${H * 0.7} S ${riverX + 30} ${H}, ${riverX + 10} ${H}`} fill="none" stroke="#3B5F86" stroke-width="5" stroke-opacity="0.8" />
+      <text x={riverX + 22} y={H - 18} fill="#9fb3cc" font-size="12" font-family="Manrope, sans-serif" letter-spacing="2">MISSOURI RIVER</text>
+      {pts.map((p) => {
+        const [x, y] = xy(p.lat, p.lng);
+        const main = p.name === 'Omaha';
+        // Omaha and Council Bluffs sit close together: put their labels above and below.
+        const place = p.name === 'Omaha' ? 'top' : p.name === 'Council Bluffs' ? 'bottom' : x > W - 140 ? 'end' : 'start';
+        const anchor = place === 'top' || place === 'bottom' ? 'middle' : place;
+        const lx = place === 'end' ? x - 12 : place === 'start' ? x + 12 : x;
+        const ly = place === 'top' ? y - 16 : place === 'bottom' ? y + 26 : y + 5;
+        return (
+          <g>
+            <circle cx={x} cy={y} r={main ? 9 : 5.5} fill={main ? '#B08D57' : '#F5F1EA'} stroke="#0E1B2C" stroke-width="2" />
+            <text x={lx} y={ly} fill="#F5F1EA" font-size={main ? 19 : 14} font-weight={main ? 700 : 500} font-family="Manrope, sans-serif" text-anchor={anchor}>{p.name}{p.state === 'IA' ? ', IA' : ''}</text>
+          </g>
+        );
+      })}
+    </svg>
+    <div class="map-actions">
+      <button type="button" class="btn ghost small-btn" data-map-load={mapQuery}>Show the interactive Google Map</button>
+      {site.gbp.url && <a class="text-link" href={site.gbp.url} rel="noopener">Find us on Google</a>}
+    </div>
+  </div>
+</div>
+<style>
+  .map-card { border-radius: var(--radius); overflow: hidden; background: var(--navy); border: 1px solid rgba(176, 141, 87, 0.35); }
+  .map-svg { width: 100%; height: auto; aspect-ratio: 600 / 420; }
+  .map-card :global(iframe) { width: 100%; aspect-ratio: 600 / 420; border: 0; display: block; }
+  .map-actions { display: flex; flex-wrap: wrap; gap: 1rem; align-items: center; padding: 1rem; background: var(--ink); }
+  .map-actions .btn { color: var(--bone); border-color: rgba(245, 241, 234, 0.4); min-height: 44px; padding: 0.5rem 1rem; font-size: 0.9rem; }
+  .map-actions .text-link { color: var(--bone); }
+</style>

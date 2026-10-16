@@ -1,0 +1,28 @@
+---
+import { plans, inPersonAddOn, rebuildProgram } from '../config/site';
+interface Props { showAddOn?: boolean; headingLevel?: 'h2' | 'h3'; }
+const { showAddOn = true } = Astro.props;
+---
+<div class="plans">
+  {plans.map((p) => (
+    <article class={`plan ${p.featured ? 'featured' : ''} ${p.id === 'founding' ? 'founding' : ''}`} aria-labelledby={`plan-${p.id}`}>
+      {p.badge && <span class="badge">{p.badge}</span>}
+      {p.featured && !p.badge && <span class="badge">Most picked</span>}
+      <h3 id={`plan-${p.id}`}>{p.name}</h3>
+      <p class="summary">{p.summary}</p>
+      <p class="price">{p.priceLabel}<small>{p.unit}</small></p>
+      <ul class="check-list">{p.details.map((d) => <li>{d}</li>)}</ul>
+      <a class={`btn ${p.id === 'founding' ? 'brass' : p.featured ? '' : 'ghost'}`} href={p.cta.href} rel="noopener">{p.cta.label}<span class="sr-only"> for {p.name}</span></a>
+    </article>
+  ))}
+</div>
+{showAddOn && (
+  <div class="plan-notes">
+    <p><strong>{inPersonAddOn.name}: {inPersonAddOn.priceLabel}</strong> {inPersonAddOn.detail}</p>
+    <p><strong>{rebuildProgram.name}:</strong> {rebuildProgram.summary} {rebuildProgram.price ? <>From ${rebuildProgram.price}/month.</> : null} <a href="/the-rebuild-program/">See the Rebuild Program</a>.</p>
+  </div>
+)}
+<style>
+  .plan-notes { margin-top: var(--space-m); display: grid; gap: 0.6rem; max-width: 52rem; font-size: 0.97rem; }
+  .plan-notes p { margin: 0; }
+</style>

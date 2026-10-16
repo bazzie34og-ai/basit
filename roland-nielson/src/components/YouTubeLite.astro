@@ -1,0 +1,15 @@
+---
+// Lite YouTube facade: a static poster until clicked, then loads youtube-nocookie.com.
+import { site } from '../config/site';
+interface Props { label?: string; }
+const v = site.videos.youtube;
+const { label = 'Watch: a short message from Roland' } = Astro.props;
+---
+<div class="media-frame ratio-16x9">
+  <button class="yt-lite" type="button" data-yt={v.id} data-title={v.title} aria-label={`Play video: ${v.title}`}>
+    <img src={`https://i.ytimg.com/vi/${v.id}/hqdefault.jpg`} alt="" width="480" height="360" loading="lazy" decoding="async" />
+    <span class="play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z" /></svg></span>
+    <span class="label">{label}</span>
+  </button>
+</div>
+<noscript><p><a href={`https://www.youtube.com/watch?v=${v.id}`}>Watch the video on YouTube</a></p></noscript>

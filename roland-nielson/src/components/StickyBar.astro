@@ -1,0 +1,23 @@
+---
+import Icon from './Icon.astro';
+import { site, tel, sms } from '../config/site';
+---
+<nav class="sticky-bar" aria-label="Quick contact">
+  <a href={tel}><Icon name="phone" /><span>Call</span></a>
+  <a href={sms}><Icon name="text" /><span>Text</span></a>
+  <a href={site.booking} rel="noopener" class="book"><Icon name="calendar" /><span>Book free call</span></a>
+</nav>
+<style>
+  .sticky-bar {
+    position: fixed; left: 0; right: 0; bottom: 0; z-index: 40; display: grid; grid-template-columns: 1fr 1fr 1.4fr;
+    background: var(--ink); border-top: 1px solid rgba(176, 141, 87, 0.4);
+    padding: 0.5rem 0.5rem calc(0.5rem + env(safe-area-inset-bottom)); gap: 0.4rem;
+  }
+  .sticky-bar a {
+    display: flex; align-items: center; justify-content: center; gap: 0.45rem; min-height: 50px; border-radius: 999px;
+    color: var(--bone); text-decoration: none; font-weight: 700; font-size: 0.95rem; border: 1px solid rgba(245, 241, 234, 0.25);
+  }
+  .sticky-bar a.book { background: var(--brass); color: var(--ink); border-color: var(--brass); }
+  .sticky-bar :global(svg) { width: 18px; height: 18px; }
+  @media (min-width: 900px) { .sticky-bar { display: none; } }
+</style>

@@ -1,0 +1,12 @@
+---
+// Hidden fields shared by every coaching-inquiry form. Both forms declare the full field set
+// so Netlify registers every field no matter which form it detects first.
+interface Props { type: 'short' | 'full'; }
+const { type } = Astro.props;
+const utm = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content'];
+---
+<input type="hidden" name="form-name" value="coaching-inquiry" />
+<input type="hidden" name="form_type" value={type} />
+<input type="hidden" name="source" value={Astro.url.pathname} data-source />
+{utm.map((u) => <input type="hidden" name={u} value="" data-utm={u} />)}
+<p class="hp" aria-hidden="true"><label>Leave this empty <input name="bot-field" tabindex="-1" autocomplete="off" /></label></p>

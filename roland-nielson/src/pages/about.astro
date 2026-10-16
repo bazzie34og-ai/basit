@@ -1,0 +1,120 @@
+---
+import { Picture, getImage } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import YouTubeLite from '../components/YouTubeLite.astro';
+import RecoveryVideo from '../components/RecoveryVideo.astro';
+import Icon from '../components/Icon.astro';
+import heroImg from '../assets/roland-nielson-mens-life-coach-omaha.jpg';
+import noteImg from '../assets/rebuilding-after-addiction-coaching-omaha.jpg';
+import { site, tel } from '../config/site';
+import { youtubeVideo, recoveryVideo, ids } from '../lib/schema';
+import { abs } from '../config/site';
+
+const path = '/about/';
+const heroSizes = '(min-width: 820px) 420px, 240px';
+const heroAvif = await getImage({ src: heroImg, format: 'avif', widths: [360, 520, 671] });
+const preload = { srcset: heroAvif.srcSet.attribute, sizes: heroSizes, type: 'image/avif' };
+const schema = [
+  { '@type': 'AboutPage', '@id': abs(`${path}#about`), url: abs(path), mainEntity: { '@id': ids.roland }, isPartOf: { '@id': ids.website } },
+  youtubeVideo(),
+  recoveryVideo(),
+];
+const values = [
+  { h: 'Honesty over comfort', p: "I'll tell you what I see, respectfully. You can tell me I'm wrong. That's how real work gets done." },
+  { h: 'Your life, your plan', p: "I don't believe one program, meeting, or method works for everybody. We look at your life and use what helps." },
+  { h: 'Small promises, kept', p: 'Self-respect comes back the same way trust does: one kept promise at a time.' },
+  { h: 'No shame', p: "Tell me what's going on. You don't need to clean it up first. I've seen worse, and I've done worse." },
+];
+---
+<Base path={path} crumbs={[{ name: 'About', path }]} schema={schema} pageType="ProfilePage" preload={preload}>
+  <PageHero eyebrow="About Roland Nielson" title="I got tired of living the same day" lead="Men's life coach in Omaha. Grew up in North Omaha. Father of four boys. Coaching men since November 2025." crumbs={[{ name: 'Home', path: '/' }, { name: 'About', path }]}>
+    <div class="btn-row">
+      <a class="btn brass" href={site.booking} rel="noopener"><Icon name="calendar" />Book a Free Discovery Call</a>
+      <a class="btn ghost" href={tel}><Icon name="phone" />Call or Text Roland</a>
+    </div>
+    <div slot="aside" class="photo-frame hero-photo">
+      <Picture src={heroImg} formats={['avif', 'webp']} widths={[360, 520, 671]} sizes={heroSizes} alt={'Roland Nielson, men\'s life coach in Omaha, standing beside a wall that reads "Fix it. Change it. Leave it. Or accept it."'} loading="eager" fetchpriority="high" />
+    </div>
+  </PageHero>
+
+  <section class="section" aria-labelledby="story-h">
+    <div class="wrap narrow prose">
+      <p class="eyebrow">My story</p>
+      <h2 id="story-h">North Omaha, chaos, and a slow turn around</h2>
+      <p>I grew up in North Omaha. My mom struggled with meth. My dad wasn't around. I spent time in juvenile detention as a kid, and I carried that chaos into adulthood. Addiction, jail cells, funerals, whole nights wondering if I'd wake up. I'm not going to dress it up.</p>
+      <p>In 2011 I started changing how I lived. People always want to hear about the big moment. There wasn't one. I kept showing up. I kept my word more often than I broke it. I learned to sit with an emotion without letting it run the house. That's it. That's the secret, and it isn't much of a secret.</p>
+      <p>I'm a father of four boys. Being present with them matters more to me than looking like I have everything figured out. I don't. Some days I'm tired and short and I have to go back and apologize. But I come home, and I stay.</p>
+      <blockquote class="pull">Dad came home. Dad stayed.</blockquote>
+      <h3>Why I coach men</h3>
+      <p>Because men are quiet about this stuff until it's too late. We'll talk about trucks and football for hours and never say "I'm not okay" or "I don't know how to stop doing this." A lot of men don't have anyone who will listen without judging and then ask, "So what are you going to do about it?"</p>
+      <p>I started coaching in November 2025 to be that person for other men in Omaha. Not a guru. Not someone with a perfect life. Someone who has been in the hole, climbed out slowly, and can help you plan your own climb.</p>
+      <p>My approach is simple: <strong>Keep your word. Call your kids. Clean up your mess. Try again tomorrow.</strong></p>
+    </div>
+  </section>
+
+  <section class="section sand" aria-labelledby="note-h">
+    <div class="wrap grid-2">
+      <div class="photo-frame note-photo">
+        <Picture src={noteImg} formats={['avif', 'webp']} widths={[360, 540, 720]} sizes="(min-width: 820px) 45vw, 92vw" alt={'Roland Nielson holding a note that reads "Healing isn\'t forgetting. It\'s remembering without bleeding."'} loading="lazy" />
+      </div>
+      <div>
+        <p class="eyebrow">What I believe</p>
+        <h2 id="note-h">Healing isn't forgetting</h2>
+        <p class="lead">It's remembering without bleeding. Your past doesn't disappear. It just stops running your life.</p>
+        <div class="values">
+          {values.map((v) => <div><h3>{v.h}</h3><p>{v.p}</p></div>)}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="videos-h">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">Hear it from me</p>
+        <h2 id="videos-h">Two short videos</h2>
+        <p>One on who I work with. One on recovery and why I won't whisper about it.</p>
+      </div>
+      <div class="grid-2 top">
+        <div><YouTubeLite /><p class="caption">A short message from Roland on coaching men in Omaha.</p></div>
+        <div class="center-video"><RecoveryVideo /></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section dark grain" aria-labelledby="not-h">
+    <div class="wrap grid-2 top" data-scope>
+      <div>
+        <p class="eyebrow">Plain and clear</p>
+        <h2 id="not-h">What I'm not</h2>
+      </div>
+      <div class="prose">
+        <p>I'm a non-clinical life coach. I am not a therapist, counselor, doctor or certified coach, and I don't hold a peer-recovery certification. I don't diagnose, provide therapy, manage medication or handle crisis situations.</p>
+        <p>What I bring is lived experience, honesty and a plan. If you need more than coaching, I'll tell you, and I'll help you find licensed professionals. Coaching can keep going alongside that.</p>
+        <p>In crisis? Call or text <a href="tel:988">988</a>. Need local services? Call <a href="tel:211">211</a>.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="next-h">
+    <div class="wrap grid-3">
+      <div class="next-intro">
+        <p class="eyebrow">Where to next</p>
+        <h2 id="next-h">See how I can help</h2>
+      </div>
+      <a class="card" href="/mens-life-coaching-omaha/"><h3>Men's life coaching in Omaha</h3><p>For men who feel stuck and are tired of the same day.</p><span class="more">Learn more</span></a>
+      <a class="card" href="/rebuilding-after-addiction/"><h3>Rebuilding after addiction</h3><p>Structure, routine and trust from lived experience.</p><span class="more">Learn more</span></a>
+    </div>
+  </section>
+</Base>
+<style>
+  .hero-photo { aspect-ratio: 671 / 770; border: 1px solid rgba(176, 141, 87, 0.35); }
+  @media (max-width: 819px) { .hero-photo { max-width: 240px; } }
+  .note-photo { aspect-ratio: 720 / 687; }
+  .values { display: grid; gap: 1.2rem; margin-top: 1.5rem; }
+  @media (min-width: 640px) { .values { grid-template-columns: 1fr 1fr; } }
+  .values h3 { font-size: var(--step-1); margin-bottom: 0.3rem; }
+  .values p { margin: 0; font-size: 0.97rem; }
+  .center-video { display: flex; justify-content: center; }
+</style>

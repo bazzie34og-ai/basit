@@ -1,0 +1,25 @@
+---
+import { site } from '../config/site';
+import markDark from '../assets/brand/logo-mark.svg?raw';
+import markLight from '../assets/brand/logo-mark-light.svg?raw';
+interface Props { tone?: 'light' | 'dark'; as?: 'header' | 'footer'; }
+const { tone = 'light' } = Astro.props;
+const mark = (tone === 'light' ? markLight : markDark).replace('<svg ', '<svg aria-hidden="true" focusable="false" class="logo-mark" ');
+// Exact business name in text: "Roland Nielson – Omaha Men's Life Coaching"
+const rest = site.name.slice(site.shortName.length);
+---
+<a href="/" class={`logo logo-${tone}`} aria-label={`${site.name}, home`}>
+  <Fragment set:html={mark} />
+  <span class="logo-text"><span class="logo-name">{site.shortName}</span><span class="logo-sub">{rest}</span></span>
+</a>
+<style>
+  .logo { display: inline-flex; align-items: center; gap: 0.6rem; text-decoration: none; }
+  .logo :global(.logo-mark) { width: 40px; height: 40px; flex: none; }
+  .logo-text { display: flex; flex-direction: column; line-height: 1.1; }
+  .logo-name { font-family: var(--sans); font-weight: 800; font-size: 0.92rem; letter-spacing: 0.22em; text-transform: uppercase; }
+  .logo-sub { font-size: 0.72rem; letter-spacing: 0.04em; opacity: 0.85; }
+  .logo-light { color: var(--bone); }
+  .logo-dark { color: var(--ink); }
+  .logo:hover { color: inherit; }
+  .logo-light:hover { color: var(--bone); }
+</style>

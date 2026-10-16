@@ -1,0 +1,112 @@
+---
+import Logo from './Logo.astro';
+import Icon from './Icon.astro';
+import { site, tel } from '../config/site';
+
+const current = Astro.url.pathname;
+const main = [
+  { href: '/mens-life-coaching-omaha/', label: 'Coaching' },
+  { href: '/rebuilding-after-addiction/', label: 'Rebuilding' },
+  { href: '/the-rebuild-program/', label: 'Rebuild Program' },
+  { href: '/pricing/', label: 'Pricing' },
+  { href: '/about/', label: 'About' },
+  { href: '/blog/', label: 'Blog' },
+  { href: '/contact/', label: 'Contact' },
+];
+const more = [
+  { href: '/accountability-coaching/', label: 'Accountability Coaching' },
+  { href: '/coaching-for-fathers/', label: 'Coaching for Fathers' },
+  { href: '/for-families/', label: 'For Families' },
+  { href: '/omaha-life-coach/', label: 'Omaha Metro' },
+  { href: '/faq/', label: 'FAQ' },
+  { href: '/omaha-resources/', label: 'Omaha Resources' },
+];
+const isCurrent = (href: string) => current === href || (href !== '/' && current.startsWith(href));
+---
+<header class="site-header" data-header>
+  <div class="wrap bar">
+    <Logo tone="light" />
+    <nav class="desktop-nav" aria-label="Main">
+      <ul>
+        {main.map((l) => (
+          <li><a href={l.href} aria-current={isCurrent(l.href) ? 'page' : undefined}>{l.label}</a></li>
+        ))}
+      </ul>
+    </nav>
+    <div class="header-cta">
+      <a class="phone-link" href={tel}><Icon name="phone" /><span>{site.phone.display}</span></a>
+      <a class="btn brass small" href={site.booking} rel="noopener">Book a Free Call</a>
+    </div>
+    <button class="menu-btn" type="button" aria-expanded="false" aria-controls="mobile-menu" data-menu-btn>
+      <span class="sr-only">Menu</span>
+      <span class="bars" aria-hidden="true"></span>
+    </button>
+  </div>
+  <div class="mobile-menu" id="mobile-menu" hidden data-menu>
+    <nav aria-label="Mobile">
+      <ul>
+        {[...main, ...more].map((l) => (
+          <li><a href={l.href} aria-current={isCurrent(l.href) ? 'page' : undefined}>{l.label}</a></li>
+        ))}
+      </ul>
+      <div class="btn-row">
+        <a class="btn brass" href={site.booking} rel="noopener"><Icon name="calendar" />Book a Free Discovery Call</a>
+        <a class="btn ghost" href={tel}><Icon name="phone" />Call or Text {site.phone.display}</a>
+      </div>
+    </nav>
+  </div>
+</header>
+
+<style>
+  .site-header {
+    position: fixed; inset: 0 0 auto; z-index: 50; height: var(--header-h);
+    transition: background 0.35s var(--ease), box-shadow 0.35s var(--ease), border-color 0.35s;
+    border-bottom: 1px solid transparent;
+  }
+  .site-header.scrolled, .site-header.open {
+    background: rgba(14, 27, 44, 0.94);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-bottom-color: rgba(176, 141, 87, 0.25);
+  }
+  .bar { height: 100%; display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+  .desktop-nav { display: none; }
+  .desktop-nav ul { display: flex; gap: 1.6rem; list-style: none; margin: 0; padding: 0; }
+  .desktop-nav li { margin: 0; }
+  .desktop-nav a {
+    color: #d9dee6; text-decoration: none; font-size: 0.92rem; font-weight: 600; letter-spacing: 0.02em;
+    padding: 0.4rem 0; position: relative;
+  }
+  .desktop-nav a::after {
+    content: ''; position: absolute; left: 0; right: 0; bottom: -2px; height: 1px; background: var(--brass);
+    transform: scaleX(0); transform-origin: left; transition: transform 0.3s var(--ease);
+  }
+  .desktop-nav a:hover, .desktop-nav a[aria-current] { color: var(--bone); }
+  .desktop-nav a:hover::after, .desktop-nav a[aria-current]::after { transform: scaleX(1); }
+  .header-cta { display: none; align-items: center; gap: 1rem; }
+  .phone-link { display: inline-flex; align-items: center; gap: 0.4rem; color: var(--bone); text-decoration: none; font-weight: 700; font-size: 0.92rem; white-space: nowrap; }
+  .phone-link:hover { color: var(--brass-light); }
+  .phone-link :global(svg) { width: 16px; height: 16px; color: var(--brass); }
+  .btn.small { min-height: 44px; padding: 0.55rem 1.1rem; font-size: 0.9rem; }
+  .menu-btn {
+    width: 48px; height: 48px; border: 1px solid rgba(245, 241, 234, 0.35); border-radius: 50%;
+    background: transparent; display: grid; place-items: center; cursor: pointer;
+  }
+  .bars, .bars::before, .bars::after { display: block; width: 18px; height: 1.5px; background: var(--bone); position: relative; transition: transform 0.3s var(--ease), background 0.2s; }
+  .bars::before, .bars::after { content: ''; position: absolute; left: 0; }
+  .bars::before { top: -6px; }
+  .bars::after { top: 6px; }
+  .open .bars { background: transparent; }
+  .open .bars::before { transform: translateY(6px) rotate(45deg); }
+  .open .bars::after { transform: translateY(-6px) rotate(-45deg); }
+  .mobile-menu { background: var(--ink); border-top: 1px solid rgba(176, 141, 87, 0.25); max-height: calc(100vh - var(--header-h)); overflow-y: auto; padding: 1rem 1rem 2rem; }
+  .mobile-menu ul { list-style: none; padding: 0; margin: 0 0 1.5rem; }
+  .mobile-menu li { margin: 0; border-bottom: 1px solid rgba(245, 241, 234, 0.08); }
+  .mobile-menu a:not(.btn) { display: block; padding: 0.85rem 0; color: var(--bone); text-decoration: none; font-family: var(--serif); font-size: 1.3rem; }
+  .mobile-menu a[aria-current]:not(.btn) { color: var(--brass-light); }
+  .mobile-menu .btn { width: 100%; }
+  @media (min-width: 1100px) {
+    .desktop-nav, .header-cta { display: flex; }
+    .menu-btn, .mobile-menu { display: none !important; }
+  }
+</style>

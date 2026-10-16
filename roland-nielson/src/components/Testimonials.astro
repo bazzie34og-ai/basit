@@ -1,0 +1,24 @@
+---
+// Renders nothing until real, permission-granted entries exist in src/data/testimonials.ts.
+import { testimonials } from '../data/testimonials';
+import { site } from '../config/site';
+interface Props { limit?: number; }
+const list = testimonials.slice(0, Astro.props.limit ?? 6);
+---
+{list.length > 0 && (
+  <section class="section" aria-labelledby="testimonials-h">
+    <div class="wrap">
+      <p class="eyebrow">In their words</p>
+      <h2 id="testimonials-h">What men say</h2>
+      <div class="grid-3">
+        {list.map((t) => (
+          <figure class="card">
+            <blockquote><p>“{t.quote}”</p></blockquote>
+            <figcaption class="muted">{t.name}{t.context && <>, {t.context}</>}</figcaption>
+          </figure>
+        ))}
+      </div>
+      {site.gbp.url && <p class="mt-m"><a class="text-link" href={site.gbp.url} rel="noopener">Read reviews on Google</a></p>}
+    </div>
+  </section>
+)}

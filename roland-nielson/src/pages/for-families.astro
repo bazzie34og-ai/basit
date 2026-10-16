@@ -1,0 +1,131 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import Faq from '../components/Faq.astro';
+import RelatedLinks from '../components/RelatedLinks.astro';
+import CrisisBox from '../components/CrisisBox.astro';
+import Icon from '../components/Icon.astro';
+import { site, tel, sms } from '../config/site';
+import { page } from '../data/pages';
+import { faqPage, service } from '../lib/schema';
+
+const path = '/for-families/';
+const meta = page(path);
+const faqs = [
+  { q: 'Can I book a coaching call for my husband or son?', a: "Yes. You can book the free 20-minute call, call or text, or fill out the contact form and choose \"Someone I care about.\" I'll talk with you about what's going on. Then I need to talk with him directly, because coaching only works if he chooses to take part." },
+  { q: 'Will you tell me what he says in sessions?', a: "No. What he shares stays between him and me, even if you're paying. That privacy is a big reason men open up. He is free to share his plan or progress with you, and many men do. The exception is if someone is at risk of serious harm." },
+  { q: 'Can I pay for coaching for my adult son?', a: "Yes. Parents often pay for coaching for an adult son at a crossroads. You can pay for the plan, and I'll still treat him as the client. We can agree up front on what, if anything, he's comfortable having me confirm with you, such as whether he's attending sessions." },
+  { q: 'What if he refuses?', a: "Then coaching isn't the right step yet, and pushing harder usually backfires. Take care of yourself, set your own boundaries and keep the door open. Groups like Al-Anon and Nar-Anon support families of people who drink or use. My Omaha resources page lists more local options." },
+  { q: 'How do I help my husband who drinks too much?', a: "Start by talking when he's sober and calm, not in the middle of a fight. Be specific about what you've seen and how it affects you and the kids. Skip the labels. Offer one next step, like a free call with a coach or a doctor visit. Get support for yourself too, whatever he decides." },
+];
+const schema = [
+  service({ path, name: 'Coaching support for families of men in Omaha', serviceType: 'Life coaching for men (booked by family)', description: meta.description }),
+  faqPage(path, faqs),
+];
+---
+<Base path={path} crumbs={[{ name: 'For Families', path }]} schema={schema} cta={{ heading: 'Want to talk it through first?', text: "Book a free 20-minute call or leave a note. Tell me who you're worried about and what keeps happening. I'll be honest about whether coaching can help." }}>
+  <PageHero eyebrow="For wives, partners and parents" title="When someone you love keeps getting stuck" lead="You can see what he could be. He keeps falling back into the same patterns. Here's how coaching might help, what it can't do, and how to bring it up." crumbs={[{ name: 'Home', path: '/' }, { name: 'For Families', path }]} updated={site.contentUpdated}>
+    <div class="btn-row">
+      <a class="btn brass" href={site.booking} rel="noopener"><Icon name="calendar" />Book a Free Call for Him</a>
+      <a class="btn ghost" href={sms}><Icon name="text" />Text Roland</a>
+    </div>
+  </PageHero>
+
+  <section class="section tight" aria-label="Crisis help">
+    <div class="wrap narrow"><CrisisBox /></div>
+  </section>
+
+  <section class="section" aria-labelledby="hook-h">
+    <div class="wrap narrow prose">
+      <h2 id="hook-h">You're not the only one carrying this</h2>
+      <p>Maybe it's your husband. He works hard, but he comes home angry or checked out. Maybe he drinks more than he used to. Maybe he keeps saying he'll change, and you've stopped believing it.</p>
+      <p>Maybe it's your son. He's grown, but stuck. Bouncing between jobs, couches or bad decisions. You've helped, and helped, and you're not sure if you're helping anymore.</p>
+      <p>A lot of the calls I get start with someone who loves a man and is worried about him. That's not overstepping. It's caring. You can make the call. He has to make the choice.</p>
+    </div>
+  </section>
+
+  <section class="section white" aria-labelledby="bring-h">
+    <div class="wrap grid-2 top">
+      <div>
+        <p class="eyebrow">How to bring it up</p>
+        <h2 id="bring-h">Talk to him like a teammate, not a project</h2>
+      </div>
+      <div class="prose">
+        <ol>
+          <li><strong>Pick a calm moment.</strong> Not during a fight, not when he's been drinking, not in front of the kids.</li>
+          <li><strong>Lead with what you love.</strong> "I see how hard you work. I miss you being here with us."</li>
+          <li><strong>Be specific.</strong> Name what you've seen: the late nights, the temper, the missed promises. Skip the labels.</li>
+          <li><strong>Offer one small step.</strong> "There's a coach in Omaha who does free 20-minute calls. Evenings work. Would you try one?"</li>
+          <li><strong>Let him decide.</strong> Pressure usually backfires. Leave the link and let it sit.</li>
+        </ol>
+        <p>Some men respond better to a man who has been there. You can share <a href="/about/">Roland's story</a> or the <a href="/rebuilding-after-addiction/">rebuilding after addiction</a> page and let it speak for itself.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="can-h">
+    <div class="wrap grid-2 top">
+      <div class="card">
+        <h2 id="can-h" class="h3">What coaching can do</h2>
+        <ul class="check-list">
+          <li>Give him a plan for his week, including the bad days.</li>
+          <li>Hold him accountable every week, so it's not your job.</li>
+          <li>Help him handle stress and anger before it lands on the family.</li>
+          <li>Support him in being present with you and the kids.</li>
+          <li>Help rebuild trust through kept promises over time.</li>
+        </ul>
+      </div>
+      <div class="card" data-scope>
+        <h2 class="h3">What coaching can't do</h2>
+        <ul class="x-list">
+          <li>Diagnose or treat addiction, depression or any condition.</li>
+          <li>Replace therapy, medical care, detox or treatment programs.</li>
+          <li>Handle a crisis. Call or text 988, or 911 in danger.</li>
+          <li>Make him change if he doesn't want to.</li>
+          <li>Fix a marriage on its own. I coach him one-on-one.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="section dark grain" aria-labelledby="conf-h">
+    <div class="wrap grid-2 top">
+      <div><p class="eyebrow">Confidentiality</p><h2 id="conf-h">What stays private</h2></div>
+      <div class="prose">
+        <p>What he tells me stays between him and me, even if you book the call or pay for the plan. That privacy is why men open up. I'll tell you this before we start, so there are no surprises.</p>
+        <p>He can share as much as he wants with you. Many men end up showing their plan to their wife or parents. If someone is at risk of serious harm, safety comes first.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="book-h">
+    <div class="wrap grid-2 top">
+      <div><p class="eyebrow">Booking for him</p><h2 id="book-h">How to book a call on his behalf</h2></div>
+      <div class="prose">
+        <ol>
+          <li><a href={site.booking} rel="noopener">Book the free 20-minute call</a>, <a href={tel}>call or text {site.phone.display}</a>, or use the <a href="/contact/">contact form</a> and pick "Someone I care about."</li>
+          <li>We talk first: what's going on, what you've tried, what you hope for.</li>
+          <li>Then I talk with him directly. He decides whether to go ahead.</li>
+          <li>If he does, you can pay for his plan. See <a href="/pricing/">coaching prices</a>.</li>
+        </ol>
+        <p>Looking after yourself matters too. My page of <a href="/omaha-resources/">Omaha resources</a> includes family groups and helplines.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section white" aria-labelledby="faq-h">
+    <div class="wrap">
+      <div class="section-head"><p class="eyebrow">Questions</p><h2 id="faq-h">Questions families ask</h2></div>
+      <Faq faqs={faqs} />
+    </div>
+  </section>
+
+  <RelatedLinks heading="Related" links={[
+    { href: '/coaching-for-fathers/', title: 'Coaching for fathers and husbands', text: 'What coaching looks like for a dad who wants to be present.' },
+    { href: '/rebuilding-after-addiction/', title: 'Rebuilding after addiction', text: 'For men building structure and trust after rehab or a hard stretch.' },
+    { href: '/faq/', title: 'Life coaching FAQ', text: 'Cost, privacy, sessions and what coaching is not.' },
+  ]} />
+</Base>
+<style>
+  .h3 { font-size: var(--step-2); }
+</style>

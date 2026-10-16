@@ -1,0 +1,123 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import PlanCards from '../components/PlanCards.astro';
+import Faq from '../components/Faq.astro';
+import RelatedLinks from '../components/RelatedLinks.astro';
+import { site, plans, inPersonAddOn, rebuildProgram, POLICY } from '../config/site';
+import { page } from '../data/pages';
+import { faqPage, service, ids } from '../lib/schema';
+import { abs } from '../config/site';
+
+const path = '/pricing/';
+const meta = page(path);
+const faqs = [
+  { q: 'How much does a life coach cost in Omaha?', a: "With me, coaching costs $149 to $399 a month depending on how often we meet and for how long. Starter is $149, Core Coaching is $249 and Focused Support is $399. The first three Founding Clients pay $199 a month for three months of Core Coaching. In-person sessions add $40 each. The first 20-minute call is free." },
+  { q: 'Why do you post your prices when most coaches don\'t?', a: "Because you should know what something costs before you spend time on a sales call. Men I work with have bills and families. Clear prices let you decide if coaching fits your budget before we ever talk. If it doesn't fit right now, that's okay. The free resources on this site are still yours." },
+  { q: 'Is the in-person fee per session or per month?', a: `Per session. Each in-person session adds $${inPersonAddOn.price} to cover the cost of a private room. If we meet at your location or do a walk-and-talk outdoors, ask about it on the free call. Video and phone sessions never have an extra fee, and they work the same way.` },
+  { q: 'Can I switch plans later?', a: "Yes. Plenty of men start on Core Coaching and move to Starter once habits are steady, or step up to Focused Support during a hard season. We look at it together every month or so. The goal is the least coaching that still keeps you moving, not the most I can sell you." },
+  { q: 'What is the Founding Client rate?', a: "The first three clients get Core Coaching, four 45-minute sessions a month, for $199 a month instead of $249, with a three-month commitment ($597 total). It is my way of thanking the first men who trust me with their time. Once those three spots are filled, the rate closes." },
+  { q: 'Do you take insurance or HSA cards?', a: "No. Coaching is not a medical service, so health insurance does not cover it and it is not usually HSA or FSA eligible. Some employers cover coaching through professional development budgets, so it can be worth asking yours." },
+];
+const schema = [
+  service({ path, name: 'Life coaching plans in Omaha', serviceType: 'Life coaching', description: meta.description }),
+  {
+    '@type': 'OfferCatalog',
+    '@id': abs(`${path}#plans`),
+    name: 'Coaching plans and prices',
+    itemListElement: plans.map((p) => ({ '@type': 'Offer', name: p.name, price: p.price, priceCurrency: 'USD', description: p.details.join('. '), seller: { '@id': ids.business } })),
+  },
+  faqPage(path, faqs),
+];
+---
+<Base path={path} crumbs={[{ name: 'Pricing', path }]} schema={schema}>
+  <PageHero eyebrow="Pricing · Plans from $149/month" title="What coaching costs, with no surprises" lead="Clear monthly plans. The first call is always free. No contracts hidden in the fine print." crumbs={[{ name: 'Home', path: '/' }, { name: 'Pricing', path }]} updated={site.contentUpdated} />
+
+  <section class="section" aria-labelledby="plans-h">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">Monthly plans</p>
+        <h2 id="plans-h">Pick the rhythm that fits your life</h2>
+        <p>Every plan starts with a free 20-minute discovery call. Prices are per month, in US dollars.</p>
+      </div>
+      <PlanCards />
+    </div>
+  </section>
+
+  <section class="section white" aria-labelledby="inc-h">
+    <div class="wrap grid-2 top">
+      <div>
+        <p class="eyebrow">Every plan includes</p>
+        <h2 id="inc-h">What you get, whatever you pick</h2>
+      </div>
+      <ul class="check-list">
+        <li>A free 20-minute discovery call before you pay anything.</li>
+        <li>One-on-one sessions with Roland. Never handed off to someone else.</li>
+        <li>In person in Omaha, by video or by phone. Mix them however you like.</li>
+        <li>Evening and Saturday times that fit around work.</li>
+        <li>A plan built around your real week, including the bad days.</li>
+        <li>Accountability: every session starts with what you said you would do.</li>
+        <li>Privacy. What you share stays between us.</li>
+        <li>Honest referrals if you need something coaching can't give you.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="table-h">
+    <div class="wrap">
+      <div class="section-head"><p class="eyebrow">Side by side</p><h2 id="table-h">Compare plans</h2></div>
+      <div class="table-wrap">
+        <table>
+          <caption class="sr-only">Coaching plans compared</caption>
+          <thead><tr><th scope="col">Plan</th><th scope="col">Sessions per month</th><th scope="col">Session length</th><th scope="col">Price</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">Starter</th><td>2</td><td>45 min</td><td>$149/month</td></tr>
+            <tr><th scope="row">Core Coaching</th><td>4</td><td>45 min</td><td>$249/month</td></tr>
+            <tr><th scope="row">Focused Support</th><td>4</td><td>60 min</td><td>$399/month</td></tr>
+            <tr><th scope="row">Founding Client (first 3)</th><td>4</td><td>45 min</td><td>$199/month for 3 months ($597)</td></tr>
+            <tr><th scope="row">{rebuildProgram.name}</th><td>Weekly + check-ins</td><td>Varies</td><td>{rebuildProgram.price ? `$${rebuildProgram.price}/month` : 'Shared on the free call'}</td></tr>
+            <tr><th scope="row">{inPersonAddOn.name}</th><td colspan="2">Per in-person session</td><td>{inPersonAddOn.priceLabel}</td></tr>
+          </tbody>
+        </table>
+      </div>
+      {POLICY && <p class="mt-m">{POLICY}</p>}
+    </div>
+  </section>
+
+  <section class="section dark grain" aria-labelledby="worth-h">
+    <div class="wrap grid-2 top">
+      <div>
+        <p class="eyebrow">Is coaching worth it?</p>
+        <h2 id="worth-h">Look at what the old pattern already costs</h2>
+      </div>
+      <div class="prose">
+        <p>$249 a month is real money. So is the cost of staying stuck. Think about the last year: the nights lost to drinking or the phone, the work you didn't go after, the arguments at home, the weekends you spent recovering instead of living.</p>
+        <p>Coaching is worth it if you use it. That means showing up, being honest and doing the small things between sessions. If you do, most men find it pays for itself in calmer evenings, better decisions and promises kept.</p>
+        <p>If you won't use it, it's not worth it, and I'll tell you that on the free call.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="context-h">
+    <div class="wrap narrow prose">
+      <p class="eyebrow">Price context</p>
+      <h2 id="context-h">How these prices compare</h2>
+      <p>Across the US, one-on-one life coaching commonly runs anywhere from about $75 to $300 or more for a single session, and monthly packages often land between $200 and $1,000. Coaches with big brands and executive clients can charge far more.</p>
+      <p>My plans work out to roughly $62 to $100 per session. I priced them so working men in Omaha can afford weekly support, not just executives with a company card. Every session is one-on-one with me.</p>
+      <p>Want the full breakdown? Read <a href="/blog/how-much-does-a-life-coach-cost-in-omaha/">how much a life coach costs in Omaha</a>.</p>
+    </div>
+  </section>
+
+  <section class="section white" aria-labelledby="faq-h">
+    <div class="wrap">
+      <div class="section-head"><p class="eyebrow">Questions</p><h2 id="faq-h">Pricing questions</h2></div>
+      <Faq faqs={faqs} />
+    </div>
+  </section>
+
+  <RelatedLinks heading="Before you decide" links={[
+    { href: '/the-rebuild-program/', title: 'The Rebuild Program', text: 'A 3–6 month high-accountability program for a full reset.' },
+    { href: '/mens-life-coaching-omaha/', title: "Men's life coaching in Omaha", text: 'What we work on and how sessions run.' },
+    { href: '/faq/', title: 'Life coaching FAQ', text: 'Straight answers to the questions men ask most.' },
+  ]} />
+</Base>

@@ -1,0 +1,17 @@
+---
+import { Picture } from 'astro:assets';
+import headshot from '../assets/roland-nielson-headshot.jpg';
+---
+<aside class="author card" aria-label="About the author">
+  <Picture src={headshot} formats={['avif', 'webp']} widths={[96, 192]} sizes="96px" width={96} height={96} alt="Roland Nielson, men's life coach in Omaha" loading="lazy" />
+  <div>
+    <p class="by">Written by <a href="/about/" rel="author">Roland Nielson</a></p>
+    <p>Men's life coach in Omaha. Grew up in North Omaha, started rebuilding his life in 2011, father of four boys. Coaching men since November 2025 on accountability, habits and rebuilding after hard chapters.</p>
+  </div>
+</aside>
+<style>
+  .author { display: flex; gap: 1.2rem; align-items: flex-start; margin-top: var(--space-m); }
+  .author :global(img) { width: 96px; height: 96px; border-radius: 50%; object-fit: cover; flex: none; }
+  .author p { margin: 0 0 0.4rem; font-size: 0.97rem; }
+  .by { font-weight: 800; color: var(--ink); }
+</style>

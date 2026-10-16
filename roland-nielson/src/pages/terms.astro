@@ -1,0 +1,27 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import { site, mailto, POLICY } from '../config/site';
+const updated = site.contentUpdated;
+---
+<Base path="/terms/" crumbs={[{ name: 'Terms', path: '/terms/' }]} cta={false}>
+  <PageHero eyebrow="Legal" title="Terms and coaching disclaimer" lead="What coaching with Roland is, what it is not, and the basics of working together." crumbs={[{ name: 'Home', path: '/' }, { name: 'Terms', path: '/terms/' }]} updated={updated} />
+  <section class="section">
+    <div class="wrap narrow prose" data-scope>
+      <h2>Coaching disclaimer</h2>
+      <p>{site.name} is operated by {site.legalName}. Roland Nielson is a non-clinical life coach. He is not a licensed therapist, counselor, psychologist, social worker, physician or certified coach, and he holds no peer-recovery certification.</p>
+      <p>Coaching is not therapy, counseling, psychotherapy, medical care, addiction treatment or crisis intervention, and it is not a substitute for any of them. Coaching does not diagnose, treat or cure any condition. When it is appropriate, Roland will suggest you see a licensed professional.</p>
+      <p><strong>If you are in crisis, call or text 988. If you are in danger, call 911. For local services and resources, call 211.</strong></p>
+      <h2>Your responsibility</h2>
+      <p>You are responsible for your own decisions, actions and results. Coaching offers support, structure and accountability. It does not guarantee any outcome.</p>
+      <h2>Confidentiality</h2>
+      <p>Roland keeps what you share private, except where there is a risk of serious harm to you or someone else, or where the law requires disclosure. Coaching communications are not covered by legal privilege.</p>
+      <h2>Payments, scheduling and cancellation</h2>
+      {POLICY ? <p>{POLICY}</p> : <p>Plan prices are listed on the <a href="/pricing/">pricing page</a>. The Founding Client rate requires a 3-month commitment. Cancellation and rescheduling terms are explained and agreed on before your first paid session.</p>}
+      <h2>Website use</h2>
+      <p>Content on this site is general information, not professional advice. You may share links to it. Please don't copy it wholesale without permission. Links to other organizations are provided for convenience and are not endorsements.</p>
+      <h2>Contact</h2>
+      <p><a href={mailto}>{site.email}</a> · {site.phone.display}</p>
+    </div>
+  </section>
+</Base>

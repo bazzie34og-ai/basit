@@ -1,0 +1,22 @@
+---
+// rolandnielson.com/review/ → Google review form. The real redirect lives in _redirects
+// (generated from config). This page is the fallback when no review link is set yet.
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import { site, tel } from '../config/site';
+const link = site.gbp.reviewLink;
+---
+<Base path="/review/" cta={false}>
+  {link && <meta slot="head" http-equiv="refresh" content={`0;url=${link}`} />}
+  <PageHero eyebrow="Reviews" title="Thanks for leaving an honest review" lead={link ? 'Taking you to Google now.' : 'The Google review link is coming soon.'} />
+  <section class="section">
+    <div class="wrap narrow prose">
+      {link ? (
+        <p><a class="btn brass" href={link}>Leave a review on Google</a></p>
+      ) : (
+        <p>Thanks for wanting to share your experience. The review page isn't ready yet. Please text Roland at <a href={tel}>{site.phone.display}</a> and he'll send you the link.</p>
+      )}
+      <p>Honest reviews help other men in Omaha find help. Please don't share anything private you wouldn't want public.</p>
+    </div>
+  </section>
+</Base>

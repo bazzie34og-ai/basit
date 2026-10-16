@@ -1,0 +1,13 @@
+---
+import type { QA } from '../lib/schema';
+interface Props { faqs: QA[]; id?: string; scopeIndexes?: number[]; }
+const { faqs, id, scopeIndexes = [] } = Astro.props;
+---
+<div class="faq" id={id}>
+  {faqs.map((f, i) => (
+    <details {...(scopeIndexes.includes(i) ? { 'data-scope': '' } : {})}>
+      <summary>{f.q}</summary>
+      <div class="answer"><p set:html={f.a.replace(/\n\n/g, '</p><p>')} /></div>
+    </details>
+  ))}
+</div>

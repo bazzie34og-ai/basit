@@ -1,0 +1,8 @@
+node_modules/
+dist/
+.astro/
+.netlify/
+# Raw camera files stay local; processed outputs in public/ and src/assets/ are committed.
+assets-src/*.mp4
+assets-src/*.mov
+assets-src/poster-frame.png

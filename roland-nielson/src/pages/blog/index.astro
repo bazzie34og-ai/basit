@@ -1,0 +1,47 @@
+---
+import Base from '../../layouts/Base.astro';
+import PageHero from '../../components/PageHero.astro';
+import { getPosts, postPath, isoDate, niceDate, readingMinutes } from '../../lib/blog';
+import { abs } from '../../config/site';
+import { ids } from '../../lib/schema';
+
+const posts = await getPosts();
+const path = '/blog/';
+const schema = [{
+  '@type': 'Blog',
+  '@id': abs(`${path}#blog`),
+  name: 'Notes for men rebuilding',
+  url: abs(path),
+  publisher: { '@id': ids.business },
+  author: { '@id': ids.roland },
+  blogPost: posts.map((p) => ({ '@type': 'BlogPosting', headline: p.data.title, url: abs(postPath(p)), datePublished: isoDate(p.data.published) })),
+}];
+---
+<Base path={path} crumbs={[{ name: 'Blog', path }]} schema={schema} pageType="CollectionPage">
+  <PageHero eyebrow="Notes from Roland" title="Notes for men rebuilding" lead="Short, honest posts about bad days, being present at home, keeping your word and what coaching really costs. Written by Roland, no ghostwriters." crumbs={[{ name: 'Home', path: '/' }, { name: 'Blog', path }]} />
+  <section class="section">
+    <div class="wrap">
+      <ul class="posts">
+        {posts.map((p, i) => (
+          <li {...(p.data.scope ? { 'data-scope': '' } : {})}>
+            <a class="card post-card" href={postPath(p)}>
+              <span class="num">{String(i + 1).padStart(2, '0')}</span>
+              <h2>{p.data.title}</h2>
+              <p>{p.data.description}</p>
+              <p class="meta"><time datetime={isoDate(p.data.published)}>{niceDate(p.data.published)}</time> · {readingMinutes(p.body)} min read</p>
+              <span class="more">Read the post</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+</Base>
+<style>
+  .posts { list-style: none; padding: 0; display: grid; gap: var(--space-s); }
+  @media (min-width: 820px) { .posts { grid-template-columns: 1fr 1fr; } }
+  .posts li { margin: 0; }
+  .post-card { height: 100%; }
+  .post-card h2 { font-size: var(--step-2); margin-top: 0.4rem; }
+  .meta { font-size: 0.88rem; color: var(--muted); }
+</style>

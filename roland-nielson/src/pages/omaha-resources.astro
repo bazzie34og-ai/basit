@@ -1,0 +1,65 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import CrisisBox from '../components/CrisisBox.astro';
+import { resourceGroups } from '../data/resources';
+import { abs } from '../config/site';
+
+const path = '/omaha-resources/';
+const schema = [
+  {
+    '@type': 'ItemList',
+    '@id': abs(`${path}#list`),
+    name: 'Omaha resources for men and families',
+    itemListElement: resourceGroups.flatMap((g) => g.items).map((r, i) => ({ '@type': 'ListItem', position: i + 1, name: r.name, url: r.url })),
+  },
+];
+---
+<Base path={path} crumbs={[{ name: 'Omaha Resources', path }]} schema={schema} pageType="CollectionPage">
+  <PageHero eyebrow="Omaha resources" title="Omaha resources worth knowing" lead="A plain list of places that help men and families in the Omaha metro. Coaching is one tool. These are others. Save this page or share it with someone who needs it." crumbs={[{ name: 'Home', path: '/' }, { name: 'Omaha Resources', path }]} />
+
+  <section class="section tight">
+    <div class="wrap narrow"><CrisisBox /></div>
+  </section>
+
+  <section class="section" aria-label="Resource list">
+    <div class="wrap">
+      <nav class="jump" aria-label="Jump to a section">
+        <ul class="tag-row">{resourceGroups.map((g) => <li><a href={`#${g.id}`}>{g.title}</a></li>)}</ul>
+      </nav>
+      {resourceGroups.map((g) => (
+        <section class="group" id={g.id} aria-labelledby={`${g.id}-h`}>
+          <h2 id={`${g.id}-h`}>{g.title}</h2>
+          <p class="muted">{g.intro}</p>
+          <ul class="res-list">
+            {g.items.map((r) => (
+              <li class="card">
+                <h3><a href={r.url} rel="noopener" target="_blank">{r.name}<span class="sr-only"> (opens in a new tab)</span></a></h3>
+                {r.phone && <p class="phone">Call: {/^[\d-]+$/.test(r.phone.replace(/\s/g, '')) ? <a href={`tel:${r.phone.replace(/[^\d]/g, '')}`}>{r.phone}</a> : r.phone}</p>}
+                <p>{r.text}</p>
+              </li>
+            ))}
+          </ul>
+        </section>
+      ))}
+      <div class="note prose">
+        <h2>A note on this list</h2>
+        <p>I'm not paid by any of these organizations, and listing them isn't an endorsement of everything they do. Details change, so call ahead. If a link is broken or you know a local resource that belongs here, <a href="/contact/">let me know</a>.</p>
+        <p>If you want one-on-one help building a plan around any of this, read about <a href="/rebuilding-after-addiction/">coaching for men rebuilding after addiction</a> or <a href="/for-families/">how families can help a man who keeps getting stuck</a>.</p>
+      </div>
+    </div>
+  </section>
+</Base>
+<style>
+  .jump { margin-bottom: var(--space-m); }
+  .jump a { text-decoration: none; color: var(--ink); }
+  .group { padding-top: var(--space-m); }
+  .group h2 { font-size: var(--step-3); }
+  .res-list { list-style: none; padding: 0; display: grid; gap: var(--space-s); }
+  @media (min-width: 820px) { .res-list { grid-template-columns: 1fr 1fr; } }
+  .res-list li { margin: 0; padding: 1.4rem; }
+  .res-list h3 { font-size: var(--step-1); }
+  .res-list h3 a { color: var(--ink); text-decoration-color: var(--brass); }
+  .phone { font-weight: 700; color: var(--ink); margin-bottom: 0.4rem; }
+  .note { margin-top: var(--space-l); }
+</style>

@@ -1,0 +1,111 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import ContactForm from '../components/ContactForm.astro';
+import CrisisBox from '../components/CrisisBox.astro';
+import Icon from '../components/Icon.astro';
+import { site, tel, sms, mailto, hasOffice, areaNames, hoursText } from '../config/site';
+import { abs } from '../config/site';
+import { ids } from '../lib/schema';
+
+const path = '/contact/';
+const starters = [
+  "Hey Roland, I keep starting strong and then falling off by midweek.",
+  "Hey Roland, I'm short with my wife and kids and I don't like who I am at home.",
+  "Hey Roland, I'm a few months out of rehab and I need structure.",
+  "Hey Roland, I'm writing about my husband/son. I'm worried about him.",
+  "Hey Roland, I feel stuck and I don't even know where to start.",
+];
+const napLines = [
+  site.name,
+  ...(hasOffice ? [site.office.streetAddress, `${site.city}, ${site.region} ${site.office.postalCode}`] : [`${site.city}, ${site.region} (service-area business)`]),
+  `Phone: ${site.phone.display}`,
+  `Email: ${site.email}`,
+  `Website: ${site.url}/`,
+  `Hours: ${hoursText}`,
+  `Service area: ${areaNames.join(', ')}`,
+  `Category: ${site.category}`,
+];
+const schema = [{ '@type': 'ContactPage', '@id': abs(`${path}#contact`), url: abs(path), about: { '@id': ids.business }, isPartOf: { '@id': ids.website } }];
+---
+<Base path={path} crumbs={[{ name: 'Contact', path }]} schema={schema} cta={false}>
+  <PageHero eyebrow="Contact · Free 20-minute call" title="Tell me what keeps happening. Be honest." lead="You don't need to clean it up first. Call, text, book a free call or send a message. I reply within 24 hours, usually the same evening." crumbs={[{ name: 'Home', path: '/' }, { name: 'Contact', path }]}>
+    <div class="btn-row">
+      <a class="btn brass" href={site.booking} rel="noopener"><Icon name="calendar" />Book a Free Discovery Call</a>
+      <a class="btn ghost" href={tel}><Icon name="phone" />Call {site.phone.display}</a>
+      <a class="btn ghost" href={sms}><Icon name="text" />Text</a>
+    </div>
+  </PageHero>
+
+  <section class="section" aria-labelledby="form-h">
+    <div class="wrap contact-grid">
+      <div>
+        <h2 id="form-h" class="h2s">Send Roland a message</h2>
+        <div class="starters">
+          <p id="starters-h"><strong>Stuck on what to say?</strong> Tap one to start, then make it yours:</p>
+          <ul>
+            {starters.map((s) => <li><button type="button" class="starter" data-starter={s}>{s}</button></li>)}
+          </ul>
+        </div>
+        <ContactForm />
+      </div>
+      <aside class="side" aria-label="Contact details">
+        <div class="card">
+          <h2 class="h3s">Call, text or email</h2>
+          <p><a class="big" href={tel}>{site.phone.display}</a><br /><span class="muted">Call or text</span></p>
+          <p><a href={mailto}>{site.email}</a></p>
+          <p><a href={site.booking} rel="noopener">Book the free 20-minute discovery call</a></p>
+        </div>
+        <div class="card">
+          <h2 class="h3s">Hours</h2>
+          <ul class="hours-list">
+            {site.hours.map((h) => <li><span>{h.label}</span><span>{h.display}</span></li>)}
+            <li><span>{site.closedLabel}</span><span>Closed</span></li>
+          </ul>
+          <p class="muted small">Central time. Messages outside hours get a reply the next working evening.</p>
+        </div>
+        <div class="card">
+          <h2 class="h3s">Where</h2>
+          {hasOffice ? <p>{site.office.streetAddress}<br />{site.city}, {site.region} {site.office.postalCode}</p> : <p>{site.serviceLine}. In person by appointment, or by video and phone.</p>}
+          <p class="small">{areaNames.join(' · ')}</p>
+          <p><a href="/omaha-life-coach/">See the service area</a></p>
+        </div>
+        <div class="card">
+          <h2 class="h3s">Follow</h2>
+          <ul class="soc">{site.socials.map((s) => <li><a href={s.url} rel="noopener me" target="_blank">{s.name}<span class="sr-only"> (opens in a new tab)</span></a></li>)}</ul>
+        </div>
+        <CrisisBox />
+      </aside>
+    </div>
+  </section>
+
+  <section class="section white" aria-labelledby="nap-h">
+    <div class="wrap narrow">
+      <h2 id="nap-h" class="h3s">Business details</h2>
+      <p class="muted small">Exact name, phone and details for directory listings. Please copy them as written.</p>
+      <pre class="nap">{napLines.join('\n')}</pre>
+    </div>
+  </section>
+</Base>
+<style>
+  .contact-grid { display: grid; gap: var(--space-m); }
+  @media (min-width: 960px) { .contact-grid { grid-template-columns: 1.5fr 1fr; align-items: start; } }
+  .h2s { font-size: var(--step-3); }
+  .h3s { font-size: var(--step-1); }
+  .starters { margin-bottom: var(--space-m); }
+  .starters ul { list-style: none; padding: 0; display: flex; flex-wrap: wrap; gap: 0.5rem; }
+  .starters li { margin: 0; }
+  .starter {
+    font: inherit; font-size: 0.92rem; text-align: left; cursor: pointer; background: var(--white); color: var(--ink);
+    border: 1px dashed var(--brass); border-radius: 12px; padding: 0.6rem 0.9rem; min-height: 44px;
+  }
+  .starter:hover { background: var(--sand); }
+  .side { display: grid; gap: var(--space-s); }
+  .side .card { padding: 1.5rem; }
+  .big { font-family: var(--serif); font-size: var(--step-2); color: var(--ink); text-decoration: none; }
+  .hours-list { list-style: none; padding: 0; margin: 0 0 0.6rem; }
+  .hours-list li { display: flex; justify-content: space-between; border-bottom: 1px solid var(--sand); padding: 0.5rem 0; margin: 0; font-weight: 600; color: var(--ink); }
+  .small { font-size: 0.9rem; }
+  .soc { list-style: none; padding: 0; display: flex; flex-wrap: wrap; gap: 0.4rem 1rem; margin: 0; }
+  .nap { white-space: pre-wrap; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.9rem; background: var(--bone); border: 1px solid var(--sand); border-radius: 10px; padding: 1.2rem; color: var(--ink); user-select: all; }
+</style>

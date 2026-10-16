@@ -1,0 +1,25 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import Faq from '../components/Faq.astro';
+import { faqs } from '../data/faqs';
+import { faqPage } from '../lib/schema';
+
+const path = '/faq/';
+const scopeIdx = faqs.map((f, i) => (f.scope ? i : -1)).filter((i) => i >= 0);
+---
+<Base path={path} crumbs={[{ name: 'FAQ', path }]} schema={[faqPage(path, faqs)]}>
+  <PageHero eyebrow="Questions men ask" title="Straight answers" lead="What coaching is, what it costs in Omaha, how sessions work, and what I don't do. If your question isn't here, call or text and ask." crumbs={[{ name: 'Home', path: '/' }, { name: 'FAQ', path }]} />
+  <section class="section">
+    <div class="wrap">
+      <Faq faqs={faqs} scopeIndexes={scopeIdx} />
+      <div class="more-links prose">
+        <h2>Still deciding?</h2>
+        <p>Compare <a href="/pricing/">coaching plans and prices</a>, read <a href="/about/">Roland's story</a>, or see <a href="/omaha-life-coach/">where in the Omaha metro I coach</a>. Worried about someone else? Start with the page <a href="/for-families/">for wives, partners and parents</a>.</p>
+      </div>
+    </div>
+  </section>
+</Base>
+<style>
+  .more-links { margin-top: var(--space-l); }
+</style>

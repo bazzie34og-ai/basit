@@ -1,0 +1,75 @@
+---
+import { render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import AuthorBox from '../../components/AuthorBox.astro';
+import CrisisBox from '../../components/CrisisBox.astro';
+import { getPosts, postPath, isoDate, niceDate, readingMinutes, type Post } from '../../lib/blog';
+import { pages, ogSlug } from '../../data/pages';
+import { abs } from '../../config/site';
+import { blogPosting } from '../../lib/schema';
+
+export async function getStaticPaths() {
+  const posts = await getPosts();
+  return posts.map((post) => ({ params: { slug: post.id }, props: { post, all: posts } }));
+}
+interface Props { post: Post; all: Post[]; }
+const { post, all } = Astro.props;
+const { Content } = await render(post);
+const path = postPath(post);
+const d = post.data;
+const published = isoDate(d.published);
+const updated = isoDate(d.updated);
+const ogImage = `/og/${ogSlug(path)}.png`;
+const relatedServices = d.related.map((r) => pages.find((p) => p.path === r)).filter(Boolean);
+const relatedPosts = all.filter((p) => p.id !== post.id).slice(0, 3);
+const crumbs = [{ name: 'Blog', path: '/blog/' }, { name: d.title.split(':')[0], path }];
+const schema = [blogPosting({ path, title: d.title, description: d.description, published, updated, image: abs(ogImage) })];
+---
+<Base path={path} title={d.seoTitle} description={d.description} ogType="article" crumbs={crumbs} schema={schema} dateModified={updated} article={{ published, updated }}>
+  <article {...(d.scope ? { 'data-scope': '' } : {})}>
+    <header class="page-hero dark grain post-hero">
+      <div class="wrap narrow">
+        <Breadcrumbs crumbs={[{ name: 'Home', path: '/' }, ...crumbs]} />
+        <p class="eyebrow">Notes from Roland</p>
+        <h1 id="page-h1">{d.title}</h1>
+        <hr class="rule" />
+        <p class="byline">By <a href="/about/" rel="author">Roland Nielson</a> · Published <time datetime={published}>{niceDate(d.published)}</time> · Last updated <time datetime={updated}>{niceDate(d.updated)}</time> · {readingMinutes(post.body)} min read</p>
+      </div>
+    </header>
+    <div class="section">
+      <div class="wrap narrow prose post-body">
+        <Content />
+        <AuthorBox />
+        {relatedServices.length > 0 && (
+          <aside class="related-services" aria-label="Related coaching">
+            <p class="eyebrow">Related coaching</p>
+            <ul>{relatedServices.map((s) => <li><a href={s!.path}>{s!.nav}</a></li>)}</ul>
+          </aside>
+        )}
+        <CrisisBox compact />
+      </div>
+    </div>
+  </article>
+  <section class="section sand" aria-labelledby="more-h">
+    <div class="wrap">
+      <p class="eyebrow">Keep reading</p>
+      <h2 id="more-h">Related posts</h2>
+      <div class="grid-3">
+        {relatedPosts.map((p) => (
+          <a class="card" href={postPath(p)} {...(p.data.scope ? { 'data-scope': '' } : {})}><h3>{p.data.title}</h3><span class="more">Read the post</span></a>
+        ))}
+      </div>
+    </div>
+  </section>
+</Base>
+<style>
+  .post-hero h1 { font-size: var(--step-4); }
+  .byline { color: #b9c2cf; font-size: 0.92rem; margin: 0; }
+  .byline a { color: var(--brass-light); }
+  .post-body :global(table) { margin: 1.5rem 0; }
+  .post-body :global(blockquote) { margin: 1.5rem 0; padding-left: 1.2rem; border-left: 2px solid var(--brass); font-family: var(--serif); font-style: italic; font-size: var(--step-1); }
+  .related-services { margin: var(--space-m) 0; }
+  .related-services ul { list-style: none; padding: 0; display: flex; flex-wrap: wrap; gap: 0.5rem 1.4rem; }
+  .related-services a { font-weight: 700; }
+</style>

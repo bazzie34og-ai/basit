@@ -1,0 +1,127 @@
+---
+import { Picture } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import Faq from '../components/Faq.astro';
+import RelatedLinks from '../components/RelatedLinks.astro';
+import Icon from '../components/Icon.astro';
+import noteImg from '../assets/rebuilding-after-addiction-coaching-omaha.jpg';
+import { site, tel, hoursText } from '../config/site';
+import { page } from '../data/pages';
+import { faqPage, service } from '../lib/schema';
+
+const path = '/coaching-for-fathers/';
+const meta = page(path);
+const faqs = [
+  { q: 'How can I be more present with my family?', a: "Start small and specific. Put the phone in another room for the first 30 minutes after you get home. Ask each kid one real question at dinner. Plan one thing a week that is just you and them. In coaching we build habits like these into your actual schedule and check that they happen." },
+  { q: 'Can coaching help with my temper at home?', a: "Yes, coaching can help you stop before you react. We look at what sets you off, when it happens and what your body does right before. Then we build a pause and a plan for those moments. If anger is leading to violence or fear in the home, you need more than coaching, and I will help you find it." },
+  { q: 'I work long hours. Can coaching fit around that?', a: `Yes. I coach evenings and Saturdays for exactly that reason. Hours are ${hoursText}. Sessions can happen by phone on the drive home or by video after the kids are in bed. No need to take time off work.` },
+  { q: 'Do you work with divorced or separated dads?', a: "Yes. Rebuilding after divorce is one of the hardest seasons a man goes through. We work on being a steady dad on your days, keeping communication with your ex civil, and building a life you respect on your own. I do not give legal advice, but I can help you stay level while you deal with it." },
+  { q: 'Can my wife be part of the sessions?', a: "Coaching is one-on-one with you. Your wife or partner is welcome to book the free call or ask questions, and some men choose to share their plan at home. What you say in session stays private unless you decide to share it. Couples work is a different service, and I can point you to it." },
+];
+const schema = [
+  service({ path, name: 'Coaching for Fathers and Husbands in Omaha', serviceType: 'Coaching for fathers', description: meta.description }),
+  faqPage(path, faqs),
+];
+---
+<Base path={path} crumbs={[{ name: 'Coaching for Fathers', path }]} schema={schema}>
+  <PageHero eyebrow="Coaching for fathers · Omaha" title="Be the dad who comes home and stays" lead="Not the perfect dad. The present one. Calm enough to listen, steady enough to count on, and home in more than body." crumbs={[{ name: 'Home', path: '/' }, { name: 'Coaching for Fathers', path }]} updated={site.contentUpdated}>
+    <div class="btn-row">
+      <a class="btn brass" href={site.booking} rel="noopener"><Icon name="calendar" />Book a Free Discovery Call</a>
+      <a class="btn ghost" href={tel}><Icon name="phone" />Call or Text Roland</a>
+    </div>
+  </PageHero>
+
+  <section class="section" aria-labelledby="hook-h">
+    <div class="wrap grid-2 top">
+      <div class="prose">
+        <h2 id="hook-h">Your kids don't need a superhero. They need you to show up.</h2>
+        <p>I didn't have a dad around. I know what that absence does to a kid, and I know how easy it is to repeat a version of it without meaning to. You can be in the house every night and still be gone.</p>
+        <p>Maybe you come home wrung out and snap at small things. Maybe you're on your phone through dinner. Maybe you and your wife only talk about schedules and bills. None of that makes you a bad man. It makes you a tired one without a plan.</p>
+        <p>I'm a father of four boys. Being present with them matters more to me than looking like I have everything figured out. That's what I help other dads work toward.</p>
+        <blockquote class="pull">Dad came home. Dad stayed.</blockquote>
+      </div>
+      <div class="photo-frame note-photo">
+        <Picture src={noteImg} formats={['avif', 'webp']} widths={[360, 540, 720]} sizes="(min-width: 820px) 45vw, 92vw" alt={'Roland Nielson holding a note that reads "Healing isn\'t forgetting. It\'s remembering without bleeding."'} loading="lazy" />
+      </div>
+    </div>
+  </section>
+
+  <section class="section white" aria-labelledby="work-h">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">What we work on</p>
+        <h2 id="work-h">Being a better father and husband, one week at a time</h2>
+      </div>
+      <div class="grid-3">
+        <div class="card"><h3>Coming home well</h3><p>A short reset between work and home so your family gets you, not what's left of you.</p></div>
+        <div class="card"><h3>Patience under pressure</h3><p>Stop before you react. Catch the build-up and choose your words before they choose themselves.</p></div>
+        <div class="card"><h3>Time with your kids</h3><p>Small, regular rituals that matter more to kids than big trips: rides, games, bedtime talks.</p></div>
+        <div class="card"><h3>Talking with your partner</h3><p>Fewer schedule meetings, more real conversations. Listening without fixing. Repairing after a fight.</p></div>
+        <div class="card"><h3>Breaking old patterns</h3><p>Noticing what you inherited from your own father, and deciding what stops with you.</p></div>
+        <div class="card"><h3>Rebuilding after divorce</h3><p>Being a steady dad on your days and building a life you respect on your own.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="sessions-h">
+    <div class="wrap grid-2 top">
+      <div><p class="eyebrow">How sessions work</p><h2 id="sessions-h">Built around work and family</h2></div>
+      <div class="prose">
+        <p>Dads don't have spare afternoons. That's why I coach evenings and Saturdays: {hoursText}.</p>
+        <ul class="check-list">
+          <li><strong>Phone</strong> on the drive home, before you walk in the door.</li>
+          <li><strong>Video</strong> after the kids are asleep.</li>
+          <li><strong>In person</strong> in Omaha by appointment, at your location or a private meeting space. A walk around Standing Bear Lake works too.</li>
+        </ul>
+        <p>Every session ends with a couple of specific things to try at home this week. Next time, we talk about how it went. See <a href="/pricing/">coaching plans and prices</a>.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section dark grain" aria-labelledby="change-h">
+    <div class="wrap grid-2 top">
+      <div>
+        <p class="eyebrow">What changes</p>
+        <h2 id="change-h">What families notice first</h2>
+        <p>I can't promise outcomes. Your family's story is yours. These are the changes dads describe most:</p>
+      </div>
+      <ul class="check-list">
+        <li>Fewer blowups, and faster apologies when they happen.</li>
+        <li>Kids who come to you with stuff, because you've been listening.</li>
+        <li>A partner who feels like a teammate again.</li>
+        <li>Evenings with a little calm in them.</li>
+        <li>You like the dad you're becoming.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="not-h">
+    <div class="wrap grid-2 top">
+      <div><p class="eyebrow">Honest fit</p><h2 id="not-h">Who this is not for</h2></div>
+      <div class="prose">
+        <ul class="x-list">
+          <li data-scope>Families dealing with abuse or violence at home. That needs professional help and safety planning first. Call 911 in an emergency, or 988 for crisis support.</li>
+          <li data-scope>Couples looking for marriage counseling. I coach the man, one-on-one.</li>
+          <li>Dads who want a script to make their kids behave. This is about you, not them.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="section white" aria-labelledby="faq-h">
+    <div class="wrap">
+      <div class="section-head"><p class="eyebrow">Questions</p><h2 id="faq-h">Questions dads ask</h2></div>
+      <Faq faqs={faqs} />
+    </div>
+  </section>
+
+  <RelatedLinks heading="Related" links={[
+    { href: '/blog/how-to-be-more-present-with-your-kids/', title: 'How to be more present with your kids', text: 'Practical ways to show up when work and life pull you away.' },
+    { href: '/accountability-coaching/', title: 'Accountability coaching in Omaha', text: 'Keep the promises you make at home and at work.' },
+    { href: '/for-families/', title: 'For wives and partners', text: 'Worried about him? How to bring up coaching, and how to book a call for him.' },
+  ]} />
+</Base>
+<style>
+  .note-photo { aspect-ratio: 720 / 687; }
+</style>

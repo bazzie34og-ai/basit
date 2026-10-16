@@ -1,0 +1,59 @@
+---
+import FormHidden from './FormHidden.astro';
+const p = 'contact';
+---
+<form class="form" name="coaching-inquiry" method="POST" action="/thank-you/" data-netlify="true" netlify-honeypot="bot-field" data-lead-form id="contact-form">
+  <FormHidden type="full" />
+  <div class="row two">
+    <div class="field">
+      <label for={`${p}-name`}>Name <span aria-hidden="true">*</span></label>
+      <input id={`${p}-name`} name="name" autocomplete="name" required aria-describedby={`${p}-name-err`} />
+      <p class="error" id={`${p}-name-err`} aria-live="polite"></p>
+    </div>
+    <div class="field">
+      <label for={`${p}-phone`}>Phone <span aria-hidden="true">*</span></label>
+      <input id={`${p}-phone`} name="phone" type="tel" autocomplete="tel" inputmode="tel" required pattern="[0-9\(\)\+\.\s\-]{10,}" aria-describedby={`${p}-phone-err`} />
+      <p class="error" id={`${p}-phone-err`} aria-live="polite"></p>
+    </div>
+  </div>
+  <div class="field">
+    <label for={`${p}-email`}>Email <span aria-hidden="true">*</span></label>
+    <input id={`${p}-email`} name="email" type="email" autocomplete="email" required aria-describedby={`${p}-email-err`} />
+    <p class="error" id={`${p}-email-err`} aria-live="polite"></p>
+  </div>
+  <fieldset class="field">
+    <legend>Best way to reach you</legend>
+    <div class="choices">
+      {['Call', 'Text', 'Email'].map((v, i) => <label><input type="radio" name="preferred_contact" value={v} checked={i === 1} /> {v}</label>)}
+    </div>
+  </fieldset>
+  <fieldset class="field">
+    <legend>Who is this for?</legend>
+    <div class="choices">
+      {['Myself', 'Someone I care about'].map((v, i) => <label><input type="radio" name="who_for" value={v} checked={i === 0} /> {v}</label>)}
+    </div>
+  </fieldset>
+  <div class="row two">
+    <div class="field">
+      <label for={`${p}-session`}>Session preference</label>
+      <select id={`${p}-session`} name="session_pref">
+        <option>Not sure</option><option>In person</option><option>Video</option><option>Phone</option>
+      </select>
+    </div>
+    <div class="field">
+      <label for={`${p}-time`}>Best time to reach you</label>
+      <input id={`${p}-time`} name="best_time" placeholder="e.g. weekdays after 5 PM" />
+    </div>
+  </div>
+  <div class="field">
+    <label for={`${p}-message`}>What keeps happening?</label>
+    <span class="hint" id={`${p}-message-hint`}>You don't need to clean it up first. A few honest lines is plenty.</span>
+    <textarea id={`${p}-message`} name="message" rows="6" placeholder="Hey Roland, the thing I keep struggling with is:" aria-describedby={`${p}-message-hint ${p}-message-err`}></textarea>
+    <p class="error" id={`${p}-message-err`} aria-live="polite"></p>
+  </div>
+  <div class="field">
+    <label class="consent" data-scope><input type="checkbox" name="consent" value="yes" required aria-describedby={`${p}-consent-err`} /> <span>I understand this is non-clinical coaching, not therapy or crisis support.</span></label>
+    <p class="error" id={`${p}-consent-err`} aria-live="polite"></p>
+  </div>
+  <div><button class="btn" type="submit">Send to Roland</button></div>
+</form>
