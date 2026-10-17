@@ -1,0 +1,17 @@
+---
+// The single site logo: lacaze_logo_luxe_horizontal_dark (transparent, white wordmark + lime road icon).
+interface Props { height?: number; eager?: boolean }
+const { height = 48, eager = false } = Astro.props;
+const ratio = 1696 / 524;
+---
+<img
+  src="/img/lacaze-roadside-assistance-logo-48.webp"
+  srcset="/img/lacaze-roadside-assistance-logo-48.webp 155w, /img/lacaze-roadside-assistance-logo-96.webp 311w, /img/lacaze-roadside-assistance-logo-144.webp 466w"
+  sizes={`${Math.round(height * ratio)}px`}
+  width={Math.round(height * ratio)}
+  height={height}
+  alt="LaCaze Roadside Assistance logo — 24/7 roadside help in Spring, TX"
+  loading={eager ? 'eager' : 'lazy'}
+  decoding="async"
+  fetchpriority={eager ? 'high' : undefined}
+/>

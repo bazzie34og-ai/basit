@@ -1,0 +1,39 @@
+---
+import Base from '../../layouts/Base.astro';
+import PageHero from '../../components/PageHero.astro';
+import CtaBlock from '../../components/CtaBlock.astro';
+import Icon from '../../components/Icon.astro';
+import { guides } from '../../data/guides.js';
+import { b, tel, sms, services } from '../../lib/site.js';
+import { articleSchema } from '../../lib/schema.js';
+export function getStaticPaths() {
+  return guides.map((g) => ({ params: { slug: g.slug }, props: { g } }));
+}
+const { g } = Astro.props;
+const path = `/guides/${g.slug}/`;
+const crumbs = [{ name: 'Home', href: '/' }, { name: 'Guides', href: '/guides/' }, { name: g.title, href: path }];
+const date = new Date(g.date + 'T12:00:00Z').toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric', timeZone: 'UTC' });
+---
+<Base title={g.metaTitle} description={g.description} crumbs={crumbs} ogType="article" schema={[articleSchema({ headline: g.title, description: g.description, path, datePublished: g.date })]}>
+  <PageHero h1={g.title} lead={g.excerpt} crumbs={crumbs} ctas={false} eyebrow="Roadside guide">
+    <p class="muted" style="font-size:.9375rem">By <a href="/about/">{b.owner}</a> · <time datetime={g.date}>{date}</time></p>
+  </PageHero>
+  <section class="section">
+    <div class="wrap content">
+      <article class="prose" set:html={g.body} />
+      <aside class="aside" aria-label="Get help">
+        <div class="card">
+          <h2>Stuck right now?</h2>
+          <p style="margin-bottom:16px">Get <a href={g.service.href} style="color:var(--lime)">{g.service.label}</a> — 24/7, no membership.</p>
+          <a class="btn btn--primary btn--block" href={tel} data-track="call"><Icon name="phone" />Call {b.phoneDisplay}</a>
+          <a class="btn btn--ghost btn--block" style="margin-top:8px" href={sms} data-track="text"><Icon name="sms" />Text your location</a>
+        </div>
+        <div class="card">
+          <h2>More guides</h2>
+          <ul>{guides.filter((x) => x.slug !== g.slug).map((x) => <li><a href={`/guides/${x.slug}/`}>{x.title}<Icon name="arrow" /></a></li>)}</ul>
+        </div>
+      </aside>
+    </div>
+  </section>
+  <CtaBlock />
+</Base>

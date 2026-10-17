@@ -1,0 +1,20 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import CtaBlock from '../components/CtaBlock.astro';
+import Faq from '../components/Faq.astro';
+import Spanish from '../components/Spanish.astro';
+import { faqs } from '../data/faqs.js';
+import { faqSchema } from '../lib/schema.js';
+const crumbs = [{ name: 'Home', href: '/' }, { name: 'FAQ', href: '/faq/' }];
+---
+<Base title="Roadside Assistance FAQ | LaCaze" description="Answers about 24/7 jump starts, car lockouts, fuel delivery, prices and service areas in Spring & North Houston. Need help now? Call (832) 949-4837." crumbs={crumbs} schema={[faqSchema(faqs)]}>
+  <PageHero h1="Your Roadside Questions, Answered" lead="Straight answers about jump starts, lockouts, fuel delivery, pricing and where we go. Still unsure? Call — a real person answers 24/7." crumbs={crumbs} />
+  <section class="section">
+    <div class="wrap wrap--narrow">
+      <Faq faqs={faqs} open={0} />
+    </div>
+  </section>
+  <Spanish />
+  <CtaBlock />
+</Base>

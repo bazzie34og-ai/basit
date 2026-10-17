@@ -1,0 +1,49 @@
+---
+import Logo from './Logo.astro';
+import OpenPill from './OpenPill.astro';
+import Icon from './Icon.astro';
+import { b, tel, services, towns } from '../lib/site.js';
+const path = Astro.url.pathname;
+const nav = [
+  { href: '/jump-start-spring-tx/', label: 'Jump Starts' },
+  { href: '/car-lockout-spring-tx/', label: 'Lockouts' },
+  { href: '/fuel-delivery-spring-tx/', label: 'Fuel Delivery' },
+  { href: '/pricing/', label: 'Pricing' },
+  { href: '/faq/', label: 'FAQ' },
+  { href: '/about/', label: 'About' },
+];
+---
+<header class="header" id="top">
+  <div class="wrap header__in">
+    <a class="brand" href="/" aria-label={`${b.name} — home`}><Logo eager /></a>
+    <nav class="nav" aria-label="Main">
+      <ul>
+        {nav.map((n) => <li><a href={n.href} aria-current={path === n.href ? 'page' : undefined}>{n.label}</a></li>)}
+      </ul>
+    </nav>
+    <div class="header__cta">
+      <OpenPill />
+      <a class="btn btn--primary" href={tel} data-track="call" aria-label={`Call ${b.phoneDisplay}`}><Icon name="phone" /><span class="lbl">Call</span><span class="num">{b.phoneDisplay}</span></a>
+      <button class="menu-btn" type="button" aria-expanded="false" aria-controls="mnav" aria-label="Open menu" data-menu-open><Icon name="menu" /></button>
+    </div>
+  </div>
+</header>
+<div class="mnav" id="mnav" hidden role="dialog" aria-modal="true" aria-label="Menu">
+  <div class="mnav__top">
+    <Logo height={40} />
+    <button class="menu-btn" type="button" aria-label="Close menu" data-menu-close><Icon name="close" /></button>
+  </div>
+  <a class="btn btn--primary btn--lg btn--block" href={tel} data-track="call"><Icon name="phone" />Call {b.phoneDisplay}</a>
+  <h2>Services</h2>
+  <ul>{services.map((s) => <li><a href={s.slug}>{s.name}<Icon name="arrow" /></a></li>)}</ul>
+  <h2>Service area</h2>
+  <ul>{towns.map((t) => <li><a href={t.slug}>{t.name}<Icon name="arrow" /></a></li>)}</ul>
+  <h2>More</h2>
+  <ul>
+    <li><a href="/pricing/">Pricing<Icon name="arrow" /></a></li>
+    <li><a href="/faq/">FAQ<Icon name="arrow" /></a></li>
+    <li><a href="/guides/">Guides<Icon name="arrow" /></a></li>
+    <li><a href="/about/">About John<Icon name="arrow" /></a></li>
+    <li><a href="/#request">Request help<Icon name="arrow" /></a></li>
+  </ul>
+</div>

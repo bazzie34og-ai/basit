@@ -1,0 +1,49 @@
+---
+import Icon from './Icon.astro';
+import { b } from '../lib/site.js';
+interface Props { id?: string; preset?: string }
+const { id = 'request-form', preset = '' } = Astro.props;
+const opts = ['Jump start', 'Lockout', 'Fuel delivery', 'Not sure'];
+---
+<form class="form" id={id} name="roadside-request" method="POST" action="/thank-you/" data-netlify="true" netlify-honeypot="bot-field" novalidate data-request-form>
+  <input type="hidden" name="form-name" value="roadside-request" />
+  <input type="hidden" name="page" value={Astro.url.pathname} />
+  <p class="hp" aria-hidden="true"><label>Leave this empty <input type="text" name="bot-field" tabindex="-1" autocomplete="off" /></label></p>
+  <h3>Request help</h3>
+  <p class="muted">Takes 20 seconds. {b.ownerFirstName} calls you right back.</p>
+  <div class="field-row">
+    <div class="field">
+      <label for={`${id}-name`}>Name</label>
+      <input id={`${id}-name`} name="name" type="text" autocomplete="name" placeholder="Your name" required aria-describedby={`${id}-name-err`} />
+      <p class="err" id={`${id}-name-err`}>Please tell us your name.</p>
+    </div>
+    <div class="field">
+      <label for={`${id}-phone`}>Phone</label>
+      <input id={`${id}-phone`} name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="(832) 555-0123" required aria-describedby={`${id}-phone-err`} />
+      <p class="err" id={`${id}-phone-err`}>Enter a 10-digit phone number so we can call you back.</p>
+    </div>
+  </div>
+  <div class="field">
+    <label for={`${id}-service`}>What do you need?</label>
+    <select id={`${id}-service`} name="service" required aria-describedby={`${id}-service-err`}>
+      <option value="">Choose a service</option>
+      {opts.map((o) => <option value={o} selected={o === preset}>{o}</option>)}
+    </select>
+    <p class="err" id={`${id}-service-err`}>Pick a service, or choose “Not sure”.</p>
+  </div>
+  <div class="field">
+    <label for={`${id}-location`}>Where are you?</label>
+    <div class="loc">
+      <input id={`${id}-location`} name="location" type="text" autocomplete="address-line1" placeholder="Street, exit, or landmark" required aria-describedby={`${id}-location-err ${id}-loc-status`} />
+      <button type="button" class="btn btn--ghost" data-geo><Icon name="locate" /><span>Use my location</span></button>
+    </div>
+    <p class="loc-status" id={`${id}-loc-status`} role="status" aria-live="polite"></p>
+    <p class="err" id={`${id}-location-err`}>Tell us where you are, or tap “Use my location”.</p>
+  </div>
+  <div class="field">
+    <label for={`${id}-notes`}>Notes <span class="opt">(optional)</span></label>
+    <textarea id={`${id}-notes`} name="notes" rows="3" placeholder="Vehicle, color, anything we should know"></textarea>
+  </div>
+  <button class="btn btn--primary btn--lg btn--block" type="submit">Send request</button>
+  <p class="consent">By submitting, you agree {b.name} may call or text you about your request. See our <a href="/privacy/">privacy policy</a>.</p>
+</form>

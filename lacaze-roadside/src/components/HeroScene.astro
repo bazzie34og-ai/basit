@@ -1,0 +1,78 @@
+---
+// Night-road scene drawn in SVG: asphalt in perspective, lane lines, lime headlights on the horizon.
+const W = 1440, H = 900, HZ = 520, VP = 720;
+const f = H - HZ; // screen drop at z = 1
+const halfRoad = 860;
+const yAt = (z) => HZ + f / z;
+const xAt = (X, z) => VP + (X * halfRoad) / z;
+const dashes = [];
+for (let z = 0.62; z < 60; z += 2.4) {
+  const z2 = z + 1.15;
+  const w1 = 0.011, w2 = 0.011;
+  dashes.push(`M${xAt(-w1, z).toFixed(1)} ${yAt(z).toFixed(1)}L${xAt(w1, z).toFixed(1)} ${yAt(z).toFixed(1)}L${xAt(w2, z2).toFixed(1)} ${yAt(z2).toFixed(1)}L${xAt(-w2, z2).toFixed(1)} ${yAt(z2).toFixed(1)}Z`);
+}
+const edge = (side) => {
+  const s = side;
+  return `M${VP + s * 2} ${HZ}L${xAt(s * 0.94, 0.85)} ${yAt(0.85)}L${xAt(s * 0.965, 0.85)} ${yAt(0.85)}Z`;
+};
+// Pine tree-line silhouette along the horizon (deterministic)
+let trees = `M0 ${HZ}`;
+let x = 0, i = 0;
+while (x <= W) {
+  const h = 18 + ((i * 37) % 23) + (Math.abs(x - VP) < 120 ? -14 : 0);
+  trees += `L${x} ${HZ - 4}L${x + 9} ${HZ - h}L${x + 18} ${HZ - 4}`;
+  x += 14 + ((i * 13) % 9);
+  i++;
+}
+trees += `L${W} ${HZ}Z`;
+const stars = Array.from({ length: 46 }, (_, k) => ({ cx: (k * 263) % W, cy: 30 + ((k * 151) % 380), r: k % 5 === 0 ? 1.3 : 0.8, o: 0.15 + ((k * 7) % 10) / 30 }));
+---
+<svg viewBox={`0 0 ${W} ${H}`} preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#060708" />
+      <stop offset=".55" stop-color="#0C0F10" />
+      <stop offset=".58" stop-color="#121617" />
+    </linearGradient>
+    <radialGradient id="haze" cx=".5" cy="1" r=".6">
+      <stop offset="0" stop-color="#84E23E" stop-opacity=".22" />
+      <stop offset=".45" stop-color="#34AA3C" stop-opacity=".06" />
+      <stop offset="1" stop-color="#34AA3C" stop-opacity="0" />
+    </radialGradient>
+    <linearGradient id="asphalt" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0E1112" />
+      <stop offset="1" stop-color="#1A1F21" />
+    </linearGradient>
+    <linearGradient id="beam" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#84E23E" stop-opacity=".28" />
+      <stop offset=".5" stop-color="#84E23E" stop-opacity=".06" />
+      <stop offset="1" stop-color="#84E23E" stop-opacity="0" />
+    </linearGradient>
+    <radialGradient id="lamp">
+      <stop offset="0" stop-color="#F4FFE9" />
+      <stop offset=".25" stop-color="#C9F7A2" />
+      <stop offset=".6" stop-color="#84E23E" stop-opacity=".35" />
+      <stop offset="1" stop-color="#84E23E" stop-opacity="0" />
+    </radialGradient>
+    <linearGradient id="dashfade" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#F4F6F5" stop-opacity=".15" />
+      <stop offset="1" stop-color="#F4F6F5" stop-opacity=".85" />
+    </linearGradient>
+  </defs>
+  <rect width={W} height={H} fill="url(#sky)" />
+  {stars.map((s) => <circle cx={s.cx} cy={s.cy} r={s.r} fill="#F4F6F5" opacity={s.o} />)}
+  <ellipse cx={VP} cy={HZ} rx="900" ry="260" fill="url(#haze)" />
+  <path d={trees} fill="#07090A" />
+  <rect y={HZ} width={W} height={H - HZ} fill="#0A0C0D" />
+  <path d={`M${VP - 3} ${HZ}L${VP + 3} ${HZ}L${VP + halfRoad / 0.85} ${yAt(0.85)}L${VP - halfRoad / 0.85} ${yAt(0.85)}Z`} fill="url(#asphalt)" />
+  <path d={`M${VP} ${HZ + 2}L${VP + 520} ${H}L${VP - 520} ${H}Z`} fill="url(#beam)" class="headlight" />
+  <path d={edge(-1)} fill="#84E23E" opacity=".55" />
+  <path d={edge(1)} fill="#84E23E" opacity=".55" />
+  <g fill="url(#dashfade)">{dashes.map((d) => <path d={d} />)}</g>
+  <g class="headlight">
+    <circle cx={VP - 9} cy={HZ - 3} r="22" fill="url(#lamp)" />
+    <circle cx={VP + 9} cy={HZ - 3} r="22" fill="url(#lamp)" />
+    <circle cx={VP - 9} cy={HZ - 3} r="2.4" fill="#FFFFFF" />
+    <circle cx={VP + 9} cy={HZ - 3} r="2.4" fill="#FFFFFF" />
+  </g>
+</svg>

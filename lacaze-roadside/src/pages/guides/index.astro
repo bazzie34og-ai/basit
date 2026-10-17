@@ -1,0 +1,26 @@
+---
+import Base from '../../layouts/Base.astro';
+import PageHero from '../../components/PageHero.astro';
+import CtaBlock from '../../components/CtaBlock.astro';
+import Icon from '../../components/Icon.astro';
+import { guides } from '../../data/guides.js';
+import { abs } from '../../lib/site.js';
+const crumbs = [{ name: 'Home', href: '/' }, { name: 'Guides', href: '/guides/' }];
+const list = { '@type': 'CollectionPage', url: abs('/guides/'), name: 'Roadside guides', hasPart: guides.map((g) => ({ '@type': 'Article', headline: g.title, url: abs(`/guides/${g.slug}/`) })) };
+---
+<Base title="Roadside Safety Guides | LaCaze Roadside Assistance" description="Practical roadside guides for Spring & North Houston drivers: dead batteries in the heat, lockouts and running out of gas. 24/7 help: (832) 949-4837." crumbs={crumbs} schema={[list]}>
+  <PageHero h1="Roadside Guides for Houston-Area Drivers" lead="Practical, calm advice from John LaCaze Jr. for the moments nobody plans for." crumbs={crumbs} ctas={false} eyebrow="Guides" />
+  <section class="section">
+    <div class="wrap grid grid--3">
+      {guides.map((g) => (
+        <a class="card reveal" href={`/guides/${g.slug}/`}>
+          <span class="icon-tile"><Icon name={g.icon} /></span>
+          <h2 style="font-size:1.25rem;margin-bottom:8px">{g.title}</h2>
+          <p>{g.excerpt}</p>
+          <span class="more">Read the guide<Icon name="arrow" /></span>
+        </a>
+      ))}
+    </div>
+  </section>
+  <CtaBlock />
+</Base>

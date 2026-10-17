@@ -1,0 +1,32 @@
+---
+import Icon from './Icon.astro';
+import RequestForm from './RequestForm.astro';
+import OpenPill from './OpenPill.astro';
+import { b, tel, sms } from '../lib/site.js';
+interface Props { heading?: string; preset?: string; id?: string }
+const { heading = 'Stuck right now? Help is one tap away.', preset = '', id = 'request' } = Astro.props;
+---
+<section class="section section--tight" id={id} aria-labelledby={`${id}-h`}>
+  <div class="wrap">
+    <div class="cta reveal">
+      <div class="cta__grid">
+        <div>
+          <OpenPill long />
+          <h2 id={`${id}-h`} style="margin-top:24px">{heading}</h2>
+          <p class="lead">Call or text and a real person answers — {b.ownerFirstName}, the owner. No membership, no call center, and an upfront price before we roll.</p>
+          <a class="callbig" href={tel} data-track="call">{b.phoneDisplay}</a>
+          <div class="btn-row">
+            <a class="btn btn--primary btn--lg" href={tel} data-track="call"><Icon name="phone" />Call Now</a>
+            <a class="btn btn--ghost btn--lg" href={sms} data-track="text"><Icon name="sms" />Text your location</a>
+          </div>
+          <ul class="ticks">
+            <li><Icon name="check" />Stuck somewhere unsafe? Stay in your car with your hazards on — we're on the way.</li>
+            <li><Icon name="check" />If we're running late, we call you first.</li>
+            <li><Icon name="check" />We stay until you're safely back on the road.</li>
+          </ul>
+        </div>
+        <RequestForm id={`${id}-form`} preset={preset} />
+      </div>
+    </div>
+  </div>
+</section>

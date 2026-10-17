@@ -1,0 +1,13 @@
+---
+import Todo from './Todo.astro';
+interface Props { faqs: { q: string; a: string; todo?: string }[]; open?: number }
+const { faqs, open = -1 } = Astro.props;
+---
+<div class="faq">
+  {faqs.map((f, i) => (
+    <details open={i === open}>
+      <summary>{f.q}</summary>
+      <div class="ans"><Fragment set:html={f.a} />{f.todo && <Todo>{f.todo}</Todo>}</div>
+    </details>
+  ))}
+</div>

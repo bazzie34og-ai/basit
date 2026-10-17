@@ -1,0 +1,50 @@
+---
+import Icon from './Icon.astro';
+import Todo from './Todo.astro';
+import { b, googleReviewsUrl } from '../lib/site.js';
+const initials = (n) => n.split(/\s+/).map((p) => p[0]).join('').replace(/\W/g, '').slice(0, 2).toUpperCase();
+const reviews = b.reviews || [];
+---
+<section class="section" id="reviews" aria-labelledby="reviews-h">
+  <div class="wrap">
+    <div class="reviews-head">
+      <div class="section__head">
+        <p class="eyebrow">Google reviews</p>
+        <h2 id="reviews-h">Real drivers. Real reviews.</h2>
+      </div>
+      <div class="rating">
+        <span class="rating__num">{b.googleRating.toFixed(1)}</span>
+        <span>
+          <span class="stars" role="img" aria-label={`${b.googleRating} out of 5 stars`}>{[1,2,3,4,5].map(() => <Icon name="star" />)}</span>
+          <span class="muted" style="display:block;font-size:.875rem">from {b.googleReviewCount} Google reviews</span>
+        </span>
+        <a class="btn btn--ghost" href={googleReviewsUrl} target="_blank" rel="noopener"><Icon name="google" />See all reviews on Google</a>
+      </div>
+    </div>
+    {!b.googleProfileUrl && <Todo>Add the Google Business Profile URL (googleProfileUrl in src/data/business.json) — button currently links to a Google search.</Todo>}
+    {reviews.length === 0 ? (
+      <Todo>No review screenshots yet — add real reviews to src/data/business.json. Never invent reviews.</Todo>
+    ) : (
+      <div class="grid grid--2" style="margin-top:16px">
+        {reviews.map((r) => (
+          <figure class="card review reveal" style="margin:0">
+            <span class="stars" role="img" aria-label={`${r.rating} out of 5 stars`}>{Array.from({ length: r.rating }, () => <Icon name="star" />)}</span>
+            {r.text ? (
+              <blockquote>“{r.text}”</blockquote>
+            ) : (
+              <blockquote class="is-short">Rated {r.rating} stars{r.priceAssessment && <> · Price assessment: <strong style="color:var(--text)">“{r.priceAssessment}”</strong></>}</blockquote>
+            )}
+            {r.text && r.priceAssessment && <span class="tag">Price assessment: {r.priceAssessment}</span>}
+            <figcaption>
+              <span class="avatar" aria-hidden="true">{initials(r.name)}</span>
+              <span>
+                <cite>{r.name}</cite>
+                <small><Icon name="google" />Google review{r.service && <> · {r.service}</>}</small>
+              </span>
+            </figcaption>
+          </figure>
+        ))}
+      </div>
+    )}
+  </div>
+</section>

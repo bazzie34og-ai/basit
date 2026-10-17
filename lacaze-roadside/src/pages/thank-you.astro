@@ -1,0 +1,19 @@
+---
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+import { b, tel, sms } from '../lib/site.js';
+---
+<Base title="Request Received | LaCaze" description="Your roadside request was received. John will call you back within minutes. Need help faster? Call (832) 949-4837." noindex>
+  <section class="phero" style="min-height:70vh;display:flex;align-items:center">
+    <div class="wrap wrap--narrow" style="text-align:center">
+      <span class="icon-tile" style="margin:0 auto 24px"><Icon name="check" /></span>
+      <h1 style="margin-inline:auto">Got it — John will call you back within minutes.</h1>
+      <p class="lead" style="margin:0 auto 32px">Need help faster? Call {b.phoneDisplay}. Keep your phone close, and if you’re somewhere unsafe, stay in your car with your hazards on.</p>
+      <div class="btn-row" style="justify-content:center">
+        <a class="btn btn--primary btn--lg" style="--h:68px;font-size:1.25rem;padding:0 36px" href={tel} data-track="call"><Icon name="phone" />Call {b.phoneDisplay}</a>
+        <a class="btn btn--ghost btn--lg" href={sms} data-track="text"><Icon name="sms" />Text your location</a>
+      </div>
+      <p style="margin-top:32px"><a href="/" class="muted">Back to home</a></p>
+    </div>
+  </section>
+</Base>

@@ -1,0 +1,78 @@
+---
+import '../styles/global.css';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import ActionBar from '../components/ActionBar.astro';
+import { b, abs, PREVIEW_MODE } from '../lib/site.js';
+import { businessSchema, websiteSchema, breadcrumbSchema } from '../lib/schema.js';
+
+interface Props {
+  title: string;
+  description: string;
+  noindex?: boolean;
+  crumbs?: { name: string; href: string }[];
+  schema?: object[];
+  ogType?: string;
+}
+const { title, description, noindex = false, crumbs, schema = [], ogType = 'website' } = Astro.props;
+const canonical = abs(Astro.url.pathname);
+const ogImage = abs('/img/og-lacaze-roadside-assistance.jpg');
+const robots = PREVIEW_MODE || noindex ? 'noindex, nofollow' : 'index, follow, max-image-preview:large';
+const graph = [businessSchema(), websiteSchema(), ...(crumbs ? [breadcrumbSchema(crumbs)] : []), ...schema];
+const jsonld = JSON.stringify({ '@context': 'https://schema.org', '@graph': graph }).replace(/</g, '\\u003c');
+---
+<!doctype html>
+<html lang="en-US">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>{title}</title>
+  <meta name="description" content={description} />
+  <link rel="canonical" href={canonical} />
+  <meta name="robots" content={robots} />
+  <meta name="theme-color" content="#0B0D0E" />
+  <meta name="format-detection" content="telephone=yes" />
+  {b.searchConsoleVerification && <meta name="google-site-verification" content={b.searchConsoleVerification} />}
+  <link rel="preload" href="/fonts/inter-var-latin.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="preload" as="image" href="/img/lacaze-roadside-assistance-logo-48.webp" imagesrcset="/img/lacaze-roadside-assistance-logo-48.webp 155w, /img/lacaze-roadside-assistance-logo-96.webp 311w, /img/lacaze-roadside-assistance-logo-144.webp 466w" imagesizes="155px" />
+  <link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  <link rel="manifest" href="/site.webmanifest" />
+  <meta property="og:type" content={ogType} />
+  <meta property="og:site_name" content={b.name} />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:title" content={title} />
+  <meta property="og:description" content={description} />
+  <meta property="og:url" content={canonical} />
+  <meta property="og:image" content={ogImage} />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="LaCaze Roadside Assistance — 24/7 roadside help in Spring, TX" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content={title} />
+  <meta name="twitter:description" content={description} />
+  <meta name="twitter:image" content={ogImage} />
+  <script is:inline>document.documentElement.classList.add('js')</script>
+  <script is:inline type="application/ld+json" set:html={jsonld} />
+  {b.ga4Id && (
+    <>
+      <script is:inline async src={`https://www.googletagmanager.com/gtag/js?id=${b.ga4Id}`}></script>
+      <script is:inline define:vars={{ id: b.ga4Id }}>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}window.gtag=gtag;gtag('js',new Date());gtag('config',id);</script>
+    </>
+  )}
+  <slot name="head" />
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <div class="progress" aria-hidden="true"><span></span></div>
+  <Header />
+  <main id="main">
+    <slot />
+  </main>
+  <Footer />
+  <ActionBar />
+  <script>
+    import '../scripts/site.js';
+  </script>
+</body>
+</html>

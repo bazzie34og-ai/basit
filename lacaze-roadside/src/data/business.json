@@ -1,0 +1,86 @@
+{
+  "_readme": "Single source of truth for business facts. Edit here; every page, the footer and the schema update on the next build. Empty strings / null = not confirmed yet (the site hides them or shows a dev-only TODO note in preview mode).",
+
+  "name": "LaCaze Roadside Assistance",
+  "shortName": "LaCaze",
+  "owner": "John LaCaze Jr.",
+  "ownerFirstName": "John",
+  "tagline": "Fast. Reliable. Mobile. We come to you.",
+
+  "siteUrl": "https://lacaze-roadside.netlify.app",
+
+  "phoneDisplay": "(832) 949-4837",
+  "phoneE164": "+18329494837",
+  "phoneSchema": "+1-832-949-4837",
+  "smsBody": "Hi, I need roadside help. My location is: ",
+  "email": "lacazeroadside@gmail.com",
+
+  "locality": "Spring",
+  "region": "TX",
+  "postalCode": "77389",
+  "country": "US",
+  "hoursLabel": "Open 24 hours, 7 days",
+  "priceRange": "$$",
+
+  "serviceAreaLabel": "Spring, Klein, The Woodlands, Tomball, Magnolia, Conroe, Cypress, North Houston and surrounding areas",
+  "cities": ["Spring", "Klein", "The Woodlands", "Tomball", "Magnolia", "Conroe", "Cypress", "Houston"],
+
+  "_todo_arrival": "Average arrival time in minutes, e.g. 30. Leave null until John confirms.",
+  "averageArrivalMinutes": null,
+
+  "_todo_prices": "Starting prices in dollars, e.g. 65. Leave null until John confirms.",
+  "prices": {
+    "jumpStart": null,
+    "lockout": null,
+    "fuelDelivery": null
+  },
+  "fuelDeliveryNote": "Price of fuel is extra, at the pump rate.",
+
+  "_todo_google": "Paste the Google Business Profile / Google Maps share link (e.g. https://maps.app.goo.gl/...) once confirmed.",
+  "googleProfileUrl": "",
+  "googleMapsEmbedUrl": "",
+  "googleRating": 5.0,
+  "googleReviewCount": 4,
+
+  "_social": "Only add a URL once it is verified as John's official profile. Empty = hidden.",
+  "social": {
+    "facebook": "",
+    "instagram": "",
+    "tiktok": "",
+    "youtube": "",
+    "linkedin": ""
+  },
+
+  "_analytics": "GA4 measurement ID (G-XXXXXXX) and Google Search Console verification token. Empty = not loaded.",
+  "ga4Id": "",
+  "searchConsoleVerification": "",
+
+  "_reviews": "Copied word for word from Google review screenshots in assets-src/reviews/. Do not edit the text.",
+  "reviews": [
+    {
+      "name": "Ashley B.",
+      "rating": 5,
+      "text": "My husband was out of town and my teenager locked us out of the car at night.  It was me and my two kids.  I ordered roadside assistance through my insurance app and the app said my wait time was 3 hours but he came in 45 minutes.  Was respectful, fast, and easy.  Would use anytime.",
+      "service": "Lockout"
+    },
+    {
+      "name": "Dominique C.",
+      "rating": 5,
+      "text": "I was on the side of the road!!! I was trying to get to the nearest gas station but ended up running out of gas right off the freeway😩. I didn’t want to be on the side of the road long. they came quick! Within 30 minutes or less! Very courteous and it even eased my nerves a bit! I was so grateful! Thank you so much!!! Life saver, will definitely use them again if I need to and recommend 10 out of 10 over all service!!",
+      "priceAssessment": "Reasonable price",
+      "service": "Fuel delivery"
+    },
+    {
+      "name": "Linda T.",
+      "rating": 5,
+      "text": "",
+      "priceAssessment": "Great price"
+    },
+    {
+      "name": "Thai S.",
+      "rating": 5,
+      "text": "",
+      "priceAssessment": "Great price"
+    }
+  ]
+}

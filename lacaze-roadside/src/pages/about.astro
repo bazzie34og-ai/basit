@@ -1,0 +1,53 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import CtaBlock from '../components/CtaBlock.astro';
+import Icon from '../components/Icon.astro';
+import OpenPill from '../components/OpenPill.astro';
+import { b, services, towns } from '../lib/site.js';
+import { abs } from '../lib/site.js';
+const crumbs = [{ name: 'Home', href: '/' }, { name: 'About', href: '/about/' }];
+const socials = Object.entries(b.social).filter(([, u]) => u);
+const person = {
+  '@type': 'AboutPage',
+  url: abs('/about/'),
+  mainEntity: { '@type': 'Person', name: b.owner, jobTitle: 'Owner', worksFor: { '@id': abs('/#business') }, image: abs('/img/john-lacaze-jr-owner.jpg'), ...(socials.length ? { sameAs: socials.map(([, u]) => u) } : {}) },
+};
+---
+<Base title="About John & LaCaze Roadside Assistance" description="Meet John LaCaze Jr., owner-operator of LaCaze Roadside Assistance in Spring, TX. 24/7 jump starts, lockouts & fuel delivery. Call (832) 949-4837." crumbs={crumbs} schema={[person]}>
+  <PageHero h1="Owner-Operated Roadside Help in Spring, TX" lead={`${b.name} is run by ${b.owner}. When you call, you talk to the owner — and you’re treated like family.`} crumbs={crumbs} />
+  <section class="section">
+    <div class="wrap owner">
+      <div class="owner__photo">
+        <picture>
+          <source type="image/avif" srcset="/img/john-lacaze-jr-owner-480.avif 480w, /img/john-lacaze-jr-owner-720.avif 720w" sizes="(min-width: 900px) 480px, 100vw" />
+          <source type="image/webp" srcset="/img/john-lacaze-jr-owner-480.webp 480w, /img/john-lacaze-jr-owner-720.webp 720w" sizes="(min-width: 900px) 480px, 100vw" />
+          <img src="/img/john-lacaze-jr-owner.jpg" width="720" height="950" decoding="async" fetchpriority="high" alt="John LaCaze Jr., owner-operator of LaCaze Roadside Assistance, Spring, TX" />
+        </picture>
+        <div class="owner__badge"><div><strong>{b.owner}</strong><span>Owner-operator</span></div><OpenPill /></div>
+      </div>
+      <div class="prose">
+        <h2>Hi, I’m John.</h2>
+        <p>I started <strong>{b.name}</strong> to be the call people wish they had when they’re stuck: someone local who picks up the phone, tells the truth about price and timing, and actually shows up.</p>
+        <p>Most of us have been there — a car that won’t start in a hot parking lot, keys locked inside with the kids waiting, or an empty tank on the side of the freeway. Too often, the companies that promise “24/7” don’t answer, and insurance apps quote waits of hours. I wanted to do it differently.</p>
+        <h3>How I run things</h3>
+        <ul>
+          <li><strong>A real person answers. 24/7.</strong> You talk to me, not a call center.</li>
+          <li><strong>Upfront price before I roll.</strong> No surprises at the roadside.</li>
+          <li><strong>If I’m running late, I call you first.</strong></li>
+          <li><strong>I stay until you’re safely back on the road.</strong></li>
+          <li><strong>No membership.</strong> Call when you need help, pay only for what you get.</li>
+        </ul>
+        <h3>What I do</h3>
+        <p>I keep it focused: {services.map((s, i) => <>{i > 0 && (i === services.length - 1 ? ' and ' : ', ')}<a href={s.slug}>{s.name.toLowerCase()}</a></>)} — done carefully and done right.</p>
+        <h3>Where I go</h3>
+        <p>I’m based in Spring, TX 77389 and cover {towns.map((t, i) => <>{i > 0 && (i === towns.length - 1 ? ' and ' : ', ')}<a href={t.slug}>{t.name}</a></>)}, plus the surrounding areas.</p>
+        <p class="sig">— {b.owner}</p>
+        {socials.length > 0 && (
+          <><h3>Find us online</h3><div class="socials">{socials.map(([k, u]) => <a href={u} target="_blank" rel="noopener me" aria-label={k}><Icon name={k} /></a>)}</div></>
+        )}
+      </div>
+    </div>
+  </section>
+  <CtaBlock heading="Need help? Call John directly." />
+</Base>

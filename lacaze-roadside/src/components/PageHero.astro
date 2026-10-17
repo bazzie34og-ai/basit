@@ -1,0 +1,23 @@
+---
+import Breadcrumbs from './Breadcrumbs.astro';
+import OpenPill from './OpenPill.astro';
+import Icon from './Icon.astro';
+import { tel, sms } from '../lib/site.js';
+interface Props { h1: string; lead?: string; crumbs?: { name: string; href: string }[]; ctas?: boolean; eyebrow?: string }
+const { h1, lead, crumbs, ctas = true, eyebrow } = Astro.props;
+---
+<section class="phero">
+  <div class="wrap">
+    {crumbs && <Breadcrumbs items={crumbs} />}
+    {eyebrow ? <p class="eyebrow">{eyebrow}</p> : <OpenPill long />}
+    <h1>{h1}</h1>
+    {lead && <p class="lead" set:html={lead} />}
+    {ctas && (
+      <div class="btn-row">
+        <a class="btn btn--primary btn--lg" href={tel} data-track="call"><Icon name="phone" />Call (832) 949-4837</a>
+        <a class="btn btn--ghost btn--lg" href="#request"><Icon name="pin" />Request help</a>
+      </div>
+    )}
+    <slot />
+  </div>
+</section>

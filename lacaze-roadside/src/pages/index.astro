@@ -1,0 +1,179 @@
+---
+import Base from '../layouts/Base.astro';
+import HeroScene from '../components/HeroScene.astro';
+import OpenPill from '../components/OpenPill.astro';
+import Icon from '../components/Icon.astro';
+import ServiceMap from '../components/ServiceMap.astro';
+import Reviews from '../components/Reviews.astro';
+import Faq from '../components/Faq.astro';
+import Spanish from '../components/Spanish.astro';
+import CtaBlock from '../components/CtaBlock.astro';
+import Todo from '../components/Todo.astro';
+import { b, tel, sms, services, towns, priceLabel } from '../lib/site.js';
+import { faqs } from '../data/faqs.js';
+
+const promises = [
+  { icon: 'phone', h: 'A real person answers. 24/7.', p: 'No phone tree, no call center. You talk to John, the owner — day or night.' },
+  { icon: 'card-off', h: 'No membership. No two-hour wait.', p: 'Pay only when you need us. No sign-up, no annual fee, no waiting on an insurance dispatcher.' },
+  { icon: 'bell', h: 'If we’re running late, we call you first.', p: 'You’ll never be left on the shoulder wondering if anyone is actually coming.' },
+  { icon: 'tag', h: 'Upfront price before we roll.', p: 'You hear the price on the phone before we head out. No surprises at the roadside.' },
+  { icon: 'shield', h: 'Stuck somewhere unsafe? Stay in your car.', p: 'On I-45, SH 99 or FM 1960, keep your seatbelt on and hazards flashing — we’re on the way.' },
+  { icon: 'pin', h: 'Text us your location. Get live updates.', p: 'Send a map pin by text and we’ll keep you posted until we pull up behind you.' },
+  { icon: 'heart', h: 'Owner-operated. Treated like family.', p: 'Calm, respectful help from a local business that cares how your day ends.' },
+  { icon: 'road', h: 'We stay until you’re safely back on the road.', p: 'Not just until the engine turns over — until you’re on your way.' },
+];
+const steps = [
+  { h: 'Call or text', p: `Call or text ${b.phoneDisplay}. A real person answers, 24/7.` },
+  { h: 'Share your location', p: 'Text a map pin or tap “Use my location” on the form below.' },
+  { h: 'Get an upfront price', p: 'You hear the price and an honest arrival estimate before we roll.' },
+  { h: 'We arrive & stay', p: 'We fix the problem and stay until you’re safely back on the road.' },
+];
+const hasArrival = b.averageArrivalMinutes != null;
+---
+<Base
+  title="24/7 Roadside Assistance in Spring, TX | LaCaze"
+  description="Jump starts, car lockouts & fuel delivery in Spring, The Woodlands & North Houston. 24/7, no membership, upfront price. Call (832) 949-4837 now."
+>
+  <section class="hero" aria-labelledby="hero-h">
+    <div class="hero__scene"><HeroScene /></div>
+    <div class="wrap">
+      <div class="hero__content">
+        <OpenPill long />
+        <h1 id="hero-h">24/7 Roadside Assistance in Spring &amp; North Houston</h1>
+        <p class="lead">Dead battery, keys locked inside or an empty tank? {b.tagline.replace(' We come to you.', '')} We come to <span class="accent">you</span> — day or night, with an upfront price before we roll.</p>
+        <div class="btn-row">
+          <a class="btn btn--primary btn--lg" href={tel} data-track="call"><Icon name="phone" />Call Now · {b.phoneDisplay}</a>
+          <a class="btn btn--ghost btn--lg" href="#request"><Icon name="pin" />Request Help</a>
+        </div>
+        <ul class="trust">
+          <li><Icon name="clock" />Open 24/7</li>
+          <li><Icon name="card-off" />No membership needed</li>
+          <li><Icon name="tag" />Upfront price before we roll</li>
+        </ul>
+        {hasArrival
+          ? <p class="muted" style="margin-top:16px">Usually there in about {b.averageArrivalMinutes} minutes.</p>
+          : <><!-- TODO: average arrival time — set averageArrivalMinutes in src/data/business.json --><Todo>Arrival time: “Usually there in __ minutes” — set averageArrivalMinutes once John confirms.</Todo></>}
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--tight" aria-labelledby="svc-h">
+    <div class="wrap">
+      <div class="section__head">
+        <p class="eyebrow">Services</p>
+        <h2 id="svc-h">Three things we do — and do right</h2>
+        <p class="lead">Mobile roadside assistance across Spring and North Houston. We come to your driveway, parking lot or shoulder.</p>
+      </div>
+      <div class="grid grid--3">
+        {services.map((s) => (
+          <a class="card reveal" href={s.slug}>
+            <span class="icon-tile"><Icon name={s.icon} /></span>
+            <h3>{s.name}</h3>
+            <p>{s.blurb}</p>
+            {priceLabel(s.key)
+              ? <span class="price-tag">{priceLabel(s.key)}</span>
+              : <Todo>Starting price for {s.short.toLowerCase()}</Todo>}
+            <span class="more">{s.short} in Spring, TX<Icon name="arrow" /></span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <div class="roadline" aria-hidden="true"></div>
+
+  <section class="section" aria-labelledby="why-h">
+    <div class="wrap">
+      <div class="section__head">
+        <p class="eyebrow">Why drivers call LaCaze</p>
+        <h2 id="why-h">Help that actually shows up</h2>
+        <p class="lead">Drivers around Spring and The Woodlands tell the same stories: nobody answered, the app said three hours, the truck never came. Here’s what we promise instead.</p>
+      </div>
+      <div class="grid grid--4">
+        {promises.map((p) => (
+          <div class="promise reveal">
+            <Icon name={p.icon} />
+            <div><h3>{p.h}</h3><p>{p.p}</p></div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--alt" aria-labelledby="how-h">
+    <div class="wrap">
+      <div class="section__head section__head--center">
+        <p class="eyebrow">How it works</p>
+        <h2 id="how-h">From stranded to on your way in four steps</h2>
+      </div>
+      <ol class="steps">
+        {steps.map((s) => <li class="reveal"><h3>{s.h}</h3><p>{s.p}</p></li>)}
+      </ol>
+      <div class="btn-row" style="justify-content:center;margin-top:48px">
+        <a class="btn btn--primary btn--lg" href={tel} data-track="call"><Icon name="phone" />Call {b.phoneDisplay}</a>
+        <a class="btn btn--ghost btn--lg" href={sms} data-track="text"><Icon name="sms" />Text your location</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="service-area" aria-labelledby="area-h">
+    <div class="wrap area">
+      <div>
+        <p class="eyebrow">Service area</p>
+        <h2 id="area-h">Roadside assistance near you, across North Houston</h2>
+        <p class="lead" style="margin-top:16px">Based in Spring, TX 77389, we cover the I-45, TX-249 and Grand Parkway corridors — from Old Town Spring and Cypresswood Dr to Lake Conroe.</p>
+        <ul class="chips">
+          <li><span><Icon name="pin" />Spring</span></li>
+          {towns.map((t) => <li><a href={t.slug}><Icon name="pin" />{t.name}</a></li>)}
+        </ul>
+        <p class="muted">And surrounding areas. Not sure if we reach you? <a href={tel} data-track="call" style="color:var(--lime)">Call and ask</a> — we’ll tell you straight.</p>
+      </div>
+      <ServiceMap />
+    </div>
+  </section>
+
+  <section class="section section--alt" aria-labelledby="owner-h">
+    <div class="wrap owner">
+      <div class="owner__photo reveal">
+        <picture>
+          <source type="image/avif" srcset="/img/john-lacaze-jr-owner-480.avif 480w, /img/john-lacaze-jr-owner-720.avif 720w" sizes="(min-width: 900px) 480px, 100vw" />
+          <source type="image/webp" srcset="/img/john-lacaze-jr-owner-480.webp 480w, /img/john-lacaze-jr-owner-720.webp 720w" sizes="(min-width: 900px) 480px, 100vw" />
+          <img src="/img/john-lacaze-jr-owner.jpg" width="720" height="950" loading="lazy" decoding="async" alt="John LaCaze Jr., owner of LaCaze Roadside Assistance in Spring, TX" />
+        </picture>
+        <div class="owner__badge">
+          <div><strong>{b.owner}</strong><span>Owner · {b.name}</span></div>
+          <OpenPill />
+        </div>
+      </div>
+      <div>
+        <p class="eyebrow">Meet the owner</p>
+        <h2 id="owner-h">When you call, you get <span class="wordmark">John</span>.</h2>
+        <p class="lead" style="margin-top:24px">LaCaze Roadside Assistance is owner-operated. That means the person who answers your call is the person who cares most about getting you home safe.</p>
+        <p class="muted">No dispatch center, no hand-offs and no runaround. John treats every driver like family — calm, respectful and honest about price and timing. Whether you’re stuck on the shoulder of I-45 at midnight or locked out with your kids at the grocery store, you’ll get straight answers and real help.</p>
+        <p class="sig">— {b.owner}</p>
+        <div class="btn-row" style="margin-top:24px">
+          <a class="btn btn--ghost" href="/about/">More about John<Icon name="arrow" /></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <Reviews />
+
+  <section class="section section--alt" aria-labelledby="faq-h">
+    <div class="wrap wrap--narrow">
+      <div class="section__head section__head--center">
+        <p class="eyebrow">FAQ</p>
+        <h2 id="faq-h">Quick answers for stressful moments</h2>
+      </div>
+      <Faq faqs={faqs.slice(0, 5)} />
+      <div class="btn-row" style="justify-content:center;margin-top:32px">
+        <a class="btn btn--ghost" href="/faq/">See all questions<Icon name="arrow" /></a>
+      </div>
+    </div>
+  </section>
+
+  <Spanish />
+
+  <CtaBlock />
+</Base>

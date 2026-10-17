@@ -1,0 +1,58 @@
+---
+import Logo from './Logo.astro';
+import Icon from './Icon.astro';
+import OpenPill from './OpenPill.astro';
+import { b, tel, sms, mailto, services, towns } from '../lib/site.js';
+const socials = Object.entries(b.social).filter(([, url]) => url);
+const labels = { facebook: 'Facebook', instagram: 'Instagram', tiktok: 'TikTok', youtube: 'YouTube', linkedin: 'LinkedIn' };
+const year = new Date().getFullYear();
+---
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer__grid">
+      <div class="footer__brand">
+        <Logo height={56} />
+        <p>{b.tagline} Owner-operated roadside help for {b.serviceAreaLabel}.</p>
+        <OpenPill long />
+        {socials.length > 0 && (
+          <div class="socials">
+            {socials.map(([k, url]) => <a href={url} rel="noopener me" target="_blank" aria-label={`${b.name} on ${labels[k]}`}><Icon name={k} /></a>)}
+          </div>
+        )}
+      </div>
+      <div>
+        <h2>Services</h2>
+        <ul>
+          {services.map((s) => <li><a href={s.slug}>{s.name} in Spring, TX</a></li>)}
+          <li><a href="/pricing/">Pricing</a></li>
+          <li><a href="/guides/">Roadside guides</a></li>
+          <li><a href="/faq/">FAQ</a></li>
+          <li><a href="/about/">About John</a></li>
+        </ul>
+      </div>
+      <div>
+        <h2>Service area</h2>
+        <ul>
+          <li><a href="/">Spring, TX</a></li>
+          {towns.map((t) => <li><a href={t.slug}>Roadside assistance {t.name}</a></li>)}
+        </ul>
+      </div>
+      <div>
+        <h2>Contact · 24/7</h2>
+        <a class="tel" href={tel} data-track="call">{b.phoneDisplay}</a>
+        <address class="footer__nap">
+          <strong>{b.name}</strong><br />
+          Serving {b.locality}, {b.region} {b.postalCode}<br />
+          and surrounding areas<br />
+          {b.hoursLabel}<br />
+          <a href={mailto}>{b.email}</a><br />
+          <a href={sms} data-track="text">Text us your location</a>
+        </address>
+      </div>
+    </div>
+    <div class="footer__bottom">
+      <span>© {year} {b.name}. Owner-operated by {b.owner}.</span>
+      <span><a href="/privacy/">Privacy policy</a></span>
+    </div>
+  </div>
+</footer>

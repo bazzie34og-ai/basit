@@ -1,0 +1,5 @@
+---
+// Visible dev-only note, rendered only while PREVIEW_MODE is on.
+import { PREVIEW_MODE } from '../lib/site.js';
+---
+{PREVIEW_MODE && <span class="todo"><slot /></span>}

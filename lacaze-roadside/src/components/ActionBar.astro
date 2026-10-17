@@ -1,0 +1,8 @@
+---
+import Icon from './Icon.astro';
+import { b, tel, sms } from '../lib/site.js';
+---
+<nav class="actionbar" aria-label="Quick contact">
+  <a class="btn btn--primary" href={tel} data-track="call"><Icon name="phone" /><span class="cn"><span>Call Now</span><span class="sep" aria-hidden="true">·</span><span class="n">{b.phoneDisplay}</span></span></a>
+  <a class="btn btn--ghost" href={sms} data-track="text"><Icon name="sms" />Text Us</a>
+</nav>

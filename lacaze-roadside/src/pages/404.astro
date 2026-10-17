@@ -1,0 +1,20 @@
+---
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+import { b, tel, services } from '../lib/site.js';
+---
+<Base title="Page Not Found | LaCaze" description="That page doesn't exist. Need roadside help in Spring, TX? Call LaCaze Roadside Assistance 24/7 at (832) 949-4837." noindex>
+  <section class="phero" style="min-height:70vh;display:flex;align-items:center">
+    <div class="wrap wrap--narrow" style="text-align:center">
+      <p class="eyebrow" style="justify-content:center">404 · Wrong turn</p>
+      <h1 style="margin-inline:auto">This road doesn’t go anywhere.</h1>
+      <p class="lead" style="margin:0 auto 32px">The page you’re looking for isn’t here. If you’re stuck on the road, don’t search — call.</p>
+      <a class="btn btn--primary btn--lg" style="--h:68px;font-size:1.25rem;padding:0 36px" href={tel} data-track="call"><Icon name="phone" />Call {b.phoneDisplay}</a>
+      <ul class="chips" style="justify-content:center;margin-top:32px">
+        <li><a href="/">Home</a></li>
+        {services.map((s) => <li><a href={s.slug}>{s.name}</a></li>)}
+        <li><a href="/faq/">FAQ</a></li>
+      </ul>
+    </div>
+  </section>
+</Base>

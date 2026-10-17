@@ -1,0 +1,103 @@
+---
+// Service pages + town pages share this route; content lives in src/data/.
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import CtaBlock from '../components/CtaBlock.astro';
+import Faq from '../components/Faq.astro';
+import Icon from '../components/Icon.astro';
+import Todo from '../components/Todo.astro';
+import { servicePages } from '../data/services.js';
+import { townPages } from '../data/towns.js';
+import { b, tel, sms, services, towns, priceLabel } from '../lib/site.js';
+import { serviceSchema, faqSchema } from '../lib/schema.js';
+
+export function getStaticPaths() {
+  return [
+    ...servicePages.map((page) => ({ params: { slug: page.slug }, props: { kind: 'service', page } })),
+    ...townPages.map((page) => ({ params: { slug: page.slug }, props: { kind: 'town', page } })),
+  ];
+}
+const { kind, page } = Astro.props;
+const path = `/${page.slug}/`;
+const isService = kind === 'service';
+const name = isService ? page.name : `Roadside assistance in ${page.town}`;
+const crumbs = [{ name: 'Home', href: '/' }, { name: isService ? page.name : page.town, href: path }];
+const schema = isService
+  ? [serviceSchema({ name: `${page.name} in Spring, TX`, serviceType: page.serviceType, description: page.description, path }), faqSchema(page.faqs)]
+  : [];
+const svc = isService ? services.find((s) => s.key === page.key) : null;
+const price = isService ? priceLabel(page.key) : null;
+const townServices = !isService ? page.order.map((k) => services.find((s) => s.key === k)) : [];
+const verb = { jumpStart: 'Jump start service', lockout: 'Car lockout service', fuelDelivery: 'Fuel delivery' };
+---
+<Base title={page.title} description={page.description} crumbs={crumbs} schema={schema}>
+  <PageHero h1={page.h1} lead={page.lead} crumbs={crumbs} />
+
+  <section class="section">
+    <div class="wrap content">
+      <article class="prose">
+        <Fragment set:html={page.body} />
+
+        {isService && (
+          <>
+            <h2>Pricing: upfront, before we roll</h2>
+            {price
+              ? <p><strong>{page.name}: {price}.</strong> Your exact price depends on your location and vehicle, and you’ll hear it on the phone before we head out.{page.key === 'fuelDelivery' && ` ${b.fuelDeliveryNote}`}</p>
+              : <><!-- TODO: starting price --><p>You’ll get an upfront price on the phone before we head out — no membership, no hidden fees and no surprises when we arrive. See our <a href="/pricing/">roadside assistance prices</a>.</p><Todo>Starting price for {page.name.toLowerCase()} — set prices.{page.key} in src/data/business.json.</Todo></>}
+
+            <h2>Towns we serve</h2>
+            <p>We’re based in Spring, TX 77389 and bring {page.name.toLowerCase()} 24/7 to:</p>
+            <ul>
+              {towns.map((t) => <li><a href={t.slug}>{verb[page.key]} in {t.name}</a></li>)}
+              <li>Spring, Old Town Spring and surrounding areas</li>
+            </ul>
+
+            <h2>{page.name}: frequently asked questions</h2>
+          </>
+        )}
+        {isService && <Faq faqs={page.faqs} />}
+
+        {!isService && (
+          <>
+            <h2>Our services in {page.town}</h2>
+            <div class="grid" style="margin-top:16px">
+              {townServices.map((s) => (
+                <a class="card" href={s.slug} style="flex-direction:row;gap:20px;align-items:center">
+                  <span class="icon-tile" style="margin:0;flex:none"><Icon name={s.icon} /></span>
+                  <span>
+                    <strong style="display:block;font-size:1.0625rem;color:var(--text)">{verb[s.key]} in {page.town}</strong>
+                    <span style="color:var(--muted);font-size:.9375rem">{s.blurb}</span>
+                  </span>
+                </a>
+              ))}
+            </div>
+          </>
+        )}
+      </article>
+
+      <aside class="aside" aria-label="Get help">
+        <div class="card">
+          <h2>Need help right now?</h2>
+          <p style="margin-bottom:16px">Open 24/7. A real person answers.</p>
+          <a class="btn btn--primary btn--block" href={tel} data-track="call"><Icon name="phone" />Call {b.phoneDisplay}</a>
+          <a class="btn btn--ghost btn--block" style="margin-top:8px" href={sms} data-track="text"><Icon name="sms" />Text your location</a>
+        </div>
+        <div class="card">
+          <h2>{isService ? 'Other services' : 'Services'}</h2>
+          <ul>
+            {services.filter((s) => !svc || s.key !== svc.key).map((s) => <li><a href={s.slug}>{s.name}<Icon name="arrow" /></a></li>)}
+            <li><a href="/pricing/">Pricing<Icon name="arrow" /></a></li>
+          </ul>
+        </div>
+        <div class="card">
+          <h2>{isService ? 'Service area' : 'Nearby areas'}</h2>
+          <ul>
+            {towns.filter((t) => t.slug !== path).map((t) => <li><a href={t.slug}>{t.name}<Icon name="arrow" /></a></li>)}
+          </ul>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <CtaBlock heading={isService ? `Need ${page.key === 'jumpStart' ? 'a jump start' : page.key === 'lockout' ? 'a lockout fixed' : 'gas'} near you? Call now.` : `Stuck in ${page.town}? Help is one tap away.`} preset={isService ? page.preset : ''} />
+</Base>
