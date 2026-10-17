@@ -1,0 +1,75 @@
+---
+import ServicePage from '../layouts/ServicePage.astro';
+import Block from '../components/Block.astro';
+import BeforeAfter from '../components/BeforeAfter.astro';
+import PullQuote from '../components/PullQuote.astro';
+import { services, waMessages } from '../config/site.ts';
+import hero from '../assets/photos/mazda-cx3-snow-foam-mobile-valet-aberdeen.jpg';
+import before from '../assets/before-after/chery-tiggo7-before-rear.jpg';
+import after from '../assets/before-after/chery-tiggo7-after-front.jpg';
+
+const s = services.find((x) => x.id === 'exterior-valet')!;
+const faqs = [
+  { q: 'What is snow foam and why use it?', a: 'Snow foam is a thick pre-wash foam that clings to the car and loosens dirt and grit before anything touches the paint. It means less grit is dragged across the paintwork during the hand wash.' },
+  { q: 'How much is an exterior valet?', a: 'The Exterior Valet is £35 for a small car. Medium vehicles add £5, large vehicles and SUVs £10, and 7-seaters or large MPVs £15.' },
+  { q: 'Is this a hand car wash?', a: 'Yes. After the pre-wash and snow foam it gets a thorough hand wash, a full rinse and a microfibre dry, then a wax spray finish and the tyres dressed. No automatic brushes or rollers.' },
+  { q: 'Do you need my water?', a: "Yes. We need a water supply and a power socket where the car is. If that's tricky, ask us about drop-off." },
+];
+---
+<ServicePage
+  path="/exterior-valet-aberdeen/"
+  crumb="Exterior valet"
+  h1="Exterior Valet and Snow Foam Hand Wash"
+  kicker="Job 04 · Exterior only · Aberdeen"
+  priceTag={`£${s.priceMin} · small car · snow foam and wax included`}
+  photo={hero}
+  alt="Snow foam pre-wash on a blue Mazda CX-3 during a mobile valet in Aberdeen, foam running across the paving slabs"
+  caption="Fig. 04 · Mazda CX-3. Snow foam on, foam on the slabs."
+  waText={waMessages.exterior}
+  service={s}
+  sheetTitle="Eight steps, in this order"
+  schemaName="Exterior valet with snow foam hand wash"
+  serviceType="Exterior car valet"
+  related={[
+    { tag: 'Service', href: '/mobile-car-wash-aberdeen/', label: 'Mobile car wash, from £10', blurb: 'The quicker, cheaper outside clean.' },
+    { tag: 'Extra', href: '/headlight-restoration-aberdeen/', label: 'Headlight restoration, £25', blurb: 'Clear up cloudy, yellow lenses while we’re there.' },
+    { tag: 'Guide', href: '/guides/why-car-washes-scratch-paint/', label: 'Why some car washes leave scratches', blurb: 'And how a proper hand wash avoids them.' },
+    { tag: 'Areas', href: '/areas/', label: 'Areas we cover', blurb: 'City, Deeside, Dyce, Cove and the shire towns.' },
+  ]}
+  faqs={faqs}
+>
+  <Fragment slot="intro">
+    <p>An exterior valet in Aberdeen with a proper hand wash, done where the car's parked. Pre-wash, snow foam, wheels and tyres, a thorough hand wash, a full rinse, a microfibre dry, a wax spray finish and the tyres dressed. £35 for a small car. It's the hand car wash Aberdeen drivers keep asking us about, minus the queue.</p>
+  </Fragment>
+
+  <Block heading="Why the order of a hand car wash matters" kicker="Grit is the enemy" variant="offset">
+    <p>Swirl marks usually come from washing <em>badly</em>: rubbing a mitt over paint that still has grit on it, so every stroke drags a bit of sand across the clear coat.</p>
+    <p>So the outside gets done in a fixed order. The pre-wash and the snow foam go on first and sit there, loosening the dirt and road film. That gets rinsed away before a hand ever touches the paint. Only then does the hand wash start, followed by a full rinse and a microfibre dry. No shammy that's been on the ground. No drive-through rollers.</p>
+    <p>Then a wax spray finish, which helps the next lot of muck slide off, and the tyres dressed so the car looks finished from the pavement.</p>
+  </Block>
+
+  <PullQuote attribution="Snow foam, Aberdeen, most weeks">No queue at the car wash. No hanging about in a waiting room. <em>We bring the foam.</em></PullQuote>
+
+  <section class="ba-wrap speckle" aria-label="Exterior valet before and after">
+    <div class="ba-in">
+      <BeforeAfter
+        label="Chery Tiggo 7 · Exterior · Same street"
+        before={before}
+        after={after}
+        beforeAlt="Silver Chery Tiggo 7 rear before an exterior valet in Aberdeen, road film on the lower panels"
+        afterAlt="Silver Chery Tiggo 7 front after a snow foam hand wash and microfibre dry, same Aberdeen street"
+        note="Rear before, front after. We'd rather say so than line them up in a slider."
+      />
+    </div>
+  </section>
+
+  <Block heading="Salt, grit and the A90" variant="narrow" kicker="An Aberdeen thing">
+    <p>From about November the gritters are out and the roads are wet with brine. It gets everywhere: sills, wheel arches, the bottom of the doors. An exterior valet every few weeks through the winter keeps it from sitting there. There's more on that in our note on <a href="/guides/winter-road-salt-car-care-aberdeen/">road salt and grit through an Aberdeen winter</a>.</p>
+    <p>Want the inside done the same day? Add the <a href="/interior-valet-aberdeen/">Interior Valet</a> and it becomes the Thorough Clean, £60 for both.</p>
+  </Block>
+</ServicePage>
+
+<style>
+  .ba-wrap { padding: clamp(3.5rem, 8vw, 6rem) 0; }
+  .ba-in { width: min(100% - 2 * var(--gutter), 1100px); margin-inline: auto; }
+</style>

@@ -1,0 +1,329 @@
+---
+/**
+ * The price list as a printed, ruled tariff card. Every figure comes from
+ * config. On phones each row becomes a stacked job card.
+ */
+import Tick from './Tick.astro';
+import { services, sizes, extras } from '../config/site.ts';
+import { priceLabel } from '../lib/pricing.ts';
+
+interface Props {
+  heading?: string;
+  headingId?: string;
+  intro?: string;
+  links?: boolean;
+  as?: 'h2' | 'h3';
+}
+const { heading = 'The tariff', headingId = 'tariff', intro, links = true, as: H = 'h2' } = Astro.props;
+const scopeTag: Record<string, string> = { exterior: 'Exterior', interior: 'Interior', 'inside & out': 'Inside + out' };
+---
+<section class="tariff" aria-labelledby={headingId} data-price-view>
+  <div class="wrap">
+    <div class="head">
+      <p class="mono kicker">Tariff card · No. 01 · Aberdeen &amp; surrounding areas</p>
+      <H id={headingId} class="title">{heading}</H>
+      {intro && <p class="intro">{intro}</p>}
+    </div>
+
+    <div class="sheet">
+      <div class="cols mono" aria-hidden="true">
+        <span>Job</span><span>Service</span><span>What's on the sheet</span><span class="r">Price</span>
+      </div>
+      <ol class="rows">
+        {services.map((s, i) => (
+          <li class="row" id={`svc-${s.id}`} data-draw>
+            <p class="job mono">
+              Job {String(i + 1).padStart(2, '0')}<span class="sep"> · </span><span class="scope">{scopeTag[s.scope]}</span>
+            </p>
+            <div class="svc">
+              <h3 class="name">{s.name}</h3>
+              <p class="mono label">{s.scopeLabel}{s.aka && <span class="aka"> · our {s.aka}</span>}</p>
+              {s.note && <p class="note">{s.note}</p>}
+              {links && s.href && <a class="more" href={s.href}>More on the {s.name}{s.aka ? ` (${s.aka})` : ''}</a>}
+            </div>
+            <ul class="inc">
+              {s.includes.map((inc, j) => (
+                <li><Tick i={j} />{inc}</li>
+              ))}
+            </ul>
+            <p class="price mono">
+              <span class="leader" aria-hidden="true"></span>
+              {priceLabel(s.priceMin, s.priceMax)}
+            </p>
+          </li>
+        ))}
+      </ol>
+    </div>
+
+    <div class="sizes" aria-labelledby={`${headingId}-sizes`}>
+      <p class="mono strip-title" id={`${headingId}-sizes`}>Vehicle size supplements · applies to all services · you'll see it before you book</p>
+      <ul>
+        {sizes.map((z) => (
+          <li>
+            <span class="mono z">Size: {z.short}</span>
+            <span class="mono amt">{z.supplement ? `+£${z.supplement}` : 'No supplement'}</span>
+            <span class="eg">{z.examples}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+
+    <div class="extras">
+      <p class="mono strip-title">Add-ons · any service</p>
+      <ul>
+        {extras.map((e) => (
+          <li>
+            <span class="ename">
+              {e.href ? <a href={e.href}>{e.name}</a> : e.name}
+            </span>
+            <span class="eleader" aria-hidden="true"></span>
+            <span class="mono eprice">£{e.price}</span>
+            <span class="eblurb">{e.blurb}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </div>
+</section>
+
+<style>
+  .tariff {
+    padding: clamp(3.5rem, 8vw, 6.5rem) 0;
+  }
+  .head {
+    display: grid;
+    gap: 0.6rem;
+    margin-bottom: 2rem;
+    max-width: 52rem;
+  }
+  .kicker {
+    color: var(--lm-blue-ink);
+    margin: 0;
+  }
+  .title {
+    font-size: clamp(2rem, 5.4vw, 3.6rem);
+  }
+  .intro {
+    font-size: 1.15rem;
+    max-width: 38rem;
+    margin: 0.4rem 0 0;
+  }
+
+  .sheet {
+    background: var(--paper);
+    border: 1.5px solid var(--ink);
+    box-shadow: 6px 6px 0 var(--paper-2);
+  }
+  .cols {
+    display: none;
+  }
+  .rows {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .row {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    grid-template-areas:
+      'job job'
+      'svc price'
+      'inc inc';
+    gap: 0.4rem 1rem;
+    padding: 1.4rem 1.1rem 1.5rem;
+    border-top: 1px solid var(--ink);
+  }
+  .row:first-child {
+    border-top: 0;
+  }
+  .job {
+    grid-area: job;
+    margin: 0;
+    color: var(--stone-ink);
+    font-size: 0.7rem;
+  }
+  .scope {
+    color: var(--lm-blue-ink);
+  }
+  .svc {
+    grid-area: svc;
+  }
+  .name {
+    font-size: clamp(1.3rem, 2.4vw, 1.6rem);
+    font-style: italic;
+    line-height: 1.05;
+  }
+  .label {
+    margin: 0.35rem 0 0;
+    color: var(--ink-2);
+    font-size: 0.68rem;
+  }
+  .aka {
+    color: var(--lm-blue-ink);
+  }
+  .note {
+    margin: 0.6rem 0 0;
+    font-style: italic;
+    font-size: 0.98rem;
+    color: var(--ink-2);
+    max-width: 30ch;
+  }
+  .more {
+    display: inline-block;
+    margin-top: 0.6rem;
+    font-size: 0.92rem;
+    padding: 0.4rem 0;
+  }
+  .price {
+    grid-area: price;
+    margin: 0;
+    font-size: clamp(1.45rem, 3vw, 2rem);
+    text-transform: none;
+    letter-spacing: 0;
+    text-align: right;
+    white-space: nowrap;
+    align-self: start;
+  }
+  .leader {
+    display: none;
+  }
+  .inc {
+    grid-area: inc;
+    list-style: none;
+    margin: 0.8rem 0 0;
+    padding: 0;
+    columns: 2 12rem;
+    column-gap: 1.5rem;
+    font-size: 0.98rem;
+  }
+  .inc li {
+    display: flex;
+    gap: 0.5rem;
+    align-items: baseline;
+    break-inside: avoid;
+    padding: 0.18rem 0;
+    border-bottom: 1px dashed var(--paper-2);
+  }
+  .inc :global(.tick) {
+    transform: translateY(0.18em);
+  }
+
+  @media (min-width: 900px) {
+    .cols {
+      display: grid;
+      grid-template-columns: 7.5rem 1.15fr 1.6fr 8.5rem;
+      gap: 1.5rem;
+      padding: 0.7rem 1.4rem;
+      border-bottom: 1.5px solid var(--ink);
+      font-size: 0.66rem;
+      color: var(--stone-ink);
+    }
+    .r {
+      text-align: right;
+    }
+    .row {
+      grid-template-columns: 7.5rem 1.15fr 1.6fr 8.5rem;
+      grid-template-areas: 'job svc inc price';
+      gap: 1.5rem;
+      padding: 1.6rem 1.4rem;
+    }
+    .row:nth-child(even) {
+      background-color: rgba(231, 228, 220, 0.45);
+    }
+    .job {
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
+      padding-top: 0.35rem;
+    }
+    .sep {
+      display: none;
+    }
+    .inc {
+      margin-top: 0.2rem;
+    }
+    .price {
+      padding-top: 0.1rem;
+    }
+  }
+
+  /* Size strip: a printed strip torn off the bottom of the card. */
+  .sizes,
+  .extras {
+    margin-top: 2.2rem;
+  }
+  .strip-title {
+    margin: 0 0 0.8rem;
+    color: var(--ink-2);
+  }
+  .sizes ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
+    border: 1px solid var(--ink);
+  }
+  .sizes li {
+    display: grid;
+    gap: 0.2rem;
+    padding: 0.9rem 1rem;
+    border-bottom: 1px solid var(--ink);
+    border-right: 1px solid var(--ink);
+    margin: 0 -1px -1px 0;
+  }
+  .z {
+    font-size: 0.7rem;
+    color: var(--stone-ink);
+  }
+  .amt {
+    font-size: 1.15rem;
+    text-transform: none;
+    letter-spacing: 0;
+    color: var(--lm-blue-ink);
+  }
+  .eg {
+    font-size: 0.92rem;
+    color: var(--ink-2);
+  }
+
+  .extras ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 0 3rem;
+    grid-template-columns: repeat(auto-fit, minmax(19rem, 1fr));
+  }
+  .extras li {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: baseline;
+    gap: 0 0.5rem;
+    padding: 0.85rem 0;
+    border-bottom: 1px solid var(--paper-3);
+  }
+  .ename {
+    font-family: var(--f-ui);
+    font-weight: 700;
+    font-size: 1.05rem;
+  }
+  .ename a {
+    color: var(--ink);
+    text-decoration-color: var(--lm-blue);
+  }
+  .eleader {
+    border-bottom: 2px dotted var(--paper-3);
+    transform: translateY(-0.25em);
+  }
+  .eprice {
+    font-size: 1.15rem;
+    letter-spacing: 0;
+  }
+  .eblurb {
+    grid-column: 1 / -1;
+    font-size: 0.95rem;
+    color: var(--ink-2);
+    margin-top: 0.2rem;
+  }
+</style>

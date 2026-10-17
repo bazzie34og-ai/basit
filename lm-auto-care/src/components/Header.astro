@@ -1,0 +1,253 @@
+---
+import Logo from './Logo.astro';
+import Icon from './Icon.astro';
+import { business, services, waLink } from '../config/site.ts';
+interface Props { waText: string; path: string; }
+const { waText, path } = Astro.props;
+const serviceLinks = [
+  ...services.filter((s) => s.href && s.id !== 'thorough-clean').map((s) => ({ href: s.href!, label: s.aka ? `${s.name} (${s.aka})` : s.name })),
+  { href: '/pet-hair-removal-aberdeen/', label: 'Dog hair removal' },
+  { href: '/headlight-restoration-aberdeen/', label: 'Headlight restoration' },
+  { href: '/valet-before-selling-or-lease-return/', label: 'Selling or lease return' },
+  { href: '/offshore-workers/', label: 'Offshore workers' },
+];
+const nav = [
+  { href: '/prices/', label: 'Prices' },
+  { href: '/areas/', label: 'Areas' },
+  { href: '/the-lm-way/', label: 'The LM Way' },
+  { href: '/reviews/', label: 'Reviews' },
+  { href: '/faq/', label: 'FAQ' },
+  { href: '/guides/', label: 'Notes' },
+];
+const current = (href: string) => (path === href || (href !== '/' && path.startsWith(href)) ? 'page' : undefined);
+---
+<header class="site-header">
+  <div class="bar">
+    <a class="brand" href="/" aria-label="LM Auto Care home">
+      <Logo size={52} />
+      <span class="word">
+        <span class="name">LM Auto Care</span>
+        <span class="mono sub">Mobile Valeting · Aberdeen</span>
+      </span>
+    </a>
+
+    <nav class="nav-desk" aria-label="Main">
+      <ul class="primary">
+        <li class="has-sub">
+          <details class="sub">
+            <summary>Services</summary>
+            <ul>
+              {serviceLinks.map((s) => <li><a href={s.href} aria-current={current(s.href)}>{s.label}</a></li>)}
+            </ul>
+          </details>
+        </li>
+        {nav.map((n) => <li><a href={n.href} aria-current={current(n.href)}>{n.label}</a></li>)}
+      </ul>
+    </nav>
+
+    <details class="menu">
+      <summary><span class="mono">Menu</span><span class="burger" aria-hidden="true"></span></summary>
+      <nav class="menu-panel" aria-label="Main, mobile">
+        <ul class="primary">
+          {nav.map((n) => <li><a href={n.href} aria-current={current(n.href)}>{n.label}</a></li>)}
+          <li><span class="mono label">Services</span>
+            <ul class="svc">
+              {serviceLinks.map((s) => <li><a href={s.href} aria-current={current(s.href)}>{s.label}</a></li>)}
+            </ul>
+          </li>
+          <li><a href="/book/" aria-current={current('/book/')}>Book a valet</a></li>
+          <li><a href={business.tel} data-track="call_click">Call {business.phoneDisplay}</a></li>
+        </ul>
+      </nav>
+    </details>
+
+    <div class="contact">
+      <a class="phone mono" href={business.tel} data-track="call_click">{business.phoneDisplay}</a>
+      <a class="btn" href={waLink(waText)} data-track="whatsapp_click" rel="noopener">
+        <Icon name="whatsapp" /> <span>WhatsApp<span class="long"> us</span></span>
+      </a>
+    </div>
+  </div>
+</header>
+
+<style>
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 40;
+    background: var(--paper);
+    border-bottom: 1px solid var(--ink);
+    box-shadow: 0 3px 0 -2px var(--paper), 0 4px 0 -2px var(--paper-3);
+  }
+  .bar {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    width: min(100% - 2 * var(--gutter), 1400px);
+    margin-inline: auto;
+    min-height: var(--header-h);
+  }
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    color: var(--ink);
+    text-decoration: none;
+    margin-right: auto;
+  }
+  .word {
+    display: grid;
+    line-height: 1.05;
+  }
+  .name {
+    font-family: var(--f-display);
+    font-stretch: var(--wide);
+    font-style: italic;
+    font-weight: 800;
+    font-size: 1.12rem;
+  }
+  .sub {
+    font-size: 0.66rem;
+    color: var(--lm-blue-ink);
+  }
+
+  /* Mobile: a <details> drawer. Works without JS. */
+  .menu > summary {
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    min-height: 44px;
+    padding: 0 0.4rem;
+    cursor: pointer;
+  }
+  .menu > summary::-webkit-details-marker,
+  .sub > summary::-webkit-details-marker {
+    display: none;
+  }
+  .burger,
+  .burger::before,
+  .burger::after {
+    display: block;
+    width: 22px;
+    height: 2px;
+    background: var(--ink);
+    position: relative;
+  }
+  .burger::before,
+  .burger::after {
+    content: '';
+    position: absolute;
+  }
+  .burger::before { top: -7px; width: 18px; }
+  .burger::after { top: 7px; width: 14px; }
+  .menu[open] .burger { background: transparent; }
+  .menu[open] .burger::before { top: 0; width: 22px; transform: rotate(45deg); background: var(--ink); }
+  .menu[open] .burger::after { top: 0; width: 22px; transform: rotate(-45deg); background: var(--ink); }
+  .menu-panel {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 100%;
+    background: var(--paper);
+    border-bottom: 1px solid var(--ink);
+    padding: 0.5rem var(--gutter) 1.5rem;
+    max-height: calc(100dvh - var(--header-h));
+    overflow-y: auto;
+  }
+  .primary,
+  .svc,
+  .sub ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .menu .primary > li {
+    border-bottom: var(--rule);
+  }
+  .primary a,
+  .sub summary {
+    display: flex;
+    align-items: center;
+    min-height: 48px;
+    font-family: var(--f-ui);
+    font-weight: 600;
+    font-size: 1.05rem;
+    color: var(--ink);
+    text-decoration: none;
+    cursor: pointer;
+  }
+  .label {
+    display: block;
+    padding-top: 0.9rem;
+    color: var(--stone-ink);
+  }
+  .svc a {
+    font-weight: 500;
+    font-size: 0.98rem;
+    min-height: 44px;
+    padding-left: 0.9rem;
+    border-left: 2px solid var(--paper-3);
+  }
+  [aria-current='page'] {
+    color: var(--lm-blue-ink) !important;
+  }
+  .contact {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  .phone {
+    display: none;
+    color: var(--ink);
+    font-size: 0.9rem;
+    text-decoration: none;
+    border-bottom: 1px solid var(--paper-3);
+  }
+  .contact .btn {
+    min-height: 44px;
+    padding: 0.5em 0.8em 0.5em 1em;
+    font-size: 0.92rem;
+  }
+  .long { display: none; }
+  .nav-desk { display: none; }
+
+  @media (max-width: 767px) {
+    .contact { display: none; }
+  }
+  @media (min-width: 768px) {
+    .phone { display: inline; }
+  }
+
+  @media (min-width: 1100px) {
+    .menu { display: none; }
+    .nav-desk { display: block; }
+    .long { display: inline; }
+    .nav-desk .primary {
+      display: flex;
+      gap: 1.3rem;
+      align-items: center;
+    }
+    .nav-desk .primary > li { position: relative; }
+    .primary a,
+    .sub summary {
+      font-size: 0.95rem;
+      min-height: 44px;
+    }
+    .sub summary { list-style: none; }
+    .sub summary::after { content: '▾'; margin-left: 0.3em; font-size: 0.8em; }
+    .sub[open] summary::after { content: '▴'; }
+    .sub ul {
+      position: absolute;
+      top: calc(100% + 0.6rem);
+      left: -1rem;
+      width: 19rem;
+      background: var(--paper);
+      border: 1px solid var(--ink);
+      padding: 0.4rem 0;
+      box-shadow: 5px 5px 0 var(--paper-3);
+    }
+    .sub ul a { padding: 0 1rem; font-weight: 500; }
+    .sub ul li + li { border-top: 1px solid var(--paper-2); }
+  }
+</style>

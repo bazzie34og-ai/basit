@@ -1,0 +1,56 @@
+---
+import ServicePage from '../layouts/ServicePage.astro';
+import Block from '../components/Block.astro';
+import PullQuote from '../components/PullQuote.astro';
+import { extras, waMessages } from '../config/site.ts';
+import hero from '../assets/photos/mazda-cx3-rear-seats-after-interior-valet.jpg';
+import front from '../assets/photos/mazda-cx3-interior-front-seats-after-valet.jpg';
+
+const e = extras.find((x) => x.id === 'pet-hair')!;
+const faqs = [
+  { q: 'How much is dog hair removal from a car?', a: `Pet Hair Removal is a £${e.price} extra, added to any service. Most people pair it with the £35 Interior Valet.` },
+  { q: 'Can I book pet hair removal on its own?', a: 'It’s listed as an extra, so it goes on top of a service. The Interior Valet or a Basic Clean are the usual choices.' },
+  { q: 'Where do you take the hair out of?', a: 'The seats, the carpets and the boot, which is where the dog usually travels.' },
+  { q: 'How do I stop it getting this bad again?', a: 'A washable boot liner or seat cover and a regular hoover help a lot. Our guide on getting dog hair out of a car has more.' },
+];
+---
+<ServicePage
+  path="/pet-hair-removal-aberdeen/"
+  crumb="Dog hair removal"
+  h1="Dog Hair Removal From Your Car, Aberdeen"
+  kicker="Add-on · Any service · Seats, carpets, boot"
+  priceTag={`+£${e.price} · on top of any service`}
+  photo={hero}
+  alt="Rear seats of a blue Mazda CX-3 after dog hair removal and an interior valet in Aberdeen, rear door open"
+  caption="Fig. 07 · Back seats, after. This is where the dog goes."
+  waText={waMessages.petHair}
+  sheetTitle="Pet Hair Removal: where it comes out from"
+  sheetItems={['Seats', 'Carpets', 'Boot', 'A fresh, clean interior at the end']}
+  schemaName="Pet hair removal from car interiors"
+  serviceType="Pet hair car valet"
+  price={[e.price, e.price]}
+  related={[
+    { tag: 'Service', href: '/interior-valet-aberdeen/', label: 'Interior Valet, £35', blurb: 'The usual partner for pet hair removal.' },
+    { tag: 'Service', href: '/valet-before-selling-or-lease-return/', label: 'Valet before selling', blurb: 'Dog hair is the first thing a buyer notices.' },
+    { tag: 'Guide', href: '/guides/getting-dog-hair-out-of-a-car/', label: 'Getting dog hair out of a car', blurb: 'The tricks that work, and when to pay the £10.' },
+    { tag: 'Areas', href: '/areas/aberdeenshire-towns/', label: 'Balmedie, Ellon and the shire', blurb: 'Beach dogs are our speciality.' },
+  ]}
+  faqs={faqs}
+>
+  <Fragment slot="intro">
+    <p>Dog hair removal from your car, in Aberdeen and round about. It's a £10 pet hair car valet extra on any service: we get the hair out of the seats, the carpets and the boot. Labradors, spaniels, the wee white one that sheds more than both. Add it to an interior valet and you get the car back, not just a slightly less hairy car.</p>
+  </Fragment>
+
+  <PullQuote>Dog hair, crumbs, mud from Balmedie. We've seen worse. <em>Probably.</em></PullQuote>
+
+  <Block heading="Why dog hair won't hoover out" kicker="It's woven in" photo={front} alt="Clean front footwell and seats of a Mazda CX-3 after pet hair removal in Aberdeen" caption="Footwells are the other place it hides." side="left">
+    <p>Dog hair is fine and it's slightly barbed, so it works its way into the weave of the carpet and the seat fabric. A normal hoover runs straight over the top. That's why you can hoover the boot twice and it still looks grey.</p>
+    <p>Pet Hair Removal is a thorough going-over of the seats, the carpets and the boot, not a quick extra pass with the hoover. It takes longer. That's what the £10 pays for.</p>
+    <p>If you want to try it yourself first, we've written up <a href="/guides/getting-dog-hair-out-of-a-car/">what works for getting dog hair out of a car</a>. Honestly, a rubber glove gets you a long way.</p>
+  </Block>
+
+  <Block heading="After the beach, after the hills" variant="dark" kicker="Aberdeen dogs get about">
+    <p>Balmedie on a Sunday. The Deeside Way after rain. Bennachie, if you're keen. Every one of those ends the same way: a wet dog in the boot and sand in places sand shouldn't be.</p>
+    <p>We see a lot of it. Book the <a href="/interior-valet-aberdeen/">Interior Valet</a> with Pet Hair Removal and it's £45 for a small car. On an estate or an SUV the size supplement applies the same as always, so a large estate would be £55. You'll see that on the <a href="/prices/">price calculator</a> before you book.</p>
+  </Block>
+</ServicePage>

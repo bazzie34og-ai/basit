@@ -1,0 +1,158 @@
+---
+/**
+ * A sketch of Aberdeen and around: the coast, the Dee and the Don, and rough
+ * places. Deliberately not to scale. No Google embed.
+ * Pass `focus` (an area group slug) to ink one group in blue.
+ */
+import { areaGroups } from '../config/site.ts';
+interface Props { focus?: string; caption?: boolean; }
+const { focus, caption = true } = Astro.props;
+
+// x, y and which side the label sits. Rough, by eye, on purpose.
+const P: Record<string, [number, number, 'l' | 'r' | 'b' | 't']> = {
+  Ellon: [452, 54, 'l'],
+  Balmedie: [497, 168, 'l'],
+  Newmachar: [322, 132, 'r'],
+  Inverurie: [112, 142, 'b'],
+  Dyce: [262, 214, 'r'],
+  'Bridge of Don': [452, 272, 'l'],
+  Danestone: [366, 252, 't'],
+  Persley: [330, 284, 'l'],
+  Bucksburn: [284, 300, 'l'],
+  Middlefield: [376, 302, 'r'],
+  Northfield: [364, 324, 'l'],
+  Newhills: [238, 280, 'l'],
+  Kingswells: [256, 344, 'l'],
+  Westhill: [150, 356, 'b'],
+  'Old Aberdeen': [446, 318, 'l'],
+  Rosemount: [424, 352, 'l'],
+  Hazlehead: [340, 372, 'l'],
+  Mannofield: [392, 392, 'l'],
+  Garthdee: [398, 416, 'b'],
+  Cults: [324, 436, 'b'],
+  Bieldside: [286, 448, 'b'],
+  Milltimber: [242, 430, 't'],
+  Peterculter: [182, 470, 'b'],
+  Banchory: [42, 532, 'r'],
+  Torry: [470, 404, 'r'],
+  Nigg: [470, 430, 'r'],
+  Kincorth: [430, 440, 'l'],
+  Altens: [474, 452, 'r'],
+  'Cove Bay': [474, 474, 'l'],
+  Portlethen: [458, 548, 'l'],
+  Newtonhill: [444, 600, 'l'],
+  Stonehaven: [402, 690, 'l'],
+};
+const groupOf = (name: string) => areaGroups.find((g) => g.suburbs.includes(name))?.slug;
+const places = Object.entries(P).map(([name, [x, y, side]], i) => ({ name, x, y, side, i, on: !focus || groupOf(name) === focus }));
+const off = { l: [-9, 4, 'end'], r: [9, 4, 'start'], b: [0, 17, 'middle'], t: [0, -9, 'middle'] } as const;
+// Label only the bigger names when nothing is focused, to keep the sketch readable.
+const always = new Set(['Ellon', 'Balmedie', 'Newmachar', 'Inverurie', 'Dyce', 'Bridge of Don', 'Bucksburn', 'Kingswells', 'Westhill', 'Cults', 'Peterculter', 'Banchory', 'Torry', 'Cove Bay', 'Portlethen', 'Newtonhill', 'Stonehaven', 'Danestone', 'Milltimber', 'Kincorth']);
+---
+<figure class="map" data-draw>
+  <svg viewBox="0 0 640 720" role="img" aria-labelledby="map-title map-desc">
+    <title id="map-title">Hand-drawn sketch map of the areas LM Auto Care covers around Aberdeen</title>
+    <desc id="map-desc">A rough sketch of the coast, the River Dee and the River Don, with places from Ellon and Inverurie in the north to Banchory in the west and Stonehaven in the south. Not to scale.</desc>
+
+    <g class="sea">
+      <text x="570" y="250" class="sea-label" transform="rotate(78 570 250)">North Sea</text>
+    </g>
+    <path class="line coast" pathLength="1" d="M528 4c-6 56-12 116-21 168-7 48-17 90-28 128-5 30-9 60-12 88 9 4 22 8 23 16-8 16-16 36-20 64-6 32-11 57-15 80-5 22-9 42-15 64-10 33-24 60-36 82-4 10-8 18-10 26" />
+    <path class="line river" pathLength="1" d="M58 118c32 14 54 30 74 38 38 14 68 40 100 66 20 16 38 24 60 30 26 6 44 18 68 24 32 8 50 4 72 14 18 6 34 8 47 10" />
+    <path class="line river" pathLength="1" d="M8 522c32-14 62-22 92-36 30-12 50-20 78-30 32-12 62-16 90-22 32-6 56-8 82-14 30-6 50-14 74-20 16-4 28-6 43-8" />
+    <text class="river-label" x="150" y="186" transform="rotate(26 150 186)">River Don</text>
+    <text class="river-label" x="96" y="478" transform="rotate(-18 96 478)">River Dee</text>
+
+    <g class="city">
+      <path class="line ring" pathLength="1" d="M402 300c30-14 64-8 74 18 8 26 6 58-2 84-10 26-46 36-76 26-32-12-46-40-40-74 4-24 22-44 44-54" />
+      <text x="372" y="374" class="city-label">ABERDEEN</text>
+    </g>
+
+    {places.map((p) => (
+      <g class:list={['pl', { on: p.on }]} style={`--i:${p.i}`}>
+        <circle cx={p.x} cy={p.y} r={p.on && focus ? 4.2 : 3.2} />
+        {(always.has(p.name) || (focus && p.on)) && (
+          <text x={p.x + off[p.side][0]} y={p.y + off[p.side][1]} text-anchor={off[p.side][2]}>{p.name}</text>
+        )}
+      </g>
+    ))}
+
+    <g class="north" transform="translate(586 640)">
+      <path class="line" pathLength="1" d="M0 34c1-12 0-22 1-33M-7 10c3-4 5-7 8-10 3 3 5 6 8 10" />
+      <text x="1" y="52" text-anchor="middle">N</text>
+    </g>
+  </svg>
+  {caption && <figcaption class="mono">Not to scale. Message us if you're not sure.</figcaption>}
+</figure>
+
+<style>
+  .map {
+    margin: 0;
+  }
+  svg {
+    width: 100%;
+    height: auto;
+    overflow: visible;
+  }
+  .line {
+    fill: none;
+    stroke: var(--ink);
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-dasharray: 1;
+    stroke-dashoffset: 0;
+  }
+  .river {
+    stroke: var(--lm-blue-ink);
+    stroke-width: 2.2;
+  }
+  .ring {
+    stroke: var(--stone-ink);
+    stroke-width: 1.2;
+    stroke-dasharray: 0.012 0.01;
+  }
+  .sea-label,
+  .river-label {
+    font-family: var(--f-body);
+    font-style: italic;
+    font-size: 15px;
+    fill: var(--stone-ink);
+  }
+  .river-label { fill: var(--lm-blue-ink); font-size: 13px; }
+  .city-label {
+    font-family: var(--f-display);
+    font-stretch: 125%;
+    font-style: italic;
+    font-weight: 800;
+    font-size: 17px;
+    fill: var(--ink);
+  }
+  .pl circle {
+    fill: var(--paper);
+    stroke: var(--stone-ink);
+    stroke-width: 1.5;
+  }
+  .pl text {
+    font-family: var(--f-mono);
+    font-size: 10.5px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    fill: var(--stone-ink);
+  }
+  .pl.on circle { fill: var(--lm-blue-ink); stroke: var(--lm-blue-ink); }
+  .pl.on text { fill: var(--ink); }
+  .north text { font-family: var(--f-mono); font-size: 12px; fill: var(--ink); }
+  figcaption {
+    margin-top: 0.4rem;
+    font-size: 0.7rem;
+    color: var(--stone-ink);
+  }
+  @media (scripting: enabled) and (prefers-reduced-motion: no-preference) {
+    .map .line:not(.ring) { stroke-dashoffset: 1; }
+    .map .pl { opacity: 0; }
+    .map.is-drawn .line { stroke-dashoffset: 0; transition: stroke-dashoffset 1.6s cubic-bezier(0.5, 0, 0.3, 1); }
+    .map.is-drawn .river { transition-delay: 0.5s; }
+    .map.is-drawn .pl { opacity: 1; transition: opacity 0.3s ease; transition-delay: calc(0.9s + var(--i) * 25ms); }
+  }
+</style>

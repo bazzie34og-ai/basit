@@ -1,0 +1,58 @@
+---
+import ServicePage from '../layouts/ServicePage.astro';
+import Block from '../components/Block.astro';
+import PullQuote from '../components/PullQuote.astro';
+import { services, waMessages } from '../config/site.ts';
+import hero from '../assets/photos/chery-tiggo7-exterior-after-valet.jpg';
+import inside from '../assets/photos/chery-tiggo7-interior-after-valet.jpg';
+
+const t = services.find((x) => x.id === 'thorough-clean')!;
+const f = services.find((x) => x.id === 'full-works')!;
+const faqs = [
+  { q: 'Which valet should I book before selling my car?', a: `The Thorough Clean (£${t.priceMin}) gets it fresh and presentable inside and out. The Full Works (£${f.priceMin}) adds wax spray protection, a detailed wheel clean and a final quality check, which is worth it if you're photographing it for an advert.` },
+  { q: 'Will a valet stop me being charged at the end of my lease?', a: 'We can’t promise that. Lease companies inspect against their own standards, and damage is damage. A clean car makes it easier for everyone to see the real condition, and it’s the bit that’s in your hands.' },
+  { q: 'How soon before the handover should I book?', a: 'A day or two before is ideal, so it’s clean on the day without having been driven through a week of weather. Message us early if you have a fixed date.' },
+  { q: 'Can you do headlights and dog hair too?', a: 'Yes. Headlight Restoration is £25 and Pet Hair Removal is £10, added to any service.' },
+];
+---
+<ServicePage
+  path="/valet-before-selling-or-lease-return/"
+  crumb="Selling or lease return"
+  h1="Valet Before Selling or Handing Back a Lease Car"
+  kicker="Job 05 or 06 · For a deadline"
+  priceTag={`Thorough Clean £${t.priceMin} · Full Works £${f.priceMin}`}
+  photo={hero}
+  alt="Silver Chery Tiggo 7 after a valet before selling, parked on an Aberdeen street ready for photos"
+  caption="Fig. 05 · Ready for its close-up. Chery Tiggo 7."
+  waText={waMessages.selling}
+  service={t}
+  sheetTitle="The Thorough Clean (most people's choice for this)"
+  sheetItems={[...services.find((x) => x.id === 'interior-valet')!.includes, ...services.find((x) => x.id === 'exterior-valet')!.includes]}
+  schemaName="Valet before selling or end of lease return"
+  serviceType="End of lease car valet"
+  price={[t.priceMin, f.priceMin]}
+  related={[
+    { tag: 'Service', href: '/full-valet-aberdeen/', label: 'The Full Works, £85', blurb: 'The full valet with wax and a final quality check.' },
+    { tag: 'Extra', href: '/headlight-restoration-aberdeen/', label: 'Headlight restoration, £25', blurb: 'Yellow lights age a car in photos.' },
+    { tag: 'Guide', href: '/guides/getting-your-car-ready-to-sell-or-return/', label: 'Getting your car ready to sell or hand back', blurb: 'A plain checklist, no scare stories.' },
+    { tag: 'Areas', href: '/areas/', label: 'Where we valet', blurb: 'Aberdeen city and the towns round about.' },
+  ]}
+  faqs={faqs}
+>
+  <Fragment slot="intro">
+    <p>A valet before selling your car in Aberdeen, or before it goes back at the end of a lease. Most people book the Thorough Clean at £60, which is our Interior Valet and Exterior Valet together: a thorough clean inside and out to get the vehicle looking fresh, clean and presentable again. If it's going in an advert, the Full Works at £85 adds wax and a final quality check.</p>
+  </Fragment>
+
+  <Block heading="An end of lease valet in Aberdeen: what it can and can't do" kicker="Straight talking" variant="offset">
+    <p>Lease companies inspect the car when it goes back. They look at its condition against their own guide, and that's their call, not ours. A valet won't hide a scuffed alloy or a dent, and nobody should tell you it will.</p>
+    <p>What a valet does is take away the stuff that's just dirt. The grubby seats, the hair in the boot, the film on the inside of the windscreen, the brake dust baked onto the wheels. When the car's clean, what's left is the car's real condition, and that's an easier conversation than one about a car that looks neglected.</p>
+  </Block>
+
+  <PullQuote>A buyer decides in about the time it takes to open the <em>driver's door.</em></PullQuote>
+
+  <Block heading="Selling privately? Valet it before the photos" kicker="First impressions" photo={inside} alt="Chery Tiggo 7 dashboard and front seats after a valet before selling in Aberdeen, clean enough for advert photos" caption="This is the photo a buyer zooms in on." side="right">
+    <p>The advert photos are the first viewing. Then the real viewing is someone opening the driver's door and breathing in. Both go better if the car's been done properly the day before.</p>
+    <p>Dog hair is the big one. Buyers who don't have dogs really notice it. Add <a href="/pet-hair-removal-aberdeen/">Pet Hair Removal</a> for £10. Cloudy headlights make a car look older than its plate, and <a href="/headlight-restoration-aberdeen/">headlight restoration</a> is £25.</p>
+    <p>Got a date? Tell us when you message and we'll work back from it.</p>
+  </Block>
+</ServicePage>

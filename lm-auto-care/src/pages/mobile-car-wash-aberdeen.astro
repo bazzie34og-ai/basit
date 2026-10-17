@@ -1,0 +1,56 @@
+---
+import ServicePage from '../layouts/ServicePage.astro';
+import Block from '../components/Block.astro';
+import PullQuote from '../components/PullQuote.astro';
+import { services, waMessages } from '../config/site.ts';
+import hero from '../assets/photos/lm-auto-care-van-and-kit-on-site-mg-hs.jpg';
+import foam from '../assets/photos/mazda-cx3-snow-foam-mobile-valet-aberdeen.jpg';
+
+const s = services.find((x) => x.id === 'exterior-wash')!;
+const faqs = [
+  { q: 'How much is a mobile car wash in Aberdeen?', a: 'The Basic Exterior Wash is £10 to £20, plus the size supplement for bigger vehicles. Message us the car and we’ll confirm the exact price before we come out.' },
+  { q: 'What do I need to provide?', a: 'A water supply and a power socket where the car is parked. We need that for every mobile job.' },
+  { q: 'Can you wash my car at work?', a: 'Yes, as long as there’s water and power we can use and you’re allowed to have the car cleaned there. Check with your workplace first.' },
+  { q: 'What’s the difference between the wash and the Exterior Valet?', a: 'The Basic Exterior Wash is a hand wash and dry, wheels, tyres dressed and windows. The £35 Exterior Valet adds a pre-wash, snow foam, a full rinse, a microfibre dry and a wax spray finish.' },
+];
+---
+<ServicePage
+  path="/mobile-car-wash-aberdeen/"
+  crumb="Mobile car wash"
+  h1="Mobile Car Wash in Aberdeen: No Queue, No Drive-Through"
+  kicker="Job 01 · Exterior only · At yours"
+  priceTag={`£${s.priceMin}–£${s.priceMax} · plus size supplement`}
+  photo={hero}
+  alt="Mobile car wash in Aberdeen: the LM Auto Care van open beside a red MG HS, with kit and a folding table on the pavement"
+  caption="Fig. 01 · This is the whole car wash. It fits in the van."
+  waText={waMessages.wash}
+  service={s}
+  sheetTitle="The Basic Exterior Wash"
+  schemaName="Mobile car wash (Basic Exterior Wash)"
+  serviceType="Mobile car wash"
+  price={[s.priceMin, s.priceMax]}
+  related={[
+    { tag: 'Service', href: '/exterior-valet-aberdeen/', label: 'Exterior valet with snow foam, £35', blurb: 'The step up: snow foam, full rinse, microfibre dry, wax.' },
+    { tag: 'Service', href: '/mini-valet-aberdeen/', label: 'Mini valet (Basic Clean), £30', blurb: 'The wash plus a hoover and wipe-down inside.' },
+    { tag: 'Guide', href: '/guides/winter-road-salt-car-care-aberdeen/', label: 'Road salt and grit in an Aberdeen winter', blurb: 'Why a regular wash matters more from November.' },
+    { tag: 'Areas', href: '/areas/', label: 'Car wash near me?', blurb: 'Check the areas we cover, or just send your postcode.' },
+  ]}
+  faqs={faqs}
+>
+  <Fragment slot="intro">
+    <p>A mobile car wash in Aberdeen: we turn up, wash the car by hand outside your house or your work, and leave. Hand wash and dry, wheels cleaned, tyres dressed, windows cleaned and a quick finishing touch. From £10. It's car wash at home, Aberdeen style. No queue, no drive-through, no sitting in a waiting room with the radio on.</p>
+  </Fragment>
+
+  <PullQuote>Your car's been sat on the street all week. <em>We'll sort it on the street.</em></PullQuote>
+
+  <Block heading="A car wash near me, without leaving the house" kicker="How it works" photo={foam} alt="Car wash at home in Aberdeen: snow foam on a blue Mazda CX-3 parked on paving slabs outside a block of flats" caption="Done where it's parked. Foam rinses off the slabs too." side="right">
+    <p>Saturday at the car wash used to mean a queue out onto the road and forty minutes of your weekend. We'd rather spend that forty minutes washing the car while you do something else.</p>
+    <p>Send us the make, the model and your postcode on WhatsApp. We'll confirm a price and a time. On the day we need a tap and a socket. You don't need to be standing over us, just leave the keys if we need them.</p>
+    <p>Weekday mornings or afternoons work, and weekend evenings. If you're at work all day, we can do it there, if your work's happy for us to.</p>
+  </Block>
+
+  <Block heading="Why the price is £10 to £20" variant="narrow" kicker="Straight answer">
+    <p>The Basic Exterior Wash is listed at £10–£20 because not every wash is the same job. Send the car and a photo and we'll tell you where in that range it sits before we come. That's the price you pay.</p>
+    <p>On top of that, the size supplement is the same as every service: +£5 for a medium car, +£10 for a large car or SUV, +£15 for a 7-seater. If you want snow foam and a wax finish, that's the <a href="/exterior-valet-aberdeen/">£35 Exterior Valet</a>.</p>
+  </Block>
+</ServicePage>

@@ -1,0 +1,621 @@
+---
+/**
+ * Booking form. Their six steps, then "who do we message". Without JS every
+ * step shows at once and it posts as a normal multipart form to /api/book,
+ * which redirects to /thank-you/. With JS it becomes a stepper with a live
+ * price, inline errors and browser-side photo compression.
+ */
+import Base from '../layouts/Base.astro';
+import Tick from '../components/Tick.astro';
+import Icon from '../components/Icon.astro';
+import { services, sizes, extras, bookingSteps, howHeardOptions, expectations, business, waLink, waMessages } from '../config/site.ts';
+import { priceLabel } from '../lib/pricing.ts';
+import { PREFERRED_TIMES, LIMITS } from '../lib/validate.ts';
+import { meta } from '../config/pages.ts';
+import { TURNSTILE_SITE_KEY } from '../lib/env.ts';
+
+const m = meta('/book/');
+const steps = [...bookingSteps.map((s) => s.title), 'Who do we message?'];
+const err = (f: string) => `err-${f}`;
+---
+<Base title={m.title} description={m.description} path="/book/" waText={waMessages.home} breadcrumbs={[{ name: 'Book', href: '/book/' }]} hideSticky>
+  <Fragment slot="head">
+    {TURNSTILE_SITE_KEY && <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>}
+  </Fragment>
+
+  <section class="bhead">
+    <p class="mono k">Booking enquiry · six steps · about two minutes</p>
+    <h1>Book Your Valet</h1>
+    <p class="lede">Book a car valet in Aberdeen. The same six questions we'd ask on WhatsApp, in the same order. You'll see the price as you go. Nothing is charged here; we'll message you to confirm a time.</p>
+  </section>
+
+  <div class="bwrap">
+    <form class="bform" id="booking" action="/api/book" method="post" enctype="multipart/form-data" data-booking>
+      <ol class="progress mono" aria-label="Booking steps" data-progress>
+        {steps.map((s, i) => <li data-step-dot={i + 1}><span class="pn">{i < 6 ? String(i + 1).padStart(2, '0') : '✓'}</span><span class="pl">{s}</span></li>)}
+      </ol>
+
+      <p class="visually-hidden" aria-live="polite" data-announce></p>
+      <div class="formerr" role="alert" data-formerr hidden></div>
+
+      <fieldset class="step" data-step="1">
+        <legend><span class="mono">Step 01 of 06</span> Vehicle details</legend>
+        <div class="field">
+          <label for="makeModel">Make and model <span class="req">required</span></label>
+          <input id="makeModel" name="makeModel" type="text" required maxlength={LIMITS.makeModel} autocomplete="off" placeholder="e.g. Ford Focus" aria-describedby={err('makeModel')} />
+          <p class="err" id={err('makeModel')}></p>
+        </div>
+        <div class="field short">
+          <label for="registration">Registration <span class="opt">optional</span></label>
+          <input id="registration" name="registration" type="text" maxlength={LIMITS.registration} autocomplete="off" autocapitalize="characters" class="reg" aria-describedby={err('registration')} />
+          <p class="err" id={err('registration')}></p>
+        </div>
+        <div class="field" role="radiogroup" aria-labelledby="size-l" aria-describedby={err('vehicleSize')}>
+          <p class="lbl" id="size-l">Size of vehicle <span class="req">required</span></p>
+          <div class="choices">
+            {sizes.map((z, i) => (
+              <label class="choice">
+                <input type="radio" name="vehicleSize" value={z.id} required checked={i === 0} />
+                <span class="box" aria-hidden="true"><Tick variant={i % 3} /></span>
+                <span class="ct"><strong>{z.name}</strong><small>{z.examples}</small></span>
+                <span class="mono cp">{z.supplement ? `+£${z.supplement}` : '+£0'}</span>
+              </label>
+            ))}
+          </div>
+          <p class="err" id={err('vehicleSize')}></p>
+        </div>
+      </fieldset>
+
+      <fieldset class="step" data-step="2">
+        <legend><span class="mono">Step 02 of 06</span> Service required</legend>
+        <div class="field" role="radiogroup" aria-labelledby="svc-l" aria-describedby={err('service')}>
+          <p class="lbl" id="svc-l">Service <span class="req">required</span></p>
+          <div class="choices">
+            {services.map((s, i) => (
+              <label class="choice">
+                <input type="radio" name="service" value={s.id} required />
+                <span class="box" aria-hidden="true"><Tick variant={i % 3} /></span>
+                <span class="ct"><strong>{s.name}{s.aka && ` (our ${s.aka})`}</strong><small>{s.scopeLabel} · {s.includes.slice(0, 3).join(', ').toLowerCase()}…</small></span>
+                <span class="mono cp">{priceLabel(s.priceMin, s.priceMax)}</span>
+              </label>
+            ))}
+          </div>
+          <p class="err" id={err('service')}></p>
+        </div>
+        <div class="field">
+          <p class="lbl" id="ex-l">Extras <span class="opt">optional</span></p>
+          <div class="choices" role="group" aria-labelledby="ex-l">
+            {extras.map((e, i) => (
+              <label class="choice">
+                <input type="checkbox" name="extras" value={e.id} />
+                <span class="box sq" aria-hidden="true"><Tick variant={i % 3} /></span>
+                <span class="ct"><strong>{e.name}</strong><small>{e.blurb}</small></span>
+                <span class="mono cp">+£{e.price}</span>
+              </label>
+            ))}
+          </div>
+        </div>
+      </fieldset>
+
+      <fieldset class="step" data-step="3">
+        <legend><span class="mono">Step 03 of 06</span> Service type</legend>
+        <div class="field" role="radiogroup" aria-labelledby="type-l" aria-describedby={err('serviceType')}>
+          <p class="lbl" id="type-l">Where should we do it?</p>
+          <div class="choices">
+            <label class="choice">
+              <input type="radio" name="serviceType" value="mobile" checked />
+              <span class="box" aria-hidden="true"><Tick variant={0} /></span>
+              <span class="ct"><strong>Mobile, at my location</strong><small>Home, work, wherever the car is. {expectations.waterPowerPlain}</small></span>
+            </label>
+            <label class="choice">
+              <input type="radio" name="serviceType" value="drop-off" />
+              <span class="box" aria-hidden="true"><Tick variant={1} /></span>
+              <span class="ct"><strong>Drop-off</strong><small>{expectations.dropOff}</small></span>
+            </label>
+          </div>
+          <p class="err" id={err('serviceType')}></p>
+        </div>
+      </fieldset>
+
+      <fieldset class="step" data-step="4">
+        <legend><span class="mono">Step 04 of 06</span> Your location</legend>
+        <div class="field short">
+          <label for="postcode">Postcode <span class="req">required</span></label>
+          <input id="postcode" name="postcode" type="text" required maxlength={LIMITS.postcode} autocomplete="postal-code" autocapitalize="characters" placeholder="AB10 1AA" class="reg" aria-describedby={`${err('postcode')} pc-hint`} />
+          <p class="hint" id="pc-hint">Just the postcode for now. We cover Aberdeen and the surrounding areas.</p>
+          <p class="err" id={err('postcode')}></p>
+        </div>
+      </fieldset>
+
+      <fieldset class="step" data-step="5">
+        <legend><span class="mono">Step 05 of 06</span> Preferred date &amp; time</legend>
+        <p class="note">{expectations.times.weekdays}. {expectations.times.weekends}.</p>
+        <div class="row2">
+          <div class="field">
+            <label for="preferredDay">Preferred date <span class="opt">optional</span></label>
+            <input id="preferredDay" name="preferredDay" type="date" aria-describedby={err('preferredDay')} />
+            <p class="err" id={err('preferredDay')}></p>
+          </div>
+          <div class="field">
+            <label for="preferredTime">Time of day <span class="opt">optional</span></label>
+            <select id="preferredTime" name="preferredTime" aria-describedby={err('preferredTime')}>
+              <option value="">No preference</option>
+              {PREFERRED_TIMES.map((t) => <option>{t}</option>)}
+            </select>
+            <p class="err" id={err('preferredTime')}></p>
+          </div>
+        </div>
+      </fieldset>
+
+      <fieldset class="step" data-step="6">
+        <legend><span class="mono">Step 06 of 06</span> Photos (optional)</legend>
+        <div class="field">
+          <label for="photos">A few clear photos of the vehicle</label>
+          <input id="photos" name="photos" type="file" accept="image/jpeg,image/png,image/heic,image/heif,.heic,.heif" multiple aria-describedby={`${err('photos')} ph-hint`} />
+          <p class="hint" id="ph-hint">Up to 3. JPEG, PNG or HEIC. The inside, the boot, anything you're worried about. We shrink them before sending so it's quick on mobile data.</p>
+          <ul class="thumbs" data-thumbs></ul>
+          <p class="err" id={err('photos')}></p>
+        </div>
+      </fieldset>
+
+      <fieldset class="step" data-step="7">
+        <legend><span class="mono">Last bit</span> Who do we message?</legend>
+        <div class="row2">
+          <div class="field">
+            <label for="name">Your name <span class="req">required</span></label>
+            <input id="name" name="name" type="text" required maxlength={LIMITS.name} autocomplete="name" aria-describedby={err('name')} />
+            <p class="err" id={err('name')}></p>
+          </div>
+          <div class="field">
+            <label for="phone">Mobile or phone <span class="req">required</span></label>
+            <input id="phone" name="phone" type="tel" required maxlength={LIMITS.phone} autocomplete="tel" inputmode="tel" placeholder="07…" aria-describedby={`${err('phone')} phone-hint`} />
+            <p class="hint" id="phone-hint">We'll confirm on WhatsApp if you have it.</p>
+            <p class="err" id={err('phone')}></p>
+          </div>
+        </div>
+        <div class="row2">
+          <div class="field">
+            <label for="email">Email <span class="opt">optional</span></label>
+            <input id="email" name="email" type="email" maxlength={LIMITS.email} autocomplete="email" aria-describedby={`${err('email')} email-hint`} />
+            <p class="hint" id="email-hint">For a copy of your booking.</p>
+            <p class="err" id={err('email')}></p>
+          </div>
+          <div class="field">
+            <label for="howHeard">How did you hear about us? <span class="opt">optional</span></label>
+            <select id="howHeard" name="howHeard" aria-describedby={err('howHeard')}>
+              <option value="">Choose…</option>
+              {howHeardOptions.map((h) => <option>{h}</option>)}
+            </select>
+            <p class="err" id={err('howHeard')}></p>
+          </div>
+        </div>
+        <div class="field">
+          <label for="notes">Anything we should know? <span class="opt">optional</span></label>
+          <textarea id="notes" name="notes" rows="4" maxlength={LIMITS.notes} aria-describedby={err('notes')} placeholder="Dog hair in the boot, parking's round the back, that sort of thing."></textarea>
+          <p class="err" id={err('notes')}></p>
+        </div>
+
+        <div class="hp" aria-hidden="true">
+          <label for="company">Company (leave this empty)</label>
+          <input id="company" name="company" type="text" tabindex="-1" autocomplete="off" />
+        </div>
+        <input type="hidden" name="t" value="" data-t />
+        <input type="hidden" name="quotedTotal" value="" data-quoted />
+        <input type="hidden" name="pageUrl" value="" />
+        <input type="hidden" name="referrer" value="" />
+        <input type="hidden" name="utm_source" value="" />
+        <input type="hidden" name="utm_medium" value="" />
+        <input type="hidden" name="utm_campaign" value="" />
+        <input type="hidden" name="utm_term" value="" />
+        <input type="hidden" name="utm_content" value="" />
+        <input type="hidden" name="gclid" value="" />
+
+        {TURNSTILE_SITE_KEY && <div class="cf-turnstile" data-sitekey={TURNSTILE_SITE_KEY}></div>}
+
+        <div class="send">
+          <button class="btn" type="submit" data-submit>Send booking request</button>
+          <button class="btn btn--line" type="button" data-wa-booking><Icon name="whatsapp" /> Send these details on WhatsApp</button>
+        </div>
+        <p class="hint">Sending this doesn't commit you to anything. We'll message to confirm a time and the price.</p>
+      </fieldset>
+
+      <div class="stepnav" data-stepnav>
+        <button type="button" class="btn btn--line" data-back>Back</button>
+        <button type="button" class="btn" data-next>Next</button>
+      </div>
+    </form>
+
+    <aside class="summary" aria-labelledby="sum-h" data-summary>
+      <div class="docket">
+        <h2 id="sum-h" class="mono">Your job docket</h2>
+        <ul data-sum-lines><li><span>Pick a service</span><span class="mono">—</span></li></ul>
+        <div class="tot"><span class="mono">Your price</span><strong class="mono" data-sum-total>—</strong></div>
+        <p class="fine">{expectations.waterPowerPlain} {expectations.times.short}</p>
+        <p class="fine">Rather just talk? <a href={waLink(waMessages.home)} data-track="whatsapp_click" rel="noopener">WhatsApp</a> or <a href={business.tel} data-track="call_click">{business.phoneDisplay}</a>.</p>
+      </div>
+    </aside>
+  </div>
+
+  <div class="mobile-total on-dark" data-mobile-total aria-hidden="true">
+    <span class="mono">Your price</span><strong class="mono" data-sum-total-m>—</strong>
+  </div>
+</Base>
+
+<script>
+  import { quote } from '../lib/pricing.ts';
+  import { validateBooking, FIELD_STEP } from '../lib/validate.ts';
+  import { bookingMessage } from '../lib/messages.ts';
+  import { waLink } from '../config/site.ts';
+  import { track, attribution } from '../scripts/track.ts';
+
+  const form = document.querySelector<HTMLFormElement>('[data-booking]')!;
+  const steps = [...form.querySelectorAll<HTMLFieldSetElement>('[data-step]')];
+  const dots = [...form.querySelectorAll<HTMLElement>('[data-step-dot]')];
+  const back = form.querySelector<HTMLButtonElement>('[data-back]')!;
+  const next = form.querySelector<HTMLButtonElement>('[data-next]')!;
+  const announce = form.querySelector<HTMLElement>('[data-announce]')!;
+  const formErr = form.querySelector<HTMLElement>('[data-formerr]')!;
+  const submitBtn = form.querySelector<HTMLButtonElement>('[data-submit]')!;
+  const photosInput = form.querySelector<HTMLInputElement>('#photos')!;
+  const thumbs = form.querySelector<HTMLElement>('[data-thumbs]')!;
+  let current = 1;
+  let started = false;
+
+  form.classList.add('is-stepped');
+  form.noValidate = true;
+  (form.querySelector('[data-t]') as HTMLInputElement).value = String(Date.now());
+
+  // Hidden attribution fields
+  const attr = attribution();
+  const setHidden = (n: string, v: string) => {
+    const el = form.elements.namedItem(n) as HTMLInputElement | null;
+    if (el) el.value = v.slice(0, 300);
+  };
+  setHidden('pageUrl', location.href);
+  setHidden('referrer', attr.referrer || document.referrer || '');
+  for (const k of ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content', 'gclid'] as const) setHidden(k, attr[k] || '');
+
+  // Prefill from the calculator: /book/?service=…&size=…&extras=…
+  const q = new URLSearchParams(location.search);
+  const pick = (name: string, value: string | null) => {
+    if (!value) return;
+    const el = form.querySelector<HTMLInputElement>(`input[name="${name}"][value="${CSS.escape(value)}"]`);
+    if (el) el.checked = true;
+  };
+  pick('service', q.get('service'));
+  pick('vehicleSize', q.get('size'));
+  q.getAll('extras').forEach((x) => pick('extras', x));
+
+  // ── live price ──
+  const lines = document.querySelector<HTMLElement>('[data-sum-lines]')!;
+  const totals = [document.querySelector<HTMLElement>('[data-sum-total]')!, document.querySelector<HTMLElement>('[data-sum-total-m]')!];
+  const quoted = form.querySelector<HTMLInputElement>('[data-quoted]')!;
+  function updatePrice() {
+    const fd = new FormData(form);
+    const service = String(fd.get('service') || '');
+    const size = String(fd.get('vehicleSize') || 'small');
+    if (!service) return;
+    const qt = quote(service, size, fd.getAll('extras').map(String));
+    lines.replaceChildren(
+      ...qt.lines.map((l) => {
+        const li = document.createElement('li');
+        const a = document.createElement('span');
+        const b = document.createElement('span');
+        a.textContent = l.label;
+        b.textContent = l.amount;
+        b.className = 'mono';
+        li.append(a, b);
+        return li;
+      }),
+    );
+    totals.forEach((t) => {
+      if (t.textContent !== qt.label) {
+        t.textContent = qt.label;
+        t.classList.remove('ticked');
+        void t.offsetWidth;
+        t.classList.add('ticked');
+      }
+    });
+    quoted.value = qt.label;
+  }
+  form.addEventListener('change', updatePrice);
+  updatePrice();
+
+  // ── errors ──
+  function clearErrors() {
+    form.querySelectorAll<HTMLElement>('.err').forEach((e) => (e.textContent = ''));
+    form.querySelectorAll('[aria-invalid]').forEach((e) => e.removeAttribute('aria-invalid'));
+    formErr.hidden = true;
+  }
+  function showErrors(errors: Record<string, string>) {
+    const fields = Object.keys(errors);
+    for (const f of fields) {
+      const box = document.getElementById(`err-${f}`);
+      if (box) box.textContent = errors[f];
+      form.querySelectorAll(`[name="${f}"]`).forEach((el) => el.setAttribute('aria-invalid', 'true'));
+    }
+    announce.textContent = `${fields.length === 1 ? 'There is a problem' : `There are ${fields.length} problems`}: ${Object.values(errors).join(' ')}`;
+    const first = form.querySelector<HTMLElement>(`[name="${fields[0]}"]`);
+    first?.focus();
+  }
+  function errorsForStep(n: number): Record<string, string> {
+    const res = validateBooking(Object.fromEntries(new FormData(form).entries()) as Record<string, string>);
+    if (res.ok) return {};
+    return Object.fromEntries(Object.entries(res.errors).filter(([k]) => (FIELD_STEP[k] ?? 7) === n));
+  }
+
+  // ── stepper ──
+  function show(n: number, focus = true) {
+    current = Math.max(1, Math.min(steps.length, n));
+    steps.forEach((s) => (s.hidden = Number(s.dataset.step) !== current));
+    dots.forEach((d) => {
+      const i = Number(d.dataset.stepDot);
+      d.classList.toggle('done', i < current);
+      if (i === current) d.setAttribute('aria-current', 'step');
+      else d.removeAttribute('aria-current');
+    });
+    back.hidden = current === 1;
+    next.hidden = current === steps.length;
+    if (focus) {
+      const legend = steps[current - 1].querySelector('legend');
+      legend?.setAttribute('tabindex', '-1');
+      legend?.focus({ preventScroll: true });
+      form.scrollIntoView({ block: 'start', behavior: 'smooth' });
+      announce.textContent = `Step ${current} of ${steps.length}`;
+    }
+  }
+  next.addEventListener('click', () => {
+    clearErrors();
+    const errs = errorsForStep(current);
+    if (Object.keys(errs).length) return showErrors(errs);
+    if (!started) {
+      started = true;
+      track('book_start', { page: location.pathname });
+    }
+    track(`book_step_${current}`, { page: location.pathname });
+    show(current + 1);
+  });
+  back.addEventListener('click', () => {
+    clearErrors();
+    show(current - 1);
+  });
+  show(1, false);
+
+  // ── photos: compress in the browser to ~1600px JPEG ──
+  let prepared: File[] = [];
+  async function compress(file: File): Promise<File> {
+    try {
+      const bmp = await createImageBitmap(file);
+      const scale = Math.min(1, 1600 / Math.max(bmp.width, bmp.height));
+      const canvas = document.createElement('canvas');
+      canvas.width = Math.round(bmp.width * scale);
+      canvas.height = Math.round(bmp.height * scale);
+      canvas.getContext('2d')!.drawImage(bmp, 0, 0, canvas.width, canvas.height);
+      const blob = await new Promise<Blob | null>((r) => canvas.toBlob(r, 'image/jpeg', 0.82));
+      if (!blob) throw new Error('encode');
+      return new File([blob], file.name.replace(/\.\w+$/, '') + '.jpg', { type: 'image/jpeg' });
+    } catch {
+      return file; // e.g. HEIC on a browser that can't decode it: send as-is if small enough
+    }
+  }
+  photosInput.addEventListener('change', async () => {
+    const box = document.getElementById('err-photos')!;
+    box.textContent = '';
+    const files = [...(photosInput.files || [])];
+    if (files.length > 3) box.textContent = 'Up to 3 photos, please. We kept the first three.';
+    prepared = await Promise.all(files.slice(0, 3).map(compress));
+    const tooBig = prepared.find((f) => f.size > 4 * 1024 * 1024);
+    if (tooBig) {
+      box.textContent = `${tooBig.name} is still over 4 MB. Try a smaller photo.`;
+      prepared = prepared.filter((f) => f !== tooBig);
+    }
+    thumbs.replaceChildren(
+      ...prepared.map((f) => {
+        const li = document.createElement('li');
+        li.className = 'mono';
+        li.textContent = `${f.name} · ${(f.size / 1024).toFixed(0)} KB`;
+        return li;
+      }),
+    );
+  });
+
+  // ── submit ──
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    clearErrors();
+    const res = validateBooking(Object.fromEntries(new FormData(form).entries()) as Record<string, string>);
+    if (!res.ok) {
+      const step = Math.min(...Object.keys(res.errors).map((k) => FIELD_STEP[k] ?? 7));
+      show(step);
+      return showErrors(res.errors);
+    }
+    const fd = new FormData(form);
+    fd.delete('photos');
+    prepared.forEach((f) => fd.append('photos', f, f.name));
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Sending…';
+    try {
+      const r = await fetch(form.action, { method: 'POST', body: fd, headers: { Accept: 'application/json' } });
+      const j = await r.json().catch(() => ({}));
+      if (r.ok && j.ok) {
+        track('book_submit', { service: String(fd.get('service')), total: String(fd.get('quotedTotal')) });
+        location.href = '/thank-you/';
+        return;
+      }
+      if (j.errors) {
+        show(j.step || 7);
+        showErrors(j.errors);
+      } else {
+        formErr.hidden = false;
+        formErr.textContent = j.error || 'Something went wrong sending that. Please try again, or send it on WhatsApp below.';
+        formErr.focus();
+      }
+    } catch {
+      formErr.hidden = false;
+      formErr.textContent = "We couldn't reach the server. Check your signal, or send it on WhatsApp below.";
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Send booking request';
+    }
+  });
+
+  // ── or send it all on WhatsApp ──
+  form.querySelector('[data-wa-booking]')!.addEventListener('click', () => {
+    const fd = new FormData(form);
+    const g = (k: string) => String(fd.get(k) || '').trim();
+    const msg = bookingMessage({
+      name: g('name'),
+      phone: g('phone'),
+      email: g('email'),
+      makeModel: g('makeModel'),
+      registration: g('registration'),
+      service: g('service'),
+      vehicleSize: g('vehicleSize'),
+      extras: fd.getAll('extras').map(String),
+      serviceType: g('serviceType'),
+      postcode: g('postcode'),
+      preferredDay: g('preferredDay'),
+      preferredTime: g('preferredTime'),
+      notes: g('notes'),
+      quotedTotal: g('quotedTotal'),
+    });
+    track('whatsapp_booking', { service: g('service'), total: g('quotedTotal') });
+    window.location.href = waLink(msg);
+  });
+</script>
+
+<style>
+  .bhead { width: min(100% - 2 * var(--gutter), 1180px); margin: 1.5rem auto 2rem; }
+  .k { color: var(--lm-blue-ink); margin: 0 0 1rem; }
+  h1 { font-size: clamp(2.6rem, 8vw, 5.4rem); font-style: italic; line-height: 0.94; }
+  .lede { font-size: 1.15rem; max-width: 40rem; margin-top: 1.2rem; }
+  .bwrap {
+    width: min(100% - 2 * var(--gutter), 1180px);
+    margin: 0 auto 5rem;
+    display: grid;
+    gap: 2.5rem;
+  }
+  @media (min-width: 980px) { .bwrap { grid-template-columns: minmax(0, 1fr) 340px; gap: 4rem; align-items: start; } }
+
+  .progress {
+    display: none;
+    list-style: none;
+    margin: 0 0 1.6rem;
+    padding: 0;
+    font-size: 0.66rem;
+    border-top: 3px solid var(--paper-3);
+  }
+  .is-stepped .progress { display: grid; grid-template-columns: repeat(7, 1fr); }
+  .progress li { padding-top: 0.6rem; margin-top: -3px; border-top: 3px solid transparent; color: var(--stone-ink); }
+  .progress li.done { border-color: var(--ink); color: var(--ink); }
+  .progress li[aria-current] { border-color: var(--lm-blue); color: var(--lm-blue-ink); }
+  .pn { display: block; font-size: 1rem; }
+  .pl { display: none; }
+  @media (min-width: 700px) { .pl { display: block; padding-right: 0.4rem; } }
+
+  .step { border: 0; margin: 0 0 2.5rem; padding: 0; }
+  .is-stepped .step { margin-bottom: 1.5rem; min-height: 16rem; }
+  legend {
+    font-family: var(--f-display);
+    font-stretch: var(--wide);
+    font-weight: 800;
+    font-style: italic;
+    font-size: clamp(1.5rem, 3.4vw, 2.1rem);
+    padding: 0;
+    margin-bottom: 1.2rem;
+    outline: none;
+  }
+  legend .mono { display: block; font-style: normal; font-stretch: 100%; color: var(--stone-ink); margin-bottom: 0.3rem; }
+
+  .field { margin-bottom: 1.3rem; }
+  .field.short { max-width: 18rem; }
+  .row2 { display: grid; gap: 0 1.5rem; }
+  @media (min-width: 640px) { .row2 { grid-template-columns: 1fr 1fr; } }
+  label, .lbl { display: block; font-family: var(--f-ui); font-weight: 600; font-size: 1rem; margin: 0 0 0.4rem; }
+  .req, .opt { font-family: var(--f-mono); font-weight: 500; font-size: 0.66rem; text-transform: uppercase; letter-spacing: 0.06em; margin-left: 0.4rem; }
+  .req { color: var(--lm-blue-ink); }
+  .opt { color: var(--stone-ink); }
+  input[type='text'], input[type='tel'], input[type='email'], input[type='date'], select, textarea {
+    width: 100%;
+    min-height: 48px;
+    padding: 0.65rem 0.8rem;
+    font: 500 1.05rem/1.3 var(--f-ui);
+    color: var(--ink);
+    background: var(--foam);
+    border: 1.5px solid var(--ink);
+    border-radius: 2px;
+  }
+  textarea { font-family: var(--f-body); }
+  .reg { text-transform: uppercase; font-family: var(--f-mono) !important; letter-spacing: 0.08em; }
+  input:focus-visible, select:focus-visible, textarea:focus-visible { outline: 3px solid var(--lm-blue-ink); outline-offset: 1px; }
+  [aria-invalid='true'] { border-color: var(--stamp) !important; }
+  .err { color: #a50e26; font-family: var(--f-ui); font-weight: 600; font-size: 0.92rem; margin: 0.35rem 0 0; }
+  .err:empty { display: none; }
+  .hint, .note { font-size: 0.92rem; color: var(--ink-2); margin: 0.35rem 0 0; }
+  .note { margin-bottom: 1.2rem; font-style: italic; }
+  .formerr { border: 1.5px solid var(--stamp); background: #fff; padding: 0.9rem 1rem; margin-bottom: 1.2rem; font-family: var(--f-ui); font-weight: 600; color: #a50e26; }
+
+  .choices { border-top: 1px solid var(--paper-3); }
+  .choice {
+    position: relative;
+    display: grid;
+    grid-template-columns: 1.6rem 1fr auto;
+    gap: 0.8rem;
+    align-items: center;
+    min-height: 56px;
+    margin: 0;
+    padding: 0.6rem 0.4rem;
+    border-bottom: 1px solid var(--paper-3);
+    cursor: pointer;
+    font-weight: 400;
+  }
+  .choice input { position: absolute; inset: 0; opacity: 0; margin: 0; cursor: pointer; }
+  .box { width: 1.35rem; height: 1.35rem; border: 1.5px solid var(--ink); border-radius: 50%; display: grid; place-items: center; font-size: 1.1rem; background: var(--foam); }
+  .box.sq { border-radius: 2px; }
+  .box :global(.tick path) { stroke-dashoffset: 1 !important; transition: stroke-dashoffset 0.25s ease !important; transition-delay: 0s !important; }
+  .choice input:checked + .box :global(.tick path) { stroke-dashoffset: 0 !important; }
+  .choice input:focus-visible + .box { outline: 3px solid var(--lm-blue-ink); outline-offset: 3px; }
+  .choice:has(input:checked) { background: rgba(30, 144, 255, 0.06); }
+  .ct strong { display: block; font-family: var(--f-ui); font-weight: 600; }
+  .ct small { display: block; font-size: 0.88rem; color: var(--ink-2); line-height: 1.35; }
+  .cp { font-size: 0.95rem; letter-spacing: 0; text-transform: none; }
+  input[type='file'] { font: 500 1rem var(--f-ui); min-height: 48px; padding: 0.6rem 0; }
+  .thumbs { list-style: none; padding: 0; margin: 0.6rem 0 0; font-size: 0.7rem; color: var(--ink-2); }
+
+  .hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+  .send { display: flex; flex-wrap: wrap; gap: 0.8rem; margin: 1.5rem 0 0.6rem; }
+
+  .stepnav { display: none; }
+  .is-stepped .stepnav { display: flex; justify-content: space-between; gap: 1rem; padding-top: 1.2rem; border-top: 1px solid var(--ink); }
+  .is-stepped .stepnav [data-next] { margin-left: auto; }
+  [hidden] { display: none !important; }
+
+  .summary { position: sticky; top: calc(var(--header-h) + 1.5rem); }
+  .docket { background: var(--paper); border: 1.5px solid var(--ink); padding: 1.2rem 1.2rem 1.4rem; box-shadow: 6px 6px 0 var(--paper-2); }
+  .docket h2 { font-size: 0.72rem; font-stretch: 100%; color: var(--stone-ink); padding-bottom: 0.6rem; border-bottom: 1.5px solid var(--ink); margin-bottom: 0.6rem; }
+  .docket ul { list-style: none; padding: 0; margin: 0; }
+  .docket :global(li) { display: flex; justify-content: space-between; gap: 1rem; padding: 0.35rem 0; border-bottom: 1px dashed var(--paper-3); font-size: 0.95rem; }
+  .docket :global(li .mono) { text-transform: none; letter-spacing: 0; font-size: 0.88rem; }
+  .tot { display: flex; justify-content: space-between; align-items: baseline; margin-top: 0.8rem; padding-top: 0.5rem; border-top: 3px double var(--ink); }
+  .tot strong { font-size: 2.2rem; color: var(--lm-blue-ink); letter-spacing: -0.02em; text-transform: none; }
+  .fine { font-size: 0.88rem; color: var(--ink-2); margin: 0.8rem 0 0; }
+  :global(.ticked) { animation: tick 0.16s steps(3, end); display: inline-block; }
+  @keyframes tick { from { transform: translateY(-0.18em); opacity: 0.4; } to { transform: none; opacity: 1; } }
+
+  .mobile-total { display: none; }
+  @media (max-width: 979px) {
+    .summary { position: static; }
+    .bwrap { padding-bottom: 4rem; }
+    .mobile-total {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      position: fixed;
+      inset: auto 0 0 0;
+      z-index: 50;
+      padding: 0.8rem var(--gutter) calc(0.8rem + env(safe-area-inset-bottom));
+      border-top: 2px solid var(--lm-blue);
+    }
+    .mobile-total strong { font-size: 1.6rem; color: var(--paper); letter-spacing: -0.01em; text-transform: none; }
+  }
+</style>

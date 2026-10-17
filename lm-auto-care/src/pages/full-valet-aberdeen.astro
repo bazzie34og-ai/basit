@@ -1,0 +1,84 @@
+---
+import ServicePage from '../layouts/ServicePage.astro';
+import Block from '../components/Block.astro';
+import BeforeAfter from '../components/BeforeAfter.astro';
+import JobSheet from '../components/JobSheet.astro';
+import PullQuote from '../components/PullQuote.astro';
+import { services, waMessages } from '../config/site.ts';
+import hero from '../assets/photos/mg-hs-red-exterior-after-valet.jpg';
+import before from '../assets/before-after/mg-hs-exterior-before-rear.jpg';
+import inside from '../assets/photos/chery-tiggo7-interior-after-valet.jpg';
+
+const s = services.find((x) => x.id === 'full-works')!;
+const faqs = [
+  { q: 'How much is a full valet in Aberdeen?', a: 'Our full valet, the Full Works, is £85 for a small car. Medium vehicles add £5, large vehicles and SUVs add £10, and 7-seaters and large MPVs add £15. Extras like pet hair removal are listed separately.' },
+  { q: "What's the difference between the Full Works and the Thorough Clean?", a: 'The Thorough Clean (£60) is our £35 Interior Valet and £35 Exterior Valet together. The Full Works (£85) goes further: a detailed wheel clean, wax spray protection, the full interior list and a final quality check before we sign it off.' },
+  { q: 'Do you need anything from me?', a: 'A water supply and a power socket where the car is parked, and the keys. We bring everything else.' },
+  { q: 'Can I add dog hair removal or headlight restoration?', a: 'Yes. Pet Hair Removal is £10, Headlight Restoration £25, Engine Bay Clean £10 and Baby Seat Clean £10. They add to any service at those prices.' },
+];
+---
+<ServicePage
+  path="/full-valet-aberdeen/"
+  crumb="Full valet"
+  h1="Full Valet in Aberdeen: The Full Works"
+  kicker="Job 06 · Inside + out · Our full valet"
+  priceTag={`£${s.priceMin} · small car · size supplement from +£5`}
+  photo={hero}
+  alt="Red MG HS after a full valet in Aberdeen, paint gleaming, parked on a street of dark timber houses"
+  caption="Fig. 06 · MG HS after the Full Works. The watermark's ours."
+  waText={waMessages.fullWorks}
+  service={s}
+  sheetItems={[]}
+  schemaName="Full valet (The Full Works)"
+  serviceType="Full car valet"
+  related={[
+    { tag: 'Service', href: '/interior-valet-aberdeen/', label: 'Interior Valet, £35', blurb: 'Just the inside: seats, carpets, door cards, console, inside glass.' },
+    { tag: 'Service', href: '/valet-before-selling-or-lease-return/', label: 'Valet before selling or a lease return', blurb: 'When the car has to look its best by a deadline.' },
+    { tag: 'Guide', href: '/guides/mini-valet-vs-full-valet/', label: 'Mini valet vs full valet', blurb: 'Which one your car actually needs, honestly.' },
+    { tag: 'Areas', href: '/areas/', label: 'Where we valet', blurb: 'Aberdeen city, Deeside, Dyce, Cove and the towns round about.' },
+  ]}
+  faqs={faqs}
+>
+  <Fragment slot="intro">
+    <p>A full valet in Aberdeen, done outside your house or your work. The Full Works is the whole job: pre-wash and snow foam, a thorough hand wash, the wheels done properly, wax spray protection, then the inside hoovered, the seats and carpets cleaned and everything wiped down to the door cards. It finishes with a final quality check. £85 for a small car, and you'll know the supplement for anything bigger before you book.</p>
+  </Fragment>
+
+  <Block heading="What a full car valet should actually involve" kicker="Why it costs £85" photo={inside} alt="Chery Tiggo 7 interior after a full car valet in Aberdeen: clean dash, centre console and black floor mats" caption="Chery Tiggo 7, inside, after. Console and floor done." side="left">
+    <p>"Full valet" gets used for all sorts. At some places it means a wash and a quick hoover with the radio on. Ours is written down, and we work through it in the same order on every car.</p>
+    <p>Outside comes first, so nothing from the wheels ends up back on clean paint. Pre-wash and snow foam loosen the grit. Then the hand wash, the rinse, the dry, a wax spray and the tyres dressed. Then the doors open and the inside gets the same treatment: full hoover, seats and carpets, dash and trims, door cards and centre console, the inside of the windows.</p>
+    <p>That takes longer than a drive-through. It's meant to.</p>
+  </Block>
+
+  <PullQuote attribution="The LM Way">The last line on the sheet is a walk round the car. <em>Then</em> it's done.</PullQuote>
+
+  <section class="ba-wrap speckle" aria-label="Full Works before and after">
+    <div class="ba-in">
+      <BeforeAfter
+        label="MG HS · Full Works · Aberdeen"
+        before={before}
+        after={hero}
+        beforeAlt="Red MG HS from the rear before its full valet, parked by a playing field in Aberdeen, van door open beside it"
+        afterAlt="Same red MG HS from the front after the Full Works, clean and glossy"
+        note="Before from the back, after from the front. Same car, same day's work."
+      />
+    </div>
+  </section>
+
+  <Block heading="When the Full Works is worth it" variant="narrow" kicker="And when it isn't">
+    <p>If you keep on top of the car, you probably don't need us at £85 every time. A <a href="/mini-valet-aberdeen/">Basic Clean, our mini valet, at £30</a> keeps it ticking over. The Full Works earns its money at certain points in the year:</p>
+    <ul>
+      <li>End of winter, when there's road salt and grit in every arch and the carpets have been wet since November.</li>
+      <li>After a summer of beach trips, kids' crumbs in the car seat and sand in the runners.</li>
+      <li>Before you sell it, or before it goes back at the end of a lease.</li>
+      <li>When you've bought something second-hand and want it to feel like yours.</li>
+    </ul>
+    <p>Large SUV or a 7-seater? The supplement's fixed: +£10 or +£15. No haggling at the door, no "that's a big one" when we arrive.</p>
+  </Block>
+
+  <JobSheet heading="The sheet we work from" id="fw-sheet" />
+</ServicePage>
+
+<style>
+  .ba-wrap { padding: clamp(3.5rem, 8vw, 6rem) 0; }
+  .ba-in { width: min(100% - 2 * var(--gutter), 1100px); margin-inline: auto; }
+</style>

@@ -1,0 +1,115 @@
+---
+import { getCollection, render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import Photo from '../../components/Photo.astro';
+import Icon from '../../components/Icon.astro';
+import Tick from '../../components/Tick.astro';
+import CoverageMap from '../../components/CoverageMap.astro';
+import PullQuote from '../../components/PullQuote.astro';
+import Honest from '../../components/Honest.astro';
+import Faq from '../../components/Faq.astro';
+import FinalCta from '../../components/FinalCta.astro';
+import { photo } from '../../lib/photos.ts';
+import { faqSchema, serviceSchema } from '../../lib/schema.ts';
+import { areaGroups, business, waLink } from '../../config/site.ts';
+
+export async function getStaticPaths() {
+  const areas = await getCollection('areas');
+  return areas.map((a) => ({ params: { slug: a.id }, props: { a } }));
+}
+const { a } = Astro.props;
+const { Content } = await render(a);
+const d = a.data;
+const group = areaGroups.find((g) => g.slug === d.group)!;
+const path = `/areas/${a.id}/`;
+const wa = `Hi LM Auto Care, I'm in ${group.suburbs[0]} / ${group.name.split(',')[0]}. I'd like a price for a valet. Car: ___ Postcode: ___`;
+const schema = [
+  { ...serviceSchema({ name: `Mobile car valeting in ${group.name}`, serviceType: 'Mobile car valeting', path, description: d.description, price: [10, 85] }), areaServed: group.suburbs.map((s) => ({ '@type': 'Place', name: `${s}, Aberdeenshire` })) },
+  faqSchema(d.faqs),
+];
+const others = areaGroups.filter((g) => g.slug !== d.group);
+---
+<Base title={d.title} description={d.description} path={path} waText={wa} breadcrumbs={[{ name: 'Areas', href: '/areas/' }, { name: group.name, href: path }]} schema={schema}>
+  <section class="ahead">
+    <div class="atext">
+      <p class="mono k">Area · {group.short} · From £10 · We come to you</p>
+      <h1>{d.h1}</h1>
+      <ul class="subs mono" data-draw>
+        {group.suburbs.map((s, i) => <li><Tick i={i} />{s}</li>)}
+      </ul>
+      <div class="btn-row">
+        <a class="btn" href={waLink(wa)} data-track="whatsapp_click" rel="noopener"><Icon name="whatsapp" /> Message on WhatsApp</a>
+        <a class="btn btn--line" href={business.tel} data-track="call_click"><Icon name="phone" /> {business.phoneDisplay}</a>
+      </div>
+      <Honest />
+    </div>
+    <div class="amap"><CoverageMap focus={d.group} /></div>
+  </section>
+
+  <div class="abody">
+    <div class="prose"><Content /></div>
+    <aside class="aside">
+      <Photo src={photo(d.photo)} alt={d.photoAlt} caption={d.photoCaption} sizes="(min-width: 1000px) 380px, 100vw" />
+    </aside>
+  </div>
+
+  <PullQuote>{d.pullQuote}</PullQuote>
+
+  <section class="suits" aria-labelledby="suits-h">
+    <div class="sin">
+      <h2 id="suits-h">What usually suits round here</h2>
+      <ol>
+        {d.suits.map((s, i) => (
+          <li>
+            <span class="mono n">{String(i + 1).padStart(2, '0')}</span>
+            <a href={s.href}>{s.label}</a>
+            <p>{s.why}</p>
+          </li>
+        ))}
+      </ol>
+      <p class="more">Every price and the size supplements are on <a href="/prices/">the price list</a>. Other areas: {others.map((g, i) => <>{i > 0 && ', '}<a href={`/areas/${g.slug}/`}>{g.name}</a></>)}, or <a href="/areas/">see all the areas we cover</a>.</p>
+    </div>
+  </section>
+
+  <Faq faqs={d.faqs} heading="Local questions" id="area-faq" />
+
+  <FinalCta waText={wa} heading={`Valet in ${group.suburbs[0]}? Message us.`} />
+</Base>
+
+<style>
+  .ahead {
+    width: min(100% - 2 * var(--gutter), 1240px);
+    margin: 1.5rem auto 0;
+    display: grid;
+    gap: 2rem;
+    padding-bottom: 3rem;
+  }
+  @media (min-width: 1000px) { .ahead { grid-template-columns: 1.1fr 0.9fr; gap: 4rem; align-items: start; } }
+  .k { color: var(--lm-blue-ink); margin: 0 0 1rem; }
+  h1 { font-size: clamp(2.2rem, 6vw, 4.2rem); font-style: italic; line-height: 0.98; letter-spacing: -0.015em; }
+  .subs { list-style: none; padding: 0; margin: 1.8rem 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(11rem, 1fr)); gap: 0 1.2rem; font-size: 0.78rem; }
+  .subs li { display: flex; gap: 0.5rem; align-items: center; padding: 0.45rem 0; border-bottom: 1px solid var(--paper-3); }
+  .btn-row { margin-bottom: 1rem; }
+  .ahead :global(.honest-compact) { color: var(--ink-2); }
+  .amap { max-width: 520px; }
+  .abody {
+    width: min(100% - 2 * var(--gutter), 1180px);
+    margin: 0 auto;
+    padding: 2rem 0 4rem;
+    display: grid;
+    gap: 3rem;
+    border-top: 1.5px solid var(--ink);
+  }
+  @media (min-width: 1000px) { .abody { grid-template-columns: minmax(0, 40rem) 380px; justify-content: space-between; } .aside { position: sticky; top: calc(var(--header-h) + 2rem); align-self: start; margin-top: 3rem; } }
+  .prose :global(p:first-child) { font-size: 1.25rem; line-height: 1.5; }
+  .suits { padding: clamp(3rem, 7vw, 5rem) 0; background: var(--granite); color: var(--paper); }
+  .sin { width: min(100% - 2 * var(--gutter), 1000px); margin-inline: auto; }
+  .suits h2 { font-size: clamp(1.8rem, 4vw, 2.6rem); margin-bottom: 1.6rem; }
+  .suits ol { list-style: none; padding: 0; margin: 0 0 1.6rem; }
+  .suits li { display: grid; grid-template-columns: 3rem 1fr; gap: 0.2rem 1rem; padding: 1rem 0; border-top: var(--rule-dark); }
+  .n { color: var(--lm-blue); grid-row: span 2; padding-top: 0.3rem; }
+  .suits li a { font-family: var(--f-ui); font-weight: 700; font-size: 1.15rem; color: var(--paper); }
+  .suits li p { margin: 0; color: #cfcdc7; }
+  .more { color: #cfcdc7; }
+  .more a { color: #8cc4ff; }
+</style>

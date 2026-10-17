@@ -1,0 +1,122 @@
+---
+import Logo from './Logo.astro';
+import { business, services, extras, areaGroups, social, giveawaysLine } from '../config/site.ts';
+const year = new Date().getFullYear();
+const serviceLinks = [
+  ...services.filter((s) => s.href && s.id !== 'thorough-clean').map((s) => ({ href: s.href!, label: s.aka ? `${s.name}, our ${s.aka}` : s.name })),
+  ...extras.filter((e) => e.href).map((e) => ({ href: e.href!, label: e.name })),
+  { href: '/valet-before-selling-or-lease-return/', label: 'Valet before selling or lease return' },
+  { href: '/offshore-workers/', label: 'For offshore workers' },
+  { href: '/prices/', label: 'All prices' },
+];
+---
+<footer class="site-footer on-dark">
+  <div class="top wrap">
+    <div class="sig">
+      <Logo size={96} disc={false} loading="lazy" />
+      <p class="trio mono">{business.taglines.trio}</p>
+      <p class="tag">{business.taglines.main}</p>
+    </div>
+
+    <div class="col">
+      <h2 class="mono">Services</h2>
+      <ul>{serviceLinks.map((l) => <li><a href={l.href}>{l.label}</a></li>)}</ul>
+    </div>
+
+    <div class="col">
+      <h2 class="mono">Areas</h2>
+      <ul>
+        <li><a href="/areas/">All areas we cover</a></li>
+        {areaGroups.map((g) => <li><a href={`/areas/${g.slug}/`}>{g.name}</a></li>)}
+      </ul>
+      <h2 class="mono second">Read</h2>
+      <ul>
+        <li><a href="/guides/">Car care notes</a></li>
+        <li><a href="/the-lm-way/">The LM Way</a></li>
+        <li><a href="/reviews/">Reviews</a></li>
+        <li><a href="/faq/">Questions</a></li>
+        <li><a href="/book/">Book a valet</a></li>
+      </ul>
+    </div>
+
+    <div class="col">
+      <h2 class="mono">Follow</h2>
+      <ul>
+        <li><a href={social.facebook.url} rel="noopener">Facebook</a></li>
+        <li><a href={social.instagram.url} rel="noopener">Instagram {social.instagram.handle}</a></li>
+        <li><a href={social.tiktok.url} rel="noopener">TikTok {social.tiktok.handle}</a></li>
+      </ul>
+      <p class="give">{giveawaysLine}</p>
+    </div>
+  </div>
+
+  <div class="nap wrap">
+    <p class="mono">
+      <strong>{business.name}</strong> · Mobile valeting, {business.areaLine} · <a href={business.tel} data-track="call_click">{business.phoneDisplay}</a> · <a href={`mailto:${business.email}`}>{business.email}</a>
+    </p>
+    <p class="mono small">© {year} {business.name} · <a href="/privacy/">Privacy</a></p>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    padding: 4.5rem 0 calc(2rem + 64px + env(safe-area-inset-bottom));
+    border-top: 6px solid var(--lm-blue);
+  }
+  @media (min-width: 768px) {
+    .site-footer { padding-bottom: 2rem; }
+  }
+  .top {
+    display: grid;
+    gap: 2.5rem;
+    grid-template-columns: 1fr;
+  }
+  @media (min-width: 760px) {
+    .top { grid-template-columns: 1.1fr 1.3fr 1fr 1fr; }
+  }
+  .trio {
+    margin: 1.2rem 0 0.4rem;
+    color: var(--lm-blue);
+  }
+  .tag {
+    font-family: var(--f-display);
+    font-stretch: var(--wide);
+    font-style: italic;
+    font-weight: 800;
+    font-size: 1.35rem;
+    line-height: 1.1;
+    max-width: 14ch;
+  }
+  h2 {
+    color: var(--stone);
+    font-size: 0.72rem;
+    margin-bottom: 0.9rem;
+    font-stretch: 100%;
+  }
+  h2.second { margin-top: 1.8rem; }
+  ul { list-style: none; margin: 0; padding: 0; }
+  li a {
+    display: inline-block;
+    padding: 0.32rem 0;
+    color: var(--paper);
+    text-decoration: none;
+    font-size: 0.98rem;
+    border-bottom: 1px solid transparent;
+  }
+  li a:hover { border-color: var(--lm-blue); }
+  .give {
+    margin-top: 1.2rem;
+    font-style: italic;
+    color: var(--stone);
+    font-size: 0.98rem;
+  }
+  .nap {
+    margin-top: 3.5rem;
+    padding-top: 1.4rem;
+    border-top: var(--rule-dark);
+  }
+  .nap p { margin: 0 0 0.4rem; color: var(--paper); }
+  .nap p:first-child { text-transform: none; letter-spacing: 0.02em; font-size: 0.82rem; }
+  .nap a { color: var(--paper); }
+  .small { color: var(--stone) !important; font-size: 0.7rem; }
+</style>

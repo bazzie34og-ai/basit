@@ -1,0 +1,60 @@
+---
+/**
+ * "BEFORE →" and "AFTER" written in marker, as SVG strokes (not a font).
+ * Each letter is a hand-plotted monoline path with a little wobble.
+ * The strokes draw in when the parent [data-draw] comes into view.
+ */
+interface Props { word: 'before' | 'after'; class?: string; }
+const { word, class: cls } = Astro.props;
+
+// Letter paths in a 26 x 40 cell. Imperfect on purpose.
+const L: Record<string, { d: string; w: number }> = {
+  B: { d: 'M4 37.5 3.2 4.5M3.4 4.6c9.8-1.6 16.6 1 15.2 6.9-.9 4-5.6 6.1-14.6 7.4 11.6-.6 17 2.8 16.1 9-.8 5.6-7.2 8.3-16.6 9.4', w: 25 },
+  E: { d: 'M20.5 4.2c-5.8.3-11.2.4-16.6.6l-.5 32.6c5.9-.2 11.4-.5 17.5-1M4 20.3c4.6-.3 8.8-.5 13.1-.4', w: 24 },
+  F: { d: 'M20 4.4c-5.4.1-10.6.3-15.9.5L3.5 38M4 20.6c4.2-.1 8.2-.2 12.3-.4', w: 22 },
+  O: { d: 'M13.4 4.6C5.6 4.1 2.6 12.4 2.9 21c.3 9.1 4.2 16.6 11.1 16.2 7.2-.5 9.9-8.9 9.6-17.6-.3-8.3-3.8-15-10.9-15.2-1 .1-1.8.6-2.4 1.2', w: 27 },
+  R: { d: 'M4 38 3.6 4.4c10.1-1.9 17.3.6 16.8 7.4-.4 5.4-6.6 8.1-15.7 8.6 5.7 4.9 11 10.7 16 17.4', w: 25 },
+  A: { d: 'M2.6 38.2C6.1 27 9.3 15.6 12.6 3.6c3.3 11.6 6.5 22.9 9.9 34.4M6.4 26.6c4.7-.6 8.6-.7 12.4-.5', w: 25 },
+  T: { d: 'M1.6 5.2c7.6-.6 14.6-.9 21.6-.8M12.5 4.8c-.4 11.1-.4 22.1-.1 33.4', w: 25 },
+};
+const ARROW = { d: 'M1.5 21.4c11.2-1 22.5-1.4 37.5-1.6M30.4 11.2c3.3 3.1 6.4 6 9.2 8.8-3.4 2.8-6.6 5.9-9.6 9.4', w: 44 };
+
+const letters = (word === 'before' ? 'BEFORE' : 'AFTER').split('').map((c) => L[c]);
+const parts = [...letters, ...(word === 'before' ? [ARROW] : [])];
+let x = 0;
+const placed = parts.map((p, i) => {
+  const at = x;
+  x += p.w + (i === letters.length - 1 ? 9 : 3);
+  return { ...p, x: at, i, rot: ((i * 37) % 5) - 2 };
+});
+const width = x;
+---
+<svg class:list={['hand', cls]} viewBox={`-2 0 ${width + 4} 42`} role="img" aria-label={word === 'before' ? 'Before' : 'After'}>
+  {placed.map((p) => (
+    <path d={p.d} transform={`translate(${p.x} 0) rotate(${p.rot} 12 20)`} pathLength="1" style={`--i:${p.i}`} />
+  ))}
+</svg>
+<style>
+  .hand {
+    height: 1.6em;
+    width: auto;
+    overflow: visible;
+  }
+  .hand path {
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 3.1;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-dasharray: 1;
+    stroke-dashoffset: 0;
+  }
+  @media (scripting: enabled) and (prefers-reduced-motion: no-preference) {
+    :global([data-draw]) .hand path { stroke-dashoffset: 1; }
+    :global([data-draw].is-drawn) .hand path {
+      stroke-dashoffset: 0;
+      transition: stroke-dashoffset 0.28s ease-out;
+      transition-delay: calc(var(--i) * 90ms + 200ms);
+    }
+  }
+</style>

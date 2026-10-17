@@ -1,0 +1,50 @@
+---
+/** The last word on a page: owner's note on one side, three ways to book on the other. */
+import OwnersNote from './OwnersNote.astro';
+import Icon from './Icon.astro';
+import Honest from './Honest.astro';
+import { business, waLink } from '../config/site.ts';
+interface Props { waText: string; heading?: string; note?: boolean; }
+const { waText, heading = 'Right. Where’s the car?', note = true } = Astro.props;
+---
+<section class:list={['final', { solo: !note }]} aria-labelledby="final-h">
+  <div class="in">
+    {note && <OwnersNote />}
+    <div class="cta">
+      <h2 id="final-h">{heading}</h2>
+      <p>Send the make, the model and your postcode. We'll come back with a price and a time. Most people book on WhatsApp; the form and the phone work too.</p>
+      <div class="btn-row">
+        <a class="btn" href={waLink(waText)} data-track="whatsapp_click" rel="noopener"><Icon name="whatsapp" /> Message on WhatsApp</a>
+        <a class="btn btn--line" href={business.tel} data-track="call_click"><Icon name="phone" /> {business.phoneDisplay}</a>
+      </div>
+      <p class="form-link"><a href="/book/" data-track="book_start">Or use the booking form</a> (six short steps, photos optional).</p>
+      <Honest />
+    </div>
+  </div>
+</section>
+<style>
+  .final {
+    padding: clamp(4rem, 9vw, 7rem) 0;
+    background: var(--paper-2);
+    border-top: 1px solid var(--ink);
+  }
+  .in {
+    width: min(100% - 2 * var(--gutter), 1160px);
+    margin-inline: auto;
+    display: grid;
+    gap: 3rem;
+    align-items: center;
+  }
+  @media (min-width: 940px) {
+    .in { grid-template-columns: 1fr 1fr; gap: 5rem; }
+    .solo .in { grid-template-columns: 1fr; max-width: 760px; }
+  }
+  h2 {
+    font-size: clamp(2.2rem, 5.6vw, 4rem);
+    font-style: italic;
+    margin-bottom: 1.2rem;
+  }
+  .cta > p { max-width: 32rem; }
+  .btn-row { margin: 1.6rem 0 1rem; }
+  .form-link { font-size: 1rem; margin-bottom: 1.6rem; }
+</style>

@@ -1,0 +1,30 @@
+---
+/** One line, set very large. Our own words, not a customer's. */
+interface Props { attribution?: string; }
+const { attribution } = Astro.props;
+---
+<figure class="pull">
+  <blockquote><p><slot /></p></blockquote>
+  {attribution && <figcaption class="mono">{attribution}</figcaption>}
+</figure>
+<style>
+  .pull {
+    margin: 0;
+    padding: clamp(3.5rem, 9vw, 7rem) var(--gutter);
+    border-block: 1px solid var(--ink);
+  }
+  blockquote { margin: 0 auto; max-width: 1200px; }
+  p {
+    margin: 0;
+    font-family: var(--f-display);
+    font-stretch: var(--wide);
+    font-style: italic;
+    font-weight: 800;
+    font-size: clamp(2.1rem, 6.4vw, 5.2rem);
+    line-height: 1;
+    letter-spacing: -0.02em;
+    text-wrap: balance;
+  }
+  p :global(em) { font-style: italic; color: var(--lm-blue-ink); }
+  figcaption { max-width: 1200px; margin: 1.4rem auto 0; color: var(--stone-ink); }
+</style>

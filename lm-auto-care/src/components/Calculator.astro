@@ -1,0 +1,295 @@
+---
+/**
+ * Price-it-yourself. Without JS it is a plain GET form that carries the
+ * choices to /book/. With JS the docket totals itself and the WhatsApp
+ * button carries the full quote.
+ */
+import Tick from './Tick.astro';
+import Icon from './Icon.astro';
+import { services, sizes, extras, waLink } from '../config/site.ts';
+import { quote, priceLabel } from '../lib/pricing.ts';
+import { calcMessage } from '../lib/messages.ts';
+
+interface Props {
+  defaultService?: string;
+  defaultSize?: string;
+  heading?: string;
+  id?: string;
+}
+const { defaultService = 'thorough-clean', defaultSize = 'medium', heading = 'Price it yourself', id = 'calculator' } = Astro.props;
+const q = quote(defaultService, defaultSize, []);
+---
+<section class="calc on-dark" id={id} aria-labelledby={`${id}-h`}>
+  <div class="inner">
+    <div class="intro">
+      <p class="mono kicker">Job docket · fill it in</p>
+      <h2 id={`${id}-h`}>{heading}</h2>
+      <p>Pick the job, the size of the motor and any extras. The number at the bottom is the number you pay. If it's wrong when we turn up, that's on us, not you.</p>
+    </div>
+
+    <form class="form" action="/book/" method="get" data-calc>
+      <fieldset>
+        <legend class="mono">01 · The job</legend>
+        <div class="opts">
+          {services.map((s, i) => (
+            <label class="opt">
+              <input type="radio" name="service" value={s.id} checked={s.id === defaultService} />
+              <span class="box" aria-hidden="true"><Tick variant={i % 3} /></span>
+              <span class="oname">{s.name}{s.aka && <small> ({s.aka})</small>}</span>
+              <span class="mono oprice">{priceLabel(s.priceMin, s.priceMax)}</span>
+            </label>
+          ))}
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend class="mono">02 · Size of the motor</legend>
+        <div class="opts">
+          {sizes.map((z, i) => (
+            <label class="opt">
+              <input type="radio" name="size" value={z.id} checked={z.id === defaultSize} />
+              <span class="box" aria-hidden="true"><Tick variant={(i + 1) % 3} /></span>
+              <span class="oname">{z.short}<small> · {z.examples}</small></span>
+              <span class="mono oprice">{z.supplement ? `+£${z.supplement}` : '+£0'}</span>
+            </label>
+          ))}
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend class="mono">03 · Extras (optional)</legend>
+        <div class="opts">
+          {extras.map((e, i) => (
+            <label class="opt">
+              <input type="checkbox" name="extras" value={e.id} />
+              <span class="box sq" aria-hidden="true"><Tick variant={(i + 2) % 3} /></span>
+              <span class="oname">{e.name}</span>
+              <span class="mono oprice">+£{e.price}</span>
+            </label>
+          ))}
+        </div>
+      </fieldset>
+
+      <noscript>
+        <button class="btn" type="submit">Take this to the booking form</button>
+      </noscript>
+    </form>
+
+    <aside class="docket" aria-labelledby={`${id}-total-label`}>
+      <p class="mono dhead">LM Auto Care · Job docket</p>
+      <ul class="lines" data-lines>
+        {q.lines.map((l) => (
+          <li><span>{l.label}</span><span class="mono">{l.amount}</span></li>
+        ))}
+      </ul>
+      <div class="total">
+        <p class="mono" id={`${id}-total-label`}>Your price</p>
+        <p class="sum mono" aria-live="polite" data-total>{q.label}</p>
+      </div>
+      <p class="fine">Fixed before we start. Water and a power socket needed where the car is.</p>
+      <div class="actions">
+        <a class="btn" href={waLink(calcMessage(q))} data-wa data-track="whatsapp_click" rel="noopener">
+          <Icon name="whatsapp" /> Book this on WhatsApp
+        </a>
+        <a class="book" href={`/book/?service=${defaultService}&size=${defaultSize}`} data-book data-track="book_start">Or fill in the booking form</a>
+      </div>
+    </aside>
+  </div>
+</section>
+
+<script>
+  import { quote } from '../lib/pricing.ts';
+  import { calcMessage } from '../lib/messages.ts';
+  import { waLink } from '../config/site.ts';
+  import { track } from '../scripts/track.ts';
+
+  document.querySelectorAll<HTMLElement>('.calc').forEach((root) => {
+    const form = root.querySelector<HTMLFormElement>('[data-calc]')!;
+    const lines = root.querySelector<HTMLElement>('[data-lines]')!;
+    const total = root.querySelector<HTMLElement>('[data-total]')!;
+    const wa = root.querySelector<HTMLAnchorElement>('[data-wa]')!;
+    const book = root.querySelector<HTMLAnchorElement>('[data-book]')!;
+    let used = false;
+
+    const update = () => {
+      const fd = new FormData(form);
+      const q = quote(String(fd.get('service')), String(fd.get('size')), fd.getAll('extras').map(String));
+      lines.replaceChildren(
+        ...q.lines.map((l) => {
+          const li = document.createElement('li');
+          const a = document.createElement('span');
+          const b = document.createElement('span');
+          a.textContent = l.label;
+          b.textContent = l.amount;
+          b.className = 'mono';
+          li.append(a, b);
+          return li;
+        }),
+      );
+      if (total.textContent !== q.label) {
+        total.textContent = q.label;
+        total.classList.remove('ticked');
+        void total.offsetWidth; // restart the little mechanical tick
+        total.classList.add('ticked');
+      }
+      wa.href = waLink(calcMessage(q));
+      const p = new URLSearchParams({ service: q.serviceId, size: q.sizeId });
+      q.extraIds.forEach((x) => p.append('extras', x));
+      book.href = `/book/?${p}`;
+      return q;
+    };
+
+    form.addEventListener('change', () => {
+      const q = update();
+      if (!used) {
+        used = true;
+        track('calculator_used', { service: q.serviceId, size: q.sizeId, total: q.label });
+      }
+    });
+    update();
+  });
+</script>
+
+<style>
+  .calc {
+    padding: clamp(3.5rem, 8vw, 6rem) 0;
+    border-top: 1px solid var(--granite-3);
+  }
+  .inner {
+    width: min(100% - 2 * var(--gutter), 1120px);
+    margin-inline: auto;
+    display: grid;
+    gap: 2.5rem;
+  }
+  @media (min-width: 960px) {
+    .inner {
+      grid-template-columns: 1.25fr 1fr;
+      grid-template-areas: 'intro intro' 'form docket';
+      column-gap: 4rem;
+    }
+    .intro { grid-area: intro; }
+    .form { grid-area: form; }
+    .docket { grid-area: docket; position: sticky; top: calc(var(--header-h) + 1.5rem); align-self: start; }
+  }
+  .kicker { color: var(--lm-blue); margin: 0 0 0.6rem; }
+  h2 {
+    font-size: clamp(2rem, 5vw, 3.4rem);
+    font-style: italic;
+    margin-bottom: 0.9rem;
+  }
+  .intro p:last-child { max-width: 36rem; color: #d8d6d0; }
+
+  fieldset {
+    border: 0;
+    padding: 0;
+    margin: 0 0 2rem;
+  }
+  legend {
+    color: var(--stone);
+    margin-bottom: 0.6rem;
+    padding: 0;
+  }
+  .opts {
+    border-top: var(--rule-dark);
+  }
+  .opt {
+    position: relative;
+    display: grid;
+    grid-template-columns: 1.6rem 1fr auto;
+    align-items: center;
+    gap: 0.8rem;
+    min-height: 52px;
+    padding: 0.55rem 0.2rem;
+    border-bottom: var(--rule-dark);
+    cursor: pointer;
+  }
+  .opt input {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    margin: 0;
+    cursor: pointer;
+  }
+  .box {
+    width: 1.35rem;
+    height: 1.35rem;
+    border: 1.5px solid var(--stone);
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    font-size: 1.1rem;
+  }
+  .box.sq { border-radius: 2px; }
+  .box :global(.tick path) {
+    stroke: var(--lm-blue);
+    stroke-dashoffset: 1 !important;
+    transition: stroke-dashoffset 0.25s ease !important;
+    transition-delay: 0s !important;
+  }
+  .opt input:checked + .box :global(.tick path) { stroke-dashoffset: 0 !important; }
+  .opt input:checked + .box { border-color: var(--paper); }
+  .opt input:focus-visible + .box { outline: 3px solid var(--lm-blue); outline-offset: 3px; }
+  .opt:hover .oname { color: var(--foam); }
+  .oname { font-family: var(--f-ui); font-weight: 600; color: var(--paper-2); }
+  .oname small { font-weight: 400; color: var(--stone); font-size: 0.85em; }
+  .oprice { font-size: 0.95rem; letter-spacing: 0; text-transform: none; color: var(--paper); }
+
+  /* The docket: a paper slip on the dark bench. */
+  .docket {
+    background: var(--paper);
+    color: var(--ink);
+    padding: 1.4rem 1.4rem 1.6rem;
+    box-shadow: 6px 6px 0 rgba(0, 0, 0, 0.35);
+    transform: rotate(-0.6deg);
+    -webkit-mask: radial-gradient(circle at 8px 0, transparent 5px, #000 5.5px) -8px 0 / 16px 100% repeat-x;
+    mask: radial-gradient(circle at 8px 0, transparent 5px, #000 5.5px) -8px 0 / 16px 100% repeat-x;
+  }
+  .dhead {
+    margin: 0.4rem 0 1rem;
+    font-size: 0.68rem;
+    color: var(--stone-ink);
+    padding-bottom: 0.7rem;
+    border-bottom: 1.5px solid var(--ink);
+  }
+  .lines {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    min-height: 7.5rem;
+  }
+  .lines :global(li) {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.4rem 0;
+    border-bottom: 1px dashed var(--paper-3);
+    font-size: 0.98rem;
+  }
+  .lines :global(.mono) { font-size: 0.9rem; text-transform: none; letter-spacing: 0; }
+  .total {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-top: 1rem;
+    padding-top: 0.6rem;
+    border-top: 3px double var(--ink);
+  }
+  .total p { margin: 0; }
+  .sum {
+    font-size: clamp(2.4rem, 6vw, 3.2rem);
+    color: var(--lm-blue-ink);
+    letter-spacing: -0.02em;
+    text-transform: none;
+    line-height: 1;
+    display: inline-block;
+  }
+  .sum:global(.ticked) { animation: tick 0.16s steps(3, end); }
+  @keyframes tick {
+    from { transform: translateY(-0.18em); opacity: 0.4; }
+    to { transform: translateY(0); opacity: 1; }
+  }
+  .fine { font-size: 0.9rem; color: var(--ink-2); margin: 0.9rem 0 1.1rem; }
+  .actions { display: grid; gap: 0.6rem; justify-items: start; }
+  .docket .btn { --btn-bg: var(--ink); --btn-fg: var(--paper); }
+  .book { color: var(--lm-blue-ink) !important; padding: 0.5rem 0; }
+</style>

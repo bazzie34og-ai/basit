@@ -1,0 +1,88 @@
+---
+/**
+ * Two photos side by side, labelled in marker. Never a slider: the pairs are
+ * often different angles, and pretending otherwise would be dishonest.
+ */
+import type { ImageMetadata } from 'astro';
+import Photo from './Photo.astro';
+import HandLabel from './HandLabel.astro';
+interface Props {
+  before: ImageMetadata;
+  after: ImageMetadata;
+  beforeAlt: string;
+  afterAlt: string;
+  label: string;
+  note?: string;
+  flip?: boolean;
+}
+const { before, after, beforeAlt, afterAlt, label, note, flip = false } = Astro.props;
+---
+<div class:list={['pair', { flip }]} data-draw>
+  <p class="mono plabel">{label}</p>
+  <div class="half b">
+    <HandLabel word="before" class="mark" />
+    <Photo src={before} alt={beforeAlt} sizes="(min-width: 760px) 44vw, 92vw" />
+  </div>
+  <div class="half a">
+    <HandLabel word="after" class="mark" />
+    <Photo src={after} alt={afterAlt} sizes="(min-width: 760px) 44vw, 92vw" />
+  </div>
+  {note && <p class="note">{note}</p>}
+</div>
+<style>
+  .pair {
+    display: grid;
+    gap: 1.6rem 1.2rem;
+    grid-template-columns: 1fr;
+  }
+  .plabel {
+    margin: 0;
+    color: var(--stone-ink);
+    border-top: 1px solid var(--ink);
+    padding-top: 0.6rem;
+    grid-column: 1 / -1;
+  }
+  .half {
+    position: relative;
+  }
+  .half :global(.mark) {
+    position: absolute;
+    z-index: 2;
+    top: -0.9rem;
+    left: 0.8rem;
+    color: var(--lm-blue-ink);
+    background: var(--paper);
+    padding: 0.35rem 0.6rem 0.25rem;
+    height: 2.7rem !important;
+    width: auto;
+    box-shadow: 2px 2px 0 var(--paper-3);
+  }
+  .a :global(.mark) {
+    left: auto;
+    right: 0.8rem;
+  }
+  .note {
+    grid-column: 1 / -1;
+    font-style: italic;
+    color: var(--ink-2);
+    max-width: 44ch;
+    margin: 0;
+  }
+  @media (min-width: 760px) {
+    .pair {
+      grid-template-columns: 1fr 1fr;
+      align-items: start;
+    }
+    .a { margin-top: 3.5rem; }
+    .flip .a { margin-top: 0; }
+    .flip .b { margin-top: 3.5rem; }
+    .half :global(.mark) { transform: translateX(-0.6rem) rotate(-3deg); }
+    .a :global(.mark) { transform: translateX(0.6rem) rotate(2deg); }
+  }
+  /* The labels slide in with the strokes, a short way, once. */
+  @media (scripting: enabled) and (prefers-reduced-motion: no-preference) {
+    .pair :global(.mark) { opacity: 0; translate: -14px 0; }
+    .pair.is-drawn :global(.mark) { opacity: 1; translate: 0 0; transition: opacity 0.3s ease, translate 0.45s ease; }
+    .pair.is-drawn .a :global(.mark) { transition-delay: 0.6s; }
+  }
+</style>

@@ -1,0 +1,249 @@
+---
+import Base from '../layouts/Base.astro';
+import Photo from '../components/Photo.astro';
+import Icon from '../components/Icon.astro';
+import PainPoints from '../components/PainPoints.astro';
+import TariffCard from '../components/TariffCard.astro';
+import Calculator from '../components/Calculator.astro';
+import BeforeAfter from '../components/BeforeAfter.astro';
+import JobSheet from '../components/JobSheet.astro';
+import BookingSteps from '../components/BookingSteps.astro';
+import Honest from '../components/Honest.astro';
+import CoverageMap from '../components/CoverageMap.astro';
+import Reviews from '../components/Reviews.astro';
+import Faq from '../components/Faq.astro';
+import FinalCta from '../components/FinalCta.astro';
+import { business, waLink, waMessages, areaGroups } from '../config/site.ts';
+import { meta } from '../config/pages.ts';
+import { homeFaqs } from '../content/faqs.ts';
+import { faqSchema } from '../lib/schema.ts';
+
+import hero from '../assets/photos/lm-auto-care-van-and-kit-on-site-mg-hs.jpg';
+import mgIntBefore from '../assets/before-after/mg-hs-interior-before.jpg';
+import mgIntAfter from '../assets/before-after/mg-hs-interior-after.jpg';
+import cheryBefore from '../assets/before-after/chery-tiggo7-before-rear.jpg';
+import cheryAfter from '../assets/before-after/chery-tiggo7-after-front.jpg';
+
+const m = meta('/');
+const wa = waMessages.home;
+---
+<Base title={m.title} description={m.description} path="/" waText={wa} schema={[faqSchema(homeFaqs)]}>
+  <section class="hero on-dark" aria-labelledby="h1">
+    <div class="hero-grid">
+      <div class="hero-photo">
+        <Photo
+          src={hero}
+          eager
+          sizes="(min-width: 1000px) 560px, 100vw"
+          alt="LM Auto Care van with its back open, the valeting kit and a folding table set up on the pavement beside a red MG HS on an Aberdeen street"
+          caption="Fig. 01 · On the kerb, Aberdeen. Van, kit, table, one red MG HS."
+        />
+      </div>
+      <div class="hero-text">
+        <p class="mono where">Aberdeen &amp; surrounding areas · Home · Work · Drop-off</p>
+        <h1 id="h1">Mobile Car Valeting in Aberdeen. We Come to You.</h1>
+        <p class="price-line">
+          From <span class="mono big">£10</span>. Prices fixed before we start.
+        </p>
+        <p class="sub">Your car's been sat on the street all week. We'll sort it on the street. Hand wash, snow foam, a proper hoover, done outside your house or your work while you get on with your day.</p>
+        <div class="btn-row">
+          <a class="btn" href={waLink(wa)} data-track="whatsapp_click" rel="noopener"><Icon name="whatsapp" /> Message on WhatsApp</a>
+          <a class="btn btn--line" href={business.tel} data-track="call_click"><Icon name="phone" /> Call {business.phoneDisplay}</a>
+        </div>
+        <Honest />
+      </div>
+    </div>
+  </section>
+
+  <PainPoints />
+
+  <TariffCard
+    heading="The price list. No surprises at the end."
+    intro="Six jobs, four sizes, four extras. That's the lot. Prices are per car, at your door, and the size supplement is printed right underneath so you can work it out before you message."
+  />
+
+  <Calculator />
+
+  <section class="ba speckle" aria-labelledby="ba-h">
+    <div class="ba-in">
+      <div class="ba-head">
+        <h2 id="ba-h">Before and after</h2>
+        <p>Our own photos, taken on the phone, on the day. No filters and no stock pictures. The writing on them is ours too.</p>
+      </div>
+      <BeforeAfter
+        label="MG HS · Interior Valet · Aberdeen"
+        before={mgIntBefore}
+        after={mgIntAfter}
+        beforeAlt="MG HS interior before an interior valet in Aberdeen: bits on the black carpets and a dusty dash"
+        afterAlt="MG HS interior after an interior valet, seen through the open driver's door: seats, dash and door card cleaned"
+      />
+      <BeforeAfter
+        flip
+        label="Chery Tiggo 7 · Exterior · Same street"
+        before={cheryBefore}
+        after={cheryAfter}
+        beforeAlt="Silver Chery Tiggo 7 from the rear before an exterior valet, parked on a street of timber houses in Aberdeen"
+        afterAlt="Silver Chery Tiggo 7 from the front after a hand wash and microfibre dry, same Aberdeen street"
+        note="Different angles, we know. The before was taken from the back and the after from the front. We'd rather show you that than fake a slider."
+      />
+    </div>
+  </section>
+
+  <JobSheet />
+
+  <BookingSteps />
+
+  <Honest variant="full" />
+
+  <section class="cover" aria-labelledby="cover-h">
+    <div class="cover-in">
+      <div class="cover-map">
+        <CoverageMap />
+      </div>
+      <div class="cover-text">
+        <p class="mono kicker">Where we go</p>
+        <h2 id="cover-h">Aberdeen, and a fair bit round about</h2>
+        <p>From Bridge of Don to Cove, Westhill to Torry, and out to the towns. If you're not on the list, message us your postcode. It costs nothing to ask.</p>
+        <div class="groups">
+          {areaGroups.map((g) => (
+            <div>
+              <h3><a href={`/areas/${g.slug}/`}>{g.name}</a></h3>
+              <p>{g.suburbs.join(', ')}</p>
+            </div>
+          ))}
+        </div>
+        <p><a href="/areas/">More on the areas we cover</a></p>
+      </div>
+    </div>
+  </section>
+
+  <Reviews />
+
+  <Faq faqs={homeFaqs} intro={`Anything else, <a href="/faq/">there are more answers here</a>, or just ask us on WhatsApp.`} />
+
+  <FinalCta waText={wa} />
+</Base>
+
+<style>
+  /* Hero: photo bleeds off the left edge, text in a narrow column. */
+  .hero {
+    padding: 0 0 3rem;
+    overflow: hidden;
+  }
+  .hero-grid {
+    display: grid;
+    gap: 2rem;
+  }
+  .hero-text {
+    padding: 2.2rem var(--gutter) 0;
+    order: -1;
+  }
+  .where {
+    color: var(--lm-blue);
+    margin: 0 0 1rem;
+  }
+  h1 {
+    font-size: clamp(2.5rem, 8.6vw, 5.4rem);
+    font-style: italic;
+    line-height: 0.96;
+    letter-spacing: -0.02em;
+    max-width: 12ch;
+  }
+  .price-line {
+    margin: 1.4rem 0 0.8rem;
+    font-family: var(--f-display);
+    font-stretch: 100%;
+    font-weight: 600;
+    font-size: clamp(1.3rem, 3vw, 1.7rem);
+    line-height: 1.25;
+  }
+  .big {
+    font-size: 1.2em;
+    color: var(--lm-blue);
+    letter-spacing: 0;
+    text-transform: none;
+  }
+  .sub {
+    max-width: 34rem;
+    color: #d8d6d0;
+  }
+  .hero .btn-row {
+    margin: 1.6rem 0 1.4rem;
+  }
+  .hero-photo :global(figcaption) {
+    padding: 0 var(--gutter);
+  }
+  @media (min-width: 1000px) {
+    .hero {
+      padding: 0;
+    }
+    .hero-grid {
+      grid-template-columns: minmax(0, 560px) minmax(0, 1fr);
+      gap: clamp(2.5rem, 5vw, 5rem);
+      align-items: center;
+      max-width: 1400px;
+    }
+    .hero-text {
+      order: 0;
+      padding: 3rem var(--gutter) 3rem 0;
+      max-width: 40rem;
+    }
+    .hero-photo {
+      padding-bottom: 2.2rem;
+    }
+    .hero-photo :global(figcaption) {
+      padding: 0 0 0 1.2rem;
+    }
+  }
+  @media (min-width: 1500px) {
+    .hero-grid {
+      margin-left: calc((100vw - 1400px) / 2 - 0px);
+    }
+  }
+
+  /* Before / after */
+  .ba {
+    padding: clamp(4rem, 9vw, 7rem) 0;
+  }
+  .ba-in {
+    width: min(100% - 2 * var(--gutter), 1300px);
+    margin-inline: auto;
+    display: grid;
+    gap: 4rem;
+  }
+  .ba-head {
+    display: grid;
+    gap: 1rem 4rem;
+  }
+  @media (min-width: 900px) {
+    .ba-head { grid-template-columns: auto 1fr; align-items: end; }
+  }
+  .ba-head h2 {
+    font-size: clamp(2.4rem, 7vw, 5rem);
+    font-style: italic;
+  }
+  .ba-head p { margin: 0; max-width: 30rem; }
+
+  /* Coverage */
+  .cover {
+    padding: clamp(3.5rem, 8vw, 6rem) 0;
+    border-top: 1px solid var(--ink);
+  }
+  .cover-in {
+    width: min(100% - 2 * var(--gutter), 1180px);
+    margin-inline: auto;
+    display: grid;
+    gap: 2.5rem;
+  }
+  @media (min-width: 920px) {
+    .cover-in { grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start; }
+  }
+  .cover-map { max-width: 560px; }
+  .kicker { color: var(--lm-blue-ink); margin: 0 0 0.6rem; }
+  .cover h2 { font-size: clamp(1.9rem, 4.4vw, 2.9rem); margin-bottom: 1rem; }
+  .groups { margin: 1.8rem 0; }
+  .groups > div { padding: 0.9rem 0; border-top: 1px solid var(--paper-3); }
+  .groups h3 { font-size: 1rem; font-stretch: 100%; font-weight: 700; margin-bottom: 0.3rem; }
+  .groups h3 a { color: var(--ink); text-decoration-color: var(--lm-blue); }
+  .groups p { margin: 0; font-size: 0.98rem; color: var(--ink-2); }
+</style>

@@ -1,0 +1,72 @@
+---
+import ServicePage from '../layouts/ServicePage.astro';
+import Block from '../components/Block.astro';
+import BeforeAfter from '../components/BeforeAfter.astro';
+import { services, waMessages } from '../config/site.ts';
+import hero from '../assets/photos/mazda-cx3-interior-front-seats-after-valet.jpg';
+import rear from '../assets/photos/mazda-cx3-rear-seats-after-interior-valet.jpg';
+import before from '../assets/before-after/mg-hs-interior-before.jpg';
+import after from '../assets/before-after/mg-hs-interior-after.jpg';
+
+const s = services.find((x) => x.id === 'interior-valet')!;
+const faqs = [
+  { q: 'How much is an interior valet in Aberdeen?', a: 'The Interior Valet is £35 for a small car, plus £5 for medium, £10 for large cars and SUVs, or £15 for 7-seaters and large MPVs.' },
+  { q: 'Do you clean the seats, or just hoover them?', a: 'Both. The Interior Valet includes a full interior vacuum and the seats and carpets cleaned, along with the dashboard, trims, door cards, centre console and the inside of the windows.' },
+  { q: 'Can you clean a baby or child car seat?', a: 'Yes. Baby Seat Clean is a £10 extra: a deep clean and sanitise that removes stains and spills, using safe, family-friendly products.' },
+  { q: 'Can you get rid of a smell, like spilt milk?', a: "Most smells come from something that's soaked in, so cleaning the seats and carpets properly is the start. Tell us what it is when you book and send a photo, and we'll be honest about what we can do." },
+];
+---
+<ServicePage
+  path="/interior-valet-aberdeen/"
+  crumb="Interior valet"
+  h1="Interior Car Valet, Aberdeen"
+  kicker="Job 03 · Interior only"
+  priceTag={`£${s.priceMin} · small car · door cards and console included`}
+  photo={hero}
+  alt="Inside of a blue Mazda CX-3 after an interior valet in Aberdeen: leather seats with red stitching, clean dash and carpets"
+  caption="Fig. 03 · Mazda CX-3. Front seats, dash, door card, carpets."
+  waText={waMessages.interior}
+  service={s}
+  sheetTitle="Seven lines, all on the inside"
+  schemaName="Interior car valet"
+  serviceType="Car interior cleaning"
+  related={[
+    { tag: 'Extra', href: '/pet-hair-removal-aberdeen/', label: 'Dog hair removal, £10', blurb: 'Add it to the interior valet if the dog has the back seat.' },
+    { tag: 'Service', href: '/full-valet-aberdeen/', label: 'Full Works, our full valet', blurb: 'Inside and out, signed off at the end.' },
+    { tag: 'Guide', href: '/guides/getting-dog-hair-out-of-a-car/', label: 'Getting dog hair out of a car', blurb: 'What works at home, and when it’s worth paying £10.' },
+    { tag: 'Areas', href: '/areas/', label: 'Where we go', blurb: 'All of Aberdeen and the surrounding areas.' },
+  ]}
+  faqs={faqs}
+>
+  <Fragment slot="intro">
+    <p>Car interior cleaning in Aberdeen, done on your driveway or outside your work. The Interior Valet is £35: a full hoover, the seats and carpets cleaned, the dash and trims, the door cards, the centre console and the inside of every window. Then the detailed finishing touches, the bits you'd only notice if they'd been missed.</p>
+  </Fragment>
+
+  <section class="ba-wrap speckle" aria-label="Interior valet before and after">
+    <div class="ba-in">
+      <BeforeAfter
+        label="MG HS · Interior valet · Aberdeen"
+        before={before}
+        after={after}
+        beforeAlt="MG HS interior before an interior valet in Aberdeen: bits on the black carpets and a dusty dash"
+        afterAlt="MG HS interior after car interior cleaning, seen through the open driver's door: seats, dash and door card cleaned"
+      />
+    </div>
+  </section>
+
+  <Block heading="The inside is where you actually live" kicker="Crumbs, mud, coffee" photo={rear} alt="Mazda CX-3 rear seats after an interior valet in Aberdeen, rear door open, snow foam still on the paving" caption="Rear seats, Mazda CX-3. Foam on the slabs from the outside job." side="left">
+    <p>The outside gets the attention, but you spend your time on the inside. School runs. Kids' crumbs down the side of the car seat. Mud off the boots after a walk. A coffee that didn't quite make it into the cup holder on the A96.</p>
+    <p>An interior car valet goes after all of it. The hoover gets under the seats and down the sides of the console. The seats and carpets get cleaned, not just hoovered. The door cards and the console get wiped down properly, and the inside of the glass gets done so there's no film when the sun's low.</p>
+  </Block>
+
+  <Block heading="Car seat cleaning, the bits people forget" variant="narrow" kicker="Worth mentioning when you book">
+    <p>Child seats are their own job. They come out, they get the deep clean and sanitise, the straps and the seat base get done, and they go back in. It's a <strong>£10 Baby Seat Clean</strong> on top of any service, with safe, family-friendly products.</p>
+    <p>If there's dog hair woven into the boot carpet, add <a href="/pet-hair-removal-aberdeen/">Pet Hair Removal</a> for £10. If there's a smell you can't shift, tell us what caused it. Spilt milk is a common one. We'd rather know before we start than find out with the doors shut.</p>
+    <p>Want the outside done too? The <a href="/exterior-valet-aberdeen/">Exterior Valet</a> is also £35, or have both as the Thorough Clean for £60.</p>
+  </Block>
+</ServicePage>
+
+<style>
+  .ba-wrap { padding: clamp(3.5rem, 8vw, 6rem) 0; }
+  .ba-in { width: min(100% - 2 * var(--gutter), 1100px); margin-inline: auto; }
+</style>

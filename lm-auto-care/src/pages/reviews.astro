@@ -1,0 +1,36 @@
+---
+import Base from '../layouts/Base.astro';
+import Reviews from '../components/Reviews.astro';
+import BeforeAfter from '../components/BeforeAfter.astro';
+import FinalCta from '../components/FinalCta.astro';
+import { waMessages, social } from '../config/site.ts';
+import { meta } from '../config/pages.ts';
+import before from '../assets/before-after/mg-hs-exterior-before-rear.jpg';
+import after from '../assets/photos/mg-hs-red-exterior-after-valet.jpg';
+const m = meta('/reviews/');
+---
+<Base title={m.title} description={m.description} path="/reviews/" waText={waMessages.reviews} breadcrumbs={[{ name: 'Reviews', href: '/reviews/' }]}>
+  <Reviews heading="What Customers Say About LM Auto Care" headingLevel="h1" showGoogle />
+  <section class="proof speckle" aria-labelledby="proof-h">
+    <div class="in">
+      <h2 id="proof-h">The other kind of review</h2>
+      <p>Words are good. Photos are better. Here's a red MG HS before and after, from our own phone, on the day.</p>
+      <BeforeAfter
+        label="MG HS · Exterior · Aberdeen"
+        before={before}
+        after={after}
+        beforeAlt="Red MG HS from the rear before a valet by LM Auto Care in Aberdeen"
+        afterAlt="Red MG HS from the front after a valet by LM Auto Care, clean and glossy"
+      />
+      {!social.googleReviewUrl && <p class="mono soon">Google reviews: coming soon. Our Google profile is being set up.</p>}
+    </div>
+  </section>
+  <FinalCta waText={waMessages.reviews} />
+</Base>
+<style>
+  .proof { padding: clamp(3.5rem, 8vw, 6rem) 0; }
+  .in { width: min(100% - 2 * var(--gutter), 1100px); margin-inline: auto; }
+  h2 { font-size: clamp(1.8rem, 4vw, 2.6rem); font-style: italic; margin-bottom: 0.8rem; }
+  .in > p { max-width: 34rem; margin-bottom: 2.5rem; }
+  .soon { margin-top: 2.5rem; color: var(--stone-ink); }
+</style>

@@ -1,0 +1,79 @@
+---
+/**
+ * Real reviews only. While config.reviews is empty this shows the Facebook
+ * "100% recommend" line and a link. No stars, no counts, no review schema.
+ */
+import { reviews, social, giveawaysLine } from '../config/site.ts';
+interface Props { heading?: string; headingLevel?: 'h2' | 'h1'; showGoogle?: boolean; }
+const { heading = 'What people say', headingLevel: H = 'h2', showGoogle = false } = Astro.props;
+---
+<section class="reviews" aria-labelledby="reviews-h">
+  <div class="in">
+    <p class="mono kicker">Word of mouth</p>
+    <H id="reviews-h">{heading}</H>
+
+    <p class="fb">
+      <a href={social.facebook.url} rel="noopener">
+        <span class="mono src">Facebook · {social.facebook.name}</span>
+        <span class="line">{social.facebookRecommend}</span>
+      </a>
+    </p>
+
+    {reviews.length > 0 ? (
+      <ul class="quotes">
+        {reviews.map((r) => (
+          <li>
+            <blockquote>
+              <p>“{r.quote}”</p>
+              <footer class="mono">{r.name} · {r.source}{r.service && ` · ${r.service}`}</footer>
+            </blockquote>
+          </li>
+        ))}
+      </ul>
+    ) : (
+      <p class="empty">We'd rather you read them in their own words than have us pick the nice bits. <a href={social.facebook.url} rel="noopener">Read our reviews on Facebook</a>.</p>
+    )}
+
+    <div class="after">
+      <p>{giveawaysLine}</p>
+      {showGoogle && social.googleReviewUrl && (
+        <a class="btn btn--line" href={social.googleReviewUrl} rel="noopener">Leave a Google review</a>
+      )}
+    </div>
+  </div>
+</section>
+<style>
+  .reviews {
+    padding: clamp(4rem, 9vw, 7rem) 0;
+  }
+  .in {
+    width: min(100% - 2 * var(--gutter), 1000px);
+    margin-inline: auto;
+  }
+  .kicker { color: var(--lm-blue-ink); margin: 0 0 0.8rem; }
+  h2, h1 { font-size: clamp(1.6rem, 3.6vw, 2.2rem); margin-bottom: 2rem; }
+  .fb a {
+    display: inline-grid;
+    gap: 0.4rem;
+    color: var(--ink);
+    text-decoration: none;
+  }
+  .src { color: var(--stone-ink); }
+  .line {
+    font-family: var(--f-display);
+    font-stretch: var(--wide);
+    font-style: italic;
+    font-weight: 800;
+    font-size: clamp(2.4rem, 8vw, 5.6rem);
+    line-height: 0.95;
+    border-bottom: 4px solid var(--lm-blue);
+    padding-bottom: 0.15em;
+  }
+  .fb a:hover .line { color: var(--lm-blue-ink); }
+  .empty { font-size: 1.15rem; max-width: 36rem; margin-top: 1.6rem; }
+  .quotes { list-style: none; padding: 0; margin: 2rem 0 0; display: grid; gap: 2rem; }
+  blockquote { margin: 0; border-left: 3px solid var(--lm-blue); padding-left: 1.2rem; font-size: 1.25rem; font-style: italic; }
+  blockquote footer { font-style: normal; color: var(--stone-ink); }
+  .after { display: flex; flex-wrap: wrap; gap: 1rem 2rem; align-items: center; margin-top: 2rem; padding-top: 1.2rem; border-top: 1px solid var(--paper-3); }
+  .after p { margin: 0; font-style: italic; }
+</style>

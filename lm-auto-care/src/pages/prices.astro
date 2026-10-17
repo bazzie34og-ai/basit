@@ -1,0 +1,87 @@
+---
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+import TariffCard from '../components/TariffCard.astro';
+import Calculator from '../components/Calculator.astro';
+import Honest from '../components/Honest.astro';
+import PullQuote from '../components/PullQuote.astro';
+import Faq from '../components/Faq.astro';
+import FinalCta from '../components/FinalCta.astro';
+import { business, waLink, waMessages, services, sizes, extras, priceRange } from '../config/site.ts';
+import { meta } from '../config/pages.ts';
+import { faqSchema } from '../lib/schema.ts';
+
+const m = meta('/prices/');
+const wa = waMessages.prices;
+const fw = services.find((s) => s.id === 'full-works')!;
+const bc = services.find((s) => s.id === 'basic-clean')!;
+const biggest = sizes[sizes.length - 1];
+const faqs = [
+  { q: 'How much is a full valet in Aberdeen?', a: `Our full valet, the Full Works, is £${fw.priceMin} for a small car. Medium cars add £5, large cars and SUVs £10, and 7-seaters or large MPVs £${biggest.supplement}.` },
+  { q: 'How much is a mini valet?', a: `Our mini valet, the Basic Clean, is £${bc.priceMin} for a small car, plus the same size supplement as every other service.` },
+  { q: 'What counts as a medium or large car?', a: sizes.map((z) => `${z.name}: ${z.examples}`).join('. ') + '. If you’re not sure, tell us the make and model and we’ll tell you.' },
+  { q: 'Are there any other charges?', a: 'The price is the service, plus the size supplement, plus any extras you choose. All of them are on this page.' },
+  { q: 'Do you charge more for a really dirty car?', a: 'The listed prices are what we charge. If a car needs something that is on the extras list, like pet hair removal, we’ll say so before we start, not after.' },
+];
+---
+<Base title={m.title} description={m.description} path="/prices/" waText={wa} breadcrumbs={[{ name: 'Prices', href: '/prices/' }]} schema={[faqSchema(faqs)]}>
+  <section class="phead">
+    <div class="in">
+      <p class="mono k">Tariff · {priceRange} · Aberdeen &amp; surrounding areas</p>
+      <h1>Car Valeting Prices, Aberdeen</h1>
+      <div class="cols">
+        <p class="lede">Every car valeting price we charge in Aberdeen, on one page. Six services from £10 to £85, a fixed supplement for bigger vehicles, and four extras. Nothing is added at the door. If you want to know how much a valet is for your car, use the calculator below. It does the sums and puts them in a WhatsApp message for you.</p>
+        <div class="side">
+          <div class="btn-row">
+            <a class="btn" href={waLink(wa)} data-track="whatsapp_click" rel="noopener"><Icon name="whatsapp" /> Ask on WhatsApp</a>
+            <a class="btn btn--line" href="#calculator">Price my car</a>
+          </div>
+          <Honest />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <TariffCard heading="Valet prices, service by service" headingId="valet-prices" />
+
+  <PullQuote>£35 means £35. If your car's bigger, you'll see the supplement <em>before</em> you book, not after.</PullQuote>
+
+  <Calculator defaultService="full-works" defaultSize="small" heading="How much is a valet for your car?" />
+
+  <section class="why speckle" aria-labelledby="why-h">
+    <div class="why-in">
+      <h2 id="why-h">Why everything's written down</h2>
+      <div class="two">
+        <p>The most common complaint about car washes in Aberdeen isn't the wash. It's the bill. You ask for one price and get charged another, there's an extra for the size of the car you didn't know about, or there's a surcharge at the till.</p>
+        <p>So we publish the lot. The service price is the service price. The size supplement is £{sizes[1].supplement}, £{sizes[2].supplement} or £{sizes[3].supplement}, printed on the tariff. Extras are listed at {extras.map((e) => `£${e.price}`).filter((v, i, a) => a.indexOf(v) === i).join(' and ')}. If anything changes, it changes here first.</p>
+      </div>
+    </div>
+  </section>
+
+  <Faq faqs={faqs} heading="Price questions" id="price-faq" />
+
+  <FinalCta waText={wa} note={false} heading="Got your number? Send it over." />
+</Base>
+
+<style>
+  .phead { padding: 1.5rem 0 1rem; }
+  .in { width: min(100% - 2 * var(--gutter), 1240px); margin-inline: auto; }
+  .k { color: var(--lm-blue-ink); margin: 0 0 1rem; }
+  h1 {
+    font-size: clamp(2.6rem, 9vw, 7rem);
+    font-style: italic;
+    line-height: 0.92;
+    letter-spacing: -0.025em;
+    max-width: 11ch;
+  }
+  .cols { display: grid; gap: 1.5rem 4rem; margin-top: 2rem; padding-top: 1.4rem; border-top: 1.5px solid var(--ink); }
+  @media (min-width: 900px) { .cols { grid-template-columns: 1.3fr 1fr; } }
+  .lede { font-size: 1.18rem; max-width: 40rem; margin: 0; }
+  .side .btn-row { margin-bottom: 1rem; }
+  .side :global(.honest-compact) { color: var(--ink-2); }
+  .why { padding: clamp(3.5rem, 8vw, 6rem) 0; }
+  .why-in { width: min(100% - 2 * var(--gutter), 1100px); margin-inline: auto; }
+  .why h2 { font-size: clamp(1.9rem, 4.4vw, 3rem); margin-bottom: 1.6rem; font-style: italic; }
+  .two { display: grid; gap: 0 3rem; }
+  @media (min-width: 820px) { .two { grid-template-columns: 1fr 1fr; } }
+</style>

@@ -1,0 +1,144 @@
+---
+import '../styles/global.css';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import StickyBar from '../components/StickyBar.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import { business, waMessages } from '../config/site.ts';
+import { PREVIEW_MODE, SITE_URL, GA4_ID } from '../lib/env.ts';
+import { businessSchema, breadcrumbSchema } from '../lib/schema.ts';
+import { getImage } from 'astro:assets';
+import heroPhoto from '../assets/photos/lm-auto-care-van-and-kit-on-site-mg-hs.jpg';
+import logoSquare from '../assets/logos/lm-auto-care-logo-circle-square.png';
+
+interface Props {
+  title: string;
+  description: string;
+  /** e.g. "/prices/". Drives the canonical and the OG image. */
+  path: string;
+  breadcrumbs?: { name: string; href: string }[];
+  schema?: Record<string, unknown>[];
+  waText?: string;
+  noindex?: boolean;
+  hideSticky?: boolean;
+  ogType?: 'website' | 'article';
+}
+
+const { title, description, path, breadcrumbs, schema = [], waText = waMessages.default, noindex = false, hideSticky = false, ogType = 'website' } = Astro.props;
+
+const canonical = `${SITE_URL}${path}`;
+const robots = PREVIEW_MODE || noindex ? 'noindex, nofollow' : 'index, follow, max-image-preview:large';
+const ogSlug = path === '/' ? 'home' : path.replace(/^\/|\/$/g, '').replace(/\//g, '--');
+const ogImage = `${SITE_URL}/og/${ogSlug}.png`;
+
+const schemaImage = await getImage({ src: heroPhoto, width: 720, format: 'jpg' });
+const schemaLogo = await getImage({ src: logoSquare, width: 512, format: 'png' });
+const crumbs = breadcrumbs ? [{ name: 'Home', href: '/' }, ...breadcrumbs] : null;
+const graph = [businessSchema(schemaImage.src, schemaLogo.src), ...(crumbs ? [breadcrumbSchema(crumbs)] : []), ...schema];
+const jsonLd = JSON.stringify({ '@context': 'https://schema.org', '@graph': graph }).replace(/</g, '\\u003c');
+---
+<!doctype html>
+<html lang="en-GB">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <meta name="robots" content={robots} />
+    <meta name="theme-color" content="#1B1E22" />
+    <link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+
+    <meta property="og:type" content={ogType} />
+    <meta property="og:site_name" content={business.name} />
+    <meta property="og:locale" content="en_GB" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={`${title}. LM Auto Care mobile valeting, Aberdeen.`} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+
+    <slot name="head" />
+    <script type="application/ld+json" set:html={jsonLd} />
+  </head>
+  <body data-preview={PREVIEW_MODE ? 'true' : undefined} data-ga={GA4_ID || undefined}>
+    <a class="skip-link" href="#main">Skip to content</a>
+    {PREVIEW_MODE && (
+      <div class="ribbon mono" id="preview-ribbon">
+        <span>Preview built for LM Auto Care by Primo Partners</span>
+        <button type="button" data-dismiss-ribbon aria-label="Dismiss preview note">×</button>
+      </div>
+    )}
+    <Header waText={waText} path={path} />
+    {crumbs && <Breadcrumbs items={crumbs} />}
+    <main id="main">
+      <slot />
+    </main>
+    <Footer />
+    {!hideSticky && <StickyBar waText={waText} />}
+    {GA4_ID && (
+      <div class="consent" id="consent" hidden>
+        <p>We'd like to count visits with Google Analytics. Nothing else, no adverts.</p>
+        <div class="btn-row">
+          <button class="btn" type="button" data-consent="granted">That's fine</button>
+          <button class="btn btn--line" type="button" data-consent="denied">No thanks</button>
+        </div>
+      </div>
+    )}
+    <script>
+      import '../scripts/ui.ts';
+      import '../scripts/track.ts';
+    </script>
+  </body>
+</html>
+
+<style>
+  .ribbon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.75rem;
+    background: var(--ink);
+    color: var(--paper-2);
+    font-size: 0.66rem;
+    padding: 0 0.5rem;
+    min-height: 30px;
+  }
+  .ribbon[hidden] { display: none; }
+  .ribbon button {
+    background: none;
+    border: 0;
+    color: inherit;
+    font-size: 1.1rem;
+    line-height: 1;
+    min-width: 32px;
+    min-height: 30px;
+    cursor: pointer;
+  }
+  .consent {
+    position: fixed;
+    left: 1rem;
+    right: 1rem;
+    bottom: calc(76px + env(safe-area-inset-bottom));
+    z-index: 60;
+    max-width: 30rem;
+    background: var(--paper);
+    border: 1px solid var(--ink);
+    box-shadow: 4px 4px 0 var(--paper-3);
+    padding: 1rem;
+    font-size: 0.95rem;
+  }
+  .consent p { margin-bottom: 0.7rem; }
+  .consent .btn { min-height: 44px; font-size: 0.9rem; }
+  @media (min-width: 768px) {
+    .consent { bottom: 1rem; }
+  }
+</style>

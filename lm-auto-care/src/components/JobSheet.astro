@@ -1,0 +1,137 @@
+---
+/**
+ * The LM Way: the Full Works checklist, set as the job sheet a valeter
+ * actually works from. Ends with the stamp.
+ */
+import Tick from './Tick.astro';
+import Stamp from './Stamp.astro';
+import { services, business } from '../config/site.ts';
+interface Props { heading?: string; id?: string; }
+const { heading = 'Every box ticked, then signed off', id = 'the-lm-way' } = Astro.props;
+const fw = services.find((s) => s.id === 'full-works')!;
+const items = fw.includes.filter((x) => x !== 'Final quality check');
+const outside = items.slice(0, 6);
+const inside = items.slice(6);
+---
+<section class="lmway speckle" aria-labelledby={`${id}-h`}>
+  <div class="sheet-wrap">
+    <div class="side">
+      <p class="mono kicker">{business.taglines.way}</p>
+      <h2 id={`${id}-h`}>{heading}</h2>
+      <p>Car washes miss things because nobody's checking. The boot that never got hoovered. The door shuts. The film on the inside of the windscreen you only see when the sun's low on the A90.</p>
+      <p>So the Full Works runs off a sheet. Outside first, then in. Nothing gets ticked until it's done, and the last line is a walk round the car before we call it finished.</p>
+    </div>
+
+    <div class="sheet" data-draw>
+      <div class="sheet-head mono">
+        <span>Job sheet</span><span>{fw.name} · £{fw.priceMin}</span>
+      </div>
+      <div class="meta mono">
+        <span>Vehicle: ____________</span><span>Postcode: AB__ ___</span><span>Size: +£__</span>
+      </div>
+      <div class="cols">
+        <div>
+          <p class="mono sec">Job A · Exterior</p>
+          <ol>
+            {outside.map((t, i) => (<li><span class="b"><Tick i={i} /></span>{t}</li>))}
+          </ol>
+        </div>
+        <div>
+          <p class="mono sec">Job B · Interior</p>
+          <ol start={7}>
+            {inside.map((t, i) => (<li><span class="b"><Tick i={i + 6} /></span>{t}</li>))}
+          </ol>
+        </div>
+      </div>
+      <div class="final">
+        <p class="mono">13 · Final quality check</p>
+        <Stamp />
+      </div>
+    </div>
+  </div>
+</section>
+<style>
+  .lmway {
+    padding: clamp(4rem, 9vw, 7rem) 0;
+  }
+  .sheet-wrap {
+    width: min(100% - 2 * var(--gutter), 1180px);
+    margin-inline: auto;
+    display: grid;
+    gap: 2.5rem;
+  }
+  @media (min-width: 980px) {
+    .sheet-wrap {
+      grid-template-columns: 0.8fr 1.2fr;
+      gap: 5rem;
+      align-items: start;
+    }
+    .side { position: sticky; top: calc(var(--header-h) + 2rem); }
+  }
+  .kicker { color: var(--lm-blue-ink); margin: 0 0 0.6rem; }
+  h2 { font-size: clamp(2rem, 4.6vw, 3.2rem); font-style: italic; margin-bottom: 1.2rem; }
+  .side p:not(.kicker) { max-width: 34rem; }
+
+  .sheet {
+    background: var(--foam);
+    border: 1.5px solid var(--ink);
+    padding: 1.2rem clamp(1rem, 3vw, 2rem) 1.6rem;
+    box-shadow: 8px 8px 0 var(--paper-2);
+    /* faint ruled lines, like a pad */
+    background-image: repeating-linear-gradient(to bottom, transparent 0 calc(2.35rem - 1px), #e9eef5 calc(2.35rem - 1px) 2.35rem);
+    background-position: 0 7.1rem;
+  }
+  .sheet-head {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    border-bottom: 3px double var(--ink);
+    padding-bottom: 0.6rem;
+    font-size: 0.75rem;
+  }
+  .meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem 1.6rem;
+    font-size: 0.68rem;
+    color: var(--stone-ink);
+    padding: 0.7rem 0 1rem;
+  }
+  .cols {
+    display: grid;
+    gap: 0 2rem;
+  }
+  @media (min-width: 640px) {
+    .cols { grid-template-columns: 1fr 1fr; }
+  }
+  .sec { color: var(--lm-blue-ink); margin: 0.8rem 0 0.2rem; font-size: 0.7rem; }
+  ol { list-style: none; padding: 0; margin: 0; counter-reset: none; }
+  li {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    min-height: 2.35rem;
+    font-size: 1.02rem;
+  }
+  .b {
+    width: 1.15rem;
+    height: 1.15rem;
+    border: 1.5px solid var(--ink);
+    display: grid;
+    place-items: center;
+    flex: none;
+    font-size: 1.25rem;
+  }
+  .b :global(.tick) { transform: translate(0.12em, -0.12em); }
+  .final {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-top: 1.2rem;
+    padding-top: 1rem;
+    border-top: 1.5px solid var(--ink);
+  }
+  .final p { margin: 0; font-size: 0.8rem; }
+</style>

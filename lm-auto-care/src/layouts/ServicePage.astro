@@ -1,0 +1,162 @@
+---
+/**
+ * Shared frame for service pages. The copy in the default slot is unique to
+ * each page; the frame supplies the hero, the job-sheet list, sizes, related
+ * links (prices, booking, two services, a guide, the area hub), FAQ and CTA.
+ */
+import type { ImageMetadata } from 'astro';
+import Base from './Base.astro';
+import Photo from '../components/Photo.astro';
+import Icon from '../components/Icon.astro';
+import Tick from '../components/Tick.astro';
+import Honest from '../components/Honest.astro';
+import Related from '../components/Related.astro';
+import Faq from '../components/Faq.astro';
+import FinalCta from '../components/FinalCta.astro';
+import { business, sizes, waLink, type Service } from '../config/site.ts';
+import { meta } from '../config/pages.ts';
+import { serviceSchema, faqSchema } from '../lib/schema.ts';
+import type { Faq as FaqT } from '../content/faqs.ts';
+
+interface Props {
+  path: string;
+  crumb: string;
+  h1: string;
+  kicker: string;
+  priceTag: string;
+  photo: ImageMetadata;
+  alt: string;
+  caption?: string;
+  waText: string;
+  service?: Service;
+  sheetTitle?: string;
+  sheetItems?: string[];
+  schemaName: string;
+  serviceType: string;
+  price?: [number, number];
+  related: { href: string; label: string; blurb: string; tag: string }[];
+  faqs: FaqT[];
+}
+const p = Astro.props;
+const m = meta(p.path);
+const items = p.sheetItems ?? p.service?.includes ?? [];
+const schema = [
+  serviceSchema({ name: p.schemaName, serviceType: p.serviceType, path: p.path, description: m.description, service: p.service, price: p.price }),
+  faqSchema(p.faqs),
+];
+---
+<Base title={m.title} description={m.description} path={p.path} waText={p.waText} breadcrumbs={[{ name: 'Prices', href: '/prices/' }, { name: p.crumb, href: p.path }]} schema={schema}>
+  <section class="shero" aria-labelledby="h1">
+    <div class="sgrid">
+      <div class="stext">
+        <p class="mono kick">{p.kicker}</p>
+        <h1 id="h1">{p.h1}</h1>
+        <p class="tag mono">{p.priceTag}</p>
+        <div class="lede"><slot name="intro" /></div>
+        <div class="btn-row">
+          <a class="btn" href={waLink(p.waText)} data-track="whatsapp_click" rel="noopener"><Icon name="whatsapp" /> Message on WhatsApp</a>
+          <a class="btn btn--line" href={business.tel} data-track="call_click"><Icon name="phone" /> {business.phoneDisplay}</a>
+        </div>
+        <Honest />
+      </div>
+      <div class="sphoto">
+        <Photo src={p.photo} alt={p.alt} caption={p.caption} eager sizes="(min-width: 1000px) 500px, 100vw" />
+      </div>
+    </div>
+  </section>
+
+  {items.length > 0 && (
+    <section class="onsheet" aria-labelledby="sheet-h">
+      <div class="sheet-in" data-draw>
+        <div>
+          <p class="mono k">What's on the sheet</p>
+          <h2 id="sheet-h">{p.sheetTitle ?? `${p.service?.name}: every line`}</h2>
+        </div>
+        <ul>
+          {items.map((it, i) => (<li><Tick i={i} />{it}</li>))}
+        </ul>
+      </div>
+    </section>
+  )}
+
+  <slot />
+
+  <section class="sizes-note" aria-labelledby="sz-h">
+    <div class="sz-in">
+      <h2 id="sz-h" class="mono">Bigger motor? Here's exactly what it adds</h2>
+      <ul>
+        {sizes.map((z) => (<li><span class="mono">{z.short}</span><strong class="mono">{z.supplement ? `+£${z.supplement}` : '+£0'}</strong><span class="eg">{z.examples}</span></li>))}
+      </ul>
+      <p>Same supplement on every service. <a href="/prices/">See every price and use the calculator</a>, or go straight to <a href="/book/" data-track="book_start">the booking form</a>.</p>
+    </div>
+  </section>
+
+  <Related links={p.related} />
+
+  <Faq faqs={p.faqs} heading="Questions about this one" />
+
+  <FinalCta waText={p.waText} note={false} heading="Want this done at yours?" />
+</Base>
+
+<style>
+  .shero { padding: 1.5rem 0 0; overflow: hidden; }
+  .sgrid { display: grid; gap: 2rem; }
+  .stext { padding: 0 var(--gutter); }
+  .kick { color: var(--lm-blue-ink); margin: 0 0 0.9rem; }
+  h1 {
+    font-size: clamp(2.3rem, 7vw, 4.6rem);
+    font-style: italic;
+    line-height: 0.98;
+    letter-spacing: -0.02em;
+    max-width: 14ch;
+  }
+  .tag {
+    display: inline-block;
+    margin: 1.3rem 0 1.1rem;
+    padding: 0.35rem 0.6rem;
+    border: 1.5px solid var(--ink);
+    font-size: 0.85rem;
+  }
+  .lede { max-width: 36rem; font-size: 1.15rem; }
+  .shero .btn-row { margin: 1.5rem 0 1.2rem; }
+  .shero :global(.honest-compact) { color: var(--ink-2); }
+  @media (max-width: 999px) {
+    .sphoto :global(figcaption) { padding: 0 var(--gutter); }
+  }
+  @media (min-width: 1000px) {
+    .shero { padding-top: 2.5rem; }
+    .sgrid {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 500px);
+      gap: 4rem;
+      align-items: start;
+    }
+    .stext { padding: 1rem 0 3rem max(var(--gutter), calc((100vw - 1240px) / 2)); }
+    .sphoto { margin-top: -0.5rem; }
+  }
+
+  .onsheet { padding: clamp(3rem, 7vw, 5rem) 0; background: var(--granite); color: var(--paper); }
+  .sheet-in {
+    width: min(100% - 2 * var(--gutter), 1080px);
+    margin-inline: auto;
+    display: grid;
+    gap: 2rem;
+  }
+  @media (min-width: 860px) { .sheet-in { grid-template-columns: 0.8fr 1.2fr; gap: 4rem; } }
+  .k { color: var(--lm-blue); margin: 0 0 0.7rem; }
+  .onsheet h2 { font-size: clamp(1.7rem, 3.6vw, 2.4rem); }
+  .onsheet ul { list-style: none; margin: 0; padding: 0; columns: 2 15rem; column-gap: 2rem; }
+  .onsheet li {
+    display: flex; gap: 0.7rem; align-items: baseline;
+    padding: 0.55rem 0; border-bottom: var(--rule-dark); break-inside: avoid;
+  }
+  .onsheet :global(.tick) { transform: translateY(0.15em); }
+
+  .sizes-note { padding: clamp(3rem, 6vw, 4rem) 0; background: var(--paper-2); border-block: 1px solid var(--ink); }
+  .sz-in { width: min(100% - 2 * var(--gutter), 1080px); margin-inline: auto; }
+  .sizes-note h2 { font-size: 0.8rem; font-stretch: 100%; margin-bottom: 1rem; }
+  .sizes-note ul { list-style: none; padding: 0; margin: 0 0 1.2rem; display: grid; grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr)); gap: 0 2rem; }
+  .sizes-note li { display: grid; grid-template-columns: 1fr auto; gap: 0.1rem 1rem; padding: 0.7rem 0; border-top: 1px solid var(--paper-3); }
+  .sizes-note strong { color: var(--lm-blue-ink); font-size: 1rem; letter-spacing: 0; }
+  .eg { grid-column: 1 / -1; font-size: 0.92rem; color: var(--ink-2); }
+  .sizes-note p { margin: 0; }
+</style>

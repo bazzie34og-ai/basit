@@ -1,0 +1,56 @@
+---
+/** The red SIGNED OFF stamp. Used once or twice on the whole site. */
+interface Props { line?: string; }
+const { line = 'Final quality check' } = Astro.props;
+---
+<div class="stamp-wrap" data-draw>
+  <svg class="stamp" viewBox="0 0 300 130" role="img" aria-label={`${line}: signed off`}>
+    <defs>
+      <filter id="ink" x="-5%" y="-5%" width="110%" height="110%">
+        <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="4" result="n" />
+        <feColorMatrix in="n" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -2.4 1.6" result="holes" />
+        <feComposite in="SourceGraphic" in2="holes" operator="in" result="inked" />
+        <feTurbulence type="fractalNoise" baseFrequency="0.04" numOctaves="1" seed="9" result="w" />
+        <feDisplacementMap in="inked" in2="w" scale="2.4" />
+      </filter>
+    </defs>
+    <g filter="url(#ink)" fill="none" stroke="currentColor">
+      <rect x="6" y="6" width="288" height="118" rx="5" stroke-width="5" />
+      <rect x="15" y="15" width="270" height="100" rx="2" stroke-width="1.8" />
+      <text x="150" y="44" text-anchor="middle" fill="currentColor" stroke="none" class="s1">{line.toUpperCase()} ✓</text>
+      <text x="150" y="96" text-anchor="middle" fill="currentColor" stroke="none" class="s2">SIGNED OFF</text>
+      <path d="M40 56h220" stroke-width="1.5" />
+    </g>
+  </svg>
+</div>
+<style>
+  .stamp-wrap {
+    display: inline-block;
+    color: var(--stamp);
+  }
+  .stamp {
+    width: min(300px, 80vw);
+    transform: rotate(-7deg);
+    mix-blend-mode: multiply;
+  }
+  .s1 {
+    font-family: var(--f-mono);
+    font-size: 15px;
+    letter-spacing: 1.5px;
+  }
+  .s2 {
+    font-family: var(--f-display);
+    font-stretch: 125%;
+    font-weight: 800;
+    font-size: 38px;
+    letter-spacing: 1px;
+  }
+  @media (scripting: enabled) and (prefers-reduced-motion: no-preference) {
+    .stamp-wrap .stamp { opacity: 0; transform: rotate(-7deg) scale(1.25); }
+    .stamp-wrap.is-drawn .stamp {
+      opacity: 1;
+      transform: rotate(-7deg) scale(1);
+      transition: transform 0.18s cubic-bezier(0.5, 0, 0.9, 0.4) 1.4s, opacity 0.1s linear 1.4s;
+    }
+  }
+</style>

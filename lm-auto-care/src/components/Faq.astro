@@ -1,0 +1,62 @@
+---
+/** Questions as a ruled list. The FAQPage schema is built from the same array, so they always match. */
+interface Props { faqs: { q: string; a: string }[]; heading?: string; id?: string; intro?: string; }
+const { faqs, heading = 'Questions people ask', id = 'faq', intro } = Astro.props;
+---
+<section class="faq" aria-labelledby={`${id}-h`}>
+  <div class="in">
+    <div class="side">
+      <h2 id={`${id}-h`}>{heading}</h2>
+      {intro && <p set:html={intro} />}
+    </div>
+    <div class="list">
+      {faqs.map((f, i) => (
+        <details>
+          <summary><span class="mono n">Q{String(i + 1).padStart(2, '0')}</span><span class="q">{f.q}</span></summary>
+          <p>{f.a}</p>
+        </details>
+      ))}
+    </div>
+  </div>
+</section>
+<style>
+  .faq { padding: clamp(3.5rem, 8vw, 6rem) 0; }
+  .in {
+    width: min(100% - 2 * var(--gutter), 1080px);
+    margin-inline: auto;
+    display: grid;
+    gap: 2rem;
+  }
+  @media (min-width: 900px) {
+    .in { grid-template-columns: 0.7fr 1.3fr; gap: 4rem; }
+  }
+  h2 { font-size: clamp(1.8rem, 4vw, 2.6rem); margin-bottom: 1rem; }
+  .side p { color: var(--ink-2); }
+  details { border-top: 1px solid var(--ink); }
+  details:last-child { border-bottom: 1px solid var(--ink); }
+  summary {
+    display: grid;
+    grid-template-columns: 3rem 1fr 1.5rem;
+    gap: 0.5rem;
+    align-items: baseline;
+    padding: 1rem 0;
+    min-height: 44px;
+    cursor: pointer;
+    list-style: none;
+  }
+  summary::-webkit-details-marker { display: none; }
+  summary::after {
+    content: '+';
+    font-family: var(--f-mono);
+    font-size: 1.2rem;
+    color: var(--lm-blue-ink);
+    text-align: right;
+  }
+  details[open] summary::after { content: '–'; }
+  .n { color: var(--stone-ink); }
+  .q { font-family: var(--f-ui); font-weight: 600; font-size: 1.08rem; line-height: 1.35; }
+  details p { margin: 0 0 1.3rem 3.5rem; max-width: 40rem; }
+  @media (max-width: 520px) {
+    details p { margin-left: 0; }
+  }
+</style>

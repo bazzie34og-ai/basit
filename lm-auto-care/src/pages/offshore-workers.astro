@@ -1,0 +1,56 @@
+---
+import ServicePage from '../layouts/ServicePage.astro';
+import Block from '../components/Block.astro';
+import PullQuote from '../components/PullQuote.astro';
+import { services, waMessages } from '../config/site.ts';
+import hero from '../assets/photos/mg-hs-red-exterior-after-valet.jpg';
+import inside from '../assets/photos/mazda-cx3-interior-front-seats-after-valet.jpg';
+
+// TODO-CONFIRM: the owner wants this page, and how keys and access work while someone is away.
+const t = services.find((x) => x.id === 'thorough-clean')!;
+const faqs = [
+  { q: 'Can you valet the car while I’m offshore?', a: 'Message us before you fly with your dates, the car and where it’s parked. We’ll talk through how access and keys would work for you before anything is booked.' },
+  { q: 'Which service do offshore workers usually book?', a: `A car that’s sat for two or three weeks usually wants the outside done more than the inside. The Exterior Valet is £35; the Thorough Clean, inside and out, is £${t.priceMin}.` },
+  { q: 'Do you still need water and power?', a: 'Yes. We need a water supply and a power socket where the car is, whether you’re home or not. Drop-off is also available.' },
+  { q: 'Can I book a regular slot around my rotation?', a: 'Tell us your rotation when you message and we’ll see what fits around weekday mornings or afternoons and weekend evenings.' },
+];
+---
+<ServicePage
+  path="/offshore-workers/"
+  crumb="Offshore workers"
+  h1="Home From Offshore to a Clean Car"
+  kicker="For rotation workers · Aberdeen"
+  priceTag={`Exterior Valet £35 · Thorough Clean £${t.priceMin}`}
+  photo={hero}
+  alt="Red MG HS after a car valet for an offshore worker in Aberdeen, parked clean on a residential street"
+  caption="Fig. 09 · Waiting at home, clean."
+  waText={waMessages.offshore}
+  sheetTitle="What usually needs doing after a trip"
+  sheetItems={['Bird mess and tree sap off the paint', 'Two weeks of road film and salt rinsed away', 'Wheels and tyres cleaned and dressed', 'Inside aired, hoovered and wiped', 'Windows clear, inside and out']}
+  schemaName="Car valet for offshore workers"
+  serviceType="Car valet for offshore workers"
+  price={[35, t.priceMin]}
+  related={[
+    { tag: 'Service', href: '/exterior-valet-aberdeen/', label: 'Exterior Valet with snow foam', blurb: 'The usual job for a car that’s been sat outside.' },
+    { tag: 'Service', href: '/full-valet-aberdeen/', label: 'The Full Works, £85', blurb: 'For the trip you come back and want a fresh start.' },
+    { tag: 'Guide', href: '/guides/winter-road-salt-car-care-aberdeen/', label: 'Road salt through an Aberdeen winter', blurb: 'What sitting still in the salt does to a car.' },
+    { tag: 'Areas', href: '/areas/north-aberdeen-dyce-bridge-of-don/', label: 'Dyce, Bridge of Don and the north', blurb: 'Near the heliport and the airport.' },
+  ]}
+  faqs={faqs}
+>
+  <Fragment slot="intro">
+    <p>A car valet for offshore workers in Aberdeen. Two or three weeks on the rigs, and the car's been sat outside the whole time: gulls, tree sap, salt off the road, a film on every window. Book it in for the week you're back and it's clean when you want to use it. The Exterior Valet is £35, or the Thorough Clean inside and out is £60.</p>
+  </Fragment>
+
+  <PullQuote>Two weeks on. Two weeks off. <em>Don't spend the first day off at the car wash.</em></PullQuote>
+
+  <Block heading="Why a parked car gets dirtier than a driven one" kicker="Sat outside" photo={inside} alt="Mazda CX-3 interior after a valet for an offshore worker in Aberdeen, seats and dash clean" caption="Inside, aired and wiped." side="left">
+    <p>A car that's being driven gets rinsed by the rain now and then. A car that's parked under a tree in Dyce for three weeks just collects. Bird mess and sap sit on the paint and bake on. Salt from the last drive stays in the arches.</p>
+    <p>The <a href="/exterior-valet-aberdeen/">Exterior Valet</a> deals with all of that: pre-wash and snow foam first, then the hand wash, so the grit's off before anything rubs. If the inside's had a fortnight of work boots and a damp jacket, the Thorough Clean does both.</p>
+  </Block>
+
+  <Block heading="How it works while you're away" variant="narrow" kicker="Ask us first">
+    <p>Message us before you go out with your dates, the car, and where it'll be parked. We'll talk through how access and keys would work for you, and whether a family member at home can let us at the tap and the socket. Nothing gets booked until it's clear.</p>
+    <p>If you'd rather be there, just tell us the week you're back. Weekday mornings or afternoons, and weekend evenings.</p>
+  </Block>
+</ServicePage>

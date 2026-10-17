@@ -1,0 +1,50 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import Photo from '../../components/Photo.astro';
+import FinalCta from '../../components/FinalCta.astro';
+import { photo } from '../../lib/photos.ts';
+import { meta } from '../../config/pages.ts';
+import { waMessages } from '../../config/site.ts';
+const m = meta('/guides/');
+const guides = (await getCollection('guides')).sort((a, b) => a.data.order - b.data.order);
+---
+<Base title={m.title} description={m.description} path="/guides/" waText={waMessages.guides} breadcrumbs={[{ name: 'Car care notes', href: '/guides/' }]}>
+  <section class="ihead">
+    <p class="mono k">Notes from the van</p>
+    <h1>Car Care Notes</h1>
+    <p class="lede">Plain advice from a mobile valeter in Aberdeen. What actually works, what doesn't, and when it's worth paying someone. Nobody's selling you a product here.</p>
+  </section>
+  <ol class="index">
+    {guides.map((g, i) => (
+      <li class:list={{ alt: i % 2 === 1 }}>
+        <div class="num mono">Note {String(g.data.order).padStart(2, '0')}</div>
+        <div class="txt">
+          <h2><a href={`/guides/${g.id}/`}>{g.data.h1}</a></h2>
+          <p>{g.data.description}</p>
+        </div>
+        <div class="pic"><Photo src={photo(g.data.photo)} alt={g.data.photoAlt} sizes="220px" /></div>
+      </li>
+    ))}
+  </ol>
+  <FinalCta waText={waMessages.guides} note={false} heading="Got a question we haven't covered?" />
+</Base>
+<style>
+  .ihead { width: min(100% - 2 * var(--gutter), 1100px); margin: 1.5rem auto 2.5rem; }
+  .k { color: var(--lm-blue-ink); margin: 0 0 0.8rem; }
+  h1 { font-size: clamp(2.8rem, 9vw, 6.5rem); font-style: italic; line-height: 0.92; }
+  .lede { font-size: 1.2rem; max-width: 36rem; margin-top: 1.4rem; }
+  .index { list-style: none; padding: 0; margin: 0 auto 4rem; width: min(100% - 2 * var(--gutter), 1100px); border-top: 1.5px solid var(--ink); }
+  li { display: grid; grid-template-columns: 1fr; gap: 0.8rem 2rem; padding: 1.8rem 0; border-bottom: 1px solid var(--paper-3); }
+  @media (min-width: 800px) {
+    li { grid-template-columns: 7rem 1fr 200px; align-items: center; }
+    li.alt .pic { transform: rotate(1.2deg); }
+    li:not(.alt) .pic { transform: rotate(-1deg); }
+  }
+  .num { color: var(--stone-ink); }
+  h2 { font-size: clamp(1.3rem, 2.6vw, 1.8rem); font-style: italic; margin-bottom: 0.6rem; }
+  h2 a { color: var(--ink); text-decoration: none; background: linear-gradient(var(--lm-blue), var(--lm-blue)) 0 100% / 0 2px no-repeat; transition: background-size 0.25s; }
+  h2 a:hover { background-size: 100% 2px; }
+  .txt p { margin: 0; color: var(--ink-2); }
+  .pic { max-width: 200px; }
+</style>

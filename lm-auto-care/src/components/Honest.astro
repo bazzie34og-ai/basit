@@ -1,0 +1,74 @@
+---
+/** The small print, in big print: water, power, times, drop-off. Shown near CTAs. */
+import { expectations } from '../config/site.ts';
+interface Props { variant?: 'full' | 'compact'; }
+const { variant = 'compact' } = Astro.props;
+---
+{variant === 'full' ? (
+  <section class="honest-full" aria-labelledby="honest-h">
+    <div class="in">
+      <p class="mono kicker">The honest bit</p>
+      <h2 id="honest-h">We bring the foam. You'll need a tap and a socket.</h2>
+      <dl>
+        <div>
+          <dt class="mono">Water &amp; power</dt>
+          <dd>{expectations.waterPowerPlain} An outside tap and a plug we can run a cable to is ideal. If you're in a flat and not sure, message us first and we'll work it out before anyone turns up.</dd>
+        </div>
+        <div>
+          <dt class="mono">When</dt>
+          <dd>{expectations.times.weekdays}. {expectations.times.weekends}. Tell us what suits and we'll fit you in.</dd>
+        </div>
+        <div>
+          <dt class="mono">Drop-off</dt>
+          <dd>{expectations.dropOff} Handy if there's no water at yours.</dd>
+        </div>
+      </dl>
+    </div>
+  </section>
+) : (
+  <aside class="honest-compact mono" aria-label="Before you book">
+    <span>Water + power needed where the car is</span>
+    <span>Weekdays: AM or PM</span>
+    <span>Weekends: evenings</span>
+    <span>Drop-off available</span>
+  </aside>
+)}
+<style>
+  .honest-full {
+    padding: clamp(4rem, 9vw, 6.5rem) 0;
+  }
+  .in {
+    width: min(100% - 2 * var(--gutter), 760px);
+    margin-inline: auto;
+  }
+  .kicker { color: var(--lm-blue-ink); margin: 0 0 0.8rem; }
+  h2 {
+    font-size: clamp(1.9rem, 4.8vw, 3rem);
+    font-style: italic;
+    margin-bottom: 2rem;
+  }
+  dl { margin: 0; }
+  dl div {
+    display: grid;
+    gap: 0.3rem 2rem;
+    padding: 1rem 0;
+    border-top: 1px solid var(--ink);
+  }
+  @media (min-width: 640px) {
+    dl div { grid-template-columns: 9rem 1fr; }
+  }
+  dt { color: var(--stone-ink); padding-top: 0.3rem; }
+  dd { margin: 0; }
+  .honest-compact {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem 0;
+    font-size: 0.68rem;
+    color: inherit;
+    opacity: 0.85;
+  }
+  .honest-compact span:not(:last-child)::after {
+    content: '·';
+    margin: 0 0.6em;
+  }
+</style>

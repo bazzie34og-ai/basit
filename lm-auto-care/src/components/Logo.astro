@@ -1,0 +1,26 @@
+---
+import { Image } from 'astro:assets';
+import logo from '../assets/logos/lm-auto-care-logo-circle-transparent.png';
+interface Props { size?: number; disc?: boolean; loading?: 'eager' | 'lazy'; }
+const { size = 56, disc = true, loading = 'eager' } = Astro.props;
+---
+<span class:list={['logo', { disc }]} style={`--s:${size}px`}>
+  <Image src={logo} alt="LM Auto Care, Mobile Valeting" width={size * 2} height={size * 2} loading={loading} />
+</span>
+<style>
+  .logo {
+    display: inline-block;
+    width: var(--s);
+    height: var(--s);
+    flex: none;
+  }
+  .logo img {
+    width: 100%;
+    height: 100%;
+  }
+  /* The white "LM" needs a dark ground on paper. */
+  .disc {
+    border-radius: 50%;
+    background: var(--granite);
+  }
+</style>

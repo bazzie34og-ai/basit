@@ -1,0 +1,40 @@
+---
+import Icon from './Icon.astro';
+import { business, waLink } from '../config/site.ts';
+interface Props { waText: string; }
+const { waText } = Astro.props;
+---
+<nav class="sticky-bar on-dark" aria-label="Quick contact">
+  <a href={waLink(waText)} data-track="whatsapp_click" rel="noopener"><Icon name="whatsapp" /><span>WhatsApp</span></a>
+  <a href={business.tel} data-track="call_click"><Icon name="phone" /><span>Call</span></a>
+  <a href="/book/" data-track="book_start"><Icon name="form" /><span>Book</span></a>
+</nav>
+<style>
+  .sticky-bar {
+    position: fixed;
+    inset: auto 0 0 0;
+    z-index: 50;
+    display: grid;
+    grid-template-columns: 1.25fr 1fr 1fr;
+    padding-bottom: env(safe-area-inset-bottom);
+    border-top: 2px solid var(--lm-blue);
+  }
+  .sticky-bar a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    min-height: 60px;
+    color: var(--paper);
+    text-decoration: none;
+    font-family: var(--f-ui);
+    font-weight: 600;
+    font-size: 0.98rem;
+  }
+  .sticky-bar a + a { border-left: var(--rule-dark); }
+  .sticky-bar a:first-child { background: var(--granite-2); }
+  .sticky-bar :global(svg) { width: 1.25em; height: 1.25em; flex: none; }
+  @media (min-width: 768px) {
+    .sticky-bar { display: none; }
+  }
+</style>

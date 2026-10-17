@@ -1,0 +1,89 @@
+---
+import { getCollection, render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import Photo from '../../components/Photo.astro';
+import Icon from '../../components/Icon.astro';
+import Faq from '../../components/Faq.astro';
+import FinalCta from '../../components/FinalCta.astro';
+import { photo } from '../../lib/photos.ts';
+import { articleSchema, faqSchema } from '../../lib/schema.ts';
+import { waLink, waMessages } from '../../config/site.ts';
+import { getImage } from 'astro:assets';
+
+export async function getStaticPaths() {
+  const guides = await getCollection('guides');
+  return guides.map((g) => ({ params: { slug: g.id }, props: { g } }));
+}
+const { g } = Astro.props;
+const { Content } = await render(g);
+const d = g.data;
+const path = `/guides/${g.id}/`;
+const img = photo(d.photo);
+const imgUrl = (await getImage({ src: img, width: 720, format: 'jpg' })).src;
+const words = (g.body ?? '').split(/\s+/).length;
+const mins = Math.max(3, Math.round(words / 220));
+const schema = [articleSchema({ headline: d.h1, description: d.description, path, image: imgUrl, datePublished: d.published }), faqSchema(d.faqs)];
+const published = new Date(d.published).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+---
+<Base title={d.title} description={d.description} path={path} waText={waMessages.guides} ogType="article" breadcrumbs={[{ name: 'Car care notes', href: '/guides/' }, { name: d.h1.split(':')[0], href: path }]} schema={schema}>
+  <article>
+    <header class="ghead">
+      <div class="gtext">
+        <p class="mono k">{d.kicker} · {mins} min read</p>
+        <h1>{d.h1}</h1>
+        <p class="mono byline">Written by LM Auto Care, Aberdeen · <time datetime={d.published}>{published}</time></p>
+      </div>
+      <div class="gphoto">
+        <Photo src={img} alt={d.photoAlt} caption={d.photoCaption} eager sizes="(min-width: 1000px) 420px, 100vw" />
+      </div>
+    </header>
+
+    <div class="gbody">
+      <div class="prose"><Content /></div>
+      <aside class="side" aria-label="Services mentioned">
+        <div class="slip">
+          <p class="mono">If you'd rather we did it</p>
+          <ul>
+            {d.services.map((s) => <li><a href={s.href}>{s.label}</a></li>)}
+            <li><a href="/book/" data-track="book_start">Book a valet</a></li>
+          </ul>
+          <a class="btn" href={waLink(waMessages.guides)} data-track="whatsapp_click" rel="noopener"><Icon name="whatsapp" /> Ask us on WhatsApp</a>
+        </div>
+      </aside>
+    </div>
+  </article>
+
+  <Faq faqs={d.faqs} heading="Quick answers" id="guide-faq" />
+
+  <FinalCta waText={waMessages.guides} note={false} heading="Rather not do it yourself?" />
+</Base>
+
+<style>
+  .ghead {
+    width: min(100% - 2 * var(--gutter), 1180px);
+    margin: 1.5rem auto 0;
+    display: grid;
+    gap: 2rem;
+    padding-bottom: 2.5rem;
+    border-bottom: 1.5px solid var(--ink);
+  }
+  @media (min-width: 1000px) { .ghead { grid-template-columns: 1fr 420px; gap: 4rem; align-items: end; } }
+  .k { color: var(--lm-blue-ink); margin: 0 0 1rem; }
+  h1 { font-size: clamp(2rem, 5.4vw, 3.8rem); font-style: italic; line-height: 1.02; letter-spacing: -0.015em; }
+  .byline { margin: 1.4rem 0 0; color: var(--stone-ink); font-size: 0.7rem; }
+  .gbody {
+    width: min(100% - 2 * var(--gutter), 1180px);
+    margin: 0 auto;
+    padding: 2.5rem 0 4rem;
+    display: grid;
+    gap: 3rem;
+  }
+  @media (min-width: 1000px) { .gbody { grid-template-columns: minmax(0, 40rem) 1fr; gap: 6rem; } }
+  .prose :global(p:first-child) { font-size: 1.3rem; line-height: 1.5; }
+  .side { align-self: start; position: sticky; top: calc(var(--header-h) + 2rem); }
+  .slip { border: 1.5px solid var(--ink); background: var(--paper); padding: 1.2rem 1.2rem 1.4rem; max-width: 22rem; box-shadow: 5px 5px 0 var(--paper-2); }
+  .slip p { margin: 0 0 0.8rem; color: var(--stone-ink); }
+  .slip ul { list-style: none; padding: 0; margin: 0 0 1.2rem; }
+  .slip li { border-top: 1px solid var(--paper-2); }
+  .slip li a { display: block; padding: 0.55rem 0; font-family: var(--f-ui); font-weight: 600; font-size: 0.98rem; color: var(--ink); text-decoration-color: var(--lm-blue); }
+</style>

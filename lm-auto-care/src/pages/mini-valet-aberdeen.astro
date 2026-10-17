@@ -1,0 +1,55 @@
+---
+import ServicePage from '../layouts/ServicePage.astro';
+import Block from '../components/Block.astro';
+import PullQuote from '../components/PullQuote.astro';
+import { services, waMessages } from '../config/site.ts';
+import hero from '../assets/photos/chery-tiggo7-exterior-after-valet.jpg';
+import inside from '../assets/photos/mazda-cx3-interior-front-seats-after-valet.jpg';
+
+const s = services.find((x) => x.id === 'basic-clean')!;
+const faqs = [
+  { q: 'How much is a mini valet?', a: 'Our mini valet, the Basic Clean, is £30 for a small car. Add £5 for a medium car, £10 for a large car or SUV and £15 for a 7-seater or large MPV.' },
+  { q: "What's included in the Basic Clean?", a: 'An exterior wash, wheels cleaned, an interior vacuum, the dashboard and surfaces wiped, windows cleaned and a quick finishing touch.' },
+  { q: 'How often should I get a mini valet?', a: "It depends how the car's used. Lots of people book one every few weeks to stay on top of things, with a Thorough Clean or the Full Works a couple of times a year." },
+  { q: 'Is a mini valet enough to get dog hair out?', a: 'A hoover lifts loose hair, but hair woven into the carpet needs the Pet Hair Removal extra, which is £10 on top of any service.' },
+];
+---
+<ServicePage
+  path="/mini-valet-aberdeen/"
+  crumb="Mini valet"
+  h1="Mini Valet in Aberdeen: Our Basic Clean"
+  kicker="Job 02 · Inside + out · Our mini valet"
+  priceTag={`£${s.priceMin} · small car · +£5 medium · +£10 SUV`}
+  photo={hero}
+  alt="Silver Chery Tiggo 7 after a mini valet in Aberdeen, parked at the kerb outside red and dark timber houses"
+  caption="Fig. 02 · Chery Tiggo 7, kerbside, washed and dried."
+  waText={waMessages.basicClean}
+  service={s}
+  sheetTitle="The Basic Clean, in six lines"
+  schemaName="Mini valet (Basic Clean)"
+  serviceType="Mini car valet"
+  related={[
+    { tag: 'Service', href: '/full-valet-aberdeen/', label: 'Full Works, our full valet, £85', blurb: 'The whole job, when the mini valet isn’t going to cut it.' },
+    { tag: 'Service', href: '/mobile-car-wash-aberdeen/', label: 'Mobile car wash, from £10', blurb: 'Outside only. Hand wash, wheels, tyres, windows.' },
+    { tag: 'Guide', href: '/guides/mini-valet-vs-full-valet/', label: 'Mini valet vs full valet', blurb: 'Which one your car actually needs.' },
+    { tag: 'Areas', href: '/areas/', label: 'Areas we cover', blurb: 'Aberdeen and the surrounding areas.' },
+  ]}
+  faqs={faqs}
+>
+  <Fragment slot="intro">
+    <p>A mini valet in Aberdeen for £30, at your door. We call it the Basic Clean: a wash outside, wheels cleaned, a hoover through, the dash and surfaces wiped, the windows done and a quick finishing touch. It's the one people book to keep the car fresh between full cleans, so the big jobs never get too big.</p>
+  </Fragment>
+
+  <Block heading="A mini valet for the car you actually use" kicker="Little and often" photo={inside} alt="Mazda CX-3 front seats and dash after a mini valet in Aberdeen, door open on a sunny afternoon" caption="Mazda CX-3, front seats. Hoovered and wiped." side="right">
+    <p>Most cars in Aberdeen don't need a full detail every month. They need someone to get the grit off the paint before it sits there all week, and the crisps out of the footwell before they're ground into the carpet.</p>
+    <p>That's what the Basic Clean is for. It isn't trying to be the Full Works. It's quick, it's thorough where it matters, and it costs £30 rather than £85.</p>
+    <p>Book it every few weeks and the car never gets to the point where it's embarrassing to give someone a lift.</p>
+  </Block>
+
+  <PullQuote>Thirty quid. Inside and out. <em>No queue.</em></PullQuote>
+
+  <Block heading="What it won't do (so you're not disappointed)" variant="narrow" kicker="Honest about it">
+    <p>A mini valet is a maintenance clean. It doesn't shampoo the seats or deep-clean the carpets, and it doesn't include snow foam or wax. If the car's had a hard winter or a summer of wet dogs, you'll get more for your money from the <a href="/interior-valet-aberdeen/">£35 Interior Valet</a>, the £60 Thorough Clean or the <a href="/full-valet-aberdeen/">Full Works</a>.</p>
+    <p>Not sure which? Send a couple of photos on WhatsApp and we'll tell you straight. We'd rather you booked the right one than the dear one.</p>
+  </Block>
+</ServicePage>

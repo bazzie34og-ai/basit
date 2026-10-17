@@ -1,0 +1,66 @@
+---
+import Base from '../layouts/Base.astro';
+import Faq from '../components/Faq.astro';
+import FinalCta from '../components/FinalCta.astro';
+import { waMessages, sizes, expectations, business } from '../config/site.ts';
+import { meta } from '../config/pages.ts';
+import { homeFaqs, type Faq as F } from '../content/faqs.ts';
+import { faqSchema } from '../lib/schema.ts';
+const m = meta('/faq/');
+
+const groups: { id: string; heading: string; faqs: F[] }[] = [
+  { id: 'faq-basics', heading: 'The basics', faqs: homeFaqs.filter((_, i) => [0, 1, 4, 7].includes(i)) },
+  {
+    id: 'faq-prices',
+    heading: 'Prices',
+    faqs: [
+      homeFaqs[2],
+      homeFaqs[3],
+      { q: 'Which size is my car?', a: sizes.map((z) => `${z.name} (${z.examples}): ${z.supplement ? `+£${z.supplement}` : 'no supplement'}`).join('. ') + '. Tell us the make and model if you are not sure.' },
+      { q: 'How do I pay?', a: 'Ask us when you book and we will tell you how payment works. We will always confirm the total before we start.' },
+    ],
+  },
+  {
+    id: 'faq-services',
+    heading: 'Services',
+    faqs: [
+      homeFaqs[5],
+      homeFaqs[6],
+      { q: 'What is snow foam?', a: 'A thick pre-wash foam that clings to the car and loosens dirt and grit, so it can be rinsed away before the hand wash. It is part of our Exterior Valet and the Full Works.' },
+      { q: 'Can you clean a child car seat?', a: 'Yes. Baby Seat Clean is a £10 extra: a deep clean and sanitise that removes stains and spills, using safe, family-friendly products.' },
+      { q: 'Do you clean engine bays?', a: 'Yes. Engine Bay Clean is a £10 extra. It removes dirt and grease with safe, gentle products.' },
+    ],
+  },
+  {
+    id: 'faq-day',
+    heading: 'On the day',
+    faqs: [
+      { q: 'Do I need to be there?', a: 'Not the whole time. We need access to the car, a water supply and a power socket. Let us know when you book how you would like to handle the keys.' },
+      { q: 'What if it rains?', a: 'Light rain is part of life in Aberdeen and does not usually stop a valet. If the forecast looks properly bad, we will be in touch about it.' },
+      { q: 'Can I drop the car off instead?', a: `${expectations.dropOff}` },
+      { q: 'What if I am in a flat without an outside tap?', a: 'Message us before booking. We need water and power where the car is, so we will talk it through with you, and drop-off is an option.' },
+    ],
+  },
+];
+const all = groups.flatMap((g) => g.faqs);
+---
+<Base title={m.title} description={m.description} path="/faq/" waText={waMessages.faq} breadcrumbs={[{ name: 'FAQ', href: '/faq/' }]} schema={[faqSchema(all)]}>
+  <section class="fh">
+    <p class="mono k">{all.length} questions · plain answers</p>
+    <h1>Valeting Questions, Answered</h1>
+    <p class="lede">The things people ask us before they book a valet in Aberdeen. Still stuck? WhatsApp {business.phoneDisplay} and ask a person.</p>
+    <nav aria-label="FAQ sections" class="jump mono">
+      {groups.map((g) => <a href={`#${g.id}-h`}>{g.heading}</a>)}
+    </nav>
+  </section>
+  {groups.map((g) => <Faq faqs={g.faqs} heading={g.heading} id={g.id} />)}
+  <FinalCta waText={waMessages.faq} note={false} heading="Didn't find it? Just ask." />
+</Base>
+<style>
+  .fh { width: min(100% - 2 * var(--gutter), 1080px); margin: 1.5rem auto 0; }
+  .k { color: var(--lm-blue-ink); margin: 0 0 1rem; }
+  h1 { font-size: clamp(2.4rem, 7vw, 5rem); font-style: italic; line-height: 0.95; max-width: 12ch; }
+  .lede { font-size: 1.18rem; max-width: 36rem; margin-top: 1.4rem; }
+  .jump { display: flex; flex-wrap: wrap; gap: 0.4rem 1.6rem; padding: 1rem 0; border-block: 1px solid var(--ink); }
+  .jump a { color: var(--ink); padding: 0.5rem 0; }
+</style>

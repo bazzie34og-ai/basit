@@ -1,0 +1,51 @@
+---
+import ServicePage from '../layouts/ServicePage.astro';
+import Block from '../components/Block.astro';
+import { extras, waMessages } from '../config/site.ts';
+import hero from '../assets/photos/mg-hs-red-exterior-after-valet.jpg';
+
+const e = extras.find((x) => x.id === 'headlights')!;
+const faqs = [
+  { q: 'How much is headlight restoration in Aberdeen?', a: `Headlight Restoration is £${e.price}. It can be added to any service.` },
+  { q: 'Why do headlights go cloudy and yellow?', a: 'Most modern headlight lenses are plastic. Over the years sunlight, weather and road grime break down the surface, which leaves a haze or a yellow tint.' },
+  { q: 'Will it help my MOT?', a: 'Restoration improves visibility and gives a clearer finish, but we can’t promise an MOT outcome. Headlight aim and other faults are a garage job.' },
+  { q: 'Can you do it at the same time as a valet?', a: 'Yes. It adds on to any service at the listed price, done at your door.' },
+];
+---
+<ServicePage
+  path="/headlight-restoration-aberdeen/"
+  crumb="Headlight restoration"
+  h1="Headlight Restoration in Aberdeen: £25"
+  kicker="Add-on · Any service"
+  priceTag={`£${e.price} · added to any valet`}
+  photo={hero}
+  alt="Front of a red MG HS after a valet in Aberdeen, showing its clear headlights"
+  caption="Fig. 08 · Not a restoration job, just a clean MG with clear lights. A proper before/after is coming."
+  waText={waMessages.headlights}
+  sheetTitle="Headlight Restoration"
+  sheetItems={['Removes haze and yellowing', 'Improves visibility', 'Restores a clearer finish']}
+  schemaName="Headlight restoration"
+  serviceType="Headlight restoration"
+  price={[e.price, e.price]}
+  related={[
+    { tag: 'Service', href: '/exterior-valet-aberdeen/', label: 'Exterior Valet, £35', blurb: 'Do the lights and the paint in one visit.' },
+    { tag: 'Service', href: '/valet-before-selling-or-lease-return/', label: 'Valet before selling', blurb: 'Cloudy lights make a car look older than it is.' },
+    { tag: 'Guide', href: '/guides/getting-your-car-ready-to-sell-or-return/', label: 'Getting your car ready to sell', blurb: 'The small things that change how a car photographs.' },
+    { tag: 'Areas', href: '/areas/', label: 'Areas we cover', blurb: 'Aberdeen and the surrounding areas.' },
+  ]}
+  faqs={faqs}
+>
+  <Fragment slot="intro">
+    <p>Headlight restoration in Aberdeen for £25. If your headlights have gone cloudy or yellow, it's the plastic lens wearing, and it can usually be brought back. We remove the haze and the yellowing, which improves visibility and gives you a clearer finish. Add it to any valet and it's done at the same visit, at your door.</p>
+  </Fragment>
+
+  <Block heading="Cloudy headlights: what's actually happening" variant="offset" kicker="It's not dirt">
+    <p>You can wash a cloudy headlight all day and it'll stay cloudy. The haze isn't on the lens, it's in the surface of it. Modern headlight covers are plastic, and years of sunlight, weather and road film wear that surface down until it scatters the light instead of letting it through.</p>
+    <p>That does two things. It makes a perfectly good car look tired, which matters if you're about to sell it. And it means less light on the road, which matters more on the unlit roads out of town in December.</p>
+    <p>Restoration takes the damaged surface back to clear. It's a £25 extra, so it pairs well with the <a href="/exterior-valet-aberdeen/">Exterior Valet</a> or the <a href="/full-valet-aberdeen/">Full Works</a>.</p>
+  </Block>
+
+  <Block heading="An honest note on the photo" variant="narrow" kicker="We don't fake it">
+    <p>The photo at the top is a red MG HS after a valet. Its headlights were already clear. We haven't put a headlight before-and-after on this page yet, because we'd rather wait for one of our own than borrow a stranger's. When we've got one, it goes up here.</p>
+  </Block>
+</ServicePage>

@@ -1,0 +1,68 @@
+---
+/** Their six booking steps, as a numbered strip. Horizontal on wide screens, a column on phones. */
+import { bookingSteps } from '../config/site.ts';
+interface Props { heading?: string; }
+const { heading = 'How booking works' } = Astro.props;
+---
+<section class="steps" aria-labelledby="steps-h">
+  <div class="wrap">
+    <div class="top">
+      <h2 id="steps-h">{heading}</h2>
+      <p>Six things we need to know. Send them on WhatsApp in one message, or use <a href="/book/" data-track="book_start">the booking form</a>, which asks them in the same order.</p>
+    </div>
+    <ol>
+      {bookingSteps.map((s) => (
+        <li>
+          <span class="num mono">{String(s.n).padStart(2, '0')}</span>
+          <h3>{s.title}</h3>
+          <p>{s.detail}</p>
+        </li>
+      ))}
+    </ol>
+  </div>
+</section>
+<style>
+  .steps {
+    padding: clamp(3.5rem, 7vw, 5rem) 0;
+    background: var(--paper-2);
+    border-block: 1px solid var(--ink);
+  }
+  .top {
+    display: grid;
+    gap: 1rem 4rem;
+    margin-bottom: 2.4rem;
+  }
+  @media (min-width: 860px) {
+    .top { grid-template-columns: auto 1fr; align-items: end; }
+  }
+  h2 { font-size: clamp(1.8rem, 4vw, 2.6rem); }
+  .top p { margin: 0; max-width: 36rem; }
+  ol {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    counter-reset: s;
+  }
+  li {
+    display: grid;
+    grid-template-columns: 3.2rem 1fr;
+    gap: 0 0.8rem;
+    padding: 1rem 0 1.1rem;
+    border-top: 1.5px solid var(--ink);
+  }
+  .num { grid-row: span 2; font-size: 1.6rem; letter-spacing: 0; color: var(--lm-blue-ink); line-height: 1; }
+  h3 { font-size: 1.05rem; font-stretch: 100%; font-weight: 700; margin-bottom: 0.25rem; }
+  li p { margin: 0; font-size: 0.98rem; color: var(--ink-2); }
+  @media (min-width: 1000px) {
+    ol { grid-template-columns: repeat(6, 1fr); }
+    li {
+      grid-template-columns: 1fr;
+      padding: 1rem 1.2rem 0 0;
+      border-top-width: 3px;
+    }
+    li + li { border-left: 0; }
+    .num { grid-row: auto; font-size: 2.6rem; margin-bottom: 0.9rem; }
+  }
+</style>

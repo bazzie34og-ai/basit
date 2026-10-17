@@ -1,0 +1,62 @@
+---
+import Base from '../layouts/Base.astro';
+import Block from '../components/Block.astro';
+import JobSheet from '../components/JobSheet.astro';
+import PullQuote from '../components/PullQuote.astro';
+import Honest from '../components/Honest.astro';
+import FinalCta from '../components/FinalCta.astro';
+import Photo from '../components/Photo.astro';
+import { business, waMessages, social, giveawaysLine } from '../config/site.ts';
+import { meta } from '../config/pages.ts';
+import van from '../assets/photos/lm-auto-care-van-and-kit-on-site-mg-hs.jpg';
+import foam from '../assets/photos/mazda-cx3-snow-foam-mobile-valet-aberdeen.jpg';
+const m = meta('/the-lm-way/');
+---
+<Base title={m.title} description={m.description} path="/the-lm-way/" waText={waMessages.default} breadcrumbs={[{ name: 'The LM Way', href: '/the-lm-way/' }]}>
+  <section class="wayhead">
+    <p class="mono k">About LM Auto Care · {business.taglines.trio}</p>
+    <h1>The LM Way</h1>
+    <p class="tags">
+      <span>{business.taglines.main}</span>
+      <span>{business.taglines.more}.</span>
+    </p>
+  </section>
+
+  <Block heading="A mobile valeting service, run small" kicker="Who we are" photo={van} alt="About LM Auto Care: the van, kit and folding table set up kerbside next to a customer's red MG HS in Aberdeen" caption="The van, the kit, the table. That's the business." side="left">
+    <p>LM Auto Care is a mobile valeting business in Aberdeen. We're {business.training.toLowerCase()}, we come to your house or your work, and we clean cars properly. That's more or less the whole pitch.</p>
+    <p>There's no forecourt and no waiting room. There's a van with the kit in the back: hoses and cables, snow foam, a stack of clean microfibre cloths and a folding table. You'll have seen it in our photos, parked up on the kerb beside somebody's car.</p>
+    <p>We post the work as we go, on Facebook, Instagram and TikTok. The photos on this site are the same ones: our phone, our customers' cars, Aberdeen streets.</p>
+  </Block>
+
+  <PullQuote attribution="The LM Way, in one line">Every box ticked, <em>then</em> signed off.</PullQuote>
+
+  <Block heading="What the LM Way means in practice" variant="narrow" kicker="Four rules">
+    <ol>
+      <li><strong>Prices written down.</strong> Every service, every size supplement and every extra is on <a href="/prices/">one page</a>. What you see there is what you pay.</li>
+      <li><strong>Grit off before anything touches the paint.</strong> Pre-wash and snow foam first, then the hand wash, then a microfibre dry. <a href="/guides/why-car-washes-scratch-paint/">Here's why the order matters</a>.</li>
+      <li><strong>Work from a sheet.</strong> The Full Works runs off a checklist, exterior then interior, and nothing gets ticked until it's done.</li>
+      <li><strong>Walk round it before we leave.</strong> The last line is a final quality check. If something's not right, it gets put right while we're still there.</li>
+    </ol>
+  </Block>
+
+  <JobSheet heading="The sheet behind the Full Works" id="way-sheet" />
+
+  <Block heading="What we ask of you" variant="photo" photo={foam} alt="Snow foam on a Mazda CX-3 parked on paving slabs outside a block of flats in Aberdeen, water and power supplied by the customer" caption="Water from their tap, power from their socket." side="right" kicker="Fair's fair">
+    <p>We bring everything except two things: <strong>a water supply and a power socket where the car is.</strong> That's how a mobile valet works. If you're not sure whether your place has what we need, ask before you book. Drop-off is available too.</p>
+    <p>Booking times are weekday mornings or afternoons, and weekend evenings. Tell us what suits and we'll confirm a time on WhatsApp.</p>
+    <Honest />
+  </Block>
+
+  <Block heading="Say hello" variant="dark" kicker="Elsewhere">
+    <p>We post our work on <a href={social.instagram.url} rel="noopener">Instagram ({social.instagram.handle})</a>, <a href={social.tiktok.url} rel="noopener">TikTok ({social.tiktok.handle})</a> and <a href={social.facebook.url} rel="noopener">Facebook</a>, where we're {social.facebookRecommend}. {giveawaysLine}</p>
+  </Block>
+
+  <FinalCta waText={waMessages.default} />
+</Base>
+<style>
+  .wayhead { width: min(100% - 2 * var(--gutter), 1240px); margin: 1.5rem auto 1rem; }
+  .k { color: var(--lm-blue-ink); margin: 0 0 1rem; }
+  h1 { font-size: clamp(3.4rem, 15vw, 11rem); font-style: italic; line-height: 0.85; letter-spacing: -0.03em; }
+  .tags { display: flex; flex-wrap: wrap; gap: 0.4rem 2rem; margin-top: 1.4rem; font-family: var(--f-display); font-stretch: var(--wide); font-weight: 800; font-size: clamp(1rem, 2vw, 1.3rem); }
+  .tags span:last-child { color: var(--lm-blue-ink); font-style: italic; }
+</style>

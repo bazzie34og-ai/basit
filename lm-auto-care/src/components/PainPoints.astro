@@ -1,0 +1,94 @@
+---
+/** "Why people stop going to the car wash": three complaints, struck through, answered. */
+const points = [
+  {
+    n: '01',
+    gripe: 'Forty minutes in a queue out onto the road, then a waiting room with a vending machine.',
+    answer: "We come to you. The car gets done on your street or at your work while you get on with your day. There's no queue because there's no car wash.",
+  },
+  {
+    n: '02',
+    gripe: 'Asked for the £13 wash. Got asked for £23 at the end. Extra for a bigger car. Extra for paying.',
+    answer: "£35 means £35. If your car's bigger, you'll see the supplement before you book, not after. The whole price list is on this site, and the calculator adds it up for you.",
+  },
+  {
+    n: '03',
+    gripe: 'Same sponge for the wheels and the paint. Dried off with a dirty shammy. Swirls in the sun.',
+    answer: 'Pre-wash, snow foam, then a proper hand wash and a microfibre dry. In that order, every time. The grit comes off before anything rubs against your paint.',
+  },
+];
+---
+<section class="pain speckle" aria-labelledby="pain-h">
+  <div class="grid">
+    <div class="lead">
+      <p class="mono kicker">Notes from the kerb</p>
+      <h2 id="pain-h">Why people stop going to the car wash</h2>
+    </div>
+    <ol class="list">
+      {points.map((p) => (
+        <li data-draw>
+          <span class="n mono">{p.n}</span>
+          <p class="gripe">
+            <span class="struck">{p.gripe}</span>
+          </p>
+          <p class="answer"><span class="mono who">LM:</span> {p.answer}</p>
+        </li>
+      ))}
+    </ol>
+  </div>
+</section>
+<style>
+  .pain {
+    padding: clamp(4rem, 10vw, 8rem) 0 clamp(3rem, 7vw, 5rem);
+  }
+  .grid {
+    width: min(100% - 2 * var(--gutter), 1160px);
+    margin-inline: auto;
+    display: grid;
+    gap: 2.5rem;
+  }
+  @media (min-width: 900px) {
+    .grid { grid-template-columns: 0.85fr 1.4fr; gap: 4rem; }
+    .lead { position: sticky; top: calc(var(--header-h) + 2rem); align-self: start; }
+  }
+  .kicker { color: var(--lm-blue-ink); margin: 0 0 0.8rem; }
+  h2 {
+    font-size: clamp(2.2rem, 5.6vw, 4rem);
+    font-style: italic;
+  }
+  .list { list-style: none; margin: 0; padding: 0; }
+  li {
+    display: grid;
+    grid-template-columns: 2.6rem 1fr;
+    gap: 0 1rem;
+    padding: 1.8rem 0 2rem;
+    border-top: 1px solid var(--ink);
+  }
+  .n { grid-row: span 2; color: var(--stone-ink); padding-top: 0.5rem; }
+  .gripe {
+    position: relative;
+    font-size: clamp(1.2rem, 2.4vw, 1.55rem);
+    line-height: 1.35;
+    color: var(--ink-2);
+    margin: 0 0 1rem;
+  }
+  /* The strike is a hand-drawn SVG line, repeated on every wrapped line of the complaint. */
+  .struck {
+    --strike: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 20' preserveAspectRatio='none'%3E%3Cpath d='M2 12c60-4 130-7 200-6s130 2 196-3' fill='none' stroke='%23121417' stroke-width='2.6' stroke-linecap='round' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E");
+    background: var(--strike) 0 55% / 100% 0.6em no-repeat;
+    -webkit-box-decoration-break: clone;
+    box-decoration-break: clone;
+  }
+  li:nth-child(2) .struck {
+    --strike: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 20' preserveAspectRatio='none'%3E%3Cpath d='M3 8c110 4 250 6 394 2' fill='none' stroke='%23121417' stroke-width='2.6' stroke-linecap='round' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E");
+  }
+  @media (scripting: enabled) and (prefers-reduced-motion: no-preference) {
+    .struck {
+      background-size: 0% 0.6em;
+      transition: background-size 0.8s cubic-bezier(0.55, 0, 0.3, 1) 0.15s;
+    }
+    li.is-drawn .struck { background-size: 100% 0.6em; }
+  }
+  .answer { margin: 0; font-size: 1.12rem; max-width: 38rem; }
+  .who { color: var(--lm-blue-ink); margin-right: 0.3rem; }
+</style>

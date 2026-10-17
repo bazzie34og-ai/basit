@@ -1,0 +1,44 @@
+---
+/** Internal links as a ruled index, not a row of cards. */
+interface Props { heading?: string; links: { href: string; label: string; blurb: string; tag: string }[]; }
+const { heading = 'Also worth a look', links } = Astro.props;
+---
+<nav class="related" aria-labelledby="rel-h">
+  <div class="in">
+    <h2 id="rel-h" class="mono">{heading}</h2>
+    <ul>
+      {links.map((l) => (
+        <li>
+          <span class="mono tag">{l.tag}</span>
+          <a href={l.href}>{l.label}</a>
+          <span class="blurb">{l.blurb}</span>
+        </li>
+      ))}
+    </ul>
+  </div>
+</nav>
+<style>
+  .related { padding: clamp(3rem, 6vw, 4.5rem) 0; }
+  .in { width: min(100% - 2 * var(--gutter), 1080px); margin-inline: auto; }
+  h2 { font-size: 0.78rem; font-stretch: 100%; color: var(--stone-ink); margin-bottom: 1rem; }
+  ul { list-style: none; margin: 0; padding: 0; border-top: 1.5px solid var(--ink); }
+  li {
+    display: grid;
+    gap: 0.2rem 1.5rem;
+    padding: 1rem 0;
+    border-bottom: 1px solid var(--paper-3);
+  }
+  @media (min-width: 760px) {
+    li { grid-template-columns: 8rem minmax(0, 1fr) minmax(0, 1.3fr); align-items: baseline; }
+  }
+  .tag { color: var(--lm-blue-ink); font-size: 0.68rem; }
+  a {
+    font-family: var(--f-ui);
+    font-weight: 700;
+    font-size: 1.15rem;
+    color: var(--ink);
+    text-decoration-color: var(--lm-blue);
+    padding: 0.2rem 0;
+  }
+  .blurb { color: var(--ink-2); font-size: 0.98rem; }
+</style>

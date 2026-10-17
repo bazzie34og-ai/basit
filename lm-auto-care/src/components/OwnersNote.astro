@@ -1,0 +1,59 @@
+---
+/** A short letter from the owner. Signature drawn as an SVG path; the name is a placeholder until confirmed. */
+import { Image } from 'astro:assets';
+import logo from '../assets/logos/lm-auto-care-logo-circle-square.png';
+import { business } from '../config/site.ts';
+---
+<article class="note" aria-labelledby="note-h">
+  <header>
+    <Image src={logo} alt="" width={72} height={72} loading="lazy" class="mark" />
+    <p class="mono">From the van · {business.areaLine}</p>
+  </header>
+  <h2 id="note-h" class="visually-hidden">A note from LM Auto Care</h2>
+  <p>Hello,</p>
+  <p>LM Auto Care is a small, local team and we like it that way. You deal with the same people from the first message to the final check. Nobody's shouting across a forecourt, and nobody's in a hurry to get the next car in.</p>
+  <p>We'd rather do fewer cars properly than more cars badly. Every price is on this website, so you know what it costs before you message. If something's not right when we've finished, tell us while we're still there and we'll put it right.</p>
+  <p>Thanks for looking. Hope we get to meet your car.</p>
+  <div class="sign" data-draw>
+    <svg viewBox="0 0 220 70" aria-hidden="true">
+      <path pathLength="1" d="M10 50c8-14 14-30 16-42-3 14-6 30-6 40 10-2 20-4 28-6M52 46c3-12 6-24 7-36 6 12 9 22 13 30 6-12 12-22 18-32 0 12-1 24 0 36M98 44c12-6 24-8 36-8 16 0 32-4 48-12 10-5 20-8 30-8" />
+    </svg>
+    <p class="who">— {business.ownerName ?? business.ownerSignature}</p>
+  </div>
+</article>
+<style>
+  .note {
+    background: var(--foam);
+    border: 1px solid var(--paper-3);
+    padding: clamp(1.5rem, 4vw, 2.6rem);
+    max-width: 36rem;
+    box-shadow: 0 1px 0 var(--paper-3), 0 14px 30px -18px rgba(18, 20, 23, 0.35);
+    transform: rotate(0.4deg);
+    font-size: 1.08rem;
+  }
+  header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.6rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--paper-2);
+  }
+  header p { margin: 0; color: var(--stone-ink); font-size: 0.68rem; }
+  .mark { width: 52px; height: 52px; }
+  .sign svg { width: 180px; height: auto; margin-top: 0.5rem; }
+  .sign path {
+    fill: none;
+    stroke: var(--lm-blue-ink);
+    stroke-width: 2.4;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-dasharray: 1;
+    stroke-dashoffset: 0;
+  }
+  @media (scripting: enabled) and (prefers-reduced-motion: no-preference) {
+    .sign path { stroke-dashoffset: 1; }
+    .sign.is-drawn path { stroke-dashoffset: 0; transition: stroke-dashoffset 1.4s ease-in-out 0.2s; }
+  }
+  .who { font-style: italic; margin: 0.2rem 0 0; color: var(--ink-2); }
+</style>
