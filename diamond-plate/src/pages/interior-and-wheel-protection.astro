@@ -1,0 +1,105 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import Photo from '../components/Photo.astro';
+import QuoteForm from '../components/QuoteForm.astro';
+import CtaBand from '../components/CtaBand.astro';
+import Faq from '../components/Faq.astro';
+import RelatedLinks from '../components/RelatedLinks.astro';
+import { routes } from '../config/routes';
+import { serviceSchema } from '../lib/schema';
+import { addOns, money, packages, warrantyYears } from '../config/site';
+
+const r = routes.interior;
+const plus = packages.find((p) => p.id === 'diamond-plus')!;
+const ultimate = packages.find((p) => p.id === 'ultimate-plus')!;
+const wheel = addOns[0];
+const items = [
+  {
+    q: 'Can I get interior protection on its own?',
+    a: `<p>Interior protection comes as part of Diamond Package Plus (${money(plus.price)}) and Ultimate Plus (${money(ultimate.price)}), together with the paint coating and free alloy wheel protection. Alloy wheel protection on its own is an add-on for ${money(wheel.price)}.</p>`,
+  },
+  {
+    q: 'Is the interior covered by the warranty?',
+    a: `<p>Yes. On Diamond Package Plus the ${warrantyYears}-year warranty covers paint, fabric/leather and vinyl. On Ultimate Plus it covers everything in the package.</p>`,
+  },
+  {
+    q: 'What does alloy wheel protection do?',
+    a: '<p>It coats the wheel faces so brake dust and road grime are easier to wash off.</p>',
+  },
+];
+const schema = [
+  serviceSchema({ name: 'Car interior, leather and wheel protection, Brisbane', serviceType: 'Car interior protection', path: r.path, description: r.description, offers: [plus, ultimate] }),
+];
+---
+<Base title={r.title} description={r.description} h1={r.h1} crumbs={[{ name: 'Interior and wheel protection', path: r.path }]} schema={schema} quoteHref="#quote-form">
+  <PageHero eyebrow="Inside and down low" h1={r.h1} lead={`Car interior protection for leather, fabric and vinyl, plus alloy wheel protection, applied in Brisbane at your place. It’s included in Diamond Package Plus (${money(plus.price)}) and Ultimate Plus (${money(ultimate.price)}), with free wheel protection valued at ${money(wheel.price)}.`}>
+    <Photo name="nateDog" width={440} eager caption="Nate, Diamond Plate certified applicator, protecting alloy wheels" />
+  </PageHero>
+
+  <section class="section band">
+    <div class="wrap">
+      <p class="eyebrow">What’s included</p>
+      <h2>Interior and wheel protection, piece by piece</h2>
+      <div class="grid grid-3" data-reveal-group>
+        <article class="card" data-reveal>
+          <h3>Fabric and leather</h3>
+          <p class="muted">Stain protection for seats and trim, so spills from coffee, kids and dogs are easier to deal with before they set. Leather protection for cars that get used.</p>
+        </article>
+        <article class="card" data-reveal>
+          <h3>Vinyl</h3>
+          <p class="muted">Protection against fading, UV, cracking and splitting on dashboards and door trims, the surfaces that cop the Brisbane sun through the glass.</p>
+        </article>
+        <article class="card glint" data-reveal>
+          <h3>Alloy wheels</h3>
+          <p class="muted">Alloy wheel ceramic coating so brake dust and grime wash off more easily. Free in both Plus packages, or a {money(wheel.price)} add-on.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap prose">
+      <p class="eyebrow">Pick your package</p>
+      <h2>Car interior protection in Brisbane: two ways to get it</h2>
+      <div class="table-scroll">
+        <table>
+          <thead><tr><th scope="col">Package</th><th scope="col">Paint</th><th scope="col">Interior</th><th scope="col">Wheels</th><th scope="col">Warranty covers</th><th scope="col">Price</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">{plus.short}</th><td>1 layer graphene ceramic</td><td>Fabric/leather and vinyl</td><td>Free</td><td>{plus.warrantyCovers}</td><td><strong>{money(plus.price)}</strong></td></tr>
+            <tr><th scope="row">{ultimate.short}</th><td>2 layers graphene ceramic</td><td>Full interior package</td><td>Free</td><td>{ultimate.warrantyCovers}</td><td><strong>{money(ultimate.price)}</strong></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>Only want the paint done? <a href="/ceramic-coating-prices/">See all four ceramic coating prices</a>, including the single and double layer packages.</p>
+    </div>
+  </section>
+
+  <CtaBand heading="Kids, dogs, sports gear?" text="Interior protection is worth it in a car that gets used. Ask us which package fits." quoteHref="#quote-form" />
+
+  <section class="section band">
+    <div class="wrap split">
+      <div>
+        <h2>Interior protection questions</h2>
+        <Faq items={items} />
+      </div>
+      <Photo name="xtrail" width={480} />
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <RelatedLinks links={[
+        { href: '/ceramic-coating-prices/', label: 'Ceramic coating prices', desc: 'All four packages.' },
+        { href: '/new-car-paint-protection/', label: 'New car paint protection', desc: 'Protect it from day one.' },
+        { href: '/4wd-ute-ceramic-coating/', label: '4WD and ute coating', desc: 'For cabins full of muddy gear.' },
+        { href: '/service-areas/', label: 'Where we come to you', desc: 'All suburbs.' },
+        { href: '/guides/is-ceramic-coating-worth-it-queensland/', label: 'Is it worth it in Queensland?', desc: 'The honest answer.' },
+      ]} />
+    </div>
+  </section>
+
+  <section class="section band">
+    <div class="wrap"><QuoteForm heading="Get your interior package price" defaultPackage={`${plus.short} ${money(plus.price)}`} /></div>
+  </section>
+</Base>

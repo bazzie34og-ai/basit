@@ -1,0 +1,45 @@
+---
+import HexLattice from './HexLattice.astro';
+import Icon from './Icon.astro';
+import { business, money, priceFrom, warrantyYears } from '../config/site';
+/** Inner-page hero: H1, promise, CTAs and trust chips. Default slot = optional media on the right. */
+interface Props { eyebrow?: string; h1: string; lead: string; chips?: boolean; ctaLabel?: string; quoteHref?: string }
+const { eyebrow, h1, lead, chips = true, ctaLabel = 'Get My Price', quoteHref = '#quote-form' } = Astro.props;
+const hasMedia = Astro.slots.has('default');
+---
+<section class:list={['page-hero', { 'has-media': hasMedia }]}>
+  <HexLattice id="hex-ph" origin="0% 0%" opacity={0.05} />
+  <div class="wrap ph-grid">
+    <div class="ph-copy">
+      {eyebrow && <p class="eyebrow">{eyebrow}</p>}
+      <h1>{h1}</h1>
+      <p class="lead">{lead}</p>
+      <div class="btn-row">
+        <a class="btn btn-primary" href={quoteHref} data-track="quote_start">{ctaLabel} <Icon name="arrow" /></a>
+        <a class="btn btn-ghost" href={business.phone.tel} data-track="call_click"><Icon name="phone" /> Call {business.phone.display}</a>
+      </div>
+      {chips && (
+        <ul class="chips" aria-label="Why Diamond Plate">
+          <li><Icon name="tag" /> From {money(priceFrom)} · fixed price</li>
+          <li><Icon name="shield" /> {warrantyYears}-year national warranty</li>
+          <li><Icon name="pin" /> We come to you</li>
+        </ul>
+      )}
+    </div>
+    {hasMedia && <div class="ph-media"><slot /></div>}
+  </div>
+</section>
+<style>
+  .page-hero { position: relative; overflow: hidden; padding: clamp(28px, 5vw, 64px) 0 clamp(56px, 7vw, 96px); }
+  .ph-grid { position: relative; display: grid; gap: 40px; align-items: center; }
+  @media (min-width: 960px) { .has-media .ph-grid { grid-template-columns: 1.1fr 0.9fr; } }
+  h1 { max-width: 16ch; }
+  .lead { margin-bottom: 28px; }
+  .chips { list-style: none; display: flex; flex-wrap: wrap; gap: 10px; padding: 0; margin: 26px 0 0; }
+  .chips li {
+    display: inline-flex; align-items: center; gap: 8px; padding: 9px 14px; border-radius: 999px;
+    background: rgba(18, 26, 36, 0.8); border: 1px solid var(--line); font-size: 0.88rem; font-weight: 500; color: var(--white);
+  }
+  .chips :global(.icon) { width: 16px; color: var(--ice); }
+  .ph-media { max-width: 560px; justify-self: center; width: 100%; }
+</style>

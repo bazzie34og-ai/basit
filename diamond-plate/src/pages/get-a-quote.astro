@@ -1,0 +1,40 @@
+---
+import Base from '../layouts/Base.astro';
+import QuoteForm from '../components/QuoteForm.astro';
+import Icon from '../components/Icon.astro';
+import HexLattice from '../components/HexLattice.astro';
+import { routes } from '../config/routes';
+import { business, hours, money, packages, priceNote, replyPromise, social } from '../config/site';
+const r = routes.quote;
+---
+<Base title={r.title} description={r.description} h1={r.h1} crumbs={[{ name: 'Get a quote', path: r.path }]} quoteHref="#quote-form">
+  <section class="q-hero">
+    <HexLattice id="hex-q" origin="0% 0%" opacity={0.05} />
+    <div class="wrap q-grid">
+      <div>
+        <p class="eyebrow">Ceramic coating quote, Brisbane</p>
+        <h1>{r.h1}</h1>
+        <p class="lead">Tell us the car and the suburb. {replyPromise}, with a fixed price and a time that suits you.</p>
+        <ul class="ticks">
+          {packages.map((p) => <li><strong>{p.short}</strong> {money(p.price)}</li>)}
+        </ul>
+        <p class="small muted">{priceNote}</p>
+        <div class="card side">
+          <p><strong>Rather talk?</strong></p>
+          <a class="btn btn-ghost" href={business.phone.tel} data-track="call_click"><Icon name="phone" /> {business.phone.display}</a>
+          <a class="btn btn-ghost" href={social.messenger} target="_blank" rel="noopener" data-track="messenger_click"><Icon name="chat" /> Messenger</a>
+          <p class="small muted">{hours.display}. {hours.weekendNote}</p>
+          <p class="small muted"><a href={`mailto:${business.email}`}>{business.email}</a></p>
+        </div>
+      </div>
+      <QuoteForm variant="full" heading="Your details" intro="Fields marked * are required. Everything else helps us quote faster." />
+    </div>
+  </section>
+</Base>
+<style>
+  .q-hero { position: relative; overflow: hidden; padding: 32px 0 96px; }
+  .q-grid { position: relative; display: grid; gap: 40px; align-items: start; }
+  @media (min-width: 1000px) { .q-grid { grid-template-columns: 0.8fr 1.2fr; } }
+  .side { display: grid; gap: 10px; margin-top: 24px; }
+  .side p { margin: 0; }
+</style>

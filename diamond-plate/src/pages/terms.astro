@@ -1,0 +1,26 @@
+---
+import Base from '../layouts/Base.astro';
+import { routes } from '../config/routes';
+import { business, priceNote, warranty } from '../config/site';
+const r = routes.terms;
+---
+<Base title={r.title} description={r.description} h1={r.h1} crumbs={[{ name: 'Terms', path: r.path }]}>
+  <section class="section" style="padding-top:32px">
+    <div class="wrap prose">
+      <h1>{r.h1}</h1>
+      <p class="muted">Last updated 17 October 2026</p>
+      <p>These terms apply to your use of the {business.name} website. By using the site you agree to them.</p>
+      <h2>Prices and quotes</h2>
+      {/* TODO-CONFIRM: whether published prices include GST. */}
+      <p>Prices are in Australian dollars. {priceNote} A quote is confirmed only when we’ve confirmed your vehicle, package and booking.</p>
+      <h2>Warranty</h2>
+      <p>Warranty terms are provided in writing at the time of service and take precedence over any summary on this website. {warranty.transferNote}</p>
+      <h2>Website content</h2>
+      <p>We work hard to keep this site accurate, but information can change. Photos show Diamond Plate work from around Australia and are for illustration. Nothing on this site limits your rights under the Australian Consumer Law.</p>
+      <h2>Links</h2>
+      <p>We link to other sites, such as Facebook and Google Maps. We’re not responsible for their content or privacy practices.</p>
+      <h2>Contact</h2>
+      <p>{business.name}, {business.address.oneLine}. <a href={business.phone.tel}>{business.phone.display}</a> · <a href={`mailto:${business.email}`}>{business.email}</a>.</p>
+    </div>
+  </section>
+</Base>

@@ -1,0 +1,20 @@
+---
+/** Internal-linking block: descriptive anchors only. */
+interface Props { heading?: string; links: { href: string; label: string; desc?: string }[] }
+const { heading = 'Keep reading', links } = Astro.props;
+---
+<nav class="related" aria-label={heading}>
+  <h2 class="rel-h">{heading}</h2>
+  <ul class="grid grid-3">
+    {links.map((l) => (
+      <li><a class="card rel" href={l.href}><span class="rel-t">{l.label} →</span>{l.desc && <span class="small muted">{l.desc}</span>}</a></li>
+    ))}
+  </ul>
+</nav>
+<style>
+  .rel-h { font-size: clamp(1.6rem, 3vw, 2.2rem); }
+  ul { list-style: none; margin: 0; padding: 0; }
+  .rel { display: grid; gap: 6px; height: 100%; text-decoration: none; color: var(--white); transition: border-color 0.2s, transform 0.2s; }
+  .rel:hover { border-color: rgba(56, 200, 255, 0.5); transform: translateY(-2px); }
+  .rel-t { font-weight: 600; color: var(--ice); }
+</style>

@@ -1,0 +1,34 @@
+---
+/** Honeycomb of hexagon outlines at 4–6% opacity, faded with a radial mask like the logo's top-left corner. Hero and footer only. */
+interface Props { origin?: string; opacity?: number; id?: string; size?: number }
+const { origin = '12% 10%', opacity = 0.06, id = 'hex', size = 30 } = Astro.props;
+const s = size;
+const W = Math.sqrt(3) * s;
+const H = 3 * s;
+const hex = (cx: number, cy: number) =>
+  'M' + [0, 1, 2, 3, 4, 5].map((i) => {
+    const a = (Math.PI / 180) * (60 * i - 90);
+    return `${(cx + s * Math.cos(a)).toFixed(1)} ${(cy + s * Math.sin(a)).toFixed(1)}`;
+  }).join('L') + 'Z';
+const d = [[W / 2, s], [0, 2.5 * s], [W, 2.5 * s], [0, -0.5 * s], [W, -0.5 * s], [W / 2, 4 * s]].map(([x, y]) => hex(x, y)).join('');
+---
+<svg class="hex-lattice" aria-hidden="true" focusable="false" style={`--o:${opacity};--origin:${origin}`}>
+  <defs>
+    <pattern id={`${id}-p`} width={W.toFixed(2)} height={H} patternUnits="userSpaceOnUse">
+      <path d={d} fill="none" stroke="#F3F6FA" stroke-width="1.5" />
+    </pattern>
+  </defs>
+  <rect width="100%" height="100%" fill={`url(#${id}-p)`} />
+</svg>
+<style>
+  .hex-lattice {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    opacity: var(--o);
+    pointer-events: none;
+    -webkit-mask-image: radial-gradient(ellipse 75% 85% at var(--origin), #000 0%, rgba(0, 0, 0, 0.4) 45%, transparent 78%);
+    mask-image: radial-gradient(ellipse 75% 85% at var(--origin), #000 0%, rgba(0, 0, 0, 0.4) 45%, transparent 78%);
+  }
+</style>

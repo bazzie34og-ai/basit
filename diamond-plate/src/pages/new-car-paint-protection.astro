@@ -1,0 +1,107 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import Photo from '../components/Photo.astro';
+import QuoteForm from '../components/QuoteForm.astro';
+import CtaBand from '../components/CtaBand.astro';
+import Faq from '../components/Faq.astro';
+import RelatedLinks from '../components/RelatedLinks.astro';
+import Steps from '../components/Steps.astro';
+import { routes } from '../config/routes';
+import { faqs } from '../config/faqs';
+import { serviceSchema } from '../lib/schema';
+import { money, packages, priceFrom, warrantyYears } from '../config/site';
+
+const r = routes.newCar;
+const items = [
+  faqs.newcar,
+  faqs.dealer,
+  {
+    q: 'My new car already has light marks from the dealership. Will coating fix them?',
+    a: '<p>No. A ceramic coating doesn’t remove scratches or swirl marks. It protects the paint as it is. Point out any marks when we book, and the applicator will look at them with you before starting.</p>',
+  },
+  faqs.inspections,
+  faqs.transfer,
+];
+const schema = [serviceSchema({ name: 'New car paint protection, Brisbane', serviceType: 'New car paint protection', path: r.path, description: r.description, offers: packages })];
+---
+<Base title={r.title} description={r.description} h1={r.h1} crumbs={[{ name: 'New car paint protection', path: r.path }]} schema={schema} quoteHref="#quote-form">
+  <PageHero eyebrow="Brand new or near new" h1={r.h1} lead={`Protecting new paint works best in the first weeks, before Brisbane’s sun, bird droppings and sap have had a go at it. We come to your home or work, prep the paint properly and coat it with Australian-made graphene ceramic, with fixed prices and a ${warrantyYears}-year national warranty.`}>
+    <Photo name="xtrail" width={540} eager />
+  </PageHero>
+
+  <section class="section band">
+    <div class="wrap split">
+      <div class="prose">
+        <p class="eyebrow">“Hard to find someone I trust with my brand new Prado”</p>
+        <h2>Who touches your new car matters</h2>
+        <p>You’ve just spent serious money. You want the person working on it to know exactly what they’re doing. Diamond Plate coatings are applied only by trained, approved Diamond Plate applicators. It’s never a DIY product and never a rushed add-on at delivery.</p>
+        <p>The applicator explains every step and walks you through the car at hand-over. One customer put it simply: “He explained everything that was done to my car.”</p>
+      </div>
+      <Photo name="nateInspect" width={440} />
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <p class="eyebrow">The process</p>
+      <h2>New car paint protection, step by step</h2>
+      <p class="lead">New paint is rarely as clean as it looks. Transport, yard storage and a quick dealer wash can all leave something behind, so every job starts with prep.</p>
+      <Steps />
+    </div>
+  </section>
+
+  <CtaBand heading="Picked it up this week?" text="The sooner it’s coated, the less Brisbane gets to it. Tell us the model and suburb for a fixed price." quoteHref="#quote-form" />
+
+  <section class="section band">
+    <div class="wrap prose">
+      <p class="eyebrow">Dealer paint protection alternative</p>
+      <h2>What to ask before you say yes at the dealership</h2>
+      <p>Dealers often offer paint protection with the car. Some of it is good. Before you sign, ask:</p>
+      <ol>
+        <li><strong>Which product is it?</strong> Get the brand and product name, not just “paint protection”.</li>
+        <li><strong>Who applies it, and where?</strong></li>
+        <li><strong>What are the warranty conditions?</strong> Is there a cap on what it pays out?</li>
+        <li><strong>Are annual inspections required</strong> to keep the warranty alive?</li>
+        <li><strong>Is reapplication required</strong>, and what does it cost?</li>
+      </ol>
+      <p>For comparison, our {warrantyYears}-year national warranty has no annual inspections, no reapplication and no capped warranty payments, and the price is published: from {money(priceFrom)}. The full comparison is in <a href="/guides/ceramic-coating-vs-dealer-paint-protection/">ceramic coating vs dealer paint protection</a>.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap split rev">
+      <div class="prose">
+        <p class="eyebrow">Family SUVs and daily drivers</p>
+        <h2>Protect new car paint you’ll actually use</h2>
+        <p>Plenty of new cars that get coated aren’t garage queens. They’re family SUVs like these, doing school runs and the M1. The point is easier washing and paint that still looks fresh when you trade it in.</p>
+        <p>For a daily driver, the single layer at {money(packages[0].price)} is often enough. If the interior will see kids, dogs or sports gear, the <a href="/interior-and-wheel-protection/">interior protection</a> in Diamond Package Plus is worth a look. We’ll tell you if you don’t need the double layer.</p>
+        <p><a href="/ceramic-coating-prices/">Compare all four packages and prices</a>.</p>
+      </div>
+      <Photo name="kona" width={540} />
+    </div>
+  </section>
+
+  <section class="section band">
+    <div class="wrap narrow">
+      <h2>New car questions</h2>
+      <Faq items={items} />
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <RelatedLinks links={[
+        { href: '/ceramic-coating-prices/', label: 'Ceramic coating prices', desc: `Fixed packages from ${money(priceFrom)}.` },
+        { href: '/ev-tesla-ceramic-coating/', label: 'New EV or Tesla?', desc: 'Soft factory paint, coated at home.' },
+        { href: '/4wd-ute-ceramic-coating/', label: 'New 4WD or ute?', desc: 'Prado, LandCruiser 300, Ranger and more.' },
+        { href: '/service-areas/', label: 'Where we come to you', desc: 'Every suburb we cover.' },
+        { href: '/guides/ceramic-coating-vs-dealer-paint-protection/', label: 'Dealer protection guide', desc: 'Questions to ask the dealer.' },
+      ]} />
+    </div>
+  </section>
+
+  <section class="section band">
+    <div class="wrap"><QuoteForm heading="Get your new car price" /></div>
+  </section>
+</Base>

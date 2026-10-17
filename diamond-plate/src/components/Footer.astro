@@ -1,0 +1,88 @@
+---
+import { Picture } from 'astro:assets';
+import HexLattice from './HexLattice.astro';
+import Icon from './Icon.astro';
+import hexLogo from '../assets/logos/diamond-plate-logo-hex-square.png';
+import { business, hours, regions, services, social, replyPromise } from '../config/site';
+const year = new Date().getFullYear();
+const guides = [
+  { name: 'Ceramic coating cost in Brisbane', path: '/guides/ceramic-coating-cost-brisbane/' },
+  { name: 'Is ceramic coating worth it in QLD?', path: '/guides/is-ceramic-coating-worth-it-queensland/' },
+  { name: 'Ceramic coating vs dealer protection', path: '/guides/ceramic-coating-vs-dealer-paint-protection/' },
+  { name: 'Ceramic coating vs PPF', path: '/guides/ceramic-coating-vs-ppf/' },
+  { name: 'Ceramic coating aftercare', path: '/guides/ceramic-coating-aftercare/' },
+];
+---
+<footer class="site-footer">
+  <HexLattice id="hex-foot" origin="0% 0%" opacity={0.05} />
+  <div class="wrap foot-grid">
+    <div class="foot-brand">
+      <Picture src={hexLogo} alt="Diamond Plate hexagon logo" formats={['avif', 'webp']} fallbackFormat="png" width={120} height={120} densities={[1, 2]} loading="lazy" class="foot-logo" />
+      <address class="nap">
+        <strong>{business.name}</strong><br />
+        {business.address.oneLine}<br />
+        <a href={business.phone.tel} data-track="call_click">{business.phone.display}</a><br />
+        <a href={`mailto:${business.email}`}>{business.email}</a>
+      </address>
+      <p class="small muted">
+        <Icon name="clock" class="inline" /> {hours.display}. {hours.weekendNote}<br />
+        {replyPromise}.<br />
+        Mobile service: we come to you across Brisbane, Logan and the Redlands.
+      </p>
+    </div>
+    <div>
+      <h2 class="foot-h">Services</h2>
+      <ul>
+        {services.map((s) => <li><a href={s.path}>{s.name}</a></li>)}
+        <li><a href="/get-a-quote/">Get a quote</a></li>
+      </ul>
+    </div>
+    <div>
+      <h2 class="foot-h">Service areas</h2>
+      <ul>
+        <li><a href="/service-areas/">All Brisbane suburbs</a></li>
+        {regions.map((r) => <li><a href={r.path}>{r.name}</a></li>)}
+      </ul>
+      <h2 class="foot-h">Company</h2>
+      <ul>
+        <li><a href="/about/">About</a></li>
+        <li><a href="/reviews/">Reviews</a></li>
+        <li><a href="/faq/">FAQ</a></li>
+      </ul>
+    </div>
+    <div>
+      <h2 class="foot-h">Guides</h2>
+      <ul>
+        {guides.map((g) => <li><a href={g.path}>{g.name}</a></li>)}
+        <li><a href="/guides/">All guides</a></li>
+      </ul>
+      <h2 class="foot-h">Follow</h2>
+      <ul>
+        <li><a href={social.facebook} rel="noopener" target="_blank">Facebook</a></li>
+        <li><a href={social.nationalSite} rel="noopener" target="_blank">Diamond Plate Australia</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="wrap legal small muted">
+    <p>© {year} {business.name}. Part of {business.brand}. Head office: {business.headOffice}.</p>
+    <p><a href="/privacy/">Privacy</a> · <a href="/terms/">Terms</a></p>
+  </div>
+</footer>
+<style>
+  .site-footer { position: relative; overflow: hidden; background: var(--ink); border-top: 1px solid var(--line); padding: 72px 0 28px; }
+  .foot-grid { position: relative; display: grid; gap: 40px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 210px), 1fr)); }
+  .foot-brand { grid-column: span 1; }
+  @media (min-width: 900px) { .foot-grid { grid-template-columns: 1.5fr 1fr 1fr 1fr; } }
+  .foot-logo { width: 96px; height: 96px; border-radius: 12px; margin-bottom: 18px; }
+  .nap { font-style: normal; line-height: 1.8; margin-bottom: 16px; }
+  .nap a { color: var(--white); }
+  .foot-h { font: 700 0.78rem/1 var(--font-body); letter-spacing: 0.18em; color: var(--chrome); margin: 0 0 14px; }
+  .foot-h:not(:first-child) { margin-top: 28px; }
+  ul { list-style: none; margin: 0; padding: 0; }
+  li a { display: inline-flex; align-items: center; min-height: 44px; color: var(--white); text-decoration: none; font-size: 0.95rem; }
+  li a:hover { color: var(--ice); }
+  .legal { position: relative; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 24px; border-top: 1px solid var(--line); margin-top: 48px; padding-top: 22px; }
+  .legal p { margin: 0; }
+  .legal a { color: var(--chrome); display: inline-block; padding: 10px 0; }
+  :global(.icon.inline) { display: inline; width: 1em; height: 1em; vertical-align: -0.15em; }
+</style>

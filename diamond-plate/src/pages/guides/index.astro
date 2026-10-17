@@ -1,0 +1,46 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import PageHero from '../../components/PageHero.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import { routes } from '../../config/routes';
+import { fill } from '../../lib/tokens';
+import { replyPromise } from '../../config/site';
+const r = routes.guides;
+const order = [
+  'ceramic-coating-cost-brisbane', 'is-ceramic-coating-worth-it-queensland', 'ceramic-coating-vs-dealer-paint-protection',
+  'ceramic-coating-vs-ppf', 'graphene-vs-ceramic-coating', 'ceramic-coating-aftercare', 'automatic-car-wash-after-ceramic-coating',
+];
+const guides = (await getCollection('guides')).sort((a, b) => order.indexOf(a.id) - order.indexOf(b.id));
+const schema = [{
+  '@context': 'https://schema.org', '@type': 'ItemList',
+  itemListElement: guides.map((g, i) => ({ '@type': 'ListItem', position: i + 1, url: new URL(`/guides/${g.id}/`, Astro.site).href, name: fill(g.data.h1) })),
+}];
+---
+<Base title={r.title} description={r.description} h1={r.h1} crumbs={[{ name: 'Guides', path: r.path }]} schema={schema}>
+  <PageHero eyebrow="Honest, Queensland-specific" h1={r.h1} lead="Straight answers to the questions Brisbane car owners ask before, during and after a ceramic coating. No superlatives, no invented numbers." chips={false} quoteHref="/get-a-quote/" />
+  <section class="section band" style="padding-top:56px">
+    <div class="wrap">
+      <ul class="g-list" data-reveal-group>
+        {guides.map((g) => (
+          <li data-reveal>
+            <a class="card g-card" href={`/guides/${g.id}/`}>
+              <h2 class="g-t">{fill(g.data.h1)}</h2>
+              <p class="muted small">{fill(g.data.description)}</p>
+              <span class="go">Read the guide →</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+  <CtaBand heading="Done reading?" text={`Get a fixed price for your car. ${replyPromise}.`} />
+</Base>
+<style>
+  .g-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 18px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 330px), 1fr)); }
+  .g-card { display: flex; flex-direction: column; gap: 8px; height: 100%; color: var(--white); text-decoration: none; transition: border-color 0.2s, transform 0.2s; }
+  .g-card:hover { border-color: rgba(56, 200, 255, 0.5); transform: translateY(-2px); }
+  .g-t { font-size: 1.45rem; margin: 0; }
+  .g-card p { margin: 0; flex: 1; }
+  .go { color: var(--ice); font-weight: 600; }
+</style>

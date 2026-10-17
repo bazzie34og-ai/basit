@@ -1,0 +1,35 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import Faq from '../components/Faq.astro';
+import CtaBand from '../components/CtaBand.astro';
+import QuoteForm from '../components/QuoteForm.astro';
+import { routes } from '../config/routes';
+import { faqs } from '../config/faqs';
+import { faqSchema } from '../lib/schema';
+const r = routes.faq;
+const groups = [
+  { h: 'Is it worth it?', items: [faqs.worth, faqs.last, faqs.scratches, faqs.graphene, faqs.csiro] },
+  { h: 'Prices and booking', items: [faqs.cost, faqs.mobile, faqs.duration, faqs.hours] },
+  { h: 'Warranty and insurance', items: [faqs.inspections, faqs.transfer, faqs.insurance] },
+  { h: 'Washing and aftercare', items: [faqs.wash, faqs.carwash, faqs.water] },
+  { h: 'New cars and dealers', items: [faqs.newcar, faqs.dealer] },
+];
+const all = groups.flatMap((g) => g.items);
+---
+<Base title={r.title} description={r.description} h1={r.h1} crumbs={[{ name: 'FAQ', path: r.path }]} quoteHref="#quote-form">
+  <PageHero eyebrow="Straight answers" h1={r.h1} lead="Is ceramic coating worth it? How long does it last in Queensland? What can’t it do? Honest answers, including the ones that don’t sell anything." />
+  {groups.map((g, i) => (
+    <section class:list={['section', { band: i % 2 === 0 }]} style="padding-block:56px">
+      <div class="wrap narrow">
+        <h2>{g.h}</h2>
+        <Faq items={g.items} schema={false} />
+      </div>
+    </section>
+  ))}
+  <script type="application/ld+json" set:html={JSON.stringify(faqSchema(all))} />
+  <CtaBand heading="Still got a question?" text="Call us, or send it with the quote form and we’ll answer it with your price." quoteHref="#quote-form" />
+  <section class="section">
+    <div class="wrap"><QuoteForm variant="full" heading="Ask us, or get your price" /></div>
+  </section>
+</Base>

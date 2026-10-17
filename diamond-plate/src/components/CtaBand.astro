@@ -1,0 +1,25 @@
+---
+import Icon from './Icon.astro';
+import { business, replyPromise } from '../config/site';
+interface Props { heading: string; text?: string; quoteHref?: string; label?: string }
+const { heading, text = `${replyPromise}.`, quoteHref = '/get-a-quote/', label = 'Get My Price' } = Astro.props;
+---
+<aside class="cta-band" aria-label="Get a price">
+  <div class="wrap inner">
+    <div>
+      <p class="cta-h display">{heading}</p>
+      <p class="muted">{text}</p>
+    </div>
+    <div class="btn-row">
+      <a class="btn btn-primary" href={quoteHref} data-track="quote_start">{label} <Icon name="arrow" /></a>
+      <a class="btn btn-ghost" href={business.phone.tel} data-track="call_click"><Icon name="phone" /> {business.phone.display}</a>
+    </div>
+  </div>
+</aside>
+<style>
+  .cta-band { position: relative; border-block: 1px solid var(--line); background: radial-gradient(120% 140% at 100% 50%, rgba(31, 91, 255, 0.16), transparent 55%), var(--graphite); }
+  .cta-band::before { content: ''; position: absolute; left: 0; right: 0; top: -1px; height: 1px; background: var(--grad); opacity: 0.6; }
+  .inner { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 20px 40px; padding-block: clamp(32px, 5vw, 52px); }
+  .cta-h { font-size: clamp(1.6rem, 3vw, 2.3rem); margin: 0 0 6px; }
+  p.muted { margin: 0; }
+</style>

@@ -1,0 +1,40 @@
+---
+import Icon from './Icon.astro';
+import { reviews, social } from '../config/site';
+interface Props { limit?: number }
+const { limit } = Astro.props;
+const list = limit ? reviews.slice(0, limit) : reviews;
+const initials = (n: string) => (n === 'Diamond Plate customer' ? 'DP' : n.split(/\s+/).map((w) => w[0]).join('').slice(0, 2).toUpperCase());
+const fb = social.facebookStats;
+---
+<div class="rv-grid" data-reveal-group>
+  {list.map((r) => (
+    <figure class="card rv" data-reveal>
+      <div class="stars" role="img" aria-label="Five stars">{[1, 2, 3, 4, 5].map(() => <Icon name="star" />)}</div>
+      {r.headline && <p class="rv-h">“{r.headline}”</p>}
+      <blockquote><p>“{r.quote}”</p></blockquote>
+      <figcaption>
+        <span class="av" aria-hidden="true">{initials(r.name)}</span>
+        <span><strong>{r.name}</strong><br /><span class="small muted">{r.source}</span></span>
+      </figcaption>
+    </figure>
+  ))}
+</div>
+<p class="fb-line"><a href={social.facebook} target="_blank" rel="noopener">{fb.recommendPct}% recommend on Facebook ({fb.reviews} reviews)</a></p>
+<style>
+  .rv-grid { display: grid; gap: 18px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); }
+  .rv { display: flex; flex-direction: column; gap: 12px; margin: 0; }
+  .stars { display: flex; gap: 3px; color: var(--gold-star); }
+  .stars :global(.icon) { width: 18px; height: 18px; }
+  .rv-h { font: 700 1.25rem/1.15 var(--font-display); text-transform: uppercase; letter-spacing: 0.02em; margin: 0; }
+  blockquote { margin: 0; flex: 1; }
+  blockquote p { margin: 0; color: var(--chrome); }
+  figcaption { display: flex; align-items: center; gap: 12px; padding: 0; }
+  .av {
+    display: grid; place-items: center; width: 44px; height: 50px; flex: none;
+    clip-path: polygon(50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%);
+    background: var(--grad); color: var(--ink); font: 800 0.95rem/1 var(--font-display); letter-spacing: 0.04em;
+  }
+  .fb-line { margin-top: 22px; }
+  .fb-line a { font-weight: 600; }
+</style>

@@ -1,0 +1,15 @@
+---
+import { warrantyYears } from '../config/site';
+const items = ['CSIRO-tested chemical resistance', 'Australian made', `${warrantyYears}-year national warranty`, 'Mobile service across Brisbane'];
+---
+<section class="strip" aria-label="Credentials">
+  <ul class="wrap">
+    {items.map((i) => <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5 20.5 7.3v9.4L12 21.5 3.5 16.7V7.3z" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>{i}</li>)}
+  </ul>
+</section>
+<style>
+  .strip { border-block: 1px solid var(--line); background: var(--graphite); }
+  ul { list-style: none; margin: 0 auto; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 14px 28px; padding-block: 22px; }
+  li { display: inline-flex; align-items: center; gap: 10px; font: 700 0.95rem/1.2 var(--font-display); letter-spacing: 0.12em; text-transform: uppercase; color: var(--chrome); }
+  svg { width: 18px; height: 18px; color: var(--ice); flex: none; }
+</style>

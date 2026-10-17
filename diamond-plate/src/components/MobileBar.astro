@@ -1,0 +1,32 @@
+---
+import Icon from './Icon.astro';
+import { business, social } from '../config/site';
+/** Sticky bottom action bar under 768px. `quoteHref` points at the inline form when the page has one. */
+interface Props { quoteHref?: string }
+const { quoteHref = '/get-a-quote/#quote-form' } = Astro.props;
+---
+<nav class="mobile-bar" aria-label="Quick actions">
+  <a href={business.phone.tel} data-track="call_click"><Icon name="phone" /><span>Call</span></a>
+  <a href={quoteHref} class="mid" data-track="quote_start"><Icon name="tag" /><span>Get Price</span></a>
+  <a href={social.messenger} target="_blank" rel="noopener" data-track="messenger_click"><Icon name="chat" /><span>Messenger</span></a>
+</nav>
+<style>
+  .mobile-bar {
+    position: fixed; z-index: 60; left: 0; right: 0; bottom: 0;
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    height: calc(var(--bar-h) + env(safe-area-inset-bottom));
+    padding-bottom: env(safe-area-inset-bottom);
+    background: rgba(12, 17, 24, 0.94);
+    backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+    border-top: 1px solid var(--line);
+  }
+  .mobile-bar a {
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px;
+    color: var(--white); text-decoration: none; font: 600 0.8rem/1 var(--font-body); letter-spacing: 0.02em;
+    min-height: 44px;
+  }
+  .mobile-bar :global(.icon) { width: 22px; height: 22px; color: var(--ice); }
+  .mobile-bar .mid { background: var(--grad); color: var(--ink); }
+  .mobile-bar .mid :global(.icon) { color: var(--ink); }
+  @media (min-width: 768px) { .mobile-bar { display: none; } }
+</style>

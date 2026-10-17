@@ -1,0 +1,247 @@
+---
+import { getImage } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import HexLattice from '../components/HexLattice.astro';
+import Icon from '../components/Icon.astro';
+import TrustStrip from '../components/TrustStrip.astro';
+import Benefits from '../components/Benefits.astro';
+import Steps from '../components/Steps.astro';
+import BeforeAfter from '../components/BeforeAfter.astro';
+import PackageCards from '../components/PackageCards.astro';
+import Photo from '../components/Photo.astro';
+import Reviews from '../components/Reviews.astro';
+import MapFacade from '../components/MapFacade.astro';
+import Faq from '../components/Faq.astro';
+import QuoteForm from '../components/QuoteForm.astro';
+import CtaBand from '../components/CtaBand.astro';
+import Stats from '../components/Stats.astro';
+import { routes } from '../config/routes';
+import { photos } from '../config/photos';
+import { pick } from '../config/faqs';
+import { business, csiro, money, priceFrom, regions, replyPromise, warrantyYears } from '../config/site';
+
+const r = routes.home;
+// The hero is blurred behind a dark overlay, so a small, soft image is enough (fast LCP).
+const heroOpts = { src: photos.hero.src, width: 560, height: 307 };
+const [heroAvif, heroWebp, heroJpg] = await Promise.all([
+  getImage({ ...heroOpts, format: 'avif', quality: 45 }),
+  getImage({ ...heroOpts, format: 'webp', quality: 50 }),
+  getImage({ ...heroOpts, format: 'jpg', quality: 70 }),
+]);
+const homeFaq = pick('worth', 'cost', 'scratches', 'mobile', 'wash', 'transfer');
+---
+<Base title={r.title} description={r.description} h1={r.h1} preload={{ href: heroAvif.src, type: 'image/avif' }} quoteHref="#quote-form">
+  <!-- 1. Hero -->
+  <section class="hero">
+    <div class="hero-bg" aria-hidden="true">
+      <picture>
+        <source srcset={heroAvif.src} type="image/avif" />
+        <source srcset={heroWebp.src} type="image/webp" />
+        <img src={heroJpg.src} alt="" width="560" height="307" fetchpriority="high" decoding="async" />
+      </picture>
+    </div>
+    <HexLattice id="hex-hero" origin="8% 6%" opacity={0.06} />
+    <div class="wrap hero-inner">
+      <p class="eyebrow">Graphene ceramic · Australian made</p>
+      <h1>{r.h1}</h1>
+      <p class="lead hero-lead">
+        Premium ceramic coating, Brisbane-wide, without the workshop queue. A trained Diamond Plate applicator comes to your home or work, preps the
+        paint properly and applies Australian-made Graphene Ceramic 9H+. Fixed price, {warrantyYears}-year national warranty.
+      </p>
+      <div class="btn-row">
+        <a class="btn btn-primary" href="#quote-form" data-track="quote_start">Get My Price <Icon name="arrow" /></a>
+        <a class="btn btn-ghost" href={business.phone.tel} data-track="call_click"><Icon name="phone" /> Call {business.phone.display}</a>
+      </div>
+      <!-- 2. Trust chips -->
+      <ul class="chips" aria-label="Why Diamond Plate">
+        <li><Icon name="tag" /> From {money(priceFrom)} · fixed price</li>
+        <li><Icon name="shield" /> {warrantyYears}-year national warranty</li>
+        <li><Icon name="pin" /> We come to you</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 3. Logo strip -->
+  <TrustStrip />
+
+  <!-- 4. The problem -->
+  <section class="section">
+    <div class="wrap">
+      <p class="eyebrow">The problem</p>
+      <h2>Ceramic coating for Brisbane conditions</h2>
+      <p class="lead">Harsh sun, droppings that bake on by lunchtime, and weekends lost to washing. Here’s what a proper coating changes.</p>
+      <Benefits />
+    </div>
+  </section>
+
+  <!-- 5. How it works -->
+  <section class="section band">
+    <div class="wrap">
+      <div class="split">
+        <div>
+          <p class="eyebrow">How it works</p>
+          <h2>Four steps, at your place</h2>
+          <p class="lead">Fussy about who touches your car? Good. Only trained, approved Diamond Plate applicators apply the coating. It’s never a DIY bottle.</p>
+        </div>
+        <Photo name="nateInspect" width={460} />
+      </div>
+      <div style="margin-top:40px"><Steps /></div>
+      <div style="margin-top:28px"><Stats /></div>
+    </div>
+  </section>
+
+  <CtaBand heading="Tried three detailers and heard back from one?" text={`${replyPromise}, and the phone number is on every screen.`} quoteHref="#quote-form" />
+
+  <!-- 6. Before / after -->
+  <section class="section">
+    <div class="wrap split">
+      <div>
+        <p class="eyebrow">Before and after</p>
+        <h2>See the difference prep makes</h2>
+        <p class="lead">Drag the handle, or use the arrow keys. This BRZ was washed, chemically decontaminated, clay-barred and then coated.</p>
+        <p class="muted">The gloss comes from clean, smooth paint plus the coating. Honest note: a coating isn’t a scratch repair, and it doesn’t remove swirl marks.</p>
+        <a href="/graphene-ceramic-coating/">How graphene ceramic coating works</a>
+      </div>
+      <BeforeAfter />
+    </div>
+  </section>
+
+  <!-- 7. Packages -->
+  <section class="section band" id="packages">
+    <div class="wrap">
+      <p class="eyebrow">Fixed, published prices</p>
+      <h2>Ceramic coating packages, from {money(priceFrom)}</h2>
+      <p class="lead">Most Brisbane detailers hide their prices. Ours are right here, and they’re the price you pay. <a href="/ceramic-coating-prices/">Compare every package in detail</a>.</p>
+      <PackageCards />
+    </div>
+  </section>
+
+  <!-- 8. Why graphene -->
+  <section class="section">
+    <div class="wrap split rev">
+      <div>
+        <p class="eyebrow">Why graphene</p>
+        <h2>Made in Australia, tested by CSIRO</h2>
+        <p>Graphene is a single layer of carbon atoms arranged in a hexagonal lattice, which is where our hexagon comes from. Diamond Plate’s own R&amp;D team infuses it into Graphene Ceramic 9H+, the coating we apply.</p>
+        <p class="muted">{csiro.full}</p>
+        <ul class="ticks">
+          <li>Australian-made, Australian-owned</li>
+          <li>Applied only by trained Diamond Plate applicators</li>
+          <li>{warrantyYears}-year national warranty, in writing</li>
+        </ul>
+        <a class="btn btn-ghost" href="/graphene-ceramic-coating/">Graphene ceramic coating explained</a>
+      </div>
+      <Photo name="amg" width={616} />
+    </div>
+  </section>
+
+  <!-- 9. New cars and 4WDs -->
+  <section class="section band">
+    <div class="wrap">
+      <p class="eyebrow">Made for your car</p>
+      <h2>New cars and big 4WDs</h2>
+      <div class="grid grid-2" data-reveal-group>
+        <a class="card glint feature" href="/new-car-paint-protection/" data-reveal>
+          <Photo name="xtrail" width={540} caption={false} />
+          <h3>Straight from the dealership</h3>
+          <p class="muted">Protect new paint in the first weeks, before the sun and bird droppings get to it. A clear alternative to dealer paint protection.</p>
+          <span class="go">New car paint protection →</span>
+        </a>
+        <a class="card feature" href="/4wd-ute-ceramic-coating/" data-reveal>
+          <Photo name="rav4" width={540} caption={false} />
+          <h3>Prados, LandCruisers and utes</h3>
+          <p class="muted">Big panels and bull bars, mud and red dirt. A coated 4WD rinses clean far more easily after a weekend away.</p>
+          <span class="go">4WD and ute ceramic coating →</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <CtaBand heading="Conscious of the investment?" text={`Fixed public prices from ${money(priceFrom)}, with exactly what’s included. No surprises on the day.`} quoteHref="#quote-form" label="Get My Fixed Price" />
+
+  <!-- 10. Reviews -->
+  <section class="section">
+    <div class="wrap">
+      <div class="split">
+        <div>
+          <p class="eyebrow">Reviews</p>
+          <h2>What customers say</h2>
+          <p class="lead">Word for word, from Diamond Plate customers.</p>
+        </div>
+        <Photo name="nateCustomer" width={360} />
+      </div>
+      <div style="margin-top:36px"><Reviews limit={3} /></div>
+      <p><a href="/reviews/">Read all Diamond Plate reviews</a></p>
+    </div>
+  </section>
+
+  <!-- 11. Service areas -->
+  <section class="section band">
+    <div class="wrap split">
+      <div>
+        <p class="eyebrow">Service areas</p>
+        <h2>Mobile across Brisbane, Logan and the Redlands</h2>
+        <p class="muted">Based in {business.address.suburb}, we come to you.</p>
+        <div class="regions">
+          {regions.map((rg) => (
+            <div>
+              <h3><a href={rg.path}>{rg.name}</a></h3>
+              <p class="small muted">{rg.suburbs.slice(0, 7).join(', ')} and more</p>
+            </div>
+          ))}
+        </div>
+        <a href="/service-areas/">See every suburb we cover</a>
+      </div>
+      <MapFacade query={`${business.address.oneLine}, Australia`} label="Our Brisbane base: Murarrie" zoom={11} />
+    </div>
+  </section>
+
+  <!-- 12. FAQ -->
+  <section class="section">
+    <div class="wrap narrow">
+      <p class="eyebrow">FAQ</p>
+      <h2>Straight answers</h2>
+      <Faq items={homeFaq} />
+      <p style="margin-top:20px"><a href="/faq/">More ceramic coating FAQs</a></p>
+    </div>
+  </section>
+
+  <!-- 13. Final CTA -->
+  <section class="section band final">
+    <div class="wrap">
+      <QuoteForm heading="Get your fixed price" />
+    </div>
+  </section>
+</Base>
+
+<style>
+  .hero { position: relative; overflow: hidden; min-height: min(88vh, 780px); display: flex; align-items: center; isolation: isolate; }
+  .hero-bg { position: absolute; inset: 0; z-index: -1; }
+  .hero-bg img { width: 100%; height: 100%; object-fit: cover; object-position: 60% 50%; filter: blur(3px) saturate(1.1); transform: scale(1.06); }
+  .hero-bg::after {
+    content: ''; position: absolute; inset: 0;
+    background:
+      linear-gradient(90deg, rgba(5, 7, 11, 0.96) 0%, rgba(5, 7, 11, 0.82) 45%, rgba(5, 7, 11, 0.45) 100%),
+      linear-gradient(0deg, var(--ink) 0%, transparent 35%);
+  }
+  .hero::after {
+    content: ''; position: absolute; right: 7%; top: 30%; width: 8px; height: 90px; border-radius: 50%;
+    background: var(--ice); filter: blur(10px); box-shadow: 0 0 60px 18px rgba(56, 200, 255, 0.35); pointer-events: none;
+  }
+  .hero-inner { position: relative; padding-block: clamp(48px, 7vw, 96px); }
+  .hero h1 { max-width: 15ch; }
+  .hero-lead { margin-bottom: 30px; color: #dbe3ee; }
+  .chips { list-style: none; display: flex; flex-wrap: wrap; gap: 10px; padding: 0; margin: 30px 0 0; }
+  .chips li { display: inline-flex; align-items: center; gap: 8px; padding: 9px 14px; border-radius: 999px; background: rgba(18, 26, 36, 0.8); border: 1px solid var(--line); font-size: 0.9rem; font-weight: 500; }
+  .chips :global(.icon) { width: 16px; color: var(--ice); }
+
+  .feature { display: flex; flex-direction: column; gap: 10px; color: var(--white); text-decoration: none; transition: border-color 0.25s; }
+  .feature:hover { border-color: rgba(56, 200, 255, 0.5); }
+  .feature h3 { margin: 12px 0 0; }
+  .feature p { margin: 0; }
+  .go { color: var(--ice); font-weight: 600; margin-top: auto; }
+  .regions { display: grid; gap: 4px 28px; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); margin: 24px 0; }
+  .regions h3 { font-size: 1.2rem; margin: 0; }
+  .regions h3 a { color: var(--white); text-decoration: none; display: inline-block; padding: 8px 0 2px; }
+  .regions h3 a:hover { color: var(--ice); }
+</style>

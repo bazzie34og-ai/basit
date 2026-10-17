@@ -1,0 +1,101 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import Photo from '../components/Photo.astro';
+import QuoteForm from '../components/QuoteForm.astro';
+import CtaBand from '../components/CtaBand.astro';
+import Faq from '../components/Faq.astro';
+import RelatedLinks from '../components/RelatedLinks.astro';
+import Benefits from '../components/Benefits.astro';
+import { routes } from '../config/routes';
+import { faqs } from '../config/faqs';
+import { serviceSchema } from '../lib/schema';
+import { addOns, money, packages, priceFrom, warrantyYears } from '../config/site';
+
+const r = routes.ev;
+const models = ['Tesla Model Y', 'Tesla Model 3', 'BYD Atto 3, Seal, Dolphin and Shark', 'Kia EV5, EV6 and EV9', 'Hyundai IONIQ 5 and Kona Electric', 'Polestar 2 and 4', 'MG4', 'BMW and Mercedes EVs'];
+const items = [
+  {
+    q: 'Is ceramic coating safe on Tesla paint?',
+    a: '<p>Yes. The coating bonds to the clear coat after a full wash, decontamination and clay bar. It adds a protective, hydrophobic layer over the factory finish. It doesn’t remove any marks already in the paint, so point them out when we book.</p>',
+  },
+  {
+    q: 'Can you coat my EV while it’s charging?',
+    a: '<p>Yes. Because we come to you, the car can stay plugged in at home while the applicator works on the paint. We’ll talk through the spot when we book.</p>',
+  },
+  {
+    q: 'Does ceramic coating help with the Tesla Model Y’s glass roof and wheels?',
+    a: `<p>The paint packages coat the paintwork. Alloy wheel protection is an add-on for ${money(addOns[0].price)}, and it’s free in Diamond Package Plus and Ultimate Plus. Ask us about anything else you want covered.</p>`,
+  },
+  faqs.scratches,
+  faqs.wash,
+];
+const schema = [serviceSchema({ name: 'Tesla and EV ceramic coating, Brisbane', serviceType: 'EV ceramic coating', path: r.path, description: r.description, offers: packages })];
+---
+<Base title={r.title} description={r.description} h1={r.h1} crumbs={[{ name: 'Tesla and EV ceramic coating', path: r.path }]} schema={schema} quoteHref="#quote-form">
+  <PageHero eyebrow="Model Y · Model 3 · BYD · Kia EV" h1={r.h1} lead={`Tesla ceramic coating in Brisbane, done at your place while the car charges. We protect soft factory paint with Australian-made graphene ceramic, at a fixed price from ${money(priceFrom)} with a ${warrantyYears}-year national warranty.`}>
+    <Photo name="glc" width={540} eager alt="White Mercedes GLC with the same graphene ceramic coating we apply to Tesla and EV paint" />
+  </PageHero>
+
+  <section class="section band">
+    <div class="wrap split">
+      <div class="prose">
+        <p class="eyebrow">Why EV owners coat early</p>
+        <h2>EV paint protection that starts on day one</h2>
+        <p>Many EVs arrive with softer factory paint than owners expect, and it shows marks quickly. A Brisbane summer adds strong UV, bird and bat droppings and sticky sap from the street trees you park under while charging.</p>
+        <p>A graphene ceramic coating adds a slick, protective layer over the clear coat. Droppings and grime are easier to wash off before they etch, water beads straight off, and the gloss stays fresh. It won’t make the paint scratch-proof, but it helps resist light marks, and easy washing means less scrubbing.</p>
+        <p>New EV? Read our page on <a href="/new-car-paint-protection/">new car paint protection</a> too, including what to ask if the dealer offers its own.</p>
+      </div>
+      <div class="card glint">
+        <h3>EVs we can coat</h3>
+        <ul class="ticks">{models.map((m) => <li>{m}</li>)}</ul>
+        <p class="small muted">And any other EV or hybrid. Prices are fixed for most cars.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <p class="eyebrow">What changes</p>
+      <h2>Tesla Model Y ceramic coating: what you’ll notice</h2>
+      <Benefits />
+    </div>
+  </section>
+
+  <CtaBand heading="Coated in your garage while it charges" text="We come to you. No dropping the car off, no Uber home." quoteHref="#quote-form" />
+
+  <section class="section band">
+    <div class="wrap split rev">
+      <div class="prose">
+        <p class="eyebrow">Packages for EVs</p>
+        <h2>Which package suits an EV?</h2>
+        <p>Most EV owners want two things: paint that’s easy to keep clean, and a cabin that stays fresh. Our <strong>Double Layer ({money(packages[2].price)})</strong> gives the deeper gloss that suits Tesla’s darker colours. <strong>Ultimate Plus ({money(packages[3].price)})</strong> adds the full interior package, which adds stain protection to leather and fabric, and vinyl resist UV fading, cracking and splitting.</p>
+        <p><a href="/ceramic-coating-prices/">See our ceramic coating prices</a> or read about <a href="/interior-and-wheel-protection/">interior and wheel protection</a>.</p>
+      </div>
+      <Photo name="lambo" width={540} />
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap narrow">
+      <h2>EV coating questions</h2>
+      <Faq items={items} />
+    </div>
+  </section>
+
+  <section class="section band">
+    <div class="wrap">
+      <RelatedLinks links={[
+        { href: '/ceramic-coating-prices/', label: 'Ceramic coating prices', desc: `From ${money(priceFrom)}, fixed.` },
+        { href: '/mobile-ceramic-coating/', label: 'Mobile ceramic coating', desc: 'How a job at your place runs.' },
+        { href: '/graphene-ceramic-coating/', label: 'Graphene ceramic coating', desc: 'Made in Australia.' },
+        { href: '/service-areas/', label: 'Service areas', desc: 'Every suburb we cover.' },
+        { href: '/guides/ceramic-coating-vs-ppf/', label: 'Ceramic coating vs PPF', desc: 'Honest pros and cons.' },
+      ]} />
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap"><QuoteForm heading="Get your EV coating price" /></div>
+  </section>
+</Base>

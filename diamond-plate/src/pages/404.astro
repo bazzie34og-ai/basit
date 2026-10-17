@@ -1,0 +1,29 @@
+---
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+import HexLattice from '../components/HexLattice.astro';
+import { routes } from '../config/routes';
+import { business, money, priceFrom } from '../config/site';
+const r = routes.notFound;
+---
+<Base title={r.title} description={r.description} h1={r.h1} noindex>
+  <section class="nf">
+    <HexLattice id="hex-404" origin="50% 0%" opacity={0.06} />
+    <div class="wrap narrow">
+      <p class="eyebrow">404</p>
+      <h1>{r.h1}</h1>
+      <p class="lead">That page has moved or never existed. Here’s where most people are headed:</p>
+      <div class="btn-row">
+        <a class="btn btn-primary" href="/get-a-quote/" data-track="quote_start">Get My Price <Icon name="arrow" /></a>
+        <a class="btn btn-ghost" href={business.phone.tel} data-track="call_click"><Icon name="phone" /> {business.phone.display}</a>
+      </div>
+      <ul class="ticks" style="margin-top:32px">
+        <li><a href="/">Ceramic coating in Brisbane, home</a></li>
+        <li><a href="/ceramic-coating-prices/">Prices from {money(priceFrom)}</a></li>
+        <li><a href="/service-areas/">Suburbs we cover</a></li>
+        <li><a href="/guides/">Ceramic coating guides</a></li>
+      </ul>
+    </div>
+  </section>
+</Base>
+<style>.nf { position: relative; overflow: hidden; padding: 72px 0 120px; }</style>

@@ -1,0 +1,24 @@
+---
+import { money, priceFrom, processInfo, warrantyYears } from '../config/site';
+const stats = [
+  { n: priceFrom, prefix: '$', suffix: '', label: 'Fixed price, from', display: money(priceFrom) },
+  { n: warrantyYears, prefix: '', suffix: ' yrs', label: 'National warranty', display: `${warrantyYears} yrs` },
+  { n: processInfo.touchDryMinutes, prefix: '', suffix: ' min', label: 'Touch-dry, about', display: `${processInfo.touchDryMinutes} min` },
+  { n: processInfo.noWashDays, prefix: '', suffix: ' days', label: 'Before the first wash', display: `${processInfo.noWashDays} days` },
+];
+---
+<dl class="stats" data-reveal-group>
+  {stats.map((s) => (
+    <div class="stat" data-reveal>
+      <dt class="muted">{s.label}</dt>
+      <dd class="grad-text" data-count={s.n} data-prefix={s.prefix} data-suffix={s.suffix}>{s.display}</dd>
+    </div>
+  ))}
+</dl>
+<style>
+  .stats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px; margin: 0; background: var(--line); border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; }
+  @media (min-width: 800px) { .stats { grid-template-columns: repeat(4, 1fr); } }
+  .stat { background: var(--panel); padding: 22px 20px; display: flex; flex-direction: column-reverse; justify-content: flex-end; gap: 4px; }
+  dt { font-size: 0.85rem; }
+  dd { margin: 0; font: 800 clamp(2.2rem, 4vw, 3rem)/1 var(--font-display); font-variant-numeric: tabular-nums; }
+</style>

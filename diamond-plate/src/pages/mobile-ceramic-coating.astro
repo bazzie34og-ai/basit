@@ -1,0 +1,116 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import Photo from '../components/Photo.astro';
+import QuoteForm from '../components/QuoteForm.astro';
+import CtaBand from '../components/CtaBand.astro';
+import Faq from '../components/Faq.astro';
+import RelatedLinks from '../components/RelatedLinks.astro';
+import MapFacade from '../components/MapFacade.astro';
+import { routes } from '../config/routes';
+import { faqs } from '../config/faqs';
+import { serviceSchema } from '../lib/schema';
+import { business, money, packages, priceFrom, processInfo, regions, warrantyYears } from '../config/site';
+
+const r = routes.mobile;
+const items = [
+  {
+    q: 'Which areas does the mobile service cover?',
+    a: '<p>Homes and workplaces across Brisbane, Logan and the Redlands, from our Murarrie base. Check the full suburb list on our service areas page, or ask if yours isn’t listed.</p>',
+  },
+  {
+    q: 'Can you coat my car at work?',
+    a: '<p>Yes. We can come to your workplace as well as your home. Let us know where the car will be parked when you book, and we’ll talk it through.</p>',
+  },
+  {
+    q: 'Do I need to be home the whole time?',
+    a: '<p>We’ll agree the details when we book. We do like to walk you through the car at hand-over, because that’s when the applicator explains everything that was done and how to look after it.</p>',
+  },
+  faqs.duration,
+  faqs.wash,
+];
+const schema = [serviceSchema({ name: 'Mobile ceramic coating, Brisbane', serviceType: 'Mobile ceramic coating', path: r.path, description: r.description, offers: packages })];
+---
+<Base title={r.title} description={r.description} h1={r.h1} crumbs={[{ name: 'Mobile ceramic coating', path: r.path }]} schema={schema} quoteHref="#quote-form">
+  <PageHero eyebrow="We come to you" h1={r.h1} lead={`Our mobile service means a trained Diamond Plate applicator comes to your driveway or work car park anywhere across Brisbane, Logan and the Redlands. No dropping the car off, no lift home, and fixed prices from ${money(priceFrom)}.`}>
+    <Photo name="nateDog" width={460} eager />
+  </PageHero>
+
+  <section class="section band">
+    <div class="wrap">
+      <p class="eyebrow">“I had to wait a month”</p>
+      <h2>Ceramic coating at home, without the workshop queue</h2>
+      <div class="grid grid-3" data-reveal-group>
+        <div class="card" data-reveal>
+          <h3>Your place, your day</h3>
+          <p class="muted">We book a time and come to you, at home or at work. There’s no workshop booking sheet to wait on. We’ll be straight with you about the next available day when you call.</p>
+        </div>
+        <div class="card" data-reveal>
+          <h3>The same full prep</h3>
+          <p class="muted">Mobile doesn’t mean cut corners. Every car gets a full wash, decontamination and a clay bar before the coating goes on.</p>
+        </div>
+        <div class="card" data-reveal>
+          <h3>Hand-over at your door</h3>
+          <p class="muted">The applicator walks you through the car and the aftercare. It’s touch-dry in about {processInfo.touchDryMinutes} minutes, then no washing for {processInfo.noWashDays} days.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap split">
+      <div class="prose">
+        <p class="eyebrow">From the phone call to the hand-over</p>
+        <h2>How a mobile ceramic coating job runs</h2>
+        <ol>
+          <li><strong>Get your price.</strong> Call {business.phone.display} or send the form. Most cars are a fixed price, and we confirm anything unusual first.</li>
+          <li><strong>Pick the spot.</strong> Your driveway, garage or work car park. We’ll talk through the location when we book.</li>
+          <li><strong>Prep and coat.</strong> Wash, decontaminate, clay, then the graphene ceramic paint protection goes on.</li>
+          <li><strong>Hand-over.</strong> A walk-around of the car, the aftercare basics, and your {warrantyYears}-year national warranty.</li>
+        </ol>
+        <p>Not sure which package suits? <a href="/ceramic-coating-prices/">See our ceramic coating prices</a>, or just tell us the car and we’ll recommend one.</p>
+      </div>
+      <Photo name="nateCustomer" width={420} />
+    </div>
+  </section>
+
+  <CtaBand heading="Rather not lose a Saturday at a workshop?" text="We come to you, at home or work, anywhere across Brisbane." quoteHref="#quote-form" />
+
+  <section class="section band">
+    <div class="wrap split">
+      <div>
+        <p class="eyebrow">Where we go</p>
+        <h2>Mobile car paint protection, Brisbane-wide</h2>
+        <p class="muted">Our Brisbane base is {business.address.oneLine}. From there we cover:</p>
+        <ul class="ticks">
+          {regions.map((rg) => <li><a href={rg.path}>{rg.name}</a>: {rg.suburbs.slice(0, 5).join(', ')} and more</li>)}
+        </ul>
+        <a href="/service-areas/">Check every suburb we cover</a>
+      </div>
+      <MapFacade query="Brisbane QLD" label="Brisbane, Logan and the Redlands" zoom={10} />
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap narrow">
+      <h2>Mobile service questions</h2>
+      <Faq items={items} />
+    </div>
+  </section>
+
+  <section class="section band">
+    <div class="wrap">
+      <RelatedLinks links={[
+        { href: '/ceramic-coating-prices/', label: 'Ceramic coating prices', desc: 'Fixed and published.' },
+        { href: '/4wd-ute-ceramic-coating/', label: '4WD and ute coating', desc: 'Big vehicles, coated on your driveway.' },
+        { href: '/ev-tesla-ceramic-coating/', label: 'EV ceramic coating at home', desc: 'Coated while it charges.' },
+        { href: '/service-areas/', label: 'All service areas', desc: 'Find your suburb.' },
+        { href: '/guides/ceramic-coating-aftercare/', label: 'Aftercare guide', desc: `The first ${processInfo.noWashDays} days and beyond.` },
+      ]} />
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap"><QuoteForm heading="Book us to come to you" /></div>
+  </section>
+</Base>

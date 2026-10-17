@@ -1,0 +1,137 @@
+---
+import Logo from './Logo.astro';
+import Icon from './Icon.astro';
+import { business, money, priceFrom, regions, warrantyYears } from '../config/site';
+
+const current = Astro.url.pathname;
+const serviceLinks = [
+  { name: 'Graphene ceramic coating', path: '/graphene-ceramic-coating/' },
+  { name: 'New car paint protection', path: '/new-car-paint-protection/' },
+  { name: 'Mobile ceramic coating', path: '/mobile-ceramic-coating/' },
+  { name: '4WD & ute ceramic coating', path: '/4wd-ute-ceramic-coating/' },
+  { name: 'Tesla & EV ceramic coating', path: '/ev-tesla-ceramic-coating/' },
+  { name: 'Interior & wheel protection', path: '/interior-and-wheel-protection/' },
+  { name: `The ${warrantyYears}-year warranty`, path: '/warranty/' },
+];
+const nav = [
+  { name: 'Prices', path: '/ceramic-coating-prices/' },
+  { name: 'Service areas', path: '/service-areas/' },
+  { name: 'Reviews', path: '/reviews/' },
+  { name: 'FAQ', path: '/faq/' },
+  { name: 'About', path: '/about/' },
+];
+const isCurrent = (p: string) => (current === p ? 'page' : undefined);
+---
+<header class="site-header" id="top">
+  <div class="wrap bar">
+    <a href="/" class="brand"><Logo /></a>
+
+    <nav class="desk-nav" aria-label="Main">
+      <ul>
+        <li class="has-menu">
+          <button class="menu-btn" type="button" aria-expanded="false" aria-controls="svc-menu">Services <Icon name="chevron" /></button>
+          <ul class="sub" id="svc-menu">
+            {serviceLinks.map((l) => <li><a href={l.path} aria-current={isCurrent(l.path)}>{l.name}</a></li>)}
+          </ul>
+        </li>
+        {nav.map((l) => <li><a href={l.path} aria-current={isCurrent(l.path)}>{l.name}</a></li>)}
+      </ul>
+    </nav>
+
+    <div class="actions">
+      <a class="phone" href={business.phone.tel} data-track="call_click"><Icon name="phone" /><span>{business.phone.display}</span></a>
+      <a class="btn btn-primary hdr-cta" href="/get-a-quote/" data-track="quote_start">Get My Price</a>
+      <details class="mob-nav">
+        <summary aria-label="Menu"><Icon name="menu" class="i-open" /><Icon name="close" class="i-close" /></summary>
+        <nav class="mob-panel" aria-label="Mobile">
+          <a href="/ceramic-coating-prices/" class="mob-strong">Prices from {money(priceFrom)}</a>
+          <p class="mob-h">Services</p>
+          {serviceLinks.map((l) => <a href={l.path}>{l.name}</a>)}
+          <p class="mob-h">Areas</p>
+          <a href="/service-areas/">All service areas</a>
+          {regions.map((r) => <a href={r.path}>{r.name}</a>)}
+          <p class="mob-h">More</p>
+          {nav.slice(2).map((l) => <a href={l.path}>{l.name}</a>)}
+          <a href="/guides/">Guides</a>
+          <a class="btn btn-primary" href="/get-a-quote/" data-track="quote_start">Get My Price</a>
+        </nav>
+      </details>
+    </div>
+  </div>
+</header>
+
+<style>
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: rgba(5, 7, 11, 0.82);
+    backdrop-filter: blur(14px) saturate(140%);
+    -webkit-backdrop-filter: blur(14px) saturate(140%);
+    border-bottom: 1px solid var(--line);
+  }
+  .bar { display: flex; align-items: center; gap: 20px; min-height: 72px; }
+  .brand { text-decoration: none; flex: none; border-radius: 6px; }
+  .desk-nav { display: none; margin-left: auto; }
+  .desk-nav > ul { display: flex; gap: 2px; list-style: none; margin: 0; padding: 0; }
+  .desk-nav a, .menu-btn {
+    display: inline-flex; align-items: center; gap: 4px;
+    min-height: 44px; padding: 0 12px;
+    color: var(--chrome); text-decoration: none;
+    font: 500 0.92rem/1 var(--font-body);
+    white-space: nowrap;
+    background: none; border: 0; cursor: pointer; border-radius: 8px;
+  }
+  .desk-nav a:hover, .menu-btn:hover, .desk-nav a[aria-current='page'] { color: var(--white); }
+  .desk-nav a[aria-current='page'] { box-shadow: inset 0 -2px 0 var(--ice); border-radius: 0; }
+  .menu-btn :global(.icon) { width: 14px; transition: transform 0.2s; }
+  .has-menu { position: relative; }
+  .sub {
+    position: absolute; top: 100%; left: 0; min-width: 270px;
+    list-style: none; margin: 6px 0 0; padding: 8px;
+    background: var(--panel); border: 1px solid var(--line); border-radius: 12px;
+    box-shadow: 0 30px 60px -20px #000;
+    opacity: 0; visibility: hidden; transform: translateY(4px);
+    transition: opacity 0.2s, transform 0.2s, visibility 0.2s;
+  }
+  .sub a { display: flex; width: 100%; padding: 0 12px; }
+  .sub a:hover { background: rgba(56, 200, 255, 0.08); }
+  .has-menu:hover .sub, .has-menu:focus-within .sub, .has-menu.open .sub { opacity: 1; visibility: visible; transform: none; }
+  .has-menu.open .menu-btn :global(.icon) { transform: rotate(180deg); }
+
+  .actions { display: flex; align-items: center; gap: 10px; margin-left: auto; }
+  .phone {
+    display: none; align-items: center; gap: 8px; min-height: 44px;
+    color: var(--white); text-decoration: none; font: 600 1rem/1 var(--font-body); letter-spacing: 0.02em; white-space: nowrap;
+  }
+  .phone :global(.icon) { width: 18px; color: var(--ice); }
+  .hdr-cta { --h: 44px; display: none; }
+
+  .mob-nav summary {
+    list-style: none; display: grid; place-items: center;
+    width: 48px; height: 48px; border-radius: 12px; border: 1px solid var(--line); cursor: pointer; color: var(--white);
+  }
+  .mob-nav summary::-webkit-details-marker { display: none; }
+  .mob-nav summary :global(.icon) { width: 22px; }
+  .mob-nav :global(.i-close), .mob-nav[open] :global(.i-open) { display: none; }
+  .mob-nav[open] :global(.i-close) { display: block; }
+  .mob-panel {
+    position: absolute; left: 0; right: 0; top: 100%;
+    max-height: calc(100dvh - 72px - var(--bar-h)); overflow-y: auto;
+    background: var(--ink); border-bottom: 1px solid var(--line);
+    padding: 12px var(--gutter) 28px; display: grid;
+  }
+  .mob-panel a:not(.btn) { color: var(--white); text-decoration: none; padding: 12px 0; border-bottom: 1px solid var(--line); min-height: 44px; }
+  .mob-panel .mob-strong { font-weight: 700; color: var(--ice); }
+  .mob-h { margin: 18px 0 2px; font: 600 0.72rem/1 var(--font-body); letter-spacing: 0.18em; text-transform: uppercase; color: var(--chrome); }
+  .mob-panel .btn { margin-top: 20px; }
+
+  @media (min-width: 640px) { .hdr-cta { display: inline-flex; } }
+  @media (min-width: 1080px) {
+    .desk-nav { display: block; }
+    .actions { margin-left: 8px; }
+    .phone { display: inline-flex; }
+    .mob-nav { display: none; }
+  }
+  @media (min-width: 1080px) and (max-width: 1220px) { .brand :global(.lockup-sub) { display: none; } }
+</style>

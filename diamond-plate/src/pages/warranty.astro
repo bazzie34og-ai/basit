@@ -1,0 +1,92 @@
+---
+import { Picture } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import QuoteForm from '../components/QuoteForm.astro';
+import CtaBand from '../components/CtaBand.astro';
+import Faq from '../components/Faq.astro';
+import RelatedLinks from '../components/RelatedLinks.astro';
+import hexLogo from '../assets/logos/diamond-plate-logo-hex-square.png';
+import { routes } from '../config/routes';
+import { faqs } from '../config/faqs';
+import { serviceSchema } from '../lib/schema';
+import { csiro, money, packages, priceFrom, processInfo, warranty, warrantyYears } from '../config/site';
+
+const r = routes.warranty;
+const items = [faqs.inspections, faqs.transfer, faqs.insurance, faqs.last, faqs.scratches];
+const schema = [serviceSchema({ name: `${warrantyYears}-year ceramic coating warranty`, serviceType: 'Ceramic coating', path: r.path, description: r.description })];
+---
+<Base title={r.title} description={r.description} h1={r.h1} crumbs={[{ name: 'Warranty', path: r.path }]} schema={schema} quoteHref="#quote-form">
+  <PageHero eyebrow="In writing, nationwide" h1={r.h1} lead={`Every Diamond Plate ceramic coating comes with a ${warrantyYears}-year national warranty. No annual inspections, no reapplication, no capped warranty payments. Here’s exactly what that means, and what it doesn’t cover.`}>
+    <div class="badge">
+      <Picture src={hexLogo} alt={`Diamond Plate hexagon logo, the mark behind the ${warrantyYears}-year ceramic coating warranty`} formats={['avif', 'webp']} fallbackFormat="png" width={300} height={300} densities={[1, 2]} loading="eager" />
+      <p class="badge-n"><span class="grad-text" data-count={warrantyYears} data-suffix="">{warrantyYears}</span><span>year national warranty</span></p>
+    </div>
+  </PageHero>
+
+  <section class="section band">
+    <div class="wrap">
+      <p class="eyebrow">“I waited weeks before reviewing, to make sure it really works”</p>
+      <h2>The Diamond Plate warranty in three lines</h2>
+      <div class="grid grid-3" data-reveal-group>
+        {warranty.points.map((p, i) => (
+          <article class:list={['card', { glint: i === 1 }]} data-reveal>
+            <h3>{p}</h3>
+            <p class="muted">{[
+              'You don’t have to bring the car back every year to keep the warranty alive.',
+              'You don’t have to pay for top-up coats to keep it valid.',
+              'Warranty payments aren’t capped.',
+            ][i]}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap prose">
+      <p class="eyebrow">The fine print, in plain English</p>
+      <h2>What the ceramic coating warranty covers</h2>
+      <ul class="ticks">
+        {packages.map((p) => <li><strong>{p.short} ({money(p.price)}):</strong> {p.warrantyCovers.toLowerCase()}.</li>)}
+      </ul>
+      <p><strong>Who it covers.</strong> {warranty.transferNote}</p>
+      <p><strong>Accident repairs.</strong> {warranty.insuranceNote}</p>
+      <p><strong>What a warranty can’t change.</strong> A coating doesn’t remove scratches or swirl marks, and no coating prevents swirls or wash marks. Look after it with the <a href="/guides/ceramic-coating-aftercare/">aftercare basics</a>: no wash for {processInfo.noWashDays} days, then regular hand washes with a pH-neutral shampoo.</p>
+      <h3>Backed by testing, stated accurately</h3>
+      <p>{csiro.full}</p>
+      <p>Want the full terms before you book? Ask us, or compare it with <a href="/guides/ceramic-coating-vs-dealer-paint-protection/">what the dealer offers</a>.</p>
+    </div>
+  </section>
+
+  <CtaBand heading="Protection you won’t have to babysit" text={`No inspections. No reapplication. Fixed prices from ${money(priceFrom)}.`} quoteHref="#quote-form" />
+
+  <section class="section band">
+    <div class="wrap narrow">
+      <h2>Warranty questions</h2>
+      <Faq items={items} />
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <RelatedLinks links={[
+        { href: '/ceramic-coating-prices/', label: 'Ceramic coating prices', desc: 'Every package includes the warranty.' },
+        { href: '/graphene-ceramic-coating/', label: 'Graphene ceramic coating', desc: 'The coating behind the warranty.' },
+        { href: '/new-car-paint-protection/', label: 'New car paint protection', desc: 'Compare with dealer warranties.' },
+        { href: '/service-areas/', label: 'Service areas', desc: 'Where we come to you.' },
+        { href: '/guides/ceramic-coating-vs-dealer-paint-protection/', label: 'Dealer protection guide', desc: 'Warranty questions to ask.' },
+      ]} />
+    </div>
+  </section>
+
+  <section class="section band">
+    <div class="wrap"><QuoteForm heading="Get your price, warranty included" /></div>
+  </section>
+</Base>
+<style>
+  .badge { position: relative; display: grid; justify-items: center; gap: 16px; }
+  .badge img { width: min(300px, 70vw); height: auto; border-radius: 24px; box-shadow: 0 30px 80px -30px rgba(31, 91, 255, 0.6); }
+  .badge-n { display: flex; align-items: baseline; gap: 12px; margin: 0; font: 800 1.2rem/1 var(--font-display); text-transform: uppercase; letter-spacing: 0.06em; }
+  .badge-n .grad-text { font-size: 4rem; }
+</style>

@@ -1,0 +1,27 @@
+---
+import { faqSchema, type QA } from '../lib/schema';
+/** Visible Q&A + matching FAQPage JSON-LD (answers are the same strings). */
+interface Props { items: QA[]; schema?: boolean; headingLevel?: 'h2' | 'h3' }
+const { items, schema = true, headingLevel = 'h3' } = Astro.props;
+const H = headingLevel;
+---
+<div class="faq">
+  {items.map((i) => (
+    <details>
+      <summary><H class="q">{i.q}</H></summary>
+      <div class="a" set:html={i.a} />
+    </details>
+  ))}
+</div>
+{schema && <script type="application/ld+json" set:html={JSON.stringify(faqSchema(items))} />}
+<style>
+  .faq { border-top: 1px solid var(--line); }
+  details { border-bottom: 1px solid var(--line); }
+  summary { list-style: none; cursor: pointer; display: flex; align-items: center; justify-content: space-between; gap: 18px; padding: 20px 0; min-height: 44px; }
+  summary::-webkit-details-marker { display: none; }
+  summary::after { content: '+'; flex: none; font: 400 1.7rem/1 var(--font-body); color: var(--ice); transition: transform 0.25s; }
+  details[open] summary::after { transform: rotate(45deg); }
+  .q { margin: 0; font: 600 1.06rem/1.4 var(--font-body); text-transform: none; letter-spacing: 0; }
+  .a { padding: 0 0 22px; color: var(--chrome); max-width: 75ch; }
+  .a :global(p:last-child) { margin-bottom: 0; }
+</style>

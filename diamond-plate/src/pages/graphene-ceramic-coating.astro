@@ -1,0 +1,105 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import Photo from '../components/Photo.astro';
+import BeforeAfter from '../components/BeforeAfter.astro';
+import QuoteForm from '../components/QuoteForm.astro';
+import CtaBand from '../components/CtaBand.astro';
+import Faq from '../components/Faq.astro';
+import RelatedLinks from '../components/RelatedLinks.astro';
+import { routes } from '../config/routes';
+import { faqs } from '../config/faqs';
+import { serviceSchema } from '../lib/schema';
+import { csiro, money, packages, priceFrom, products, warrantyYears } from '../config/site';
+
+const r = routes.graphene;
+const items = [
+  faqs.graphene,
+  faqs.csiro,
+  {
+    q: 'Is a graphene coating scratch-proof?',
+    a: '<p>No coating is scratch-proof, and no coating prevents swirls or wash marks. Graphene ceramic helps the paint resist light marks, and because dirt releases more easily, you scrub less, which is where most wash marks come from.</p>',
+  },
+  {
+    q: 'Can I buy Graphene Ceramic 9H+ and apply it myself?',
+    a: '<p>No. Diamond Plate coatings are applied only by trained Diamond Plate applicators. That’s part of what the warranty stands on.</p>',
+  },
+  faqs.last,
+];
+const schema = [serviceSchema({ name: 'Graphene ceramic coating, Brisbane', serviceType: 'Graphene ceramic coating', path: r.path, description: r.description, offers: packages })];
+---
+<Base title={r.title} description={r.description} h1={r.h1} crumbs={[{ name: 'Graphene ceramic coating', path: r.path }]} schema={schema} quoteHref="#quote-form">
+  <PageHero eyebrow={products.main} h1={r.h1} lead={`Graphene Ceramic 9H+ is made in Australia by Diamond Plate’s own R&D team and applied in Brisbane by trained applicators at your home or work. It’s the coating in every package, from ${money(priceFrom)}.`}>
+    <Photo name="lambo" width={540} eager />
+  </PageHero>
+
+  <section class="section band">
+    <div class="wrap split">
+      <div class="prose">
+        <p class="eyebrow">The science, briefly</p>
+        <h2>What graphene adds to a ceramic coating</h2>
+        <p>Graphene is a single layer of carbon atoms arranged in a hexagonal lattice. It’s the reason our logo is a hexagon. Diamond Plate infuses it into a 9H ceramic to make {products.main}, the graphene coating we apply on Brisbane cars.</p>
+        <p>In plain terms, here’s what owners notice after a graphene ceramic paint coating:</p>
+        <ul class="ticks">
+          <li><strong>Water beads straight off.</strong> The surface is hydrophobic, so water and dirt release more easily.</li>
+          <li><strong>Washing is quicker.</strong> Less scrubbing, less time, fewer chances to mark the paint.</li>
+          <li><strong>Deep, glassy gloss.</strong> Two layers deepen it further.</li>
+          <li><strong>A protective layer</strong> between your clear coat and Brisbane’s UV, droppings, sap and salt air.</li>
+        </ul>
+        <p>We also make a standard {products.standard}. If you’re weighing the two, read <a href="/guides/graphene-vs-ceramic-coating/">graphene vs ceramic coating: what’s the difference</a>.</p>
+      </div>
+      <Photo name="amg" width={616} />
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap split rev">
+      <div class="prose">
+        <p class="eyebrow">Tested, accurately stated</p>
+        <h2>Graphene ceramic coating in Brisbane, tested by CSIRO</h2>
+        <p>{csiro.full}</p>
+        <p>We’re careful with that claim. CSIRO didn’t test scratch resistance or UV performance, and it doesn’t certify or approve products. It tested chemical resistance, and that’s all we claim.</p>
+        <p>The coating is Australian-made and Australian-owned, and every job is backed by the <a href="/warranty/">{warrantyYears}-year national warranty</a>: no annual inspections, no reapplication, no capped warranty payments.</p>
+      </div>
+      <BeforeAfter />
+    </div>
+  </section>
+
+  <CtaBand heading="Want the gloss without the guesswork?" text={`Fixed prices from ${money(priceFrom)}. Two layers for deeper gloss from ${money(packages[2].price)}.`} quoteHref="#quote-form" />
+
+  <section class="section">
+    <div class="wrap prose">
+      <p class="eyebrow">Honest limits</p>
+      <h2>What a graphene coating won’t do</h2>
+      <ul class="ticks cross">
+        <li>It won’t remove scratches or swirl marks already in the paint.</li>
+        <li>It isn’t scratch-proof. It helps resist light marks.</li>
+        <li>It won’t stop stone chips. If that’s your main worry, read <a href="/guides/ceramic-coating-vs-ppf/">ceramic coating vs PPF</a>.</li>
+        <li>It doesn’t replace washing. It makes washing easier.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section band">
+    <div class="wrap narrow">
+      <h2>Graphene coating questions</h2>
+      <Faq items={items} />
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <RelatedLinks links={[
+        { href: '/ceramic-coating-prices/', label: 'See our ceramic coating prices', desc: `Four fixed packages from ${money(priceFrom)}.` },
+        { href: '/new-car-paint-protection/', label: 'New car paint protection', desc: 'Coat it before Brisbane gets to it.' },
+        { href: '/ev-tesla-ceramic-coating/', label: 'Tesla and EV ceramic coating', desc: 'Applied while your car charges.' },
+        { href: '/service-areas/', label: 'Brisbane suburbs we cover', desc: 'We come to you.' },
+        { href: '/guides/graphene-vs-ceramic-coating/', label: 'Graphene vs ceramic guide', desc: 'The difference, without the hype.' },
+      ]} />
+    </div>
+  </section>
+
+  <section class="section band">
+    <div class="wrap"><QuoteForm heading="Get your graphene coating price" /></div>
+  </section>
+</Base>

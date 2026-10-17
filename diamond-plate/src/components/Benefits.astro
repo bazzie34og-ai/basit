@@ -1,0 +1,46 @@
+---
+/** The problem / benefit cards. The "Easier washing" card carries the water-beading micro-interaction. */
+const cards = [
+  { t: 'The Queensland sun', d: 'Brisbane UV is relentless, and bird droppings, bat droppings and tree sap bake on fast. The coating adds a protective layer so contaminants are easier to wash off before they etch.' },
+  { t: 'Easier washing', d: 'Graphene ceramic is hydrophobic. Water beads straight off and dirt lets go more easily, so a wash takes less time and less scrubbing.', bead: true },
+  { t: 'Deep, lasting gloss', d: 'A slick, glassy finish that stays looking fresh. Two layers give a deeper gloss. It also helps resist light marks, though no coating stops every swirl.' },
+];
+---
+<div class="ben grid grid-3" data-reveal-group>
+  {cards.map((c) => (
+    <article class:list={['card', { bead: c.bead }]} data-reveal {...(c.bead ? { 'data-bead': '' } : {})}>
+      {c.bead && (
+        <svg class="drops" viewBox="0 0 120 70" aria-hidden="true">
+          <defs><radialGradient id="dg" cx="35%" cy="30%" r="70%"><stop offset="0" stop-color="#fff" stop-opacity=".95"/><stop offset=".35" stop-color="#38C8FF" stop-opacity=".55"/><stop offset="1" stop-color="#1F5BFF" stop-opacity=".15"/></radialGradient></defs>
+          <ellipse class="d d1" cx="22" cy="20" rx="9" ry="8" fill="url(#dg)" />
+          <ellipse class="d d2" cx="58" cy="14" rx="6" ry="5.5" fill="url(#dg)" />
+          <ellipse class="d d3" cx="88" cy="26" rx="11" ry="10" fill="url(#dg)" />
+          <ellipse class="d d4" cx="40" cy="44" rx="5" ry="4.6" fill="url(#dg)" />
+          <ellipse class="d d5" cx="102" cy="52" rx="4" ry="3.8" fill="url(#dg)" />
+        </svg>
+      )}
+      <h3>{c.t}</h3>
+      <p class="muted">{c.d}</p>
+    </article>
+  ))}
+</div>
+<style>
+  .ben p { margin: 0; }
+  .bead { overflow: hidden; }
+  .drops { width: 120px; height: 70px; margin-bottom: 8px; }
+  .d { transform-box: fill-box; transform-origin: center; transform: scale(0.2); opacity: 0; }
+  .bead:hover .d, .bead.is-beading .d { animation: bead 2.6s var(--ease) forwards; }
+  .d2 { animation-delay: 0.15s !important; }
+  .d3 { animation-delay: 0.3s !important; }
+  .d4 { animation-delay: 0.45s !important; }
+  .d5 { animation-delay: 0.6s !important; }
+  @keyframes bead {
+    0% { transform: scale(0.2); opacity: 0; }
+    25% { transform: scale(1); opacity: 1; }
+    60% { transform: translate(0, 0) scale(1); opacity: 1; }
+    100% { transform: translate(14px, 46px) scale(0.85, 1.15); opacity: 0; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .d { transform: none; opacity: 1; animation: none !important; }
+  }
+</style>

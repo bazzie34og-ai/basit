@@ -1,0 +1,65 @@
+---
+/** The one light section: pricing comparison table. */
+import { money, packages, priceNote, addOns, warrantyYears } from '../config/site';
+const rows: { label: string; vals: (string | boolean)[] }[] = [
+  { label: 'Graphene Ceramic 9H+ layers on paint', vals: ['1', '1', '2', '2'] },
+  { label: 'Wash, decontamination and clay bar prep', vals: [true, true, true, true] },
+  { label: 'Fabric/leather stain protection', vals: [false, true, false, true] },
+  { label: 'Vinyl protection (fading, UV, cracking, splitting)', vals: [false, true, false, true] },
+  { label: `Alloy wheel protection (${money(addOns[0].price)} value)`, vals: ['Add-on', 'Free', 'Add-on', 'Free'] },
+  { label: `${warrantyYears}-year national warranty`, vals: packages.map((p) => p.warrantyCovers) },
+  { label: 'Gloss', vals: ['High', 'High', 'Deeper', 'Deeper'] },
+];
+---
+<section class="light section" data-price-view aria-labelledby="compare-h">
+  <div class="wrap">
+    <p class="eyebrow">Compare packages</p>
+    <h2 id="compare-h">What each price includes</h2>
+    <div class="table-scroll" tabindex="0" role="region" aria-label="Package comparison table">
+      <table>
+        <caption class="visually-hidden">Diamond Plate Brisbane ceramic coating packages and prices</caption>
+        <thead>
+          <tr>
+            <td></td>
+            {packages.map((p) => (
+              <th scope="col">
+                {p.tag && <span class="t">{p.tag}</span>}
+                <span class="n">{p.short}</span>
+                <span class="p">{money(p.price)}</span>
+              </th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {rows.map((r) => (
+            <tr>
+              <th scope="row">{r.label}</th>
+              {r.vals.map((v) => (
+                <td>{v === true ? <span class="yes" aria-label="Included">✓</span> : v === false ? <span class="no" aria-label="Not included">–</span> : v}</td>
+              ))}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+    <p class="note">{priceNote} No surprises on the day. Add-on: {addOns[0].name.toLowerCase()}, {money(addOns[0].price)}.</p>
+  </div>
+</section>
+<style>
+  .light { background: #f3f6fa; color: #05070b; }
+  .light .eyebrow { color: #2a3646; }
+  .light h2 { color: #05070b; }
+  .table-scroll { border-radius: 14px; border: 1px solid #d5dde8; background: #fff; }
+  .table-scroll:focus-visible { outline-color: #1f5bff; }
+  table { width: 100%; min-width: 720px; border-collapse: collapse; font-size: 0.95rem; }
+  th, td { padding: 14px 16px; text-align: center; border-bottom: 1px solid #e3e9f1; }
+  tbody th { text-align: left; font-weight: 500; color: #1d2633; }
+  thead th { vertical-align: bottom; }
+  .t { display: block; font: 700 0.68rem/1 var(--font-body); letter-spacing: 0.12em; text-transform: uppercase; color: #1546d1; margin-bottom: 6px; }
+  .n { display: block; font: 700 1.1rem/1.1 var(--font-display); text-transform: uppercase; letter-spacing: 0.03em; }
+  .p { display: block; font: 800 1.9rem/1.1 var(--font-display); color: #05070b; margin-top: 4px; }
+  .yes { color: #1546d1; font-weight: 700; font-size: 1.1rem; }
+  .no { color: #5a6676; }
+  tr:last-child th, tr:last-child td { border-bottom: 0; }
+  .note { margin: 18px 0 0; color: #2a3646; font-size: 0.92rem; }
+</style>

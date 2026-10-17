@@ -1,0 +1,39 @@
+---
+import { Picture } from 'astro:assets';
+import { photos, type PhotoKey } from '../config/photos';
+
+interface Props {
+  name: PhotoKey;
+  /** Displayed CSS width; photos are never shown wider than ~760px. */
+  width?: number;
+  caption?: string | false;
+  class?: string;
+  eager?: boolean;
+  sizes?: string;
+  /** Page-specific alt text (must still describe the photo honestly). */
+  alt?: string;
+}
+const { name, width = 720, caption, class: cls = '', eager = false, sizes, alt } = Astro.props;
+const p = photos[name];
+const w = Math.min(width, p.src.width, 760);
+const widths = [...new Set([Math.min(380, w), w])];
+const cap = caption === false ? '' : caption ?? p.caption;
+---
+<figure class:list={["photo", cls]} style={`max-width:${w}px`}>
+  <div class="frame gloss" data-gloss>
+    <Picture
+      src={p.src}
+      alt={alt ?? p.alt}
+      formats={['avif', 'webp']}
+      fallbackFormat="jpg"
+      widths={widths}
+      width={w}
+      height={Math.round((w * p.src.height) / p.src.width)}
+      sizes={sizes ?? `(max-width: ${w + 40}px) calc(100vw - 32px), ${w}px`}
+      loading={eager ? 'eager' : 'lazy'}
+      decoding="async"
+      quality={78}
+    />
+  </div>
+  {cap && <figcaption>{cap}</figcaption>}
+</figure>

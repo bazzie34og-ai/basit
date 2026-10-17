@@ -1,0 +1,173 @@
+---
+import Icon from './Icon.astro';
+import {
+  allSuburbs, business, contactOptions, howHeardOptions, packageOptions, packages, replyPromise, vehicleAges, TURNSTILE_SITE_KEY,
+} from '../config/site';
+
+interface Props {
+  variant?: 'short' | 'full';
+  heading?: string;
+  intro?: string;
+  /** Preselect a package option (e.g. from the prices page). */
+  defaultPackage?: string;
+}
+const { variant = 'short', heading = 'Get your fixed price', intro, defaultPackage } = Astro.props;
+const full = variant === 'full';
+const f = (n: string) => `q-${n}`;
+const err = (n: string) => `q-${n}-err`;
+---
+<div class="quote card glint" id="quote-form">
+  <div class="quote-head">
+    <h2 class="quote-title">{heading}</h2>
+    <p class="muted">{intro ?? `${replyPromise}. Prefer to talk? Call ${business.phone.display}.`}</p>
+  </div>
+
+  <form action="/api/quote" method="POST" data-quote-form data-variant={variant}>
+    <div class="status" role="alert" aria-live="assertive" data-status></div>
+
+    <div class="row">
+      <div class="field">
+        <label for={f('name')}>Your name <span aria-hidden="true">*</span></label>
+        <input id={f('name')} name="name" type="text" autocomplete="name" required maxlength="80" aria-describedby={err('name')} />
+        <p class="err" id={err('name')} data-err="name"></p>
+      </div>
+      <div class="field">
+        <label for={f('phone')}>Mobile or phone <span aria-hidden="true">*</span></label>
+        <input id={f('phone')} name="phone" type="tel" autocomplete="tel" inputmode="tel" required maxlength="20" placeholder="04xx xxx xxx" aria-describedby={err('phone')} />
+        <p class="err" id={err('phone')} data-err="phone"></p>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="field">
+        <label for={f('suburb')}>Suburb <span aria-hidden="true">*</span></label>
+        <input id={f('suburb')} name="suburb" type="text" list="suburb-list" autocomplete="address-level2" required maxlength="60" aria-describedby={err('suburb')} />
+        <datalist id="suburb-list">{allSuburbs.map((s) => <option value={s.suburb} />)}</datalist>
+        <p class="err" id={err('suburb')} data-err="suburb"></p>
+      </div>
+      <div class="field">
+        <label for={f('vehicle')}>Vehicle make and model <span aria-hidden="true">*</span></label>
+        <input id={f('vehicle')} name="vehicle" type="text" required maxlength="80" placeholder="e.g. 2025 Toyota Prado" aria-describedby={err('vehicle')} />
+        <p class="err" id={err('vehicle')} data-err="vehicle"></p>
+      </div>
+    </div>
+
+    <fieldset class="field" aria-describedby={err('vehicleAge')}>
+      <legend>How old is the car? <span aria-hidden="true">*</span></legend>
+      <div class="chips">
+        {vehicleAges.map((v, i) => (
+          <label class="chip"><input type="radio" name="vehicleAge" value={v} required={i === 0} /><span>{v}</span></label>
+        ))}
+      </div>
+      <p class="err" id={err('vehicleAge')} data-err="vehicleAge"></p>
+    </fieldset>
+
+    <div class="row">
+      <div class="field">
+        <label for={f('package')}>Package <span class="opt">(optional)</span></label>
+        <select id={f('package')} name="package" aria-describedby={err('package')}>
+          <option value="">Choose a package</option>
+          {packageOptions.map((p, i) => <option value={p} data-id={packages[i]?.id ?? 'unsure'} selected={p === defaultPackage}>{p}</option>)}
+        </select>
+        <p class="err" id={err('package')} data-err="package"></p>
+      </div>
+      <div class="field">
+        <label for={f('email')}>Email <span class="opt">(optional)</span></label>
+        <input id={f('email')} name="email" type="email" autocomplete="email" maxlength="120" aria-describedby={err('email')} />
+        <p class="err" id={err('email')} data-err="email"></p>
+      </div>
+    </div>
+
+    {full && (
+      <>
+        <div class="row">
+          <fieldset class="field">
+            <legend>Best way to reach you <span class="opt">(optional)</span></legend>
+            <div class="chips">
+              {contactOptions.map((c) => <label class="chip"><input type="radio" name="preferredContact" value={c} /><span>{c}</span></label>)}
+            </div>
+          </fieldset>
+          <div class="field">
+            <label for={f('bestTime')}>Best time to call <span class="opt">(optional)</span></label>
+            <input id={f('bestTime')} name="bestTime" type="text" maxlength="60" placeholder="e.g. weekday arvo" />
+          </div>
+        </div>
+        <div class="field">
+          <label for={f('message')}>Anything we should know? <span class="opt">(optional)</span></label>
+          <textarea id={f('message')} name="message" rows="4" maxlength="1000" aria-describedby={err('message')} placeholder="Where the car's parked, any paint concerns, timing…"></textarea>
+          <p class="err" id={err('message')} data-err="message"></p>
+        </div>
+        <div class="field">
+          <label for={f('howHeard')}>How did you hear about us? <span class="opt">(optional)</span></label>
+          <select id={f('howHeard')} name="howHeard">
+            <option value="">Choose one</option>
+            {howHeardOptions.map((h) => <option value={h}>{h}</option>)}
+          </select>
+        </div>
+      </>
+    )}
+
+    <!-- Spam traps -->
+    <div class="hp" aria-hidden="true">
+      <label for={f('website')}>Leave this empty</label>
+      <input id={f('website')} name="website" type="text" tabindex="-1" autocomplete="off" />
+    </div>
+    <input type="hidden" name="elapsed" value="" />
+    <input type="hidden" name="pageUrl" value={Astro.url.pathname} />
+    <input type="hidden" name="referrer" value="" />
+    <input type="hidden" name="utm_source" value="" />
+    <input type="hidden" name="utm_medium" value="" />
+    <input type="hidden" name="utm_campaign" value="" />
+    <input type="hidden" name="gclid" value="" />
+    <input type="hidden" name="submittedAt" value="" />
+
+    {TURNSTILE_SITE_KEY && <div class="cf-turnstile" data-sitekey={TURNSTILE_SITE_KEY} data-theme="dark"></div>}
+
+    <button class="btn btn-primary submit" type="submit"><span>Get My Price</span><Icon name="arrow" /></button>
+    <p class="small muted fine">No spam, no obligation. We only use your details to quote and book your coating. See our <a href="/privacy/">privacy policy</a>.</p>
+  </form>
+</div>
+
+{TURNSTILE_SITE_KEY && <script is:inline src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>}
+
+<script>
+  import { initQuoteForms } from '../scripts/quote-form';
+  initQuoteForms();
+</script>
+
+<style>
+  .quote { max-width: 860px; margin-inline: auto; }
+  .quote-title { font-size: clamp(1.8rem, 3.4vw, 2.6rem); margin-bottom: 0.3em; }
+  .quote-head { margin-bottom: 24px; }
+  form { display: grid; gap: 18px; }
+  .row { display: grid; gap: 18px; }
+  @media (min-width: 640px) { .row { grid-template-columns: 1fr 1fr; } }
+  .field { display: grid; gap: 6px; min-width: 0; }
+  fieldset { border: 0; padding: 0; margin: 0; }
+  label, legend { font: 600 0.92rem/1.3 var(--font-body); color: var(--white); padding: 0; }
+  .opt { font-weight: 400; color: var(--chrome); }
+  input[type='text'], input[type='tel'], input[type='email'], select, textarea {
+    width: 100%; min-height: 50px; padding: 12px 14px;
+    font: 400 1rem/1.4 var(--font-body); color: var(--white);
+    background: var(--ink); border: 1px solid #33445a; border-radius: 10px;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  input::placeholder, textarea::placeholder { color: #8d9bb0; }
+  input:focus, select:focus, textarea:focus { outline: none; border-color: var(--ice); box-shadow: 0 0 0 3px rgba(56, 200, 255, 0.25); }
+  [aria-invalid='true'] { border-color: var(--danger) !important; }
+  select { appearance: none; background-image: linear-gradient(45deg, transparent 50%, var(--chrome) 50%), linear-gradient(135deg, var(--chrome) 50%, transparent 50%); background-position: calc(100% - 20px) 22px, calc(100% - 15px) 22px; background-size: 5px 5px; background-repeat: no-repeat; padding-right: 36px; }
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 6px; }
+  .chip { position: relative; cursor: pointer; }
+  .chip input { position: absolute; opacity: 0; inset: 0; cursor: pointer; }
+  .chip span { display: inline-flex; align-items: center; min-height: 44px; padding: 0 16px; border-radius: 999px; border: 1px solid #33445a; font-weight: 500; font-size: 0.92rem; color: var(--chrome); transition: all 0.2s; }
+  .chip input:checked + span { border-color: var(--ice); color: var(--white); background: rgba(56, 200, 255, 0.12); }
+  .chip input:focus-visible + span { outline: 3px solid var(--ice); outline-offset: 2px; }
+  .err { margin: 0; min-height: 0; color: var(--danger); font-size: 0.86rem; font-weight: 500; }
+  .err:empty { display: none; }
+  .status:empty { display: none; }
+  .status { padding: 12px 14px; border-radius: 10px; border: 1px solid var(--danger); color: var(--white); background: rgba(255, 90, 95, 0.1); }
+  .hp { position: absolute; left: -10000px; width: 1px; height: 1px; overflow: hidden; }
+  .submit { width: 100%; --h: 58px; font-size: 1.05rem; }
+  .submit[disabled] { opacity: 0.7; cursor: progress; }
+  .fine { margin: 0; }
+</style>

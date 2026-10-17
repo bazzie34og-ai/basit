@@ -1,0 +1,26 @@
+{
+  "name": "diamond-plate-brisbane",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "check": "astro check"
+  },
+  "dependencies": {
+    "@astrojs/markdown-remark": "^7.3.3",
+    "@astrojs/sitemap": "^3.7.4",
+    "@fontsource/inter": "^5.3.0",
+    "@fontsource/saira-condensed": "^5.3.0",
+    "@netlify/blobs": "^11.1.4",
+    "astro": "^7.4.0",
+    "sharp": "^0.35.5"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.10",
+    "@netlify/functions": "^6.0.2",
+    "opentype.js": "^2.0.0",
+    "typescript": "^5.9.3"
+  }
+}

@@ -1,0 +1,42 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import Reviews from '../components/Reviews.astro';
+import Photo from '../components/Photo.astro';
+import CtaBand from '../components/CtaBand.astro';
+import QuoteForm from '../components/QuoteForm.astro';
+import Icon from '../components/Icon.astro';
+import { routes } from '../config/routes';
+import { social } from '../config/site';
+const r = routes.reviews;
+---
+<Base title={r.title} description={r.description} h1={r.h1} crumbs={[{ name: 'Reviews', path: r.path }]} quoteHref="#quote-form">
+  <PageHero eyebrow="Real customers, word for word" h1={r.h1} lead={`We don’t edit reviews and we don’t invent them. These are Diamond Plate customers in their own words. On Facebook, ${social.facebookStats.recommendPct}% of ${social.facebookStats.reviews} reviewers recommend us.`} chips={false}>
+    <Photo name="nateCustomer" width={420} eager />
+  </PageHero>
+
+  <section class="section band">
+    <div class="wrap">
+      <h2>What Diamond Plate customers say</h2>
+      <Reviews />
+      <div class="btn-row" style="margin-top:28px">
+        <a class="btn btn-primary" href={social.googleReview} target="_blank" rel="noopener"><Icon name="star" /> Leave us a Google review</a>
+        <a class="btn btn-ghost" href={social.facebook} target="_blank" rel="noopener">See reviews on Facebook</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap grid grid-3">
+      <div class="card"><h3>“The applicator explained everything”</h3><p class="muted">That’s standard. Every hand-over includes a walk-through of what was done and how to care for it. <a href="/mobile-ceramic-coating/">How a mobile job runs</a>.</p></div>
+      <div class="card"><h3>“Water beads straight off”</h3><p class="muted">That’s the hydrophobic graphene ceramic at work. <a href="/graphene-ceramic-coating/">How graphene ceramic coating works</a>.</p></div>
+      <div class="card"><h3>“Good advice for continuing care”</h3><p class="muted">It’s all written down too. <a href="/guides/ceramic-coating-aftercare/">Read the aftercare guide</a>.</p></div>
+    </div>
+  </section>
+
+  <CtaBand heading="Ready to see it on your car?" quoteHref="#quote-form" />
+
+  <section class="section band">
+    <div class="wrap"><QuoteForm heading="Get your fixed price" /></div>
+  </section>
+</Base>

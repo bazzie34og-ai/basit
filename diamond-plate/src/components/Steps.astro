@@ -1,0 +1,23 @@
+---
+import { processInfo } from '../config/site';
+const steps = [
+  { t: 'Get your price', d: 'Tell us the car and suburb. Fixed prices are published, so the quote is quick, and we confirm anything unusual before we start.' },
+  { t: 'We come to you', d: 'A trained Diamond Plate applicator comes to your home or workplace. No workshop queue and no lift home.' },
+  { t: 'Wash, decon, clay, coat', d: `A full wash, chemical decontamination, then a clay bar to make the paint smooth. Then the coating goes on. It’s touch-dry in about ${processInfo.touchDryMinutes} minutes.` },
+  { t: 'Hand-over and aftercare', d: `The applicator walks you through the car and explains everything. Don’t wash it for ${processInfo.noWashDays} days, then follow the simple aftercare guide.` },
+];
+---
+<ol class="steps" data-reveal-group>
+  {steps.map((s, i) => (
+    <li class="card" data-reveal>
+      <span class="n" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+      <h3>{s.t}</h3>
+      <p class="muted">{s.d}</p>
+    </li>
+  ))}
+</ol>
+<style>
+  .steps { list-style: none; margin: 0; padding: 0; display: grid; gap: 18px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr)); counter-reset: s; }
+  .n { display: block; font: 800 2.6rem/1 var(--font-display); background: var(--grad); -webkit-background-clip: text; background-clip: text; color: transparent; margin-bottom: 14px; }
+  p { margin: 0; }
+</style>

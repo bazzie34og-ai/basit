@@ -1,0 +1,86 @@
+---
+import { Picture } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import Photo from '../components/Photo.astro';
+import CtaBand from '../components/CtaBand.astro';
+import QuoteForm from '../components/QuoteForm.astro';
+import Icon from '../components/Icon.astro';
+import HexLattice from '../components/HexLattice.astro';
+import RelatedLinks from '../components/RelatedLinks.astro';
+import hexLogo from '../assets/logos/diamond-plate-logo-hex-square.png';
+import { routes } from '../config/routes';
+import { business, csiro, hours, products, social, warrantyYears } from '../config/site';
+const r = routes.about;
+---
+<Base title={r.title} description={r.description} h1={r.h1} crumbs={[{ name: 'About', path: r.path }]} quoteHref="#quote-form">
+  <section class="about-hero">
+    <HexLattice id="hex-about" origin="0% 0%" opacity={0.05} />
+    <div class="wrap split">
+      <div>
+        <p class="eyebrow">Australian made, Australian owned</p>
+        <h1>{r.h1}</h1>
+        <p class="lead">{business.name} is {business.brand} in Brisbane. Diamond Plate makes its own Australian-made ceramic coatings, and they’re applied only by trained Diamond Plate applicators.</p>
+        <div class="btn-row">
+          <a class="btn btn-primary" href="#quote-form" data-track="quote_start">Get My Price <Icon name="arrow" /></a>
+          <a class="btn btn-ghost" href={business.phone.tel} data-track="call_click"><Icon name="phone" /> {business.phone.display}</a>
+        </div>
+      </div>
+      <Picture src={hexLogo} alt="Diamond Plate hexagon logo with chrome-blue dP mark on graphene cells" formats={['avif', 'webp']} fallbackFormat="png" width={420} height={420} densities={[1, 1.6]} loading="eager" class="big-logo" />
+    </div>
+  </section>
+
+  <section class="section band">
+    <div class="wrap split">
+      <div class="prose">
+        <h2>Australian made ceramic coating, start to finish</h2>
+        <p>{business.brandSummary}</p>
+        <p>That matters for one reason: accountability. The people who make {products.main} also train the people who apply it, and stand behind it with a {warrantyYears}-year national warranty: no annual inspections, no reapplication, no capped warranty payments.</p>
+        <p>{csiro.full}</p>
+        <p>In Brisbane we’re a mobile service. Our base is at {business.address.oneLine}, and we come to homes and workplaces across Brisbane, Logan and the Redlands.</p>
+      </div>
+      <Photo name="nateInspect" width={440} />
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <h2>How we work</h2>
+      <div class="grid grid-3">
+        <div class="card"><h3>Prices in public</h3><p class="muted">Four fixed packages, published, for most cars. If something changes the price, we tell you before we start.</p></div>
+        <div class="card"><h3>Honest about limits</h3><p class="muted">A coating won’t remove scratches or stop stone chips. We’ll tell you that up front, and we’ll tell you if you don’t need the double layer.</p></div>
+        <div class="card"><h3>We answer</h3><p class="muted">{hours.display}. {hours.weekendNote} The phone number is on every page.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section band">
+    <div class="wrap split rev">
+      <div class="prose">
+        <h2>The people</h2>
+        <p>Every Diamond Plate coating is applied by a trained, approved Diamond Plate applicator. The photos on this site show Diamond Plate work from around the country, including Nate, a Diamond Plate certified applicator whom customers have named in their reviews.</p>
+        <p>Follow our work on <a href={social.facebook} target="_blank" rel="noopener">Facebook</a>, or read <a href="/reviews/">what customers say</a>.</p>
+      </div>
+      <Photo name="nateCustomer" width={420} />
+    </div>
+  </section>
+
+  <CtaBand heading="Want it done properly?" quoteHref="#quote-form" />
+
+  <section class="section">
+    <div class="wrap">
+      <RelatedLinks links={[
+        { href: '/graphene-ceramic-coating/', label: 'Graphene ceramic coating', desc: 'What we make.' },
+        { href: '/warranty/', label: 'The warranty, explained', desc: `${warrantyYears} years, in writing.` },
+        { href: '/ceramic-coating-prices/', label: 'Ceramic coating prices', desc: 'Fixed and published.' },
+      ]} />
+    </div>
+  </section>
+
+  <section class="section band">
+    <div class="wrap"><QuoteForm heading="Get your fixed price" /></div>
+  </section>
+</Base>
+<style>
+  .about-hero { position: relative; overflow: hidden; padding: 40px 0 80px; }
+  .big-logo { width: min(420px, 80vw); height: auto; margin-inline: auto; border-radius: 28px; box-shadow: 0 40px 100px -40px rgba(31, 91, 255, 0.7); }
+</style>

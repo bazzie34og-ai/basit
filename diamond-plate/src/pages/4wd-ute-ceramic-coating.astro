@@ -1,0 +1,106 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import Photo from '../components/Photo.astro';
+import QuoteForm from '../components/QuoteForm.astro';
+import CtaBand from '../components/CtaBand.astro';
+import Faq from '../components/Faq.astro';
+import RelatedLinks from '../components/RelatedLinks.astro';
+import { routes } from '../config/routes';
+import { faqs } from '../config/faqs';
+import { serviceSchema } from '../lib/schema';
+import { money, packages, priceFrom, priceNote, replyPromise, warrantyYears } from '../config/site';
+
+const r = routes.fourWd;
+const models = ['Toyota Prado', 'LandCruiser 300 and 70 Series', 'Toyota HiLux', 'Ford Ranger and Wildtrak', 'Ford Everest', 'Nissan Patrol', 'Isuzu D-Max and MU-X', 'Mitsubishi Triton'];
+const items = [
+  {
+    q: 'Does a 4WD cost more to ceramic coat?',
+    // TODO-CONFIRM large-vehicle pricing with the owner.
+    a: `<p>It can. ${priceNote} Tell us the exact model, and whether it has a canopy, tub liner or accessories, and we’ll give you the price up front.</p>`,
+  },
+  {
+    q: 'Will the coating protect my 4WD from scratches on the track?',
+    a: '<p>No. A ceramic coating isn’t armour. Bush scratches and stone chips will still mark the paint. What it does is make mud, red dirt, bugs and road grime release much more easily, so cleaning up after a trip is faster and gentler on the paint.</p>',
+  },
+  {
+    q: 'Can you coat a ute with a canopy or bull bar fitted?',
+    a: '<p>Yes, tell us what’s fitted when you book so we can plan the job and confirm the price.</p>',
+  },
+  faqs.carwash,
+  faqs.mobile,
+];
+const schema = [serviceSchema({ name: '4WD and ute ceramic coating, Brisbane', serviceType: '4WD ceramic coating', path: r.path, description: r.description, offers: packages })];
+---
+<Base title={r.title} description={r.description} h1={r.h1} crumbs={[{ name: '4WD and ute ceramic coating', path: r.path }]} schema={schema} quoteHref="#quote-form">
+  <PageHero eyebrow="Prado · LandCruiser · HiLux · Ranger" h1={r.h1} lead={`4WD ceramic coating for big panels, bull bars and weekends on red dirt. A coated 4WD or ute rinses clean far more easily, and we coat it on your driveway, so you don’t have to book it into a workshop.`}>
+    <Photo name="rav4" width={540} eager caption="Diamond Plate work: Toyota RAV4" alt="Silver Toyota RAV4 SUV after 4WD and SUV ceramic coating by Diamond Plate" />
+  </PageHero>
+
+  <section class="section band">
+    <div class="wrap split">
+      <div class="prose">
+        <p class="eyebrow">Big vehicle, big clean-up</p>
+        <h2>Why 4WD owners coat their paint</h2>
+        <p>A Prado or LandCruiser 300 has a lot of paint, and it gets dirty in ways a hatchback never does. Mud packs into the guards, red dirt stains the lower panels, and the bull bar wears a crust of bugs after any long highway run.</p>
+        <ul class="ticks">
+          <li><strong>Mud and red dirt let go</strong> with a rinse instead of a scrub.</li>
+          <li><strong>Bug splatter</strong> from highway runs comes off more easily, before it etches.</li>
+          <li><strong>Big flat panels</strong> keep their gloss under the Queensland sun.</li>
+          <li><strong>Less scrubbing</strong> means fewer wash marks on dark paint.</li>
+        </ul>
+        <p>One honest line: a coating isn’t protection against bush scratches or stone chips. If chips are your main worry, read <a href="/guides/ceramic-coating-vs-ppf/">ceramic coating vs PPF</a>.</p>
+      </div>
+      <div class="card">
+        <h3>Ute ceramic coating for popular 4WDs</h3>
+        <ul class="ticks">{models.map((m) => <li>{m}</li>)}</ul>
+        <p class="small muted">Plus most other utes, wagons and SUVs. Big vehicles may be priced differently, and we’ll confirm before we start.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap prose">
+      <p class="eyebrow">Which package?</p>
+      <h2>4WD ceramic coating in Brisbane: picking the right package</h2>
+      <p><strong>Single Layer ({money(packages[0].price)}):</strong> a sensible choice for a work ute that mostly needs easier washing.</p>
+      <p><strong>Double Layer ({money(packages[2].price)}):</strong> deeper gloss, a good fit for a new Prado, LandCruiser or Wildtrak that doubles as the family car.</p>
+      <p><strong>Ultimate Plus ({money(packages[3].price)}):</strong> two layers plus the full interior package and free alloy wheel protection. Worth it if kids, dogs and wet gear live in the back. See <a href="/interior-and-wheel-protection/">interior and wheel protection</a>.</p>
+      <p class="muted">{priceNote}</p>
+      <p><a href="/ceramic-coating-prices/">Compare every package side by side</a>.</p>
+    </div>
+  </section>
+
+  <CtaBand heading="Just picked up the new Prado?" text={`Tell us the model and what’s fitted. Fixed prices from ${money(priceFrom)} and a ${warrantyYears}-year national warranty.`} quoteHref="#quote-form" />
+
+  <section class="section band">
+    <div class="wrap prose">
+      <p class="eyebrow">After the trip</p>
+      <h2>Cleaning a coated 4WD</h2>
+      <p>Rinse first and let the water do the work, especially on the lower panels where grit sits. Then a hand wash with a pH-neutral shampoo. Use a bug and tar remover on the bull bar and mirrors. Avoid brush car washes, which cause swirls. The chemicals won’t hurt the coating, the brushes will mark the paint. More in our <a href="/guides/ceramic-coating-aftercare/">ceramic coating aftercare guide</a>.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap narrow">
+      <h2>4WD and ute questions</h2>
+      <Faq items={items} />
+    </div>
+  </section>
+
+  <section class="section band">
+    <div class="wrap">
+      <RelatedLinks links={[
+        { href: '/ceramic-coating-prices/', label: 'Ceramic coating prices', desc: 'Fixed packages, published.' },
+        { href: '/new-car-paint-protection/', label: 'New car paint protection', desc: 'Coat it in the first weeks.' },
+        { href: '/mobile-ceramic-coating/', label: 'Mobile ceramic coating', desc: 'We come to your driveway.' },
+        { href: '/service-areas/', label: 'Suburbs we cover', desc: 'Brisbane, Logan and the Redlands.' },
+        { href: '/guides/ceramic-coating-vs-ppf/', label: 'Ceramic coating vs PPF', desc: 'Which one a 4WD needs.' },
+      ]} />
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap"><QuoteForm heading="Get your 4WD price" intro={`Include the exact model and anything fitted (bull bar, canopy, rack). ${replyPromise}.`} /></div>
+  </section>
+</Base>

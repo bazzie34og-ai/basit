@@ -1,0 +1,93 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import PackageCards from '../components/PackageCards.astro';
+import PriceTable from '../components/PriceTable.astro';
+import QuoteForm from '../components/QuoteForm.astro';
+import CtaBand from '../components/CtaBand.astro';
+import Faq from '../components/Faq.astro';
+import Photo from '../components/Photo.astro';
+import RelatedLinks from '../components/RelatedLinks.astro';
+import { routes } from '../config/routes';
+import { faqs } from '../config/faqs';
+import { serviceSchema } from '../lib/schema';
+import { money, packages, priceFrom, priceNote, priceTo, warrantyYears } from '../config/site';
+
+const r = routes.prices;
+const items = [
+  {
+    q: 'How much does ceramic coating cost in Brisbane?',
+    a: `<p>Our prices are fixed and published: ${money(priceFrom)} for a single layer of Graphene Ceramic 9H+, up to ${money(priceTo)} for two layers plus full interior and wheel protection. ${priceNote}</p>`,
+  },
+  {
+    q: 'Why are your prices fixed when other places quote case by case?',
+    a: '<p>Because most cars need the same work: a full wash, decontamination, a clay bar and the coating. Publishing the price saves you chasing quotes. If your car is a large 4WD or van, or needs extra prep, we’ll tell you before we start.</p>',
+  },
+  {
+    q: 'Do I need the double layer?',
+    a: '<p>Not always. The double layer gives deeper gloss and a more premium look. If your car is a daily driver and you mostly want easier washing and protection, the single layer may suit you. We’ll tell you honestly if you don’t need the double layer.</p>',
+  },
+  {
+    q: 'Is there a call-out fee for the mobile service?',
+    a: '<p>Our packages are fixed prices for most cars, and we come to you. If anything about your location or vehicle changes the price, we’ll confirm it with you before we start.</p>',
+  },
+  faqs.transfer,
+];
+const schema = [serviceSchema({ name: 'Ceramic coating packages, Brisbane', path: r.path, description: r.description, offers: packages })];
+---
+<Base title={r.title} description={r.description} h1={r.h1} crumbs={[{ name: 'Ceramic coating prices', path: r.path }]} schema={schema} quoteHref="#quote-form">
+  <PageHero eyebrow="Fixed, published prices" h1={r.h1} lead={`Ceramic coating cost in Brisbane shouldn’t be a mystery. Our four packages run from ${money(priceFrom)} to ${money(priceTo)}, every one includes full paint prep and the ${warrantyYears}-year national warranty, and the price you see is the price you pay for most cars.`} />
+
+  <section class="section band" style="padding-top:56px">
+    <div class="wrap">
+      <h2>Ceramic coating prices by package</h2>
+      <PackageCards quoteBase="" />
+    </div>
+  </section>
+
+  <PriceTable />
+
+  <section class="section">
+    <div class="wrap split">
+      <div class="prose">
+        <p class="eyebrow">What you’re paying for</p>
+        <h2>Why the price covers more than the bottle</h2>
+        <p>A coating is only as good as the paint under it. Every package starts the same way:</p>
+        <ol>
+          <li><strong>Full wash</strong> to lift loose dirt and grime.</li>
+          <li><strong>Decontamination</strong> to remove bonded contaminants a wash leaves behind.</li>
+          <li><strong>Clay bar</strong> to make the paint smooth, so the coating bonds evenly.</li>
+          <li><strong>Coating applied by a trained Diamond Plate applicator</strong>, then a walk-through of the car and aftercare.</li>
+        </ol>
+        <p>Then there’s the warranty: {warrantyYears} years, national, with no annual inspections, no reapplication and no capped warranty payments. Read <a href="/warranty/">the warranty, explained</a> for the details.</p>
+        <p>Wondering how these numbers compare with what you’ve seen elsewhere? Our guide to <a href="/guides/ceramic-coating-cost-brisbane/">how much ceramic coating costs in Brisbane</a> explains what drives the price up or down.</p>
+      </div>
+      <Photo name="megane" width={616} alt="Orange Renault Megane RS after a fixed-price ceramic coating package by Diamond Plate" />
+    </div>
+  </section>
+
+  <CtaBand heading="Stuck to the quote. Every time." text="Fixed prices for most cars, and we confirm anything unusual before we start. No surprises on the day." quoteHref="#quote-form" />
+
+  <section class="section">
+    <div class="wrap narrow">
+      <h2>Price questions</h2>
+      <Faq items={items} />
+    </div>
+  </section>
+
+  <section class="section band">
+    <div class="wrap">
+      <RelatedLinks heading="Find the right package" links={[
+        { href: '/new-car-paint-protection/', label: 'New car paint protection', desc: 'Protect it in the first weeks.' },
+        { href: '/4wd-ute-ceramic-coating/', label: '4WD and ute ceramic coating', desc: 'Big panels, bull bars, red dirt.' },
+        { href: '/interior-and-wheel-protection/', label: 'Interior and wheel protection', desc: 'What the Plus packages add.' },
+        { href: '/service-areas/', label: 'Suburbs we cover', desc: 'Mobile across Brisbane, Logan and the Redlands.' },
+        { href: '/guides/ceramic-coating-cost-brisbane/', label: 'Ceramic coating cost guide', desc: 'What drives the price.' },
+      ]} />
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap"><QuoteForm heading="Lock in your fixed price" /></div>
+  </section>
+</Base>

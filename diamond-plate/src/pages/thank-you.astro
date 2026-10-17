@@ -1,0 +1,37 @@
+---
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+import HexLattice from '../components/HexLattice.astro';
+import { routes } from '../config/routes';
+import { business, hours, replyPromise, social } from '../config/site';
+const r = routes.thanks;
+---
+<Base title={r.title} description={r.description} h1={r.h1} noindex crumbs={[{ name: 'Thank you', path: r.path }]} bodyAttrs={{ 'data-conversion': 'lead' }}>
+  <section class="ty">
+    <HexLattice id="hex-ty" origin="0% 0%" opacity={0.05} />
+    <div class="wrap narrow">
+      <p class="eyebrow">Request received</p>
+      <h1>{r.h1}</h1>
+      <p class="lead">Your quote request is with the Brisbane team. Here’s what happens next.</p>
+      <ol class="next">
+        <li class="card"><span class="n">01</span><div><h2 class="h">We call or text you</h2><p class="muted">{replyPromise}, from <strong>{business.phone.display}</strong>. Save the number so you know it’s us. {hours.weekendNote}</p></div></li>
+        <li class="card"><span class="n">02</span><div><h2 class="h">You get a fixed price</h2><p class="muted">We confirm your package, the price and anything about the car we should know, then book a day and place that suits you.</p></div></li>
+        <li class="card"><span class="n">03</span><div><h2 class="h">We come to you</h2><p class="muted">A trained applicator coats the car at your home or work and walks you through the aftercare.</p></div></li>
+      </ol>
+      <div class="btn-row">
+        <a class="btn btn-primary" href={business.phone.tel} data-track="call_click"><Icon name="phone" /> Call now if it’s urgent</a>
+        <a class="btn btn-ghost" href="/guides/ceramic-coating-aftercare/">Read the aftercare guide</a>
+      </div>
+      <p class="rv">Already a customer? <a href={social.googleReview} target="_blank" rel="noopener">Leave us a Google review</a>. It helps other Brisbane owners find us.</p>
+    </div>
+  </section>
+</Base>
+<style>
+  .ty { position: relative; overflow: hidden; padding: 40px 0 100px; }
+  .next { list-style: none; padding: 0; margin: 32px 0; display: grid; gap: 14px; }
+  .next li { display: flex; gap: 20px; align-items: flex-start; }
+  .n { font: 800 2rem/1 var(--font-display); background: var(--grad); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .h { font-size: 1.3rem; margin: 0 0 6px; }
+  .next p { margin: 0; }
+  .rv { margin-top: 28px; }
+</style>

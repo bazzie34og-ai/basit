@@ -1,0 +1,71 @@
+---
+import Base from '../../layouts/Base.astro';
+import PageHero from '../../components/PageHero.astro';
+import QuoteForm from '../../components/QuoteForm.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import MapFacade from '../../components/MapFacade.astro';
+import { routes } from '../../config/routes';
+import { allSuburbs, business, regions } from '../../config/site';
+
+const r = routes.areas;
+const byLetter = Object.entries(
+  allSuburbs.reduce<Record<string, typeof allSuburbs>>((acc, s) => ((acc[s.suburb[0]] ??= []).push(s), acc), {}),
+);
+---
+<Base title={r.title} description={r.description} h1={r.h1} crumbs={[{ name: 'Service areas', path: r.path }]} quoteHref="#quote-form">
+  <PageHero eyebrow="Mobile, from our Murarrie base" h1={r.h1} lead="Looking for ceramic coating near you? We’re mobile, so a trained applicator comes to your home or workplace anywhere in the suburbs below, across Brisbane, Logan and the Redlands.">
+    <MapFacade query={`${business.address.oneLine}, Australia`} label="Our Brisbane base: Murarrie" zoom={10} />
+  </PageHero>
+
+  <section class="section band">
+    <div class="wrap">
+      <h2>Four regions, one fixed price list</h2>
+      <div class="grid grid-2" data-reveal-group>
+        {regions.map((rg) => (
+          <a class="card region" href={rg.path} data-reveal>
+            <h3>{rg.name} →</h3>
+            <p class="muted small">{rg.angle}.</p>
+            <p>{rg.suburbs.join(' · ')}</p>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <h2>Every suburb we cover, A–Z</h2>
+      <p class="muted">Tap your suburb to see what local driving does to paint there.</p>
+      <div class="az">
+        {byLetter.map(([letter, list]) => (
+          <div>
+            <p class="letter display">{letter}</p>
+            <ul>{list.map((s) => <li><a href={s.region.path}>{s.suburb}</a> <span class="small muted">{s.region.short}</span></li>)}</ul>
+          </div>
+        ))}
+      </div>
+      <address class="base card">
+        <strong>{business.name}</strong>, Brisbane base<br />
+        {business.address.oneLine}<br />
+        <a href={business.phone.tel} data-track="call_click">{business.phone.display}</a> · Mobile service: we come to you.
+      </address>
+    </div>
+  </section>
+
+  <CtaBand heading="Your suburb not listed?" text="Ask anyway. We’ll tell you straight whether we can get to you." quoteHref="#quote-form" />
+
+  <section class="section band">
+    <div class="wrap"><QuoteForm heading="Get your fixed price" /></div>
+  </section>
+</Base>
+<style>
+  .region { color: var(--white); text-decoration: none; transition: border-color 0.2s; }
+  .region:hover { border-color: rgba(56, 200, 255, 0.5); }
+  .region h3 { color: var(--ice); }
+  .region p:last-child { margin: 0; color: var(--chrome); font-size: 0.95rem; }
+  .az { display: grid; gap: 24px 32px; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); margin: 28px 0 40px; }
+  .letter { font-size: 1.8rem; margin: 0 0 6px; color: var(--chrome); }
+  .az ul { list-style: none; margin: 0; padding: 0; }
+  .az li a { display: inline-block; padding: 8px 0; min-height: 44px; line-height: 28px; }
+  .base { font-style: normal; line-height: 1.8; }
+</style>

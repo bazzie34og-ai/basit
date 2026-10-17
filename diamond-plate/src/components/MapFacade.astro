@@ -1,0 +1,38 @@
+---
+import Icon from './Icon.astro';
+/** Click-to-load Google Map. The facade is a lightweight on-brand illustration, so nothing loads from Google until asked. */
+interface Props { query: string; label: string; zoom?: number }
+const { query, label, zoom = 12 } = Astro.props;
+const src = `https://maps.google.com/maps?q=${encodeURIComponent(query)}&z=${zoom}&output=embed`;
+---
+<div class="map frame">
+  <div class="map-facade">
+    <svg viewBox="0 0 600 360" aria-hidden="true" preserveAspectRatio="xMidYMid slice">
+      <rect width="600" height="360" fill="#0C1118" />
+      <path d="M0 250 C120 230 160 300 300 270 S480 200 600 230 V360 H0Z" fill="#0f1b2b" />
+      <path d="M440 0 C430 90 470 140 520 180 S600 220 600 220 V0Z" fill="#0f1b2b" />
+      <g stroke="#1F2A38" stroke-width="2" fill="none">
+        <path d="M0 120 C150 140 250 90 600 130" /><path d="M60 0 C90 120 140 220 120 360" />
+        <path d="M260 0 C250 120 330 200 300 360" /><path d="M0 200 C180 190 360 170 600 60" />
+        <path d="M400 360 C380 260 420 160 380 0" />
+      </g>
+      <g stroke="#2a3a50" stroke-width="5" fill="none" stroke-linecap="round"><path d="M0 170 C200 160 380 200 600 150" /><path d="M180 0 C200 120 210 240 240 360" /></g>
+      <g transform="translate(300 170)"><path d="M0 -34 C-18 -34 -26 -20 -26 -10 C-26 8 0 30 0 30 C0 30 26 8 26 -10 C26 -20 18 -34 0 -34Z" fill="#1F5BFF" /><circle cy="-11" r="8" fill="#05070B" /></g>
+    </svg>
+    <div class="map-ui">
+      <p class="map-label"><Icon name="map" class="inline" /> {label}</p>
+      <button type="button" class="btn btn-ghost" data-map-src={src} data-map-title={`Map of ${label}`}>Load map</button>
+      <p class="small muted">Loads Google Maps</p>
+    </div>
+  </div>
+</div>
+<style>
+  .map { aspect-ratio: 5 / 3; width: 100%; max-width: none; }
+  .map :global(iframe) { width: 100%; height: 100%; border: 0; display: block; }
+  .map-facade { position: relative; width: 100%; height: 100%; }
+  .map-facade svg { width: 100%; height: 100%; }
+  .map-ui { position: absolute; inset: auto 0 0 0; display: flex; flex-wrap: wrap; align-items: center; gap: 10px 16px; padding: 16px; background: linear-gradient(transparent, rgba(5, 7, 11, 0.92)); }
+  .map-label { margin: 0; font-weight: 600; flex: 1 1 100%; }
+  .map-ui .btn { --h: 44px; }
+  .map-ui p.small { margin: 0; }
+</style>

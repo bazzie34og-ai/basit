@@ -1,0 +1,95 @@
+---
+import Base from '../../layouts/Base.astro';
+import PageHero from '../../components/PageHero.astro';
+import QuoteForm from '../../components/QuoteForm.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import Faq from '../../components/Faq.astro';
+import MapFacade from '../../components/MapFacade.astro';
+import RelatedLinks from '../../components/RelatedLinks.astro';
+import Photo from '../../components/Photo.astro';
+import { routes, type RouteKey } from '../../config/routes';
+import { regionCopy } from '../../config/region-content';
+import { business, money, packages, priceNote, regions, type Region } from '../../config/site';
+import { serviceSchema } from '../../lib/schema';
+import type { PhotoKey } from '../../config/photos';
+
+export function getStaticPaths() {
+  return regions.map((region) => ({ params: { region: region.slug }, props: { region } }));
+}
+interface Props { region: Region }
+const { region } = Astro.props;
+const r = routes[`area-${region.slug}` as RouteKey];
+const c = regionCopy[region.slug];
+const photo: Record<string, PhotoKey> = { 'eastern-suburbs-bayside': 'nateDog', northside: 'xtrail', 'southside-logan': 'rav4', redlands: 'kona' };
+const others = regions.filter((x) => x.slug !== region.slug);
+const schema = [
+  {
+    ...serviceSchema({ name: `Ceramic coating, ${region.name}`, path: r.path, description: r.description, offers: packages }),
+    areaServed: region.suburbs.map((s) => ({ '@type': 'Place', name: `${s}, QLD` })),
+  },
+];
+---
+<Base title={r.title} description={r.description} h1={r.h1} crumbs={[{ name: 'Service areas', path: '/service-areas/' }, { name: region.name, path: r.path }]} schema={schema} quoteHref="#quote-form">
+  <PageHero eyebrow={c.eyebrow} h1={r.h1} lead={c.lead}>
+    <MapFacade query={region.mapQuery} label={`${region.name}, Brisbane`} />
+  </PageHero>
+
+  <section class="section band">
+    <div class="wrap split">
+      <div>
+        <p class="eyebrow">Suburbs we cover</p>
+        <h2>Ceramic coating in {region.name}</h2>
+        <ul class="suburbs">{region.suburbs.map((s) => <li>{s}{s === business.address.suburb && ' (our base)'}</li>)}</ul>
+        <p class="small muted">Not on the list? Ask anyway. We’ll tell you straight whether we can get to you.</p>
+      </div>
+      <div class="prose">
+        <h2>{c.localH2}</h2>
+        <Fragment set:html={c.local} />
+      </div>
+    </div>
+  </section>
+
+  <CtaBand heading={c.cta.heading} text={c.cta.text} quoteHref="#quote-form" />
+
+  <section class="section">
+    <div class="wrap split rev">
+      <div class="prose">
+        <h2>{c.whyH2}</h2>
+        <Fragment set:html={c.why} />
+        <p>Prices are the same here as anywhere else we go: from {money(packages[0].price)} for a single layer to {money(packages[3].price)} for Ultimate Plus. {priceNote} <a href="/ceramic-coating-prices/">See every package</a>.</p>
+      </div>
+      <Photo name={photo[region.slug]} width={480} />
+    </div>
+  </section>
+
+  <section class="section band">
+    <div class="wrap prose">
+      <h2>{c.tipsH2}</h2>
+      <Fragment set:html={c.tips} />
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <RelatedLinks heading={c.nextH2} links={[...c.next, { href: '/service-areas/', label: 'All service areas', desc: 'Every suburb, every region.' }]} />
+    </div>
+  </section>
+
+  <section class="section band">
+    <div class="wrap narrow">
+      <h2>{region.short} questions</h2>
+      <Faq items={c.faq} />
+      <p style="margin-top:28px" class="muted">Also covering:
+        {others.map((o, i) => <>{i > 0 && ' · '}<a href={o.path}>{o.name}</a></>)}
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap"><QuoteForm heading={`Get your price in ${region.short}`} /></div>
+  </section>
+</Base>
+<style>
+  .suburbs { list-style: none; padding: 0; margin: 0 0 16px; display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 8px; }
+  .suburbs li { padding: 10px 14px; border: 1px solid var(--line); border-radius: 10px; background: var(--panel); font-weight: 500; }
+</style>

@@ -1,0 +1,27 @@
+---
+import Base from '../layouts/Base.astro';
+import { routes } from '../config/routes';
+import { business, GA4_ID } from '../config/site';
+const r = routes.privacy;
+---
+<Base title={r.title} description={r.description} h1={r.h1} crumbs={[{ name: 'Privacy', path: r.path }]}>
+  <section class="section" style="padding-top:32px">
+    <div class="wrap prose">
+      <h1>{r.h1}</h1>
+      <p class="muted">Last updated 17 October 2026</p>
+      <p>This policy explains how {business.name} (“we”, “us”) handles personal information collected through this website. We follow the Australian Privacy Principles in the <em>Privacy Act 1988</em> (Cth).</p>
+      <h2>What we collect</h2>
+      <p>When you request a quote we collect the details you enter: your name, phone number, suburb, vehicle, and anything optional you add, such as your email, preferred package and message. We also record the page you sent the form from, the referring site, any campaign tags in the link (such as utm_source or gclid) and the time of submission, so we know which advertising and pages work.</p>
+      <h2>How we use it</h2>
+      <p>Only to respond to your enquiry, quote, book and carry out your coating, provide warranty support, and improve our website and advertising. We don’t sell your information.</p>
+      <h2>Where it’s stored</h2>
+      <p>Form submissions are stored securely with our website host (Netlify) and emailed to our team using an email delivery service (Resend). These providers may store data outside Australia.</p>
+      <h2>Cookies and analytics</h2>
+      <p>{GA4_ID ? 'If you accept analytics cookies, we use Google Analytics to understand how people use the site. If you decline, analytics is not loaded.' : 'This site does not currently use analytics cookies. If we add Google Analytics, it will only load after you accept it in the cookie banner.'} We store small preferences in your browser, such as whether you dismissed a notice.</p>
+      <h2>Access and correction</h2>
+      <p>You can ask to see, correct or delete the information we hold about you. Email <a href={`mailto:${business.email}`}>{business.email}</a> or call <a href={business.phone.tel}>{business.phone.display}</a>.</p>
+      <h2>Complaints</h2>
+      <p>Contact us first and we’ll try to fix it. If you’re not satisfied, you can contact the Office of the Australian Information Commissioner (oaic.gov.au).</p>
+    </div>
+  </section>
+</Base>

@@ -1,0 +1,24 @@
+---
+import { Picture } from 'astro:assets';
+import mark from '../assets/logos/diamond-plate-dp-mark-transparent.png';
+interface Props { size?: 'md' | 'lg' }
+const { size = 'md' } = Astro.props;
+const h = size === 'lg' ? 40 : 30;
+const w = Math.round((h * mark.width) / mark.height);
+---
+<span class:list={['lockup', size]}>
+  <Picture src={mark} alt="" formats={['avif', 'webp']} fallbackFormat="png" width={w} height={h} densities={[1, 2]} loading="eager" class="lockup-mark" />
+  <span class="lockup-text">
+    <span class="lockup-name">Diamond Plate</span>
+    <span class="lockup-sub">Ceramic Coating · Brisbane</span>
+  </span>
+</span>
+<style>
+  .lockup { display: inline-flex; align-items: center; gap: 12px; color: var(--white); text-decoration: none; }
+  .lockup-mark { width: auto; filter: drop-shadow(0 0 10px rgba(56, 200, 255, 0.25)); }
+  .lockup-text { display: grid; line-height: 1; }
+  .lockup-name { font: 800 1.42rem/1 var(--font-display); letter-spacing: 0.04em; text-transform: uppercase; }
+  .lockup-sub { font: 600 0.6rem/1 var(--font-body); letter-spacing: 0.22em; text-transform: uppercase; color: var(--chrome); margin-top: 5px; }
+  .lg .lockup-name { font-size: 1.9rem; }
+  .lg .lockup-sub { font-size: 0.7rem; }
+</style>

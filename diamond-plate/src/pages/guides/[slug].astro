@@ -1,0 +1,90 @@
+---
+import { getCollection, render, type CollectionEntry } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import Photo from '../../components/Photo.astro';
+import Faq from '../../components/Faq.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import QuoteForm from '../../components/QuoteForm.astro';
+import RelatedLinks from '../../components/RelatedLinks.astro';
+import { photos, type PhotoKey } from '../../config/photos';
+import { articleSchema } from '../../lib/schema';
+import { fill } from '../../lib/tokens';
+import { SITE_URL, replyPromise } from '../../config/site';
+import { getImage } from 'astro:assets';
+
+export async function getStaticPaths() {
+  const guides = await getCollection('guides');
+  return guides.map((g) => ({ params: { slug: g.id }, props: { guide: g, all: guides } }));
+}
+interface Props { guide: CollectionEntry<'guides'>; all: CollectionEntry<'guides'>[] }
+const { guide, all } = Astro.props;
+const d = guide.data;
+const { Content } = await render(guide);
+const words = (guide.body ?? '').split(/\s+/).length;
+const minutes = Math.max(1, Math.round(words / 220));
+const path = `/guides/${guide.id}/`;
+const title = fill(d.title);
+const description = fill(d.description);
+const h1 = fill(d.h1);
+const faq = d.faq.map((f) => ({ q: fill(f.q), a: `<p>${fill(f.a)}</p>` }));
+const photoKey = d.photo as PhotoKey;
+const img = await getImage({ src: photos[photoKey].src, width: 720, format: 'jpg' });
+const date = new Intl.DateTimeFormat('en-AU', { day: 'numeric', month: 'long', year: 'numeric' }).format(d.date);
+const related = d.related.map((slug) => all.find((g) => g.id === slug)!).filter(Boolean);
+const schema = [articleSchema({ title: h1, description, path, date: d.date, updated: d.updated, image: new URL(img.src, SITE_URL + '/').href })];
+---
+<Base title={title} description={description} h1={h1} ogType="article" crumbs={[{ name: 'Guides', path: '/guides/' }, { name: h1, path }]} schema={schema}>
+  <article>
+    <header class="wrap g-head">
+      <p class="eyebrow">Guide</p>
+      <h1>{h1}</h1>
+      <p class="lead">{description}</p>
+      <p class="meta small muted">By {d.author} · <time datetime={d.date.toISOString().slice(0, 10)}>{date}</time> · {minutes} min read</p>
+    </header>
+    <div class="wrap g-grid">
+      <div class="prose g-body">
+        <Photo name={photoKey} width={720} eager />
+        <Content />
+        <h2>Frequently asked questions</h2>
+        <Faq items={faq} />
+      </div>
+      <aside class="g-side" aria-label="Get a price">
+        <div class="card glint sticky">
+          <p class="display side-h">Get your fixed price</p>
+          <p class="small muted">Tell us the car and suburb. We come to you.</p>
+          <a class="btn btn-primary" href="/get-a-quote/" data-track="quote_start">Get My Price</a>
+          <p class="small" style="margin:16px 0 6px"><strong>Related services</strong></p>
+          <ul class="small">{d.services.map((s) => <li><a href={s.href}>{fill(s.label)}</a></li>)}</ul>
+        </div>
+      </aside>
+    </div>
+  </article>
+
+  <CtaBand heading="Rather just get a price?" text={`Fixed, published prices. ${replyPromise}.`} />
+
+  <section class="section">
+    <div class="wrap">
+      <RelatedLinks heading="Related guides" links={[
+        ...related.map((g) => ({ href: `/guides/${g.id}/`, label: fill(g.data.h1), desc: '' })),
+      ]} />
+      <p style="margin-top:24px">Ready to book? See our <a href={d.services[0].href}>{fill(d.services[0].label).toLowerCase()}</a> page, or <a href={d.services[1].href}>{fill(d.services[1].label).toLowerCase()}</a>, or <a href="/get-a-quote/">get a ceramic coating quote</a>.</p>
+    </div>
+  </section>
+
+  <section class="section band">
+    <div class="wrap"><QuoteForm heading="Get your fixed price" /></div>
+  </section>
+</Base>
+<style>
+  .g-head { padding-top: 24px; padding-bottom: 32px; }
+  .g-head h1 { max-width: 22ch; font-size: clamp(2.2rem, 5vw, 3.8rem); }
+  .meta { margin: 0; }
+  .g-grid { display: grid; gap: 48px; padding-bottom: 72px; }
+  @media (min-width: 1040px) { .g-grid { grid-template-columns: minmax(0, 1fr) 300px; } }
+  .g-body :global(.photo) { margin-bottom: 32px; }
+  .g-body :global(table) { display: block; overflow-x: auto; }
+  .sticky { position: sticky; top: 96px; display: grid; gap: 8px; }
+  .side-h { font-size: 1.6rem; margin: 0; }
+  .g-side ul { margin: 0; padding-left: 1.1rem; }
+  .g-side li a { display: inline-block; padding: 6px 0; }
+</style>
