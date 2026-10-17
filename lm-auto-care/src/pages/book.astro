@@ -228,8 +228,8 @@ const err = (f: string) => `err-${f}`;
     <aside class="summary" aria-labelledby="sum-h" data-summary>
       <div class="docket">
         <h2 id="sum-h" class="mono">Your job docket</h2>
-        <ul data-sum-lines><li><span>Pick a service</span><span class="mono">—</span></li></ul>
-        <div class="tot"><span class="mono">Your price</span><strong class="mono" data-sum-total>—</strong></div>
+        <ul data-sum-lines><li><span>Pick a service in step 2</span><span class="mono">from £10</span></li></ul>
+        <div class="tot"><span class="mono">Your price</span><strong class="mono" data-sum-total>£10+</strong></div>
         <p class="fine">{expectations.waterPowerPlain} {expectations.times.short}</p>
         <p class="fine">Rather just talk? <a href={waLink(waMessages.home)} data-track="whatsapp_click" rel="noopener">WhatsApp</a> or <a href={business.tel} data-track="call_click">{business.phoneDisplay}</a>.</p>
       </div>
@@ -237,7 +237,7 @@ const err = (f: string) => `err-${f}`;
   </div>
 
   <div class="mobile-total on-dark" data-mobile-total aria-hidden="true">
-    <span class="mono">Your price</span><strong class="mono" data-sum-total-m>—</strong>
+    <span class="mono">Your price</span><strong class="mono" data-sum-total-m>£10+</strong>
   </div>
 </Base>
 

@@ -18,9 +18,9 @@
   --stamp: #c8102e; /* SIGNED OFF stamp only */
 
   /* type */
-  --f-display: 'Archivo Variable', 'Archivo', 'Arial Black', system-ui, sans-serif;
-  --f-ui: 'Archivo Variable', 'Archivo', system-ui, sans-serif;
-  --f-body: 'Source Serif 4 Variable', 'Source Serif 4', Georgia, 'Times New Roman', serif;
+  --f-display: 'Archivo', 'Arial Black', system-ui, sans-serif;
+  --f-ui: 'Archivo', system-ui, sans-serif;
+  --f-body: 'Source Serif 4', Georgia, 'Times New Roman', serif;
   --f-mono: 'IBM Plex Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
   --wide: 125%;
   --track-mono: 0.06em;
@@ -31,7 +31,6 @@
   --rule-dark: 1px solid var(--granite-3);
   --header-h: 72px;
 
-  /* granite speckle: generated noise, ~4% ink. Light sections only. */
-  --speckle: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' seed='7' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .07 0 0 0 0 .08 0 0 0 0 .09 3.2 0 0 0 -1.75'/%3E%3C/filter%3E%3Crect width='220' height='220' filter='url(%23g)' opacity='.3'/%3E%3C/svg%3E");
-  --speckle-fine: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='f'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.7' numOctaves='1' seed='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .35 0 0 0 0 .33 0 0 0 0 .3 4 0 0 0 -2.6'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23f)' opacity='.3'/%3E%3C/svg%3E");
+  /* granite speckle: generated noise tile (scripts/build-speckle.mjs), ~4% ink. Light sections only. */
+  --speckle: url('/granite.png');
 }

@@ -25,8 +25,7 @@ const widths = [360, 540, src.width].filter((w, i, a) => w <= src.width && a.ind
     formats={['avif', 'webp']}
     fallbackFormat="jpg"
     loading={eager ? 'eager' : 'lazy'}
-    fetchpriority={eager ? 'high' : undefined}
-    decoding={eager ? 'sync' : 'async'}
+    decoding="async"
   />
   {caption && <figcaption class="mono">{caption}</figcaption>}
 </figure>

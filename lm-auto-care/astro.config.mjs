@@ -7,8 +7,10 @@ export default defineConfig({
   site: SITE_URL,
   output: 'static',
   trailingSlash: 'always',
-  build: { format: 'directory', inlineStylesheets: 'auto' },
+  build: { format: 'directory', inlineStylesheets: 'always' },
   prefetch: false,
+  // Class-based scoping: smaller HTML and cheaper style matching than attribute selectors.
+  scopedStyleStrategy: 'class',
   integrations: [
     sitemap({
       filter: (page) => !page.includes('/thank-you/') && !page.includes('/404'),
