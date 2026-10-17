@@ -8,6 +8,7 @@ const opts = ['Jump start', 'Lockout', 'Fuel delivery', 'Not sure'];
 <form class="form" id={id} name="roadside-request" method="POST" action="/thank-you/" data-netlify="true" netlify-honeypot="bot-field" novalidate data-request-form>
   <input type="hidden" name="form-name" value="roadside-request" />
   <input type="hidden" name="page" value={Astro.url.pathname} />
+  <input type="hidden" name="subject" value="New roadside help request from the website (%{submissionId})" />
   <p class="hp" aria-hidden="true"><label>Leave this empty <input type="text" name="bot-field" tabindex="-1" autocomplete="off" /></label></p>
   <h3>Request help</h3>
   <p class="muted">Takes 20 seconds. {b.ownerFirstName} calls you right back.</p>

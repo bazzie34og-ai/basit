@@ -67,6 +67,8 @@ The "Request help" form (`roadside-request`) is a Netlify Form with a honeypot f
 
 Each submission includes: name, phone, service, location (a Google Maps link when "Use my location" is used), notes, and the page it was sent from.
 
+The email subject is set in the form itself ("New roadside help request from the website"), so leave the subject blank in the Netlify notification settings. Notification emails come from `formresponses@netlify.com`. Check John's spam folder after the first test, and mark it "Not spam" if it lands there.
+
 ---
 
 ## Click tracking (GA4)
