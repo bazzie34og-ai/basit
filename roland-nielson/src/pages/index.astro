@@ -48,7 +48,7 @@ const steps = [
   { h: 'Real change', p: 'Kept promises stack up. Calmer evenings. A man your family can count on.' },
 ];
 ---
-<Base path="/" preload={preload} schema={[youtubeVideo(), faqPage('/', homeFaqs)]}>
+<Base path="/" cta={{ freeCallLink: true }} preload={preload} schema={[youtubeVideo(), faqPage('/', homeFaqs)]}>
   <section class="hero dark grain" aria-labelledby="page-h1">
     <div class="wrap hero-grid">
       <div class="hero-copy">
@@ -211,7 +211,7 @@ const steps = [
   <section class="section white" aria-labelledby="area-h">
     <div class="wrap reveal">
       <ServiceArea heading="Coaching across the Omaha metro" intro="In person by appointment from Bennington to Bellevue and Elkhorn to Council Bluffs. Video and phone from anywhere." />
-      <p class="mt-m"><a class="text-link" href="/omaha-life-coach/">How in-person coaching works around Omaha</a></p>
+      <p class="mt-m"><a class="text-link" href="/omaha-life-coach/">How coaching across Omaha works, area by area</a></p>
     </div>
   </section>
 

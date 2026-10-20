@@ -22,7 +22,8 @@ interface Props {
   pageType?: string;
   dateModified?: string;
   preload?: { srcset: string; sizes: string; type: string };
-  cta?: false | { heading?: string; text?: string };
+  cta?: false | { heading?: string; text?: string; showHours?: boolean; freeCallLink?: boolean };
+  minimalHeader?: boolean;
   article?: { published: string; updated: string };
 }
 const p = Astro.props;
@@ -103,7 +104,7 @@ const ga = site.ga4Id;
   </head>
   <body>
     <a class="skip-link" href="#main">Skip to content</a>
-    <Header />
+    <Header minimal={p.minimalHeader} />
     <main id="main" tabindex="-1">
       <slot />
     </main>

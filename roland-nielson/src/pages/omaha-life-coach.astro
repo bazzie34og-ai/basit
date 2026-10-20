@@ -3,130 +3,181 @@ import Base from '../layouts/Base.astro';
 import PageHero from '../components/PageHero.astro';
 import ServiceArea from '../components/ServiceArea.astro';
 import Faq from '../components/Faq.astro';
-import RelatedLinks from '../components/RelatedLinks.astro';
 import Icon from '../components/Icon.astro';
-import { site, tel, hoursText, inPersonAddOn } from '../config/site';
+import { site, tel, inPersonAddOn, areaNames } from '../config/site';
 import { page } from '../data/pages';
 import { faqPage, service } from '../lib/schema';
 
 const path = '/omaha-life-coach/';
 const meta = page(path);
+
 const faqs = [
-  { q: 'Is there a life coach near me in Omaha with evening hours?', a: `Yes. I coach men across the Omaha metro on weekday evenings and Saturdays: ${hoursText}. Sessions happen in person by appointment, by video or by phone, so a long day at work does not mean missing your session.` },
-  { q: 'Do you have an office?', a: "Not a public one. I'm a service-area coach, so I meet you where it works: your location, a private meeting space in Omaha booked for our session, a walk-and-talk outdoors, or by video and phone. That keeps it flexible and private. Exact meeting spots are set when you book." },
-  { q: 'Do you coach in Council Bluffs and western Iowa?', a: "Yes. Council Bluffs is part of my service area for in-person sessions by appointment. Video and phone sessions work anywhere in Iowa or Nebraska, so men in smaller towns outside the metro can still work with me without driving into Omaha." },
-  { q: 'Can we do a walk-and-talk session?', a: "Yes, weather and privacy permitting. A lot of men talk more easily side by side than face to face. Popular spots include the Keystone Trail, Zorinsky Lake, Standing Bear Lake and Gene Leahy Mall at The RiverFront. We will pick a time and place when you book." },
+  { q: 'Where do in-person sessions happen in Omaha?', a: `In-person sessions happen at your location or in a private meeting space in Omaha, set up by appointment. If you'd rather move, we can walk and talk at places like the Keystone Trail or Zorinsky Lake. In-person sessions add ${inPersonAddOn.priceLabel} each to cover room costs. Video and phone sessions cost nothing extra.` },
+  { q: 'Do you coach men in Bellevue, Papillion or Council Bluffs?', a: "Yes. Bellevue, Papillion, La Vista, Ralston, Gretna, Bennington, Elkhorn, Millard and Council Bluffs are all part of my service area. We can meet in person by appointment, or by video and phone if the drive doesn't make sense that week. Many men mix both." },
+  { q: 'How much does a life coach cost in Omaha?', a: 'My plans start at $149 a month for two 45-minute sessions. Core Coaching is $249 a month for four sessions, and Focused Support is $399 a month for four 60-minute sessions. The first three Founding Clients pay $199 a month for three months. The first 20-minute call is free. <a href="/pricing/">See every plan</a>.' },
+  { q: 'Is life coaching the same as therapy?', a: 'No. I am a non-clinical life coach. I help men who are stable enough to function build structure, habits and follow-through. I do not diagnose, treat or provide therapy. If you need that kind of help, I will tell you plainly and point you to licensed professionals, and coaching can continue alongside it if that helps.', scope: true },
+  { q: 'Can I start online and meet in person later?', a: "Yes. Plenty of men start by video or phone because it's easier to fit in, then meet in person once they know what coaching with me feels like. You can switch back and forth week to week. The plan and the accountability stay the same either way." },
+  { q: 'What happens on the free 20-minute call?', a: "You tell me what keeps happening and what you've already tried. I ask a few straight questions. Then I tell you honestly whether I think I can help. If it's a fit, we pick a plan. If not, I'll point you somewhere better. No pressure and no hard sell. <a href=\"/free-call/\">More about the free call</a>." },
+  { q: 'Can my wife or parent book a call for me?', a: 'Yes. A wife, partner or parent can book the free call or reach out first. I will listen, then talk with you directly, because coaching only works when you choose it yourself. What you share with me stays private. <a href="/for-families/">Read the page for families</a>.' },
 ];
+const scopeIdx = [3];
+
 const schema = [
-  service({ path, name: 'Life Coaching across the Omaha Metro', serviceType: 'Life coaching', description: meta.description }),
+  service({ path, name: "Men's Life Coaching in Omaha, NE", serviceType: "Men's life coaching", description: meta.description }),
   faqPage(path, faqs),
 ];
-const hoods = [
-  { h: 'Midtown, Dundee & Benson', p: 'Close-in neighborhoods where a lot of men work long hours in the trades, healthcare and restaurants. Evening sessions after shift, or a walk through Dundee.' },
-  { h: 'Aksarben & central Omaha', p: 'Easy to reach from most of the city. A common middle point for in-person sessions in a private meeting space.' },
-  { h: 'West Omaha, Millard & Elkhorn', p: 'Busy families, long commutes and youth sports every weekend. Saturday late-morning sessions and walk-and-talks at Zorinsky Lake fit well here.' },
-  { h: 'Papillion, La Vista & Ralston', p: 'Sarpy County dads and working men. Video sessions after the kids are in bed, or in person by appointment.' },
-  { h: 'Bellevue & Offutt area', p: 'Military families and men in transition. Evening phone sessions travel well when schedules change.' },
-  { h: 'Gretna, Bennington & Council Bluffs', p: 'Further out, but still in reach. Mix in-person sessions with video so distance never becomes the excuse.' },
+
+const pains = [
+  { h: "You've been stuck for years", p: 'Same job, same arguments, same promise to start Monday. You know you want more, and fear keeps you right where you are.', href: '/mens-life-coaching-omaha/', link: "Life coaching for men in Omaha" },
+  { h: 'You start strong, then slip by Thursday', p: 'Monday you\'re all in. By midweek the old habits win. Nobody checks in, so nothing sticks.', href: '/accountability-coaching/', link: 'Accountability coaching' },
+  { h: 'You react before you think at home', p: "A long day lands on your wife and kids. You say things you'd take back, then feel worse than they do.", href: '/coaching-for-fathers/', link: 'Coaching for fathers and husbands' },
+  { h: "You're home, but not really there", p: 'Your body is at the table. Your head is still at work or in your phone. Your kids notice.', href: '/coaching-for-fathers/', link: 'Being a more present dad' },
+  { h: "You're rebuilding after a hard chapter", p: "Addiction, divorce, a lost job. You're putting life back together and want to do it right this time.", href: '/rebuilding-after-addiction/', link: 'Rebuilding after addiction' },
+  { h: "You're always playing catch-up", p: 'Bills, work, family and everything you said you would do. No structure, so the day runs you.', href: '/the-rebuild-program/', link: 'The Rebuild Program' },
 ];
+
 const places = [
-  { h: 'Keystone Trail', p: 'Long, flat and quiet in the evening. Good for men who think better while moving.' },
-  { h: 'Zorinsky Lake', p: 'West Omaha loop with plenty of room to talk without being overheard.' },
-  { h: 'Standing Bear Lake', p: 'North-west Omaha. Calm water, easy parking, good for Saturday sessions.' },
-  { h: 'Gene Leahy Mall at The RiverFront', p: 'Downtown, convenient after work for men who work in the city center.' },
+  { h: 'Keystone Trail', p: 'Runs north and south through the middle of the city. Flat, easy and good for men who think better while moving.' },
+  { h: 'Zorinsky Lake', p: 'A loop around the water in west Omaha with room to talk without being overheard.' },
+  { h: 'Standing Bear Lake', p: 'Northwest Omaha. Quiet water and an easy walk.' },
+  { h: 'Gene Leahy Mall at The RiverFront', p: 'Downtown, close to the offices, if you would rather meet near work.' },
+];
+
+const areas = [
+  { h: 'Midtown', p: "Midtown men are often close to work and short on time. A session can fit in before the drive home, and Turner Park at Midtown Crossing is right there if you'd rather walk than sit." },
+  { h: 'Dundee', p: 'Dundee has a neighborhood feel with a lot of young families. Memorial Park is a good spot for a walk-and-talk, and video works well once the kids are down.' },
+  { h: 'Benson', p: 'Plenty of Benson guys work nights or odd shifts in restaurants, music and the trades. We plan sessions around the schedule you actually have, not a 9-to-5 one.' },
+  { h: 'Aksarben', p: "Central and easy to reach from most of the city. That makes Aksarben a natural middle point for in-person sessions if you're coming from work in another part of town." },
+  { h: 'North Omaha', p: "This is where I grew up. I know the streets, the pressure and the family stuff that comes with it. If you're from here, you won't have to explain much." },
+  { h: 'West Omaha & Millard', p: 'Long Dodge Street commutes, youth sports every weekend and a full calendar. We build habits that fit around that, with walk-and-talks at Zorinsky Lake when the weather is good.' },
+  { h: 'Elkhorn', p: 'Newer neighborhoods, young families and a long drive in. Video sessions save the commute, and in-person meetings can happen closer to home by appointment.' },
+  { h: 'Bellevue', p: "Bellevue has a lot of military families tied to Offutt Air Force Base, and a lot of men in transition. Phone and video travel well when life moves around, and Fontenelle Forest is close if you'd rather be outside." },
+  { h: 'Papillion & La Vista', p: 'Sarpy County dads and working men who are stretched thin between jobs and kids. Walnut Creek Lake in Papillion is a good place to walk and talk.' },
+  { h: 'Ralston', p: "Ralston is a small town bordered on most sides by Omaha, and it still feels like one. Everybody knows everybody, which is one more reason privacy matters. What you share stays between us." },
+  { h: 'Gretna', p: 'Growing fast, with a lot of men commuting into Omaha on I-80. Video sessions keep you consistent without adding another drive to the week.' },
+  { h: 'Bennington', p: 'Out on the northern edge of the metro, Bennington men are often a short drive from Standing Bear Lake. We can meet out there, or keep things on video.' },
+  { h: 'Council Bluffs, IA', p: 'Just across the Missouri River. The Bob Kerrey Pedestrian Bridge links the two riverfronts, and in-person sessions in Council Bluffs work by appointment the same as in Omaha.' },
+];
+
+const pillars = [
+  { h: 'Make tomorrow easier.', p: 'Small choices tonight that set up tomorrow: sleep, a plan, a clean kitchen, the text you have been avoiding.' },
+  { h: 'Stop before you react.', p: 'Learn to sit with anger, stress or shame without letting it run the house. Notice it, name it, then choose.' },
+  { h: 'Do what you said.', p: 'Keep small promises until keeping your word feels normal again. Trust comes back one kept promise at a time.' },
+];
+const links = [
+  { href: '/mens-life-coaching-omaha/', label: "Men's life coaching in Omaha" },
+  { href: '/accountability-coaching/', label: 'Accountability coaching' },
+  { href: '/coaching-for-fathers/', label: 'Coaching for fathers and husbands' },
+  { href: '/rebuilding-after-addiction/', label: 'Rebuilding after addiction' },
+  { href: '/the-rebuild-program/', label: 'The Rebuild Program' },
+  { href: '/personal-patterns-assessment/', label: 'Free Personal Patterns Assessment' },
 ];
 ---
-<Base path={path} crumbs={[{ name: 'Omaha Metro', path }]} schema={schema}>
-  <PageHero eyebrow="Serving the Omaha metro" title="Coaching across the Omaha metro" lead="One coach, one-on-one, from Bennington to Bellevue and Elkhorn to Council Bluffs. In person by appointment, or by video and phone wherever you are." crumbs={[{ name: 'Home', path: '/' }, { name: 'Omaha Metro', path }]} updated={site.contentUpdated}>
+<Base path={path} crumbs={[{ name: 'Omaha Metro', path }]} schema={schema} cta={{ showHours: false, heading: 'Tell me what keeps happening.', text: "Book a free 20-minute call, or leave your name and number and I'll reach out. Wherever you are in the metro, we'll find a way to meet." }}>
+  <PageHero eyebrow="Life coach in Omaha, NE" title="Life coaching for men across the Omaha metro" lead="I coach fathers, working men and men rebuilding after a hard stretch. I grew up in North Omaha, and I meet men in person around the metro or by video, whichever keeps you showing up." crumbs={[{ name: 'Home', path: '/' }, { name: 'Omaha Metro', path }]} updated="2026-10-20">
     <div class="btn-row">
-      <a class="btn brass" href={site.booking} rel="noopener"><Icon name="calendar" />Book a Free Discovery Call</a>
+      <a class="btn brass" href={site.booking} rel="noopener"><Icon name="calendar" />Book a Free Call</a>
       <a class="btn ghost" href={tel}><Icon name="phone" />Call or Text {site.phone.display}</a>
     </div>
   </PageHero>
 
-  <section class="section" aria-labelledby="inperson-h">
+  <section class="section" aria-labelledby="why-h">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">Why men in Omaha reach out</p>
+        <h2 id="why-h">It's usually not one big thing</h2>
+        <p>Most men who call me aren't falling apart. They're tired of the same week on repeat. Here's what they tell me.</p>
+      </div>
+      <div class="grid-3">
+        {pains.map((x) => (
+          <a class="card" href={x.href}>
+            <h3>{x.h}</h3>
+            <p>{x.p}</p>
+            <span class="more">{x.link}</span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section white" aria-labelledby="inperson-h">
     <div class="wrap grid-2 top">
       <div class="prose">
         <p class="eyebrow">In person around Omaha</p>
         <h2 id="inperson-h">How in-person coaching works</h2>
-        <p>I'm an Omaha guy. I grew up in North Omaha, and this is where I coach. I don't have a public storefront. Instead, we meet where it makes sense for you, by appointment:</p>
+        <p>I don't run a storefront office. I'm a service-area coach, which means we meet where it makes sense for you, by appointment:</p>
         <ul class="check-list">
-          <li><strong>Your location</strong> if you have a private space, like an office after hours.</li>
-          <li><strong>A private meeting space in Omaha</strong> booked for our session.</li>
-          <li><strong>A walk-and-talk</strong> at a trail or lake, if you're comfortable outdoors.</li>
+          <li><strong>Your location,</strong> if you have a private space you're comfortable in.</li>
+          <li><strong>A private meeting space in Omaha,</strong> set up for our session.</li>
+          <li><strong>A walk-and-talk</strong> outdoors, when the weather and privacy allow.</li>
         </ul>
-        <p>In-person sessions add {inPersonAddOn.priceLabel} each to cover room costs. Video and phone sessions have no extra fee and work the same way. Many men mix them: in person for the first session, then video on busy weeks.</p>
+        <p>In-person sessions add {inPersonAddOn.priceLabel} each to cover room costs. If you live further out, or your week is packed, <strong>video and phone sessions</strong> work the same way and cost nothing extra. Plenty of men start online and meet in person later.</p>
+        <p>To see open times, <a href={site.booking} rel="noopener">go straight to the booking page</a>.</p>
       </div>
-      <div class="card hours-card">
-        <h3>Evening and Saturday hours</h3>
-        <ul class="hours-list">
-          {site.hours.map((h) => <li><span>{h.label}</span><span>{h.display}</span></li>)}
-          <li><span>{site.closedLabel}</span><span>Closed</span></li>
+      <div>
+        <h3 class="places-h">Walk-and-talk spots</h3>
+        <p class="muted">Some men talk more easily side by side than across a table.</p>
+        <ul class="places">
+          {places.map((x) => <li><strong>{x.h}.</strong> {x.p}</li>)}
         </ul>
-        <p class="muted">Central time. The free 20-minute call can be booked any time online.</p>
-        <a class="btn" href={site.booking} rel="noopener">Book a free call</a>
       </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="areas-h">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">Neighborhoods and nearby cities</p>
+        <h2 id="areas-h">Wherever you are in the metro</h2>
+        <p>Every part of Omaha has its own rhythm. Here's how coaching usually fits.</p>
+      </div>
+      <div class="area-grid">
+        {areas.map((x) => <div class="area"><h3>{x.h}</h3><p>{x.p}</p></div>)}
+      </div>
+      <p class="all-areas"><strong>All areas I serve:</strong> {areaNames.join(', ')}, plus Midtown, Dundee, Benson, Aksarben and North Omaha. Video and phone sessions work anywhere.</p>
+    </div>
+  </section>
+
+  <section class="section dark grain" aria-labelledby="work-h">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">What we work on</p>
+        <h2 id="work-h">Three ideas we keep coming back to</h2>
+      </div>
+      <div class="grid-3">
+        {pillars.map((x, i) => <div class="pillar"><span class="num">0{i + 1}</span><h3>{x.h}</h3><p>{x.p}</p></div>)}
+      </div>
+      <ul class="tag-row work-links">{links.map((l) => <li><a href={l.href}>{l.label}</a></li>)}</ul>
     </div>
   </section>
 
   <section class="section white" aria-labelledby="area-h">
     <div class="wrap">
-      <ServiceArea heading="Cities and towns I serve" intro="If your town isn't listed but you're nearby, ask. Video and phone sessions work from anywhere." />
+      <ServiceArea embed heading="Map of the area I serve" intro="Based in Omaha, NE and serving the whole metro, including Council Bluffs across the river." />
     </div>
   </section>
 
-  <section class="section" aria-labelledby="hoods-h">
+  <section class="section" aria-labelledby="faq-h">
     <div class="wrap">
-      <div class="section-head">
-        <p class="eyebrow">Neighborhoods</p>
-        <h2 id="hoods-h">Wherever you are in the metro</h2>
-        <p>Every part of Omaha has its own pace. Here's how coaching usually fits.</p>
-      </div>
-      <div class="grid-3">{hoods.map((x) => <div class="card"><h3>{x.h}</h3><p>{x.p}</p></div>)}</div>
+      <div class="section-head"><p class="eyebrow">Questions</p><h2 id="faq-h">Life coaching in Omaha: common questions</h2></div>
+      <Faq faqs={faqs} scopeIndexes={scopeIdx} />
     </div>
   </section>
-
-  <section class="section dark grain" aria-labelledby="walk-h">
-    <div class="wrap">
-      <div class="section-head">
-        <p class="eyebrow">Walk-and-talk</p>
-        <h2 id="walk-h">Some men talk better on their feet</h2>
-        <p>Side by side, moving, no table between you. These are a few of the places we can meet, weather permitting.</p>
-      </div>
-      <div class="grid-2 top places">
-        {places.map((x) => <div class="place"><h3>{x.h}</h3><p>{x.p}</p></div>)}
-      </div>
-      <p class="mt-m small" data-scope>Outdoor sessions are coaching conversations in public places. If privacy matters, we'll choose a private room instead.</p>
-    </div>
-  </section>
-
-  <section class="section" aria-labelledby="help-h">
-    <div class="wrap narrow prose">
-      <p class="eyebrow">What Omaha men bring to coaching</p>
-      <h2 id="help-h">The same things, in every zip code</h2>
-      <p>Whether you're in Benson or Elkhorn, the struggles are familiar: feeling stuck, starting strong and slipping, a short fuse at home, too much drinking, not enough time with the kids, rebuilding after a hard chapter. Read more about <a href="/mens-life-coaching-omaha/">life coaching for men in Omaha</a>, <a href="/accountability-coaching/">accountability coaching</a> and <a href="/coaching-for-fathers/">coaching for fathers</a>.</p>
-      <p>What's different is the logistics. A dad in Elkhorn juggling Saturday tournaments needs a different schedule than a man working second shift near downtown. That's why sessions run evenings and Saturdays, and why you can switch between in person, video and phone week to week without it costing you momentum.</p>
-      <p>Looking for local meetings, groups or help lines too? I keep a list of <a href="/omaha-resources/">Omaha resources for men and families</a>.</p>
-    </div>
-  </section>
-
-  <section class="section white" aria-labelledby="faq-h">
-    <div class="wrap">
-      <div class="section-head"><p class="eyebrow">Questions</p><h2 id="faq-h">Coaching in the Omaha area</h2></div>
-      <Faq faqs={faqs} />
-    </div>
-  </section>
-
-  <RelatedLinks heading="Next steps" links={[
-    { href: '/pricing/', title: 'Coaching prices', text: 'Plans from $149 a month. In-person add-on explained.' },
-    { href: '/about/', title: 'About Roland', text: 'An Omaha man coaching Omaha men.' },
-    { href: '/contact/', title: 'Contact Roland', text: 'Call, text, send a message or book a free call.' },
-  ]} />
 </Base>
 <style>
-  .hours-list { list-style: none; padding: 0; margin: 1rem 0; }
-  .hours-list li { display: flex; justify-content: space-between; border-bottom: 1px solid var(--sand); padding: 0.6rem 0; margin: 0; font-weight: 600; color: var(--ink); }
-  .place { border-top: 1px solid rgba(176, 141, 87, 0.5); padding-top: 1rem; }
-  .place p { color: #b9c2cf; }
-  .small { font-size: 0.9rem; color: #b9c2cf; }
+  .places-h { font-size: var(--step-2); margin-top: 0; }
+  .places { list-style: none; padding: 0; margin: 0; display: grid; gap: 0.9rem; }
+  .places li { margin: 0; border-top: 1px solid var(--brass); padding-top: 0.8rem; }
+  .area-grid { display: grid; gap: var(--space-s) var(--space-m); }
+  @media (min-width: 720px) { .area-grid { grid-template-columns: 1fr 1fr; } }
+  @media (min-width: 1100px) { .area-grid { grid-template-columns: repeat(3, 1fr); } }
+  .area { border-top: 1px solid var(--sand); padding-top: 0.9rem; }
+  .area h3 { font-size: var(--step-1); margin-bottom: 0.3rem; }
+  .area p { margin: 0; font-size: 0.98rem; }
+  .all-areas { margin-top: var(--space-m); max-width: 52rem; }
+  .pillar { border-top: 1px solid rgba(176, 141, 87, 0.5); padding-top: 1.2rem; }
+  .pillar p { color: #b9c2cf; }
+  .work-links { margin-top: var(--space-m); }
+  .work-links a { color: var(--bone); text-decoration: none; }
+  .work-links a:hover { text-decoration: underline; }
 </style>

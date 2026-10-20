@@ -3,6 +3,8 @@ import Logo from './Logo.astro';
 import Icon from './Icon.astro';
 import { site, tel } from '../config/site';
 
+interface Props { minimal?: boolean; }
+const { minimal = false } = Astro.props;
 const current = Astro.url.pathname;
 const main = [
   { href: '/mens-life-coaching-omaha/', label: 'Coaching' },
@@ -27,23 +29,23 @@ const isCurrent = (href: string) => current === href || (href !== '/' && current
 <header class="site-header" data-header>
   <div class="wrap bar">
     <Logo tone="light" />
-    <nav class="desktop-nav" aria-label="Main">
+    {!minimal && <nav class="desktop-nav" aria-label="Main">
       <ul>
         {main.map((l) => (
           <li><a href={l.href} aria-current={isCurrent(l.href) ? 'page' : undefined}>{l.label}</a></li>
         ))}
       </ul>
-    </nav>
-    <div class="header-cta">
+    </nav>}
+    <div class={`header-cta${minimal ? ' minimal' : ''}`}>
       <a class="phone-link" href={tel}><Icon name="phone" /><span>{site.phone.display}</span></a>
       <a class="btn brass small" href={site.booking} rel="noopener">Book a Free Call</a>
     </div>
-    <button class="menu-btn" type="button" aria-expanded="false" aria-controls="mobile-menu" data-menu-btn>
+    {!minimal && <button class="menu-btn" type="button" aria-expanded="false" aria-controls="mobile-menu" data-menu-btn>
       <span class="sr-only">Menu</span>
       <span class="bars" aria-hidden="true"></span>
-    </button>
+    </button>}
   </div>
-  <div class="mobile-menu" id="mobile-menu" hidden data-menu>
+  {!minimal && <div class="mobile-menu" id="mobile-menu" hidden data-menu>
     <nav aria-label="Mobile">
       <ul>
         {[...main, ...more].map((l) => (
@@ -55,7 +57,7 @@ const isCurrent = (href: string) => current === href || (href !== '/' && current
         <a class="btn ghost" href={tel}><Icon name="phone" />Call or Text {site.phone.display}</a>
       </div>
     </nav>
-  </div>
+  </div>}
 </header>
 
 <style>
@@ -106,6 +108,9 @@ const isCurrent = (href: string) => current === href || (href !== '/' && current
   .mobile-menu a:not(.btn) { display: block; padding: 0.85rem 0; color: var(--bone); text-decoration: none; font-family: var(--serif); font-size: 1.3rem; }
   .mobile-menu a[aria-current]:not(.btn) { color: var(--brass-light); }
   .mobile-menu .btn { width: 100%; }
+  .header-cta.minimal { display: flex; }
+  .header-cta.minimal .btn { display: none; }
+  @media (max-width: 479px) { .site-header:has(.header-cta.minimal) :global(.logo-sub) { display: none; } }
   @media (min-width: 1100px) {
     .desktop-nav, .header-cta { display: flex; }
     .menu-btn, .mobile-menu { display: none !important; }
