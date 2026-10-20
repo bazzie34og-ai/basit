@@ -119,13 +119,23 @@ export const pages: PageMeta[] = [
   },
   {
     path: '/omaha-life-coach/',
-    title: 'Life Coach Serving Omaha, Papillion, Bellevue & More',
+    title: "Life Coach in Omaha, NE | Men's Coaching Across the Metro",
     description:
-      'Life coaching across the Omaha metro: Papillion, Bellevue, La Vista, Millard, Elkhorn, Gretna and Council Bluffs. In person, evenings and Saturdays.',
+      "Men's life coaching across Omaha, Bellevue, Papillion, Elkhorn and Council Bluffs. In person or by video. Book a free 20-minute call with Roland Nielson.",
     nav: 'Omaha Metro',
-    og: { eyebrow: 'Serving the Omaha metro', headline: 'Coaching across the Omaha metro' },
-    lastmod: UPDATED,
-    priority: 0.8,
+    og: { eyebrow: 'Life coach in Omaha, NE', headline: 'Life coaching for men across the Omaha metro' },
+    lastmod: '2026-10-20',
+    priority: 0.9,
+  },
+  {
+    path: '/free-call/',
+    title: "Free 20-Minute Call | Men's Life Coach in Omaha",
+    description:
+      "Not sure coaching is for you? Book a free, no-pressure 20-minute call with Roland Nielson, men's life coach in Omaha, and talk about what keeps happening.",
+    nav: 'Free Call',
+    og: { eyebrow: 'Free 20-minute call · No pressure', headline: 'Tell me what keeps happening' },
+    lastmod: '2026-10-20',
+    priority: 0.9,
   },
   {
     path: '/omaha-resources/',

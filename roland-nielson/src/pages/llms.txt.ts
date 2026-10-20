@@ -38,7 +38,8 @@ Roland is a non-clinical life coach with no coaching, counseling or peer-recover
 - [Pricing](${abs('/pricing/')})
 - [About Roland](${abs('/about/')})
 - [For families](${abs('/for-families/')})
-- [Omaha metro service area](${abs('/omaha-life-coach/')})
+- [Life coach in Omaha, NE: service-area hub](${abs('/omaha-life-coach/')}): how in-person and video coaching works across Omaha, Bellevue, Papillion, La Vista, Ralston, Millard, Elkhorn, Gretna, Bennington and Council Bluffs, with local FAQs
+- [Free 20-minute call](${abs('/free-call/')}): book a free, no-pressure discovery call with Roland online, or call or text
 - [Omaha resources](${abs('/omaha-resources/')})
 - [Free Personal Patterns Assessment](${abs('/personal-patterns-assessment/')}): 20-statement self-reflection tool, results on screen, no purchase required
 - [FAQ](${abs('/faq/')})

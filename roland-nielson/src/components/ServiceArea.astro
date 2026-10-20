@@ -3,8 +3,8 @@
 // on-demand Google Map. Once {{GBP_CID}} is set the map shows the Business Profile;
 // once an office address is set it shows the office.
 import { site, hasOffice, areaNames } from '../config/site';
-interface Props { heading?: string; intro?: string; headingId?: string; }
-const { heading = 'Where I coach', intro, headingId = 'area-h' } = Astro.props;
+interface Props { heading?: string; intro?: string; headingId?: string; embed?: boolean; }
+const { heading = 'Where I coach', intro, headingId = 'area-h', embed = false } = Astro.props;
 
 const pts = site.serviceArea;
 const lats = pts.map((p) => p.lat), lngs = pts.map((p) => p.lng);
@@ -33,6 +33,12 @@ const mapQuery = hasOffice
     <ul class="tag-row">{areaNames.map((n) => <li>{n}</li>)}</ul>
     <p class="mt-m">{site.inPersonNote}</p>
   </div>
+  {embed ? (
+    <div class="map-card">
+      <iframe src={mapQuery} title={hasOffice ? `Map of ${site.name}` : 'Google Map of Omaha, NE'} loading="lazy" referrerpolicy="no-referrer-when-downgrade" width="600" height="420"></iframe>
+      {site.gbp.url && <div class="map-actions"><a class="text-link" href={site.gbp.url} rel="noopener">Find us on Google</a></div>}
+    </div>
+  ) : (
   <div class="map-card" data-map>
     <svg viewBox={`0 0 ${W} ${H}`} role="img" aria-labelledby="map-title" class="map-svg">
       <title id="map-title">Drawn map of the Omaha metro area Roland Nielson serves: {areaNames.join(', ')}.</title>
@@ -68,6 +74,7 @@ const mapQuery = hasOffice
       {site.gbp.url && <a class="text-link" href={site.gbp.url} rel="noopener">Find us on Google</a>}
     </div>
   </div>
+  )}
 </div>
 <style>
   .map-card { border-radius: var(--radius); overflow: hidden; background: var(--navy); border: 1px solid rgba(176, 141, 87, 0.35); }

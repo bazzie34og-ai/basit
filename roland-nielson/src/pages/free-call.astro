@@ -1,0 +1,174 @@
+---
+import { Picture } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import ShortForm from '../components/ShortForm.astro';
+import CrisisBox from '../components/CrisisBox.astro';
+import Icon from '../components/Icon.astro';
+import headshot from '../assets/roland-nielson-headshot.jpg';
+import { site, tel, sms, abs } from '../config/site';
+import { page } from '../data/pages';
+import { ids, areaServed } from '../lib/schema';
+
+const path = '/free-call/';
+const meta = page(path);
+const crumbs = [{ name: 'Free Call', path }];
+const embedUrl = `${site.booking}?embed_domain=rolandnielson.com&embed_type=Inline&hide_gdpr_banner=1`;
+const schema = [{
+  '@type': 'Service',
+  '@id': abs(`${path}#service`),
+  name: 'Free 20-minute discovery call',
+  serviceType: "Men's life coaching consultation",
+  description: meta.description,
+  provider: { '@id': ids.business },
+  areaServed,
+  url: abs(path),
+  offers: {
+    '@type': 'Offer',
+    name: site.bookingLabel,
+    price: 0,
+    priceCurrency: 'USD',
+    url: site.booking,
+    availability: 'https://schema.org/InStock',
+  },
+}];
+const pains = [
+  "You've been stuck in the same week for years.",
+  'You start strong on Monday and slip by Thursday.',
+  "You react at home, then wish you hadn't.",
+  "You're home, but your head is somewhere else.",
+  "You're rebuilding after addiction, divorce or a lost job.",
+  "You're not sure coaching is for you, and you want to find out without a sales pitch.",
+];
+---
+<Base path={path} crumbs={crumbs} schema={schema} cta={false} minimalHeader>
+  <section class="page-hero dark grain fc-hero" aria-labelledby="page-h1">
+    <div class="wrap">
+      <Breadcrumbs crumbs={[{ name: 'Home', path: '/' }, ...crumbs]} />
+      <div class="fc-grid">
+        <div class="fc-copy">
+          <p class="eyebrow">Free · 20 minutes · No pressure</p>
+          <h1 id="page-h1">Tell me what keeps happening. Free 20-minute call.</h1>
+          <hr class="rule" />
+          <p class="lead">A free consultation with Roland, a men's life coach in Omaha, about what's going on. You'll leave with an honest answer about whether coaching can help, and a next step either way.</p>
+          <p class="fc-phone">Prefer to call or text? <a href={tel}>{site.phone.display}</a> · <a href={sms}>Text</a></p>
+          <div class="btn-row">
+            <a class="btn brass" href={site.booking} rel="noopener"><Icon name="calendar" />Open the booking page</a>
+            <a class="btn ghost" href={tel}><Icon name="phone" />Call or Text</a>
+          </div>
+        </div>
+        <div class="fc-cal">
+          <iframe src={embedUrl} title="Book a free 20-minute call with Roland Nielson" loading="lazy" width="100%" height="720" data-calendly></iframe>
+          <p class="fc-cal-note">Calendar not loading? <a href={site.booking} rel="noopener">Book on Calendly</a> or call <a href={tel}>{site.phone.display}</a>.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="you-h">
+    <div class="wrap grid-2 top">
+      <div>
+        <p class="eyebrow">Is this you?</p>
+        <h2 id="you-h">You don't need to have it figured out</h2>
+        <p>Tell me what's going on. You don't need to clean it up first.</p>
+      </div>
+      <ul class="check-list">{pains.map((p) => <li>{p}</li>)}</ul>
+    </div>
+  </section>
+
+  <section class="section white" aria-labelledby="call-h">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">What happens on the call</p>
+        <h2 id="call-h">Three parts. Twenty minutes.</h2>
+      </div>
+      <ol class="steps three">
+        <li><h3>You talk</h3><p>Tell me what keeps happening, what you've tried and what you want to be different.</p></li>
+        <li><h3>I ask a few straight questions</h3><p>About your week, your home life and what usually knocks you off track.</p></li>
+        <li><h3>I tell you honestly</h3><p>Whether I think I can help. If not, I'll point you somewhere better. No hard sell.</p></li>
+      </ol>
+      <p class="mt-m">No pressure and no obligation. Plenty of men take the call, think about it, and come back later. That's fine.</p>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="before-h">
+    <div class="wrap narrow">
+      <p class="eyebrow">Before you book</p>
+      <h2 id="before-h">A few honest answers</h2>
+      <div class="qa">
+        <h3>Is the call really free?</h3>
+        <p>Yes. It's a free consultation: twenty minutes, no cost and no card needed. You won't be signed up for anything. If coaching makes sense, we'll talk about plans at the end. If it doesn't, we just hang up as two guys who had a decent conversation.</p>
+        <h3>What if I don't know what to say?</h3>
+        <p>Start with whatever is loudest right now. "I keep blowing up at my kids." "I can't stick to anything." "My wife told me to call." Any of those is enough. I'll ask the questions from there.</p>
+        <h3>Do I have to be in Omaha?</h3>
+        <p>No. The call is by phone, and coaching works by video too. If you are in the metro, we can also meet in person later. See how <a href="/omaha-life-coach/">coaching across Omaha</a> works.</p>
+        <div data-scope>
+        <h3>Is this the same as seeing a counselor?</h3>
+        <p>No. I'm a non-clinical life coach. I help with structure, habits and follow-through, not therapy or mental health care. If you need more than coaching, I'll tell you straight and help you find the right kind of help.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section white" aria-labelledby="who-h">
+    <div class="wrap who">
+      <Picture src={headshot} formats={['avif', 'webp']} widths={[120, 240]} sizes="120px" width={120} height={120} alt="Roland Nielson, men's life coach in Omaha" loading="lazy" />
+      <div>
+        <p class="eyebrow">Who you'll talk to</p>
+        <h2 id="who-h">Roland Nielson</h2>
+        <p>I grew up in North Omaha around a lot of chaos. In 2011 I started changing how I lived, one kept promise at a time. I'm a father of four boys, and I coach men who are tired of living the same day. <a href="/about/">Read my story</a>.</p>
+        <p><strong>Plans from $149/month</strong> if you decide to keep going. <a href="/pricing/">See plans and prices</a>.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section navy grain" aria-labelledby="note-h">
+    <div class="wrap grid-2 top">
+      <div>
+        <p class="eyebrow">Rather I reach out?</p>
+        <h2 id="note-h">Leave your name and number</h2>
+        <p class="lead">I'll call or text you back, usually the same evening.</p>
+        <CrisisBox />
+      </div>
+      <div class="form-card"><ShortForm idPrefix="fc" /></div>
+    </div>
+  </section>
+</Base>
+
+<script>
+  // Calendly inline widget events → existing GA4 event names (no personal data).
+  type Gtag = (...args: unknown[]) => void;
+  const gtag = () => (window as unknown as { gtag?: Gtag }).gtag;
+  let tracked = false;
+  window.addEventListener('message', (e) => {
+    if (!/^https:\/\/([a-z0-9-]+\.)?calendly\.com$/.test(e.origin)) return;
+    const ev = (e.data && e.data.event) || '';
+    if (ev === 'calendly.date_and_time_selected' && !tracked) {
+      tracked = true;
+      gtag()?.('event', 'click_calendly', { page_path: location.pathname, link_url: 'inline-widget' });
+    }
+    if (ev === 'calendly.event_scheduled') gtag()?.('event', 'booking_confirmed', { page_path: location.pathname });
+  });
+</script>
+
+<style>
+  .fc-hero { padding-bottom: var(--space-l); }
+  .fc-grid { display: grid; gap: var(--space-m); align-items: start; }
+  @media (min-width: 960px) { .fc-grid { grid-template-columns: 1fr 1.05fr; } }
+  .fc-hero h1 { font-size: var(--step-4); }
+  .fc-phone { color: #c7cfdb; margin: 0 0 1.4rem; }
+  .fc-phone a { font-weight: 800; }
+  .fc-cal { background: var(--white); border-radius: var(--radius); overflow: hidden; border: 1px solid rgba(176, 141, 87, 0.4); }
+  .fc-cal iframe { display: block; width: 100%; height: 720px; border: 0; }
+  .fc-cal-note { margin: 0; padding: 0.8rem 1rem; font-size: 0.88rem; color: var(--charcoal); background: var(--bone); }
+  .fc-cal-note a { color: var(--slate) !important; }
+  .steps.three { grid-template-columns: 1fr; }
+  @media (min-width: 820px) { .steps.three { grid-template-columns: repeat(3, 1fr); } }
+  .who { display: grid; gap: var(--space-s); align-items: start; max-width: 52rem; }
+  @media (min-width: 640px) { .who { grid-template-columns: 120px 1fr; } }
+  .who :global(img) { width: 120px; height: 120px; border-radius: 50%; object-fit: cover; }
+  .who h2 { font-size: var(--step-3); }
+  .qa h3 { font-size: var(--step-1); margin: 1.4rem 0 0.4rem; }
+  .qa p { margin: 0; }
+  .form-card { background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(176, 141, 87, 0.35); border-radius: var(--radius); padding: var(--space-m); }
+</style>
