@@ -4,6 +4,15 @@ const sameAs = Object.values(b.social).filter(Boolean).concat(b.googleProfileUrl
 
 export const businessId = abs('/#business');
 
+// Price fields for an Offer; fuel delivery is a service fee plus the cost of fuel.
+function offerFor(key) {
+  const p = b.prices[key];
+  if (p == null) return {};
+  const o = { price: String(p), priceCurrency: 'USD' };
+  if (key === 'fuelDelivery') o.description = `$${p} service fee plus the cost of fuel`;
+  return o;
+}
+
 export function businessSchema() {
   const s = {
     '@type': ['AutomotiveBusiness', 'EmergencyService'],
@@ -35,10 +44,10 @@ export function businessSchema() {
       '@type': 'OfferCatalog',
       name: 'Roadside assistance services',
       itemListElement: [
-        ['Jump start service', '/jump-start-spring-tx/'],
-        ['Car lockout service', '/car-lockout-spring-tx/'],
-        ['Emergency fuel delivery', '/fuel-delivery-spring-tx/'],
-      ].map(([name, path]) => ({ '@type': 'Offer', itemOffered: { '@type': 'Service', name, url: abs(path) } })),
+        ['Jump start service', '/jump-start-spring-tx/', 'jumpStart'],
+        ['Car lockout service', '/car-lockout-spring-tx/', 'lockout'],
+        ['Emergency fuel delivery', '/fuel-delivery-spring-tx/', 'fuelDelivery'],
+      ].map(([name, path, key]) => ({ '@type': 'Offer', itemOffered: { '@type': 'Service', name, url: abs(path) }, ...offerFor(key) })),
     },
   };
   if (sameAs.length) s.sameAs = sameAs;
@@ -65,8 +74,10 @@ export function faqSchema(faqs) {
   };
 }
 
-export function serviceSchema({ name, serviceType, description, path }) {
+export function serviceSchema({ name, serviceType, description, path, key }) {
+  const offer = offerFor(key);
   return {
+    ...(offer.price ? { offers: { '@type': 'Offer', ...offer } } : {}),
     '@type': 'Service',
     name,
     serviceType,

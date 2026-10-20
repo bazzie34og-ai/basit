@@ -47,7 +47,7 @@ export const guides = [
 </ul>
 
 <h2>Step 4: Call for a jump start</h2>
-<p>If it sounds like the battery, the fastest fix is a jump start where you are. Call or text LaCaze Roadside Assistance at <a href="tel:+18329494837">(832) 949-4837</a>. We’re open 24/7 and serve Spring, The Woodlands, Klein, Tomball, Magnolia, Conroe, Cypress and North Houston.</p>
+<p>If it sounds like the battery, the fastest fix is a jump start where you are. Call or text LaCaze Roadside Assistance at <a href="tel:+18329494837">(832) 949-4837</a>. We’re open 24/7 and serve Spring, The Woodlands, Klein, Tomball, Magnolia, Conroe, Cypress, Humble, Aldine, Porter and North Houston.</p>
 <p>You’ll get an upfront price and an honest arrival estimate before we roll. When we arrive, we connect safely, get the engine running and stay until you’re back on the road. Text us a map pin, or use the “Use my location” button on our request form, so we can find you quickly — even in a big lot.</p>
 
 <h2>Step 5: After the jump — what next?</h2>
@@ -95,7 +95,7 @@ export const guides = [
 <h3>4. Get to a safe, visible spot</h3>
 <p>At night, wait in a well-lit area or inside a nearby store or restaurant. In the summer heat, find shade and water. Keep your phone charged and with you.</p>
 <h3>5. Call a local lockout service</h3>
-<p>If none of the above works, call a roadside company that does car lockouts. In Spring, The Woodlands, Klein, Tomball, Magnolia, Conroe, Cypress and North Houston, you can call or text LaCaze Roadside Assistance at <a href="tel:+18329494837">(832) 949-4837</a>, 24/7. Our <a href="/car-lockout-spring-tx/">car lockout service</a> comes to you, and you get an upfront price before we roll.</p>
+<p>If none of the above works, call a roadside company that does car lockouts. In Spring, The Woodlands, Klein, Tomball, Magnolia, Conroe, Cypress, Humble, Aldine, Porter and North Houston, you can call or text LaCaze Roadside Assistance at <a href="tel:+18329494837">(832) 949-4837</a>, 24/7. Our <a href="/car-lockout-spring-tx/">car lockout service</a> comes to you, and you get an upfront price before we roll.</p>
 <p>When you call, have this ready:</p>
 <ul>
   <li>Your exact location (or text a map pin)</li>
@@ -167,7 +167,7 @@ export const guides = [
 <p>It’s tempting to grab your keys and walk to the nearest station. On a Houston-area freeway, that can mean a mile or more on a narrow shoulder, crossing ramps where drivers aren’t expecting pedestrians — often in heat, rain or darkness. It’s one of the most dangerous things you can do at the roadside. Have fuel delivered instead.</p>
 
 <h2>Call for emergency fuel delivery</h2>
-<p>Call or text LaCaze Roadside Assistance at <a href="tel:+18329494837">(832) 949-4837</a>. We’re open 24/7 and bring <a href="/fuel-delivery-spring-tx/">emergency fuel delivery</a> across Spring, The Woodlands, Conroe, Tomball, Magnolia, Klein, Cypress and North Houston. You’ll get an upfront price and an honest arrival estimate before we roll — and if we’re running late, we call you first.</p>
+<p>Call or text LaCaze Roadside Assistance at <a href="tel:+18329494837">(832) 949-4837</a>. We’re open 24/7 and bring <a href="/fuel-delivery-spring-tx/">emergency fuel delivery</a> across Spring, The Woodlands, Conroe, Tomball, Magnolia, Klein, Cypress, Humble, Aldine, Porter and North Houston. You’ll get an upfront price and an honest arrival estimate before we roll — and if we’re running late, we call you first.</p>
 
 <h2>How to tell us exactly where you are</h2>
 <p>On a highway, “I’m on I-45” isn’t enough. Help us find you fast with:</p>

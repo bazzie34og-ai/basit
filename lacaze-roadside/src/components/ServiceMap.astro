@@ -3,7 +3,7 @@
 import Icon from './Icon.astro';
 import { b, towns } from '../lib/site.js';
 const W = 800, H = 600;
-const P = (lat, lng) => [((lng + 95.86) / 0.62) * W, ((30.42 - lat) / 0.58) * H];
+const P = (lat, lng) => [((lng + 95.86) / 0.76) * W, ((30.42 - lat) / 0.58) * H];
 const pts = [
   ['Conroe', 30.3119, -95.4561, '/roadside-assistance-conroe-tx/'],
   ['The Woodlands', 30.1658, -95.4613, '/roadside-assistance-the-woodlands-tx/'],
@@ -11,14 +11,18 @@ const pts = [
   ['Tomball', 30.0972, -95.6161, '/roadside-assistance-tomball-tx/'],
   ['Klein', 30.028, -95.53, '/roadside-assistance-klein-cypress-tx/'],
   ['Cypress', 29.9691, -95.6972, '/roadside-assistance-klein-cypress-tx/'],
-  ['North Houston', 29.944, -95.416, '/roadside-assistance-north-houston/'],
+  ['North Houston', 29.9, -95.52, '/roadside-assistance-north-houston/'],
+  ['Aldine', 29.932, -95.38, '/roadside-assistance-aldine-tx/'],
+  ['Humble', 29.9988, -95.2622, '/roadside-assistance-humble-tx/'],
+  ['Porter', 30.104, -95.236, '/roadside-assistance-porter-tx/'],
 ];
 const spring = P(30.0799, -95.4172);
 const line = (coords) => coords.map(([la, ln], i) => `${i ? 'L' : 'M'}${P(la, ln).map((v) => v.toFixed(1)).join(' ')}`).join('');
 const roads = [
   { name: 'I-45', d: line([[29.84, -95.4], [29.94, -95.41], [30.03, -95.43], [30.1, -95.44], [30.17, -95.46], [30.24, -95.46], [30.32, -95.47], [30.43, -95.5]]), w: 4 },
   { name: 'TX-249', d: line([[29.9, -95.49], [29.99, -95.55], [30.05, -95.59], [30.1, -95.62], [30.16, -95.68], [30.21, -95.75]]), w: 3 },
-  { name: 'SH 99', d: line([[29.86, -95.74], [29.98, -95.745], [30.06, -95.7], [30.1, -95.64], [30.125, -95.55], [30.105, -95.47], [30.08, -95.38], [30.05, -95.28]]), w: 3 },
+  { name: 'SH 99', d: line([[29.86, -95.74], [29.98, -95.745], [30.06, -95.7], [30.1, -95.64], [30.125, -95.55], [30.105, -95.47], [30.08, -95.38], [30.1, -95.3], [30.11, -95.22], [30.12, -95.12]]), w: 3 },
+  { name: 'I-69', d: line([[29.84, -95.33], [29.93, -95.31], [29.99, -95.27], [30.05, -95.24], [30.1, -95.215], [30.18, -95.17]]), w: 4 },
   { name: 'FM 1960', d: line([[29.94, -95.66], [29.975, -95.56], [30.0, -95.47], [29.99, -95.39], [29.985, -95.28]]), w: 2 },
 ];
 const lake = line([[30.42, -95.6], [30.39, -95.57], [30.36, -95.56], [30.34, -95.58], [30.36, -95.61], [30.4, -95.63], [30.42, -95.62]]) + 'Z';
@@ -26,7 +30,7 @@ const embed = b.googleMapsEmbedUrl || 'https://maps.google.com/maps?q=Spring,+TX
 ---
 <div class="map" data-src={embed}>
   <svg viewBox={`0 0 ${W} ${H}`} role="img" aria-labelledby="map-t">
-    <title id="map-t">Illustrated map of the LaCaze Roadside Assistance service area around Spring, TX: The Woodlands, Conroe, Magnolia, Tomball, Klein, Cypress and North Houston</title>
+    <title id="map-t">Illustrated map of the LaCaze Roadside Assistance service area around Spring, TX: The Woodlands, Conroe, Magnolia, Tomball, Klein, Cypress, Humble, Aldine, Porter and North Houston</title>
     <defs>
       <radialGradient id="cov">
         <stop offset="0" stop-color="#84E23E" stop-opacity=".18" />
@@ -38,12 +42,12 @@ const embed = b.googleMapsEmbedUrl || 'https://maps.google.com/maps?q=Spring,+TX
     <rect width={W} height={H} fill="#0E1112" />
     <rect width={W} height={H} fill="url(#grid)" />
     <path d={lake} fill="#132026" stroke="#1D3038" />
-    <text x={P(30.385, -95.545)[0]} y={P(30.385, -95.545)[1]} fill="#5E6A70" font-size="13" font-family="Inter, sans-serif">Lake Conroe</text>
+    <text x={P(30.375, -95.625)[0]} y={P(30.375, -95.625)[1]} fill="#5E6A70" font-size="13" font-family="Inter, sans-serif" text-anchor="end">Lake Conroe</text>
     <circle cx={spring[0]} cy={spring[1]} r="330" fill="url(#cov)" />
     {roads.map((r) => <path d={r.d} fill="none" stroke="#2F373B" stroke-width={r.w + 4} stroke-linecap="round" stroke-linejoin="round" />)}
     {roads.map((r) => <path d={r.d} fill="none" stroke="#4A5459" stroke-width={r.w} stroke-linecap="round" stroke-linejoin="round" stroke-dasharray={r.name === 'I-45' ? '0' : '0'} />)}
     <path d={roads[0].d} fill="none" stroke="#84E23E" stroke-opacity=".5" stroke-width="1.5" stroke-dasharray="10 10" class="lane-dash" />
-    {[['I-45', 30.255, -95.44], ['SH 99', 30.135, -95.6], ['TX-249', 30.0, -95.6], ['FM 1960', 29.965, -95.47]].map(([n, la, ln]) => {
+    {[['I-45', 30.255, -95.44], ['SH 99', 30.135, -95.6], ['TX-249', 30.0, -95.6], ['FM 1960', 29.965, -95.47], ['I-69', 30.2, -95.2]].map(([n, la, ln]) => {
       const [x, y] = P(la, ln);
       return (<g><rect x={x - 26} y={y - 11} width="52" height="20" rx="6" fill="#1C2124" stroke="#2A3034" /><text x={x} y={y + 3.5} fill="#A3ABAF" font-size="11" font-weight="700" font-family="Inter, sans-serif" text-anchor="middle">{n}</text></g>);
     })}

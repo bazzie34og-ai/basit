@@ -1,14 +1,16 @@
 ---
-// The single site logo: lacaze_logo_luxe_horizontal_dark (transparent, white wordmark + lime road icon).
+// The single site logo: John's official LaCaze Roadside Assistance badge
+// (assets-src/logos/lacaze_logo_badge_official.jpg, outer black background removed).
 interface Props { height?: number; eager?: boolean }
-const { height = 48, eager = false } = Astro.props;
-const ratio = 1696 / 524;
+const { height = 60, eager = false } = Astro.props;
+const ratio = 1160 / 1093;
+const w = (h) => Math.round(h * ratio);
 ---
 <img
-  src="/img/lacaze-roadside-assistance-logo-48.webp"
-  srcset="/img/lacaze-roadside-assistance-logo-48.webp 155w, /img/lacaze-roadside-assistance-logo-96.webp 311w, /img/lacaze-roadside-assistance-logo-144.webp 466w"
-  sizes={`${Math.round(height * ratio)}px`}
-  width={Math.round(height * ratio)}
+  src="/img/lacaze-roadside-assistance-logo-128.webp"
+  srcset={`/img/lacaze-roadside-assistance-logo-64.webp ${w(64)}w, /img/lacaze-roadside-assistance-logo-128.webp ${w(128)}w, /img/lacaze-roadside-assistance-logo-192.webp ${w(192)}w, /img/lacaze-roadside-assistance-logo-256.webp ${w(256)}w`}
+  sizes={`${w(height)}px`}
+  width={w(height)}
   height={height}
   alt="LaCaze Roadside Assistance logo — 24/7 roadside help in Spring, TX"
   loading={eager ? 'eager' : 'lazy'}

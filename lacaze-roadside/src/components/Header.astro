@@ -15,7 +15,7 @@ const nav = [
 ---
 <header class="header" id="top">
   <div class="wrap header__in">
-    <a class="brand" href="/" aria-label={`${b.name} — home`}><Logo eager /></a>
+    <a class="brand" href="/" aria-label={`${b.name} — home`}><Logo height={76} eager /></a>
     <nav class="nav" aria-label="Main">
       <ul>
         {nav.map((n) => <li><a href={n.href} aria-current={path === n.href ? 'page' : undefined}>{n.label}</a></li>)}
@@ -30,7 +30,7 @@ const nav = [
 </header>
 <div class="mnav" id="mnav" hidden role="dialog" aria-modal="true" aria-label="Menu">
   <div class="mnav__top">
-    <Logo height={40} />
+    <Logo height={52} />
     <button class="menu-btn" type="button" aria-label="Close menu" data-menu-close><Icon name="close" /></button>
   </div>
   <a class="btn btn--primary btn--lg btn--block" href={tel} data-track="call"><Icon name="phone" />Call {b.phoneDisplay}</a>

@@ -6,8 +6,8 @@
 
 [build.environment]
   NODE_VERSION = "22"
-  # Keep "true" until John approves the site. "true" adds <meta name="robots" content="noindex">
-  # to every page and shows the dev-only TODO notes. Set to "false" at launch.
+  # Keep "true" until the custom domain is connected. "true" adds <meta name="robots" content="noindex">
+  # to every page so Google doesn't index the netlify.app address. Set to "false" at launch.
   PREVIEW_MODE = "true"
 
 [[headers]]

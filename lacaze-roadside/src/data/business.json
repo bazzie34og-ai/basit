@@ -1,47 +1,50 @@
 {
   "_readme": "Single source of truth for business facts. Edit here; every page, the footer and the schema update on the next build. Empty strings / null = not confirmed yet (the site hides them or shows a dev-only TODO note in preview mode).",
-
   "name": "LaCaze Roadside Assistance",
   "shortName": "LaCaze",
   "owner": "John LaCaze Jr.",
   "ownerFirstName": "John",
   "tagline": "Fast. Reliable. Mobile. We come to you.",
-
   "siteUrl": "https://lacaze-roadside.netlify.app",
-
   "phoneDisplay": "(832) 949-4837",
   "phoneE164": "+18329494837",
   "phoneSchema": "+1-832-949-4837",
   "smsBody": "Hi, I need roadside help. My location is: ",
   "email": "lacazeroadside@gmail.com",
-
   "locality": "Spring",
   "region": "TX",
   "postalCode": "77389",
   "country": "US",
   "hoursLabel": "Open 24 hours, 7 days",
   "priceRange": "$$",
-
-  "serviceAreaLabel": "Spring, Klein, The Woodlands, Tomball, Magnolia, Conroe, Cypress, North Houston and surrounding areas",
-  "cities": ["Spring", "Klein", "The Woodlands", "Tomball", "Magnolia", "Conroe", "Cypress", "Houston"],
-
+  "serviceAreaLabel": "Spring, Klein, The Woodlands, Tomball, Magnolia, Conroe, Cypress, Humble, Aldine, Porter, North Houston and surrounding areas",
+  "cities": [
+    "Spring",
+    "Klein",
+    "The Woodlands",
+    "Tomball",
+    "Magnolia",
+    "Conroe",
+    "Cypress",
+    "Humble",
+    "Aldine",
+    "Porter",
+    "Houston"
+  ],
   "_todo_arrival": "Average arrival time in minutes, e.g. 30. Leave null until John confirms.",
   "averageArrivalMinutes": null,
-
   "_todo_prices": "Starting prices in dollars, e.g. 65. Leave null until John confirms.",
   "prices": {
-    "jumpStart": null,
-    "lockout": null,
-    "fuelDelivery": null
+    "jumpStart": 75,
+    "lockout": 65,
+    "fuelDelivery": 60
   },
-  "fuelDeliveryNote": "Price of fuel is extra, at the pump rate.",
-
+  "fuelDeliveryNote": "Plus the cost of fuel.",
   "_todo_google": "Paste the Google Business Profile / Google Maps share link (e.g. https://maps.app.goo.gl/...) once confirmed.",
   "googleProfileUrl": "",
   "googleMapsEmbedUrl": "",
   "googleRating": 5.0,
-  "googleReviewCount": 4,
-
+  "googleReviewCount": 5,
   "_social": "Only add a URL once it is verified as John's official profile. Empty = hidden.",
   "social": {
     "facebook": "",
@@ -50,12 +53,10 @@
     "youtube": "",
     "linkedin": ""
   },
-
   "_analytics": "GA4 measurement ID (G-XXXXXXX) and Google Search Console verification token. Empty = not loaded.",
   "ga4Id": "",
   "searchConsoleVerification": "",
-
-  "_reviews": "Copied word for word from Google review screenshots in assets-src/reviews/. Do not edit the text.",
+  "_reviews": "Copied word for word from Google review screenshots in assets-src/reviews/. Do not edit the text. Reviews with no written text show the star rating and price assessment only.",
   "reviews": [
     {
       "name": "Ashley B.",
@@ -71,13 +72,19 @@
       "service": "Fuel delivery"
     },
     {
-      "name": "Linda T.",
+      "name": "John Paul E.",
+      "rating": 5,
+      "text": "",
+      "priceAssessment": "Reasonable price"
+    },
+    {
+      "name": "Thai S.",
       "rating": 5,
       "text": "",
       "priceAssessment": "Great price"
     },
     {
-      "name": "Thai S.",
+      "name": "Linda T.",
       "rating": 5,
       "text": "",
       "priceAssessment": "Great price"

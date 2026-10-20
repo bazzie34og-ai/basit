@@ -3,7 +3,7 @@
 export const faqs = [
   {
     q: 'Who can jump start my car near me right now?',
-    a: `<p>If you're in Spring, The Woodlands, Klein, Tomball, Magnolia, Conroe, Cypress or North Houston, call LaCaze Roadside Assistance at <a href="tel:+18329494837">(832) 949-4837</a>. We're open 24/7 and a real person answers — John, the owner. We drive to you with the equipment to <a href="/jump-start-spring-tx/">jump start your car</a> wherever it died: driveway, parking lot or shoulder.</p>`,
+    a: `<p>If you're in Spring, The Woodlands, Klein, Tomball, Magnolia, Conroe, Cypress, Humble, Aldine, Porter or North Houston, call LaCaze Roadside Assistance at <a href="tel:+18329494837">(832) 949-4837</a>. We're open 24/7 and a real person answers — John, the owner. We drive to you with the equipment to <a href="/jump-start-spring-tx/">jump start your car</a> wherever it died: driveway, parking lot or shoulder.</p>`,
   },
   {
     q: 'What do I do if I lock my keys in my car?',
@@ -11,16 +11,15 @@ export const faqs = [
   },
   {
     q: 'How do I get gas if I ran out on the road?',
-    a: `<p>Pull as far off the road as you safely can, turn your hazards on, and call or text <a href="tel:+18329494837">(832) 949-4837</a>. We bring fuel to you — enough to get you to the nearest station. Don't walk along a highway like I-45 or the Grand Parkway to find a gas can. See <a href="/fuel-delivery-spring-tx/">emergency fuel delivery</a>.</p>`,
+    a: `<p>Pull as far off the road as you safely can, turn your hazards on, and call or text <a href="tel:+18329494837">(832) 949-4837</a>. We bring fuel to you — enough to get you to the nearest station — for $60 plus the cost of fuel. Don't walk along a highway like I-45 or the Grand Parkway to find a gas can. See <a href="/fuel-delivery-spring-tx/">emergency fuel delivery</a>.</p>`,
   },
   {
     q: 'Do I need a membership?',
-    a: `<p>No. LaCaze Roadside Assistance is pay-per-use roadside assistance — no membership, no sign-up and no annual fee. You call when you need us and pay only for the service you get. It's a simple alternative to waiting on an insurance or auto-club dispatch.</p>`,
+    a: `<p>No. LaCaze Roadside Assistance is pay-per-use roadside assistance — no membership, no sign-up and no annual fee. You call when you need us and pay only for the service you get: $75 for a jump start, $65 for a lockout, or $60 plus fuel for fuel delivery. It's a simple alternative to waiting on an insurance or auto-club dispatch.</p>`,
   },
   {
     q: 'How much does a jump start cost?',
-    a: `<p>You get an upfront price on the phone before we roll, based on the service and where you are. No surprises when we arrive. See our <a href="/pricing/">pricing page</a> for details.</p>`,
-    todo: 'Add the starting price for a jump start once John confirms.',
+    a: `<p>A jump start is <strong>$75</strong>. Vehicle lockouts are $65, and fuel delivery is $60 plus the cost of fuel. No membership, and you'll hear your price on the phone before we roll — no surprises when we arrive. See our <a href="/pricing/">pricing page</a>.</p>`,
   },
   {
     q: 'Do you come out at night?',
@@ -28,7 +27,7 @@ export const faqs = [
   },
   {
     q: 'Which areas do you serve?',
-    a: `<p>We're based in Spring, TX 77389 and serve <a href="/roadside-assistance-the-woodlands-tx/">The Woodlands</a>, <a href="/roadside-assistance-klein-cypress-tx/">Klein and Cypress</a>, <a href="/roadside-assistance-tomball-tx/">Tomball</a>, <a href="/roadside-assistance-magnolia-tx/">Magnolia</a>, <a href="/roadside-assistance-conroe-tx/">Conroe</a>, <a href="/roadside-assistance-north-houston/">North Houston</a> and surrounding areas. Not sure if you're covered? Call — if we can reach you, we'll tell you straight.</p>`,
+    a: `<p>We're based in Spring, TX 77389 and serve <a href="/roadside-assistance-the-woodlands-tx/">The Woodlands</a>, <a href="/roadside-assistance-klein-cypress-tx/">Klein and Cypress</a>, <a href="/roadside-assistance-tomball-tx/">Tomball</a>, <a href="/roadside-assistance-magnolia-tx/">Magnolia</a>, <a href="/roadside-assistance-conroe-tx/">Conroe</a>, <a href="/roadside-assistance-humble-tx/">Humble</a>, <a href="/roadside-assistance-aldine-tx/">Aldine</a>, <a href="/roadside-assistance-porter-tx/">Porter</a>, <a href="/roadside-assistance-north-houston/">North Houston</a> and surrounding areas. Not sure if you're covered? Call — if we can reach you, we'll tell you straight.</p>`,
   },
   {
     q: 'How fast can you get to me?',

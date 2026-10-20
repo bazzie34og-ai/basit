@@ -10,7 +10,7 @@ export const servicePages = [
     serviceType: 'Jump start / battery boost',
     title: 'Jump Start Service in Spring, TX | 24/7 | LaCaze',
     h1: 'Dead Battery? Fast Jump Starts in Spring, TX',
-    description: 'Car battery dead in Spring, TX? LaCaze Roadside Assistance brings a mobile jump start to you 24/7. No membership. Call (832) 949-4837 now.',
+    description: 'Car battery dead in Spring, TX? LaCaze Roadside Assistance brings a $75 mobile jump start to you 24/7. No membership. Call (832) 949-4837.',
     lead: 'Turn the key and nothing — or just a click. We bring a <strong>mobile jump start</strong> to your driveway, parking lot or shoulder, any hour, with an upfront price before we roll.',
     body: `
 <h2>That sinking “click, click, click” feeling</h2>
@@ -47,8 +47,8 @@ export const servicePages = [
 <p>For more on handling a no-start in summer, read our guide: <a href="/guides/car-wont-start-texas-heat/">what to do when your car won’t start in Texas heat</a>.</p>
 `,
     faqs: [
-      { q: 'Who can jump start my car near me right now?', a: '<p>If you’re in Spring or nearby — The Woodlands, Klein, Tomball, Magnolia, Conroe, Cypress or North Houston — call LaCaze Roadside Assistance at <a href="tel:+18329494837">(832) 949-4837</a>. We’re open 24/7 and come to you.</p>' },
-      { q: 'How much does a jump start cost?', a: '<p>You get an upfront price on the phone before we head out. No membership needed and no surprise fees when we arrive. See <a href="/pricing/">pricing</a>.</p>', todo: 'Add starting price for jump starts.' },
+      { q: 'Who can jump start my car near me right now?', a: '<p>If you’re in Spring or nearby — The Woodlands, Klein, Tomball, Magnolia, Conroe, Cypress, Humble, Aldine, Porter or North Houston — call LaCaze Roadside Assistance at <a href="tel:+18329494837">(832) 949-4837</a>. We’re open 24/7 and come to you.</p>' },
+      { q: 'How much does a jump start cost?', a: '<p>A jump start is <strong>$75</strong>, with no membership needed and no surprise fees when we arrive. You’ll confirm the price on the phone before we head out. See <a href="/pricing/">pricing</a>.</p>' },
       { q: 'Can you jump start a car in a parking garage?', a: '<p>Usually, yes. Tell us the garage, level and any height limits when you call so we can plan how to reach you.</p>' },
       { q: 'Will a jump start fix my battery?', a: '<p>A jump start gets you running when the battery is drained. If your battery is old or failing, it may die again, so plan to have the battery and charging system tested soon. We’ll tell you what we notice.</p>' },
       { q: 'Do you jump start cars late at night or on weekends?', a: '<p>Yes. We’re available 24 hours a day, 7 days a week, including late nights, weekends and holidays.</p>' },
@@ -64,7 +64,7 @@ export const servicePages = [
     serviceType: 'Vehicle lockout / unlock car door',
     title: 'Car Lockout Service in Spring, TX | LaCaze',
     h1: 'Locked Out of Your Car? We’ll Get You Back In',
-    description: 'Locked keys in your car in Spring, TX? LaCaze Roadside Assistance unlocks car doors 24/7 — no membership, upfront price. Call (832) 949-4837.',
+    description: 'Locked keys in your car in Spring, TX? LaCaze Roadside Assistance unlocks car doors 24/7 for $65 — no membership. Call (832) 949-4837.',
     lead: 'Keys on the seat, doors locked, and you’re standing outside. Our <strong>car lockout service</strong> comes to you 24/7 to get you back in carefully — with an upfront price before we roll.',
     body: `
 <h2>That moment the door clicks shut</h2>
@@ -98,7 +98,7 @@ export const servicePages = [
 <p>Lockouts don’t keep business hours. Whether it’s a late-night lockout outside a restaurant in The Woodlands, a Saturday-morning lockout at a Tomball ballfield, or a lockout in your own driveway in Spring, we’re available 24 hours a day with no membership needed.</p>
 `,
     faqs: [
-      { q: 'How much does a car lockout cost?', a: '<p>We give you an upfront price on the phone before we head out — no membership and no surprise fees. See <a href="/pricing/">pricing</a>.</p>', todo: 'Add starting price for lockouts.' },
+      { q: 'How much does a car lockout cost?', a: '<p>A vehicle lockout is <strong>$65</strong> — no membership and no surprise fees. You’ll confirm the price on the phone before we head out. See <a href="/pricing/">pricing</a>.</p>' },
       { q: 'Will unlocking my car damage it?', a: '<p>We use proper lockout tools made for opening car doors and work carefully to protect your door, window, paint and weather seals.</p>' },
       { q: 'What if my keys are locked in the trunk?', a: '<p>Tell us when you call. On many vehicles, opening a door gives access to the trunk release or fold-down seats.</p>' },
       { q: 'Can you make me a new key?', a: '<p>Our lockout service gets you back into your car when your keys are inside. If your keys are lost or broken, you may need a locksmith or dealer for a replacement key — we’ll tell you honestly when you call.</p>' },
@@ -115,7 +115,7 @@ export const servicePages = [
     serviceType: 'Emergency fuel delivery / gas delivery',
     title: 'Emergency Fuel Delivery in Spring, TX | LaCaze',
     h1: 'Ran Out of Gas? We Bring Fuel to You',
-    description: 'Out of gas in Spring, TX or on I-45? LaCaze Roadside Assistance brings emergency fuel delivery 24/7. No membership. Call (832) 949-4837 now.',
+    description: 'Out of gas in Spring, TX or on I-45? 24/7 emergency fuel delivery from LaCaze Roadside Assistance: $60 + fuel. Call (832) 949-4837.',
     lead: 'The needle hit empty and the engine went quiet. Our <strong>emergency fuel delivery</strong> brings enough gas to get you to the next station — 24/7, with an upfront price before we roll.',
     body: `
 <h2>When the engine sputters and the gas station is just out of reach</h2>
@@ -149,7 +149,7 @@ export const servicePages = [
 <p>We deliver fuel across Spring and the north Houston area 24 hours a day — late nights, weekends and holidays. No membership needed, no long dispatch wait, and a real person on the phone.</p>
 `,
     faqs: [
-      { q: 'How much does fuel delivery cost?', a: '<p>You get an upfront price for the service call before we head out. See <a href="/pricing/">pricing</a> for details.</p>', todo: 'Add the fuel delivery starting price and how fuel itself is charged.' },
+      { q: 'How much does fuel delivery cost?', a: '<p>Fuel delivery is <strong>$60 plus the cost of fuel</strong>. You’ll confirm the price on the phone before we head out. See <a href="/pricing/">pricing</a>.</p>' },
       { q: 'How much gas do you bring?', a: '<p>We bring enough fuel to get you safely to the nearest gas station so you can fill up.</p>', todo: 'Confirm with John how many gallons are delivered.' },
       { q: 'Can you deliver diesel?', a: '<p>Tell us your vehicle and fuel type when you call, and we’ll confirm before we head out.</p>', todo: 'Confirm whether diesel is available.' },
       { q: 'Do you deliver gas on the highway?', a: '<p>Yes. Tell us the highway, direction and nearest exit or mile marker — for example, I-45 northbound near Rayford Rd — and stay in your car with hazards on if the shoulder is unsafe.</p>' },

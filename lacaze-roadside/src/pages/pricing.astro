@@ -5,7 +5,7 @@ import CtaBlock from '../components/CtaBlock.astro';
 import Faq from '../components/Faq.astro';
 import Icon from '../components/Icon.astro';
 import Todo from '../components/Todo.astro';
-import { b, tel, services, priceLabel } from '../lib/site.js';
+import { b, tel, services, priceLabel, priceAmount } from '../lib/site.js';
 import { faqSchema } from '../lib/schema.js';
 const crumbs = [{ name: 'Home', href: '/' }, { name: 'Pricing', href: '/pricing/' }];
 const includes = {
@@ -14,15 +14,16 @@ const includes = {
   fuelDelivery: ['We come to your location', 'Enough fuel to reach a station', 'We stay until the engine is running', 'Jump start help if the battery runs down'],
 };
 const pfaqs = [
-  { q: 'How much does a jump start cost?', a: '<p>You’ll get an upfront price on the phone before we roll, based on your location. No membership or sign-up fee.</p>', todo: 'Jump start starting price.' },
-  { q: 'How much does a car lockout cost?', a: '<p>We quote your lockout price up front, before we head out, so you can decide with no pressure.</p>', todo: 'Lockout starting price.' },
+  { q: 'How much does a jump start cost?', a: '<p>A jump start is $75. No membership or sign-up fee, and you’ll confirm the price on the phone before we roll.</p>' },
+  { q: 'How much does a car lockout cost?', a: '<p>A vehicle lockout is $65. We confirm it on the phone before we head out, so you can decide with no pressure.</p>' },
+  { q: 'How much does fuel delivery cost?', a: '<p>Fuel delivery is $60 plus the cost of the fuel we bring — enough to get you to the nearest station.</p>' },
   { q: 'Is there a membership or annual fee?', a: '<p>No. This is pay-per-use roadside assistance. You pay only for the service you get, only when you need it.</p>' },
   { q: 'Do you charge more at night or on weekends?', a: '<p>Whatever your price is, you’ll hear it before we roll — day, night or weekend.</p>', todo: 'Confirm whether after-hours pricing differs.' },
   { q: 'Why not just use my insurance roadside coverage?', a: '<p>You can, and many people do. But insurance and auto-club programs often dispatch through a call center, and wait times can stretch into hours. Calling us directly gets you a real person, an honest arrival estimate and a clear price up front.</p>' },
 ];
 ---
 <Base title="Roadside Assistance Prices (No Membership) | LaCaze" description="Roadside assistance prices in Spring, TX: upfront quotes for jump starts, lockouts & fuel delivery. No membership, 24/7. Call (832) 949-4837." crumbs={crumbs} schema={[faqSchema(pfaqs)]}>
-  <PageHero h1="Upfront Prices. No Membership. No Surprises." lead="Pay-per-use roadside assistance for Spring and North Houston. You hear your price on the phone <strong>before we roll</strong> — no sign-up, no annual fee, no surprise charges at the roadside." crumbs={crumbs} />
+  <PageHero h1="Upfront Prices. No Membership. No Surprises." lead="Pay-per-use roadside assistance for Spring and North Houston: <strong>jump starts $75, lockouts $65, fuel delivery $60 + fuel</strong>. You confirm your price on the phone before we roll — no sign-up, no annual fee, no surprises." crumbs={crumbs} />
   <section class="section">
     <div class="wrap">
       <!-- TODO: starting prices — set prices.jumpStart / prices.lockout / prices.fuelDelivery in src/data/business.json -->
@@ -32,11 +33,11 @@ const pfaqs = [
             <span class="icon-tile"><Icon name={s.icon} /></span>
             <h2 style="font-size:1.5rem">{s.name}</h2>
             {priceLabel(s.key)
-              ? <p class="price__amt">{priceLabel(s.key)} {s.key === 'fuelDelivery' && <small>+ fuel</small>}</p>
+              ? <p class="price__amt">{priceAmount(s.key)} {s.key === 'fuelDelivery' && <small>+ cost of fuel</small>}</p>
               : <><p class="price__amt" style="font-size:1.75rem">Upfront quote</p><p class="muted" style="margin:0 0 8px;font-size:.9375rem">Given on the phone, before we roll.</p><Todo>Starting price — prices.{s.key}</Todo></>}
             <ul>{includes[s.key].map((i) => <li><Icon name="check" />{i}</li>)}</ul>
             <div class="btn-row">
-              <a class="btn btn--primary" href={tel} data-track="call"><Icon name="phone" />Get my price</a>
+              <a class="btn btn--primary" href={tel} data-track="call"><Icon name="phone" />Call now</a>
               <a class="btn btn--ghost" href={s.slug}>Details</a>
             </div>
           </div>
@@ -55,5 +56,5 @@ const pfaqs = [
       <Faq faqs={pfaqs} />
     </div>
   </section>
-  <CtaBlock heading="Get your upfront price in one call." />
+  <CtaBlock heading="Need help now? One call gets John on the way." />
 </Base>

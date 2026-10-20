@@ -1,7 +1,7 @@
 import business from '../data/business.json';
 
 // PREVIEW_MODE=true (default) adds <meta name="robots" content="noindex"> site-wide
-// and shows dev-only TODO notes. Set PREVIEW_MODE=false at launch (see README).
+// (TODO notes are separate: see components/Todo.astro). Set PREVIEW_MODE=false at launch (see README).
 export const PREVIEW_MODE = String(process.env.PREVIEW_MODE ?? 'true').toLowerCase() !== 'false';
 
 export const b = business;
@@ -30,10 +30,16 @@ export const towns = [
   { slug: '/roadside-assistance-conroe-tx/', name: 'Conroe', short: 'Conroe' },
   { slug: '/roadside-assistance-magnolia-tx/', name: 'Magnolia', short: 'Magnolia' },
   { slug: '/roadside-assistance-klein-cypress-tx/', name: 'Klein & Cypress', short: 'Klein & Cypress' },
+  { slug: '/roadside-assistance-humble-tx/', name: 'Humble', short: 'Humble' },
+  { slug: '/roadside-assistance-aldine-tx/', name: 'Aldine', short: 'Aldine' },
+  { slug: '/roadside-assistance-porter-tx/', name: 'Porter', short: 'Porter' },
   { slug: '/roadside-assistance-north-houston/', name: 'North Houston', short: 'North Houston' },
 ];
 
+// "$75" — or, for fuel delivery, "$60 + cost of fuel". null when not set.
 export const priceLabel = (key) => {
   const p = business.prices[key];
-  return p == null ? null : `From $${p}`;
+  if (p == null) return null;
+  return key === 'fuelDelivery' ? `$${p} + cost of fuel` : `$${p}`;
 };
+export const priceAmount = (key) => (business.prices[key] == null ? null : `$${business.prices[key]}`);

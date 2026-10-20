@@ -25,26 +25,30 @@ const reviews = b.reviews || [];
     {reviews.length === 0 ? (
       <Todo>No review screenshots yet — add real reviews to src/data/business.json. Never invent reviews.</Todo>
     ) : (
-      <div class="grid grid--2" style="margin-top:16px">
-        {reviews.map((r) => (
-          <figure class="card review reveal" style="margin:0">
-            <span class="stars" role="img" aria-label={`${r.rating} out of 5 stars`}>{Array.from({ length: r.rating }, () => <Icon name="star" />)}</span>
-            {r.text ? (
-              <blockquote>“{r.text}”</blockquote>
-            ) : (
-              <blockquote class="is-short">Rated {r.rating} stars{r.priceAssessment && <> · Price assessment: <strong style="color:var(--text)">“{r.priceAssessment}”</strong></>}</blockquote>
-            )}
-            {r.text && r.priceAssessment && <span class="tag">Price assessment: {r.priceAssessment}</span>}
-            <figcaption>
-              <span class="avatar" aria-hidden="true">{initials(r.name)}</span>
-              <span>
-                <cite>{r.name}</cite>
-                <small><Icon name="google" />Google review{r.service && <> · {r.service}</>}</small>
-              </span>
-            </figcaption>
-          </figure>
+      <>
+        {[reviews.filter((r) => r.text), reviews.filter((r) => !r.text)].map((list, gi) => list.length > 0 && (
+          <div class={`grid ${gi === 0 ? 'grid--2' : 'grid--3'}`} style={`margin-top:${gi === 0 ? 16 : 24}px`}>
+            {list.map((r) => (
+              <figure class="card review reveal" style="margin:0">
+                <span class="stars" role="img" aria-label={`${r.rating} out of 5 stars`}>{Array.from({ length: r.rating }, () => <Icon name="star" />)}</span>
+                {r.text ? (
+                  <blockquote>“{r.text}”</blockquote>
+                ) : (
+                  <blockquote class="is-short">Rated {r.rating} stars{r.priceAssessment && <> · Price assessment: <strong style="color:var(--text)">“{r.priceAssessment}”</strong></>}</blockquote>
+                )}
+                {r.text && r.priceAssessment && <span class="tag">Price assessment: {r.priceAssessment}</span>}
+                <figcaption>
+                  <span class="avatar" aria-hidden="true">{initials(r.name)}</span>
+                  <span>
+                    <cite>{r.name}</cite>
+                    <small><Icon name="google" />Google review{r.service && <> · {r.service}</>}</small>
+                  </span>
+                </figcaption>
+              </figure>
+            ))}
+          </div>
         ))}
-      </div>
+      </>
     )}
   </div>
 </section>

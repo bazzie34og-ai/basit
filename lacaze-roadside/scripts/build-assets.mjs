@@ -7,19 +7,19 @@ const src = 'assets-src';
 const out = 'public/img';
 mkdirSync(out, { recursive: true });
 
-const logo = `${src}/logos/lacaze_logo_luxe_horizontal_dark.png`;
-const icon = `${src}/logos/lacaze_icon.png`;
+// Official logo (from John): badge with its outer black background removed.
+const logo = `${src}/logos/lacaze_logo_badge_official_transparent.png`;
+const icon = logo;
 const photo = `${src}/photos/john-lacaze-jr-owner.jpg`;
 
-// Logo (header 44px tall -> 1x/2x/3x), plus PNG for schema/OG
-for (const h of [48, 96, 144]) {
+// Logo (header 64px tall -> 1x/2x/3x, footer 128px), plus PNG for schema/OG
+for (const h of [64, 128, 192, 256]) {
   await sharp(logo).resize({ height: h }).webp({ quality: 92 }).toFile(`${out}/lacaze-roadside-assistance-logo-${h}.webp`);
 }
 await sharp(logo).resize({ width: 800 }).png({ compressionLevel: 9 }).toFile(`${out}/lacaze-roadside-assistance-logo.png`);
 
 // Icons
-const trimmedIcon = sharp(icon).trim();
-const iconBuf = await trimmedIcon.png().toBuffer();
+const iconBuf = await sharp(icon).png().toBuffer();
 for (const [name, size] of [['favicon-32.png', 32], ['apple-touch-icon.png', 180], ['icon-192.png', 192], ['icon-512.png', 512]]) {
   const pad = name === 'apple-touch-icon.png' || name.startsWith('icon-') ? Math.round(size * 0.08) : 0;
   const inner = size - pad * 2;

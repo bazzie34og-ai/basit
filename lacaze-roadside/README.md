@@ -36,7 +36,7 @@ Page text lives in `src/data/` too: `services.js` (service pages), `towns.js` (t
 
 **Replacing John's photo:** put the new photo at `assets-src/photos/john-lacaze-jr-owner.jpg` (portrait, about 720×950), run `npm run assets`, and commit the files it creates in `public/img/`. The script only resizes and re-encodes the photo; it never edits it.
 
-**Logo:** the whole site uses one logo, `assets-src/logos/lacaze_logo_luxe_horizontal_dark.png`. Favicons and app icons come from `lacaze_icon.png`. Run `npm run assets` to regenerate them. To regenerate the social-share image, run `node scripts/og.mjs` (needs Playwright).
+**Logo:** the whole site uses one logo, John's official badge: `assets-src/logos/lacaze_logo_badge_official.jpg`. A copy with only the outer black background removed (`lacaze_logo_badge_official_transparent.png`) is what the header, footer, favicon, app icons and share image are made from. Run `npm run assets` to regenerate them. To regenerate the social-share image, run `node scripts/og.mjs` (needs Playwright).
 
 ---
 
@@ -49,9 +49,11 @@ Page text lives in `src/data/` too: `services.js` (service pages), `towns.js` (t
   PREVIEW_MODE = "true"
 ```
 
-While it's `"true"`, every page includes `<meta name="robots" content="noindex, nofollow">` so Google won't index the preview. It also shows red **DEV TODO** notes wherever a value still needs John's confirmation.
+While it's `"true"`, every page includes `<meta name="robots" content="noindex, nofollow">` so Google won't index the site yet.
 
-**At launch:** change it to `PREVIEW_MODE = "false"` and push. The noindex tags and the TODO notes disappear on the next deploy. A local production build is `PREVIEW_MODE=false npm run build`.
+Red **DEV TODO** notes (for values still waiting on John) appear only in `npm run dev`, or in a build run with `SHOW_TODOS=true`. They never appear on the live site.
+
+**At launch** (once the custom domain is connected and `siteUrl` is updated): change it to `PREVIEW_MODE = "false"` and push. The noindex tags disappear on the next deploy. A local production build is `PREVIEW_MODE=false npm run build`.
 
 ---
 

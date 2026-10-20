@@ -216,6 +216,144 @@ export const townPages = [
 `,
   },
   {
+    slug: 'roadside-assistance-humble-tx',
+    town: 'Humble',
+    title: 'Roadside Assistance Humble, TX | LaCaze',
+    h1: '24/7 Roadside Assistance in Humble',
+    description: 'Stuck in Humble or Atascocita? LaCaze Roadside Assistance brings jump starts, lockouts and fuel delivery 24/7. No membership. Call (832) 949-4837.',
+    lead: 'From the Eastex Freeway to FM 1960 and Atascocita, we bring <strong>jump starts, lockout help and gas delivery</strong> to Humble drivers — any hour, with an upfront price.',
+    order: ['jumpStart', 'lockout', 'fuelDelivery'],
+    body: `
+<h2>Roadside help for Humble and Atascocita</h2>
+<p>Humble sits on the northeast side of the Houston area, where the Eastex Freeway (I-69 / US 59), FM 1960 and the Beltway all meet. Add the busy shopping around Deerbrook Mall, the growing neighborhoods of Atascocita and the steady airport traffic heading to Bush Intercontinental, and it’s a part of town where cars get pushed hard every day.</p>
+<p>LaCaze Roadside Assistance comes over from Spring to help Humble drivers 24 hours a day. When you call, the owner answers — no dispatcher, no long hold, and your price before we roll.</p>
+
+<h2>Humble roads and places we cover</h2>
+<ul>
+  <li><strong>I-69 / US 59 (Eastex Freeway)</strong> through Humble, from the Beltway north toward Kingwood</li>
+  <li><strong>FM 1960</strong> east of the freeway into Atascocita, and west toward the airport</li>
+  <li><strong>Will Clayton Parkway</strong> and <strong>Townsen Blvd</strong> near the airport side of Humble</li>
+  <li><strong>Atascocita Rd, Wilson Rd and West Lake Houston Pkwy</strong></li>
+  <li><strong>Deerbrook Mall</strong>, Humble Towne Center and the big shopping lots along FM 1960</li>
+  <li><strong>Old Town Humble</strong> on Main Street, and parks near Lake Houston</li>
+</ul>
+
+<h2>What Humble drivers call us for</h2>
+<h3>A dead battery in a big parking lot</h3>
+<p>A car that won’t start in the Deerbrook Mall lot after a hot afternoon, at a grocery store on FM 1960, or in an employee lot after a long shift. Our <a href="/jump-start-spring-tx/">jump start service in Humble</a> is <strong>$75</strong>, and we come right to your parking spot. Text us a map pin so we find you fast.</p>
+<h3>Keys locked in the car</h3>
+<p>Kids in car seats, groceries in the trunk and the keys on the front seat — it happens. Our <a href="/car-lockout-spring-tx/">car lockout service in Humble</a> is <strong>$65</strong> and gets you back in carefully. If a child or pet is inside on a hot day, call 911 first.</p>
+<h3>Out of gas on 59 or FM 1960</h3>
+<p>Backups on the Eastex Freeway and long lights on FM 1960 can drain the last of a tank. Our <a href="/fuel-delivery-spring-tx/">fuel delivery</a> is <strong>$60 plus the cost of fuel</strong>. Pull as far over as you can, stay in your car with your hazards on, and call.</p>
+
+<h2>Airport trips and early mornings</h2>
+<p>Coming back from a trip to a car that sat for days in a park-and-ride or hotel lot near IAH? Batteries often don’t survive a long sit in the Houston heat. Call us from the lot — we’re open 24/7, including the very early and very late hours when flights land.</p>
+
+<h2>Why Humble drivers call LaCaze</h2>
+<ul>
+  <li><strong>A real person answers. 24/7.</strong> You talk to John, the owner.</li>
+  <li><strong>Upfront price before we roll.</strong> No surprises when we arrive.</li>
+  <li><strong>If we’re running late, we call you first.</strong></li>
+  <li><strong>We stay until you’re safely back on the road.</strong></li>
+</ul>
+`,
+  },
+  {
+    slug: 'roadside-assistance-aldine-tx',
+    town: 'Aldine',
+    title: 'Roadside Assistance Aldine, TX | LaCaze',
+    h1: '24/7 Roadside Assistance in Aldine',
+    description: 'Dead battery, lockout or out of gas in Aldine, TX? LaCaze Roadside Assistance comes to you 24/7 on I-45, Airline Dr & Aldine Bender. Call (832) 949-4837.',
+    lead: 'On I-45, the Hardy Toll Road, Airline Drive or Aldine Bender, we bring <strong>jump starts, lockout service and fuel delivery</strong> to you — 24/7, no membership.',
+    order: ['jumpStart', 'fuelDelivery', 'lockout'],
+    body: `
+<h2>Fast, honest roadside help in Aldine</h2>
+<p>Aldine is a busy, working part of north Houston, wedged between I-45, the Hardy Toll Road and Bush Intercontinental Airport. Lots of people here drive early, drive late and drive for work — which means a car that won’t start, or a tank that runs dry, can cost you a shift. LaCaze Roadside Assistance is based just up the road in Spring, so Aldine is close to home for us.</p>
+<p>Call or text, and you’ll get John, the owner. He’ll tell you the price and an honest arrival estimate before he rolls.</p>
+
+<h2>Aldine roads we cover</h2>
+<ul>
+  <li><strong>I-45 North Freeway</strong> between the Beltway and FM 1960</li>
+  <li><strong>Hardy Toll Road</strong> and the Aldine Westfield Rd corridor</li>
+  <li><strong>Airline Dr</strong>, <strong>Aldine Bender Rd</strong> and <strong>Aldine Mail Route</strong></li>
+  <li><strong>Beltway 8 / Sam Houston Tollway</strong> on the north side</li>
+  <li><strong>Lee Rd, Greens Rd and JFK Blvd</strong> toward the airport</li>
+  <li>Warehouse, plant and job-site lots across the area</li>
+</ul>
+
+<h2>Common calls in Aldine</h2>
+<h3>Won’t start before work</h3>
+<p>A 5 a.m. no-start in the driveway, a truck that sat over the weekend, or a battery that died in a job-site lot. Our <a href="/jump-start-spring-tx/">jump start service in Aldine</a> is <strong>$75</strong> — we come to you, get you running and make sure the engine keeps going before we leave.</p>
+<h3>Out of gas on I-45 or the Hardy</h3>
+<p>Freeway backups and toll-road stretches without exits are rough places to run dry. Stay in your car with your seatbelt on and your hazards flashing, then call for <a href="/fuel-delivery-spring-tx/">emergency fuel delivery</a> — <strong>$60 plus the cost of fuel</strong>. Tell us your direction and the nearest exit.</p>
+<h3>Locked out after a shift</h3>
+<p>Long day, tired mind, keys on the seat. Our <a href="/car-lockout-spring-tx/">car lockout service</a> is <strong>$65</strong> and gets you back into your car carefully. Have your ID ready so we can confirm it’s your vehicle.</p>
+
+<h2>No membership — just a fair price</h2>
+<p>You don’t need AAA or an insurance plan to get help. LaCaze is pay-per-use roadside assistance: call when you need us, pay for what you get. No sign-up fee, no yearly bill, no surprise charges at the roadside.</p>
+
+<h2>Simple prices for Aldine drivers</h2>
+<ul>
+  <li><strong>Jump start:</strong> $75</li>
+  <li><strong>Vehicle lockout:</strong> $65</li>
+  <li><strong>Fuel delivery:</strong> $60 plus the cost of fuel</li>
+</ul>
+<p>No membership, no sign-up fee and no after-the-fact surprises. You confirm the price on the phone before we head your way, day or night.</p>
+
+<h2>Staying safe while you wait</h2>
+<ul>
+  <li>On I-45, the Beltway or the Hardy, stay buckled in with your hazards on if getting out isn’t safe.</li>
+  <li>At night, wait in a lit spot and lock your doors.</li>
+  <li>Text a map pin to <a href="sms:+18329494837">(832) 949-4837</a> so we can find you quickly.</li>
+</ul>
+`,
+  },
+  {
+    slug: 'roadside-assistance-porter-tx',
+    town: 'Porter',
+    title: 'Roadside Assistance Porter, TX | LaCaze',
+    h1: '24/7 Roadside Assistance in Porter',
+    description: 'Stranded in Porter, TX on I-69, SH 99 or FM 1314? LaCaze Roadside Assistance brings fuel, jump starts & lockout help 24/7. Call (832) 949-4837.',
+    lead: 'Along I-69, the Grand Parkway, FM 1314 and SH 242, we bring <strong>fuel delivery, jump starts and lockout help</strong> to Porter drivers — 24/7, no membership.',
+    order: ['fuelDelivery', 'jumpStart', 'lockout'],
+    body: `
+<h2>Roadside help for Porter and the Valley Ranch area</h2>
+<p>Porter sits north of Kingwood in Montgomery County, where I-69 (US 59) meets the Grand Parkway. It’s a fast-growing area — new neighborhoods off FM 1314 and Sorters Rd, the Valley Ranch shopping district, and plenty of commuters heading south toward Houston or west on SH 242 toward The Woodlands and Conroe. There are still quieter stretches between stations, too.</p>
+<p>LaCaze Roadside Assistance comes out from Spring to help Porter drivers any time of day or night. Call or text, and the owner picks up.</p>
+
+<h2>Porter roads we cover</h2>
+<ul>
+  <li><strong>I-69 / US 59</strong> from Kingwood north through Porter toward New Caney</li>
+  <li><strong>Grand Parkway (SH 99)</strong> where it crosses I-69 near Valley Ranch</li>
+  <li><strong>SH 242</strong> west toward The Woodlands and I-45</li>
+  <li><strong>FM 1314</strong> north toward Conroe, and <strong>Sorters Rd</strong></li>
+  <li><strong>Valley Ranch Town Center</strong> and the shopping along the I-69 frontage roads</li>
+</ul>
+
+<h2>What Porter drivers need most</h2>
+<h3>Gas on the commute</h3>
+<p>Long commutes on I-69 and SH 242, plus stretches of FM 1314 with fewer stations, make running out of gas a real possibility — especially late at night. Our <a href="/fuel-delivery-spring-tx/">fuel delivery in Porter</a> is <strong>$60 plus the cost of fuel</strong>, and we bring enough to get you to the next pump. Pull well off the road and keep your hazards on.</p>
+<h3>Dead batteries at home and in lots</h3>
+<p>A car that won’t start in a Valley Ranch parking lot on a hot Saturday, or in your driveway before work. Our <a href="/jump-start-spring-tx/">jump start service near Porter</a> is <strong>$75</strong>. We come to you and stay until it’s running.</p>
+<h3>Locked out</h3>
+<p>Keys locked inside at a store, a ballfield or at home? Our <a href="/car-lockout-spring-tx/">car lockout service</a> is <strong>$65</strong> and gets you back in carefully. If a child or pet is inside on a hot day, call 911 first.</p>
+
+<h2>Finding you fast</h2>
+<p>Newer neighborhoods don’t always show up right in every map app. The quickest way to help us find you is to text a map pin to <a href="sms:+18329494837">(832) 949-4837</a> or tap “Use my location” on the request form. On the highway, tell us your direction and the nearest exit.</p>
+
+<h2>Simple prices for Porter drivers</h2>
+<ul>
+  <li><strong>Jump start:</strong> $75</li>
+  <li><strong>Vehicle lockout:</strong> $65</li>
+  <li><strong>Fuel delivery:</strong> $60 plus the cost of fuel</li>
+</ul>
+<p>No membership, no sign-up fee and no after-the-fact surprises. You confirm the price on the phone before we head your way, day or night.</p>
+
+<h2>Owner-operated, treated like family</h2>
+<p>No call center and no runaround. You get an upfront price before we roll, a call first if we’re running late, and help that stays until you’re safely back on the road.</p>
+`,
+  },
+  {
     slug: 'roadside-assistance-north-houston',
     town: 'North Houston',
     title: 'Roadside Assistance North Houston | LaCaze',
