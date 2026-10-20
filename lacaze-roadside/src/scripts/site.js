@@ -89,14 +89,34 @@ document.querySelectorAll('[data-request-form]').forEach((form) => {
     const d = digits(e.target.value);
     if (d.length === 10) e.target.value = `(${d.slice(0, 3)}) ${d.slice(3, 6)}-${d.slice(6)}`;
   });
-  form.addEventListener('submit', (e) => {
+  const errBox = form.querySelector('.form-error');
+  const submitBtn = form.querySelector('button[type=submit]');
+  form.addEventListener('submit', async (e) => {
     const results = Object.keys(checks).map(validate);
     if (results.includes(false)) {
       e.preventDefault();
       form.querySelector('.has-error input, .has-error select')?.focus();
       return;
     }
+    if (form.elements._honey?.value) { e.preventDefault(); return; }
     track('form_submit', { form_name: 'roadside-request', service: field('service').value, page_path: location.pathname });
+    // Send in the background and go to the thank-you page; without JS the form posts normally.
+    if (!form.dataset.ajax || !window.fetch) return;
+    e.preventDefault();
+    errBox.hidden = true;
+    submitBtn.disabled = true;
+    const label = submitBtn.textContent;
+    submitBtn.textContent = 'Sending…';
+    try {
+      const res = await fetch(form.dataset.ajax, { method: 'POST', headers: { Accept: 'application/json' }, body: new FormData(form) });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok || String(data.success) !== 'true') throw new Error(data.message || res.status);
+      location.href = '/thank-you/';
+    } catch (err) {
+      errBox.hidden = false;
+      submitBtn.disabled = false;
+      submitBtn.textContent = label;
+    }
   });
 
   const geoBtn = form.querySelector('[data-geo]');

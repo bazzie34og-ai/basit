@@ -366,6 +366,8 @@ a.card:hover .more svg { transform: translateX(3px); }
 .loc button { --h: 52px; padding: 0 16px; flex: 1 0 auto; border-radius: 12px; font-size: .9375rem; }
 @media (min-width: 560px) { .loc button { flex: none; } }
 .loc-status { font-size: .8125rem; color: var(--muted); margin-top: 6px; min-height: 1em; }
+.form-error { margin: 12px 0 0; padding: 12px 14px; border-radius: 12px; border: 1px solid rgba(255,107,87,.5); background: rgba(255,107,87,.1); color: #FFD9D3; font-size: .9375rem; font-weight: 600; }
+.form-error a { color: var(--text); white-space: nowrap; }
 .consent { font-size: .8125rem; color: var(--muted); margin: 12px 0 0; line-height: 1.5; }
 .consent a { color: var(--text); }
 .hp { position: absolute !important; left: -9999px; }

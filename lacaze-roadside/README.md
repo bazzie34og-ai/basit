@@ -57,21 +57,24 @@ Red **DEV TODO** notes (for values still waiting on John) appear only in `npm ru
 
 ---
 
-## Form submissions → email (Netlify Forms)
+## Form submissions → John's email (FormSubmit, free)
 
-The "Request help" form (`roadside-request`) is a Netlify Form with a honeypot field. After someone submits it, they land on `/thank-you/`.
+The "Request help" form sends each request by email to **lacazeroadside@gmail.com** through [FormSubmit](https://formsubmit.co). It's free, needs no account, and doesn't use Netlify's paid form notifications. The address comes from `email` in `src/data/business.json`.
 
-1. Netlify → your site → **Forms**. If prompted, click **Enable form detection**, then redeploy once.
-2. Netlify → **Site configuration → Forms → Form notifications → Add notification → Email notification**.
-3. Event: *New form submission*, form: `roadside-request`, email: **lacazeroadside@gmail.com**. Save.
-4. Send a test from the live site with real-looking details. If it doesn't arrive, check **Forms → Spam submissions**, since test entries sometimes get flagged.
-5. *(Optional, later)* SMS alerts: create a Zapier zap with **Netlify → New Form Submission**, then **SMS by Zapier** (or Twilio) to (832) 949-4837.
+**One-time activation (required):**
+1. Send one test request from the live site.
+2. FormSubmit emails lacazeroadside@gmail.com with the subject "Action Required: Activate FormSubmit". Open it and click **Activate Form**. Check spam if it isn't in the inbox.
+3. Done. From then on, every request arrives as an email titled "New roadside help request — LaCaze website", with name, phone, service, location (a Google Maps link when "Use my location" is used), notes and the page it came from.
 
-Each submission includes: name, phone, service, location (a Google Maps link when "Use my location" is used), notes, and the page it was sent from.
+How it behaves:
+- The form sends in the background, then shows `/thank-you/`.
+- If sending fails (no signal, or the form isn't activated yet), the customer sees "We couldn't send your request just now. Please call (832) 949-4837" and their details stay filled in.
+- Spam protection: a hidden `_honey` field, plus the 10-digit phone check.
+- Without JavaScript, the form posts to FormSubmit directly and redirects to `/thank-you/`.
+- To change the inbox, edit `email` in `business.json` and redeploy. A new address needs the one-time activation again.
+- *(Optional)* For text alerts, set up a Gmail filter on that subject that forwards to a phone, or use Zapier's Gmail → SMS.
 
-The email subject is set in the form itself ("New roadside help request from the website"), so leave the subject blank in the Netlify notification settings. Notification emails come from `formresponses@netlify.com`. Check John's spam folder after the first test, and mark it "Not spam" if it lands there.
-
----
+**Call and Text buttons** are plain phone links (`tel:+18329494837`, `sms:+18329494837`). They need no backend and cost nothing.
 
 ## Click tracking (GA4)
 
@@ -107,7 +110,7 @@ In GA4, mark `call_click` and `form_submit` as **key events** (conversions).
 - [ ] Add the GA4 measurement ID → `ga4Id`
 - [ ] Add the Search Console verification → `searchConsoleVerification`, then verify in Google Search Console
 - [ ] **Submit the sitemap** in Search Console: `https://<domain>/sitemap-index.xml`
-- [ ] Turn on form email notifications (above) and send a test submission
+- [ ] Send a test request and click **Activate Form** in the FormSubmit email (see above)
 - [ ] **Add the website link to the Google Business Profile**, and make sure its name, phone and service area match the site footer exactly
 - [ ] Test the Call and Text buttons on a real iPhone and a real Android phone
 - [ ] Run the home page and one service page through Google's [Rich Results Test](https://search.google.com/test/rich-results)
