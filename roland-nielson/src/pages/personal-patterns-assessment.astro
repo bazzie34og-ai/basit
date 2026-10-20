@@ -1,0 +1,307 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import Faq from '../components/Faq.astro';
+import RelatedLinks from '../components/RelatedLinks.astro';
+import FormHidden from '../components/FormHidden.astro';
+import Icon from '../components/Icon.astro';
+import { site, abs, assessmentSettings } from '../config/site';
+import { page } from '../data/pages';
+import { faqPage, ids } from '../lib/schema';
+import { CATEGORIES, QUESTIONS, SCALE, MOTIVATORS, MAX_MOTIVATORS, BANDS, VERSION, FORM_NAME } from '../data/assessment.mjs';
+
+const path = '/personal-patterns-assessment/';
+const meta = page(path);
+const faqs = [
+  { q: 'Is the Personal Patterns Assessment really free?', a: 'Yes. The assessment is free to complete, and there is no coaching purchase required. You see your results on screen as soon as you finish. If you want to talk them through, you can book a free 20-minute discovery call, but you never have to.' },
+  { q: 'Is this a personality test or a diagnosis?', a: 'No. It is an original self-reflection tool Roland uses in coaching. It is not a clinical or validated personality test, it is not a DISC or other branded assessment, and it does not diagnose anything. Treat your scores as a starting point for honest reflection, not a label.', scope: true },
+  { q: 'Why do you ask for my phone number?', a: 'Roland Nielson receives your contact information and assessment responses to follow up about your assessment and coaching inquiry. A phone number lets him reach you the way most men prefer, by call or text. You will never get marketing messages unless you tick the separate optional box.' },
+  { q: 'Who sees my answers?', a: 'Only Roland. Your answers are stored in a private, login-protected dashboard, not on any public page, and they are never sent to analytics tools. You can ask for your answers to be deleted at any time by emailing roland@rolandnielson.com.' },
+  { q: 'What should I do with my results?', a: 'Look for the one category that surprised you or stung a little. Pick one small change in that area and try it for a week. If you want help turning that into a plan you can keep on a bad day, book a free 20-minute discovery call with Roland.' },
+];
+const scopeIdx = [1];
+const schema = [
+  faqPage(path, faqs),
+  {
+    '@type': 'WebApplication',
+    '@id': abs(`${path}#tool`),
+    name: 'Personal Patterns Assessment',
+    url: abs(path),
+    applicationCategory: 'LifestyleApplication',
+    operatingSystem: 'Any',
+    isAccessibleForFree: true,
+    offers: { '@type': 'Offer', price: 0, priceCurrency: 'USD' },
+    description: meta.description,
+    provider: { '@id': ids.business },
+    creator: { '@id': ids.roland },
+  },
+];
+const steps = [
+  { h: 'Answer 20 statements', p: 'Rate each one from 1 to 5 based on how you usually act, not how you wish you acted.' },
+  { h: 'Pick what drives you', p: 'Choose up to three motivators, and add two short reflections if you like.' },
+  { h: 'See your results', p: 'Four category scores with plain-language explanations, right on the screen.' },
+  { h: 'Decide your next step', p: 'Keep your results, or talk them through on a free 20-minute call with Roland.' },
+];
+---
+<Base path={path} crumbs={[{ name: 'Personal Patterns Assessment', path }]} schema={schema}>
+  <PageHero eyebrow="Free self-reflection tool · 5–8 minutes" title="Understand Your Personal Patterns" lead="See how you approach challenges, connect with people, follow through on commitments, and make decisions." crumbs={[{ name: 'Home', path: '/' }, { name: 'Personal Patterns Assessment', path }]} updated={site.contentUpdated}>
+    <p class="hero-copy">Answer 20 short statements and get a personal reflection profile in about 5–8 minutes. Free to complete. No coaching purchase required.</p>
+    <div class="btn-row">
+      <a class="btn brass" href="#assessment" data-ppa-start-link>Take the Free Assessment</a>
+      <a class="btn ghost" href={site.booking} rel="noopener" data-ppa-book="hero"><Icon name="calendar" />Book a Free Discovery Call</a>
+    </div>
+    <p class="under-btn" data-scope>Your results appear immediately. This is a self-reflection tool, not a clinical or validated personality test.</p>
+  </PageHero>
+
+  <section class="section" aria-labelledby="why-h">
+    <div class="wrap grid-2 top">
+      <div class="prose">
+        <p class="eyebrow">Who it's for</p>
+        <h2 id="why-h">For men who want an honest look before they change anything</h2>
+        <p>Maybe you're not ready to talk to anyone yet. Maybe you just want to see where you stand. That's fine. This assessment gives you something useful either way.</p>
+        <p>It's built for the same men I coach: fathers, working men and men rebuilding after a hard stretch. Men who keep starting over, who react before they think, or who feel stuck and can't say exactly why.</p>
+        <p>Twenty statements won't explain your whole life. But they can show you where you're strong and where things keep slipping. That's usually where the next real change starts.</p>
+      </div>
+      <div class="card what-you-get">
+        <h3>What you get</h3>
+        <ul class="check-list">
+          <li>Four scores, each out of 25, with what they mean in plain words</li>
+          <li>Your top motivators, so you know what actually moves you</li>
+          <li>Your own answers to "What do I want to improve?" and "What keeps getting in my way?"</li>
+          <li>{assessmentSettings.resultsEmail ? 'A results page you can save, print or get by email' : 'A results page you can save or print'}</li>
+          <li>The option to talk it through on a free 20-minute call. Never required.</li>
+        </ul>
+        <p class="muted small">You'll need your name, email and <strong>phone number (required)</strong> to see your results.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section white" aria-labelledby="areas-h">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">What it looks at</p>
+        <h2 id="areas-h">Four patterns that shape a man's week</h2>
+        <p>These are the same areas we work on in <a href="/accountability-coaching/">accountability coaching</a> and <a href="/mens-life-coaching-omaha/">life coaching for men in Omaha</a>.</p>
+      </div>
+      <div class="grid-2 areas">
+        {CATEGORIES.map((c, i) => (
+          <div class="area-card">
+            <span class="num">0{i + 1}</span>
+            <h3>{c.name}</h3>
+            <p>{c.explores}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section dark grain" aria-labelledby="how-h">
+    <div class="wrap">
+      <div class="section-head"><p class="eyebrow">How it works</p><h2 id="how-h">Four steps, about 5–8 minutes</h2></div>
+      <ol class="steps">{steps.map((s) => <li><h3>{s.h}</h3><p>{s.p}</p></li>)}</ol>
+    </div>
+  </section>
+
+  <section class="section assessment-section" id="assessment" aria-labelledby="form-h">
+    <div class="wrap narrow">
+      <p class="eyebrow">The assessment</p>
+      <h2 id="form-h">Rate each statement</h2>
+      <p class="lead">Rate each statement based on how you typically behave, rather than how you wish you behaved.</p>
+      <p class="scale-key" aria-hidden="true">{SCALE.map((s) => <span><b>{s.value}</b> {s.label}</span>)}</p>
+
+      <div class="progress" aria-live="polite" data-ppa-progress>
+        <div class="progress-bar"><span data-ppa-bar></span></div>
+        <p><span data-ppa-count>0</span> of {QUESTIONS.length} answered</p>
+      </div>
+
+      <form class="form ppa-form" name={FORM_NAME} method="POST" action={path} data-netlify="true" netlify-honeypot="bot-field" data-ppa-form novalidate>
+        <input type="hidden" name="form-name" value={FORM_NAME} />
+        <input type="hidden" name="subject" value="New Personal Patterns Assessment from rolandnielson.com (%{submissionId})" />
+        <input type="hidden" name="assessment_version" value={VERSION} />
+        <input type="hidden" name="source" value={path} data-source />
+        {['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content'].map((u) => <input type="hidden" name={u} value="" data-utm={u} />)}
+        {CATEGORIES.map((c) => <input type="hidden" name={`score_${c.key}`} value="" />)}
+        <input type="hidden" name="motivators" value="" />
+        <p class="hp" aria-hidden="true"><label>Leave this empty <input name="bot-field" tabindex="-1" autocomplete="off" /></label></p>
+
+        {CATEGORIES.map((c) => (
+          <section class="q-group" aria-labelledby={`grp-${c.key}`}>
+            <h3 id={`grp-${c.key}`}>{c.name}</h3>
+            {QUESTIONS.filter((q) => q.category === c.key).map((q) => (
+              <fieldset class="q" data-q={q.id}>
+                <legend><span class="qn">{q.n}.</span> {q.text}</legend>
+                <div class="rating">
+                  {SCALE.map((s) => (
+                    <label>
+                      <input type="radio" name={q.id} value={s.value} required />
+                      <span class="pill" aria-hidden="true">{s.value}</span>
+                      <span class="sr-only">{s.value}: {s.label}</span>
+                    </label>
+                  ))}
+                </div>
+                <div class="ends" aria-hidden="true"><span>Strongly disagree</span><span>Strongly agree</span></div>
+                <p class="error" data-err={q.id} aria-live="polite"></p>
+              </fieldset>
+            ))}
+          </section>
+        ))}
+
+        <section class="q-group" aria-labelledby="grp-motivators">
+          <h3 id="grp-motivators">What motivates you?</h3>
+          <fieldset class="q">
+            <legend>Select up to three.</legend>
+            <div class="choices motivators">
+              {MOTIVATORS.map((m) => <label><input type="checkbox" value={m} data-motivator /> {m}</label>)}
+            </div>
+            <p class="hint" data-motivator-hint>0 of {MAX_MOTIVATORS} selected</p>
+          </fieldset>
+        </section>
+
+        <section class="q-group" aria-labelledby="grp-reflect">
+          <h3 id="grp-reflect">Two optional reflections</h3>
+          <p class="hint">Keep it simple. Please don't include medical details or anything you wouldn't want written down.</p>
+          <div class="field">
+            <label for="ppa-improve">What is one area of your life you most want to improve?</label>
+            <textarea id="ppa-improve" name="improve_area" rows="3" maxlength="1000"></textarea>
+          </div>
+          <div class="field">
+            <label for="ppa-obstacle">What keeps getting in your way?</label>
+            <textarea id="ppa-obstacle" name="obstacle" rows="3" maxlength="1000"></textarea>
+          </div>
+        </section>
+
+        <section class="q-group" aria-labelledby="grp-contact">
+          <h3 id="grp-contact">Where should your results go?</h3>
+          <div class="field">
+            <label for="ppa-name">Name <span class="req">(required)</span></label>
+            <input id="ppa-name" name="name" autocomplete="name" required aria-describedby="ppa-name-err" />
+            <p class="error" id="ppa-name-err" data-err="name" aria-live="polite"></p>
+          </div>
+          <div class="row two">
+            <div class="field">
+              <label for="ppa-email">Email <span class="req">(required)</span></label>
+              <input id="ppa-email" name="email" type="email" autocomplete="email" required aria-describedby="ppa-email-err" />
+              <p class="error" id="ppa-email-err" data-err="email" aria-live="polite"></p>
+            </div>
+            <div class="field">
+              <label for="ppa-phone">Phone <span class="req">(required)</span></label>
+              <input id="ppa-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" required aria-describedby="ppa-phone-err" />
+              <p class="error" id="ppa-phone-err" data-err="phone" aria-live="polite"></p>
+            </div>
+          </div>
+          <p class="disclosure">Roland Nielson receives your contact information and assessment responses to follow up about your assessment and coaching inquiry. See the <a href="/privacy/">privacy policy</a>.</p>
+          {assessmentSettings.resultsEmail ? (
+            <label class="consent"><input type="checkbox" name="results_email" value="yes" /> <span>Email me a copy of my results. (Optional. Your results always show on screen.)</span></label>
+          ) : (
+            <input type="hidden" name="results_email" value="" />
+          )}
+          <label class="consent"><input type="checkbox" name="marketing_optin" value="yes" /> <span>Yes, Roland can send me occasional coaching tips and offers by email or text. (Optional. Unticked means no promotional messages.)</span></label>
+        </section>
+
+        <div class="error-summary" role="alert" hidden data-ppa-errors></div>
+        <button class="btn brass submit" type="submit" data-ppa-submit>See My Results</button>
+      </form>
+    </div>
+  </section>
+
+  <section class="section results-section" id="results" aria-labelledby="results-h" hidden data-ppa-results data-phone={site.phone.display} tabindex="-1">
+    <div class="wrap narrow">
+      <p class="eyebrow">Your results</p>
+      <h2 id="results-h">Your Personal Patterns</h2>
+      <p class="send-status" data-ppa-status aria-live="polite"></p>
+      <div class="bars" data-ppa-bars></div>
+      <div class="result-extras" data-ppa-extras></div>
+      <p class="worth">High or low scores don't define your personality or your worth. They show patterns, and patterns can change. Bands: {BANDS.map((b) => `${b.min}–${b.max} ${b.label.toLowerCase()}`).join('; ')}.</p>
+      <div class="results-cta">
+        <p class="cta-q">Want to talk about your patterns and one change you want to make? Book a free 20-minute discovery call.</p>
+        <div class="btn-row">
+          <a class="btn brass" href={site.booking} rel="noopener" data-ppa-book="results"><Icon name="calendar" />Book Your Free 20-Minute Discovery Call</a>
+          <button class="btn ghost" type="button" data-ppa-save>Save My Results</button>
+        </div>
+        <p class="muted small" data-scope>This is an original, unvalidated coaching reflection tool, not a clinical assessment.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section white" aria-labelledby="faq-h">
+    <div class="wrap">
+      <div class="section-head"><p class="eyebrow">Questions</p><h2 id="faq-h">About the assessment</h2></div>
+      <Faq faqs={faqs} scopeIndexes={scopeIdx} />
+    </div>
+  </section>
+
+  <RelatedLinks heading="Keep going" links={[
+    { href: '/accountability-coaching/', title: 'Accountability coaching in Omaha', text: 'Low on consistency? This is how we build follow-through that holds on a bad day.' },
+    { href: '/blog/what-to-do-on-a-bad-tuesday/', title: 'What to do on a bad Tuesday', text: 'A simple plan for the days motivation disappears.' },
+    { href: '/pricing/', title: 'Coaching plans and prices', text: 'Plans from $149 a month, with a free 20-minute call first.' },
+  ]} />
+</Base>
+
+<script>
+  import '../scripts/assessment.ts';
+</script>
+
+<style>
+  .hero-copy { color: #c7cfdb; max-width: 40em; }
+  .under-btn { color: #9fabbb; font-size: 0.9rem; margin-top: 1rem; }
+  .small { font-size: 0.9rem; }
+  .what-you-get h3 { font-size: var(--step-1); }
+  .areas { align-items: stretch; }
+  .area-card { border-top: 1px solid var(--brass); padding-top: 1rem; }
+  .area-card .num, .qn { color: #7d5f2f; }
+  .area-card h3 { font-size: var(--step-1); margin-top: 0.3rem; }
+  .scale-key { display: flex; flex-wrap: wrap; gap: 0.4rem 1rem; font-size: 0.88rem; color: var(--muted); }
+  .scale-key b { color: var(--ink); }
+  .progress { position: sticky; top: calc(var(--header-h) + 6px); z-index: 5; background: var(--bone); padding: 0.6rem 0; margin-bottom: 1rem; border-bottom: 1px solid var(--sand); }
+  .progress p { margin: 0.35rem 0 0; font-size: 0.88rem; font-weight: 700; color: var(--ink); }
+  .progress-bar { height: 6px; background: var(--sand); border-radius: 99px; overflow: hidden; }
+  .progress-bar span { display: block; height: 100%; width: 0; background: var(--brass); transition: width 0.3s var(--ease); }
+  .q-group { margin-top: var(--space-m); }
+  .q-group > h3 { font-size: var(--step-2); border-bottom: 1px solid var(--sand); padding-bottom: 0.5rem; }
+  .q { border: 0; padding: 1rem 0; margin: 0; border-bottom: 1px solid var(--sand); scroll-margin-top: calc(var(--header-h) + 90px); }
+  .ppa-form .field { scroll-margin-top: calc(var(--header-h) + 90px); }
+  .q legend { font-weight: 600; color: var(--ink); padding: 0; margin-bottom: 0.7rem; line-height: 1.45; }
+  .qn { font-family: var(--serif); font-style: italic; margin-right: 0.2rem; }
+  .rating { display: grid; grid-template-columns: repeat(5, 1fr); gap: 0.4rem; max-width: 420px; }
+  .rating label { position: relative; cursor: pointer; }
+  .rating input { position: absolute; opacity: 0; inset: 0; margin: 0; cursor: pointer; }
+  .pill { display: grid; place-items: center; height: 48px; border: 1px solid #b9ad98; border-radius: 12px; background: var(--white); font-weight: 800; color: var(--ink); transition: background 0.15s, border-color 0.15s, color 0.15s; }
+  .rating input:checked + .pill { background: var(--ink); border-color: var(--ink); color: var(--bone); }
+  .rating input:focus-visible + .pill { outline: 3px solid var(--brass); outline-offset: 2px; }
+  .rating label:hover .pill { border-color: var(--ink); }
+  .ends { display: flex; justify-content: space-between; max-width: 420px; font-size: 0.78rem; color: var(--muted); margin-top: 0.3rem; }
+  .q[data-invalid] .pill { border-color: #9b2c1f; }
+  .motivators label { font-size: 0.92rem; }
+  .req { font-weight: 600; color: #9b2c1f; font-size: 0.85rem; }
+  .disclosure { font-size: 0.92rem; color: var(--charcoal); background: var(--white); border: 1px solid var(--sand); border-radius: 10px; padding: 0.8rem 1rem; }
+  .ppa-form .consent { margin-top: 0.6rem; }
+  .error-summary { border: 1px solid #9b2c1f; border-left-width: 4px; border-radius: 10px; padding: 0.8rem 1rem; color: #9b2c1f; font-weight: 600; background: #fff5f3; }
+  .submit { width: 100%; margin-top: 0.5rem; }
+  @media (min-width: 640px) { .submit { width: auto; } }
+  .results-section { background: var(--white); border-top: 1px solid var(--sand); }
+  .results-section:focus { outline: none; }
+  .send-status { font-size: 0.92rem; color: var(--muted); }
+  .bars { display: grid; gap: 1.4rem; margin: 1.5rem 0; }
+  .bars :global(.bar h3) { font-size: var(--step-1); margin: 0 0 0.3rem; display: flex; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
+  .bars :global(.bar h3 span) { font-family: var(--sans); font-size: 1rem; font-weight: 800; color: var(--ink); }
+  .bars :global(.bar .track) { height: 12px; background: var(--sand); border-radius: 99px; overflow: hidden; }
+  .bars :global(.bar .fill) { height: 100%; background: linear-gradient(90deg, var(--slate), var(--navy)); border-radius: 99px; }
+  .bars :global(.bar .band) { font-weight: 700; color: var(--slate); margin: 0.4rem 0 0.2rem; font-size: 0.95rem; }
+  .bars :global(.bar p) { margin: 0; font-size: 0.95rem; }
+  .result-extras { display: grid; gap: 1rem; margin-bottom: 1.2rem; }
+  .result-extras :global(h3) { font-size: var(--step-1); margin-bottom: 0.3rem; }
+  .result-extras :global(p) { margin: 0; white-space: pre-wrap; }
+  .worth { font-size: 0.92rem; color: var(--muted); }
+  .results-cta { margin-top: var(--space-m); padding: var(--space-m); background: var(--ink); color: #d9dee6; border-radius: var(--radius); }
+  .results-cta .cta-q { font-family: var(--serif); font-size: var(--step-2); color: var(--bone); line-height: 1.25; }
+  .results-cta .btn.ghost { color: var(--bone); border-color: rgba(245, 241, 234, 0.4); }
+  .results-cta .muted { color: #9fabbb; margin: 1rem 0 0; }
+  @media print {
+    :global(body) { padding: 0 !important; background: #fff !important; }
+    :global(body > *:not(main)), :global(main > *:not(.results-section)) { display: none !important; }
+    .results-section { display: block !important; border: 0; }
+    .results-cta .btn-row { display: none; }
+    .results-cta { background: #fff; color: #000; border: 1px solid #ccc; }
+    .results-cta .cta-q { color: #000; }
+  }
+</style>

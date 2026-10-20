@@ -91,6 +91,8 @@ Being present can't depend on how you feel, because some days you'll feel wiped 
 
 Then check yourself at the end of each week. Did you do what you said?
 
+Curious how you show up with the people around you? The free [Personal Patterns Assessment](/personal-patterns-assessment/) includes a Connection & Communication score, plus three other patterns.
+
 ## Dad came home. Dad stayed.
 
 That's the line I live by. Not perfect. Present.

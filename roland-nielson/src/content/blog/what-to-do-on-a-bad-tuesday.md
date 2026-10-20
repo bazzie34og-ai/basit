@@ -89,6 +89,8 @@ Grab a notecard and write:
 
 Put it somewhere you'll see it. On a bad day you won't remember the plan. You'll only follow what's in front of you.
 
+Want to see where your follow-through actually stands? The free [Personal Patterns Assessment](/personal-patterns-assessment/) scores your consistency, along with three other patterns, in about 5–8 minutes.
+
 ## When a plan isn't enough
 
 A notecard helps. But the reason most men slip is that nobody checks in. That's what [accountability coaching in Omaha](/accountability-coaching/) is built for: we write your plan together, including the bad-day version, and then every week I ask how it went.

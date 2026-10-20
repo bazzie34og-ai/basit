@@ -44,6 +44,8 @@ Not proud of your kids or your team. Proud of you. For keeping a promise, finish
 
 Should you take the job? Have the conversation? Move? Quit? You go back and forth for months and end up doing nothing, which is still a decision. Self-doubt grows when you haven't watched yourself follow through in a while.
 
+Not sure which of these fits you best? Take the free [Personal Patterns Assessment](/personal-patterns-assessment/). It's 20 short statements, and your results show up right away.
+
 ## If three or more of those hit, here's where to start
 
 You don't need to blow up your life. You need to rebuild it a piece at a time. Start with these three.

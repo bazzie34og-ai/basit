@@ -40,6 +40,7 @@ Roland is a non-clinical life coach with no coaching, counseling or peer-recover
 - [For families](${abs('/for-families/')})
 - [Omaha metro service area](${abs('/omaha-life-coach/')})
 - [Omaha resources](${abs('/omaha-resources/')})
+- [Free Personal Patterns Assessment](${abs('/personal-patterns-assessment/')}): 20-statement self-reflection tool, results on screen, no purchase required
 - [FAQ](${abs('/faq/')})
 - [Contact](${abs('/contact/')})
 

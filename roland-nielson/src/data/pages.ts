@@ -138,6 +138,16 @@ export const pages: PageMeta[] = [
     priority: 0.6,
   },
   {
+    path: '/personal-patterns-assessment/',
+    title: 'Free Personal Patterns Assessment | Roland Nielson',
+    description:
+      'Explore your habits, communication, follow-through, and decision-making with a free 20-question self-reflection assessment from Roland Nielson.',
+    nav: 'Free Assessment',
+    og: { eyebrow: 'Free self-reflection tool · 5–8 minutes', headline: 'Understand Your Personal Patterns' },
+    lastmod: '2026-10-20',
+    priority: 0.8,
+  },
+  {
     path: '/faq/',
     title: "Life Coaching FAQ | Omaha Men's Life Coach",
     description:

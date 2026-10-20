@@ -98,6 +98,18 @@ Roland is a non-clinical coach with no certification. These words appear only in
 - Set `uploadDate` for both videos in `site.ts` (`videos.youtube.uploadDate`, `videos.recovery.uploadDate`). Google needs it for video rich results.
 - Confirm the YouTube video's title and description in `site.ts` match the real video. They were written without access to YouTube.
 
+## Personal Patterns Assessment (`/personal-patterns-assessment/`)
+
+This is a free lead-generation tool built from the October 2026 team brief. It has 20 ratings, up to 3 motivators and 2 optional reflections. Results show on screen right away, and the visitor can book a free 20-minute call. Booking never requires the assessment, and every "Book a Free 20-Minute Discovery Call" button is unchanged.
+
+- **Wording and scoring** live in `src/data/assessment.mjs`. The page and the server function both use this file. Bump `VERSION` whenever the wording changes.
+- **Responses** go to Netlify Forms (`personal-patterns-assessment`). That's Roland's private, login-protected dashboard. Each record holds name, email, phone, q1–q20, the four scores, motivators, reflections, consent choices, source/UTM and the assessment version. Netlify exports submissions as CSV.
+- **Server function** (`netlify/functions/submission-created.mjs`) re-validates and re-scores every submission. It sends Roland a *short* alert by SMS and/or email (name, time, link to the dashboard; no answers). It emails the participant their results only if they opted in.
+- **Results email option:** hidden until `assessmentSettings.resultsEmail = true` in `site.ts`. Turn it on only after `RESEND_API_KEY` and `ALERT_EMAIL_FROM` are set in Netlify.
+- **Analytics events** (no personal data, answers or scores): `assessment_view`, `assessment_start`, `assessment_complete`, `results_view`, `booking_click`. `booking_confirmed` needs a Calendly webhook or embed, which isn't set up.
+- **Links in:** Home (separate band), the men's life coaching page, three blog posts, the footer and the mobile menu. The privacy policy has an assessment section.
+- **Roland to approve:** the wording, the follow-up process, the consent text, and the 24-month retention period stated in the privacy policy.
+
 ## Analytics (GA4)
 
 Set `ga4Id` in `site.ts`. That loads GA4 with Consent Mode and shows a small cookie notice. The site sends these events, each with `page_path`: `click_call`, `click_text`, `click_email`, `click_calendly`, `generate_lead` (form submit) and `video_play`. In GA4, mark `generate_lead`, `click_call` and `click_calendly` as key events. Set `gscToken` for the Search Console verification meta tag, or verify with DNS instead.

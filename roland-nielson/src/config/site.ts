@@ -127,6 +127,12 @@ export type Plan = {
 // {{PREMIUM_PRICE}}: set to a number (monthly) to show it. Empty = "Book a call to apply".
 export const PREMIUM_PRICE: number | null = null;
 
+// Personal Patterns Assessment. Turn resultsEmail on only after RESEND_API_KEY and
+// ALERT_EMAIL_FROM are set in Netlify; until then the "Email me a copy" option is hidden.
+export const assessmentSettings = {
+  resultsEmail: false,
+};
+
 export const plans: Plan[] = [
   {
     id: 'starter',
