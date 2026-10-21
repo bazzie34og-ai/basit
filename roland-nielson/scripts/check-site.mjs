@@ -25,7 +25,7 @@ const walk = (dir) => {
   for (const f of readdirSync(dir)) {
     const p = join(dir, f);
     if (statSync(p).isDirectory()) { if (f !== '_astro') walk(p); }
-    else if (f.endsWith('.html')) files.push(p);
+    else if (f.endsWith('.html') && !/^google[0-9a-f]+\.html$/.test(f)) files.push(p); // skip Search Console verification file
   }
 };
 walk(DIST);
