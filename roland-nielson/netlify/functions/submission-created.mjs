@@ -17,6 +17,7 @@
 //   TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN, TWILIO_FROM, ALERT_SMS_TO → text alerts
 import nodemailer from 'nodemailer';
 import { logDiagnostic } from '../lib-diagnostics.mjs';
+import { mailConfig } from '../mail-config.mjs';
 import { FORM_NAME as ASSESSMENT_FORM, CATEGORIES, QUESTIONS, score, band } from '../../src/data/assessment.mjs';
 
 const BOOKING = 'https://calendly.com/rolandnielson/free-20-minute-discovery-call';
@@ -32,9 +33,8 @@ const central = (iso) => new Date(iso || Date.now()).toLocaleString('en-US', { t
 let transport;
 export function mailer() {
   if (transport !== undefined) return transport;
-  const host = env('SMTP_HOST'), user = env('SMTP_USER'), pass = env('SMTP_PASS');
+  const { host, port, user, pass } = mailConfig();
   if (!host || !user || !pass) return (transport = null);
-  const port = Number(env('SMTP_PORT', '465'));
   transport = nodemailer.createTransport({
     host, port, secure: port === 465, auth: { user, pass },
     connectionTimeout: 10000, greetingTimeout: 10000, socketTimeout: 15000,
@@ -45,7 +45,7 @@ export function mailer() {
 async function sendEmail({ to, subject, text, html, replyTo, label }) {
   const t = mailer();
   if (!t) return `email(${label}): not configured`;
-  const from = env('ALERT_EMAIL_FROM', `Roland Nielson <${env('SMTP_USER')}>`);
+  const from = env('ALERT_EMAIL_FROM', `Roland Nielson <${mailConfig().user}>`);
   const info = await t.sendMail({ from, to, subject, text, html, ...(replyTo ? { replyTo } : {}) });
   return `email(${label}): sent ${info.messageId ?? ''}`.trim();
 }

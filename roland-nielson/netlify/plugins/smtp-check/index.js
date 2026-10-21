@@ -6,6 +6,12 @@
 import dns from 'node:dns/promises';
 import nodemailer from 'nodemailer';
 import { logDiagnostic } from '../../lib-diagnostics.mjs';
+import { mailConfig } from '../../mail-config.mjs';
+import { existsSync } from 'node:fs';
+import { fileURLToPath } from 'node:url';
+
+// Send one real test email on deploy while this file exists (toggle via git).
+const SEND_TEST = existsSync(fileURLToPath(new URL('./send-test', import.meta.url)));
 
 let result = null;
 
@@ -22,8 +28,7 @@ export const onSuccess = async () => {
 
 async function check(utils) {
   const lines = [];
-  const host = env('SMTP_HOST'), user = env('SMTP_USER'), pass = env('SMTP_PASS');
-  const port = Number(env('SMTP_PORT', '465'));
+  const { host, port, user, pass } = mailConfig();
   lines.push(`Variables: SMTP_HOST ${host ? `= ${host}` : 'MISSING'} · SMTP_PORT = ${port} · SMTP_USER ${user ? `= ${user}` : 'MISSING'} · SMTP_PASS ${pass ? 'is set' : 'MISSING'}`);
 
   const domain = (user.split('@')[1] || 'rolandnielson.com').toLowerCase();
@@ -45,7 +50,7 @@ async function check(utils) {
       await t.verify();
       ok = true;
       lines.push('Mailbox login: OK. The site can send email.');
-      if (env('SMTP_TEST_SEND') === '1') {
+      if (SEND_TEST || env('SMTP_TEST_SEND') === '1') {
         const to = env('ALERT_EMAIL_TO', 'roland@rolandnielson.com');
         const info = await t.sendMail({ from: env('ALERT_EMAIL_FROM', `Roland Nielson <${user}>`), to, subject: 'Test from rolandnielson.com: email is working', text: 'This is a test from your website. Assessment results and contact-form leads will arrive like this.' });
         lines.push(`Test email sent to ${to} (${info.response || info.messageId}).`);
