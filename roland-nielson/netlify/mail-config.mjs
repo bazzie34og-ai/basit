@@ -2,6 +2,12 @@
 // The only value that must live in Netlify is SMTP_PASS (the mailbox password).
 import dns from 'node:dns/promises';
 
+// Where Netlify's own form-notification emails go (no mailbox password needed).
+// Set on each deploy by netlify/plugins/smtp-check. ALERT_EMAILS overrides (comma-separated).
+export const notifyEmails = () =>
+  (process.env.ALERT_EMAILS || 'roland@rolandnielson.com,rolandnielson@gmail.com').split(',').map((s) => s.trim()).filter(Boolean);
+export const notifyForms = ['coaching-inquiry', 'personal-patterns-assessment'];
+
 export const mailConfig = () => ({
   host: process.env.SMTP_HOST || 'mail.rolandnielson.com',
   port: Number(process.env.SMTP_PORT || 465),
