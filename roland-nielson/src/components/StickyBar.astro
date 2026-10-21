@@ -1,10 +1,11 @@
 ---
 import Icon from './Icon.astro';
-import { site, tel, sms } from '../config/site';
+import { site, tel, sms, whatsapp } from '../config/site';
+const wa = whatsapp('Hi Roland, I found you on rolandnielson.com. ');
 ---
 <nav class="sticky-bar" aria-label="Quick contact">
   <a href={tel}><Icon name="phone" /><span>Call</span></a>
-  <a href={sms}><Icon name="text" /><span>Text</span></a>
+  {wa ? <a href={wa} rel="noopener"><Icon name="whatsapp" /><span>WhatsApp</span></a> : <a href={sms}><Icon name="text" /><span>Text</span></a>}
   <a href={site.booking} rel="noopener" class="book"><Icon name="calendar" /><span>Book free call</span></a>
 </nav>
 <style>

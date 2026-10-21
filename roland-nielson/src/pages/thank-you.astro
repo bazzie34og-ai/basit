@@ -3,12 +3,20 @@ import Base from '../layouts/Base.astro';
 import PageHero from '../components/PageHero.astro';
 import CrisisBox from '../components/CrisisBox.astro';
 import Icon from '../components/Icon.astro';
-import { site, tel } from '../config/site';
+import { site, tel, whatsapp } from '../config/site';
+const wa = whatsapp();
 ---
 <Base path="/thank-you/" cta={false}>
   <PageHero eyebrow="Message received" title="Thanks. I got your message." lead="Roland replies within 24 hours, usually the same evening." />
   <section class="section">
     <div class="wrap narrow prose">
+      {wa && (
+        <div class="wa-box" data-wa-box hidden>
+          <h2>Want Roland to see it right now?</h2>
+          <p>Send your message to his WhatsApp. It's already typed out, just tap Send.</p>
+          <a class="btn brass" href={wa} rel="noopener" data-wa-send data-wa-base={wa}><Icon name="whatsapp" />Send on WhatsApp</a>
+        </div>
+      )}
       <h2>What happens next</h2>
       <ol>
         <li><strong>I read every message myself.</strong> No assistants, no auto-replies.</li>
@@ -25,3 +33,18 @@ import { site, tel } from '../config/site';
     </div>
   </section>
 </Base>
+<script>
+  // The form stores a ready-to-send summary (this browser only) before it submits.
+  const box = document.querySelector<HTMLElement>('[data-wa-box]');
+  const link = document.querySelector<HTMLAnchorElement>('[data-wa-send]');
+  let msg = '';
+  try { msg = sessionStorage.getItem('rn_wa_message') || ''; } catch { /* storage blocked */ }
+  if (box && link && msg) {
+    link.href = `${link.dataset.waBase}?text=${encodeURIComponent(msg)}`;
+    box.hidden = false;
+  }
+</script>
+<style>
+  .wa-box { background: var(--white); border: 1px solid var(--sand); border-radius: var(--radius); padding: var(--space-m); margin-bottom: var(--space-m); }
+  .wa-box h2 { margin-top: 0; }
+</style>

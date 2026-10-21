@@ -91,6 +91,20 @@ document.querySelectorAll<HTMLFormElement>('[data-lead-form]').forEach((form) =>
       bad[0].focus();
       return;
     }
+    const v = (n: string) => (form.elements.namedItem(n) as HTMLInputElement | null)?.value?.trim() || '';
+    const checked = (n: string) => form.querySelector<HTMLInputElement>(`[name="${n}"]:checked`)?.value || '';
+    const lines = [
+      'Hi Roland, I just sent this through rolandnielson.com:',
+      `Name: ${v('name')}`,
+      `Phone: ${v('phone')}`,
+      v('email') && `Email: ${v('email')}`,
+      checked('preferred_contact') && `Best way to reach me: ${checked('preferred_contact')}`,
+      checked('who_for') && `For: ${checked('who_for')}`,
+      v('session_pref') && `Session type: ${v('session_pref')}`,
+      v('best_time') && `Best time: ${v('best_time')}`,
+      v('message') && `\n${v('message')}`,
+    ].filter(Boolean);
+    try { sessionStorage.setItem('rn_wa_message', lines.join('\n')); } catch { /* storage blocked */ }
     track('generate_lead', { form_name: 'coaching-inquiry', form_type: form.querySelector<HTMLInputElement>('[name=form_type]')?.value, transport_type: 'beacon' });
   });
 });

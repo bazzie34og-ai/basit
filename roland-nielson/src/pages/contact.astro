@@ -4,7 +4,7 @@ import PageHero from '../components/PageHero.astro';
 import ContactForm from '../components/ContactForm.astro';
 import CrisisBox from '../components/CrisisBox.astro';
 import Icon from '../components/Icon.astro';
-import { site, tel, sms, mailto, hasOffice, areaNames, hoursText } from '../config/site';
+import { site, tel, sms, mailto, whatsapp, hasOffice, areaNames, hoursText } from '../config/site';
 import { abs } from '../config/site';
 import { ids } from '../lib/schema';
 
@@ -33,6 +33,7 @@ const schema = [{ '@type': 'ContactPage', '@id': abs(`${path}#contact`), url: ab
     <div class="btn-row">
       <a class="btn brass" href={site.booking} rel="noopener"><Icon name="calendar" />Book a Free Discovery Call</a>
       <a class="btn ghost" href={tel}><Icon name="phone" />Call {site.phone.display}</a>
+      {whatsapp() && <a class="btn ghost" href={whatsapp('Hi Roland, I found you on rolandnielson.com. ')} rel="noopener"><Icon name="whatsapp" />WhatsApp</a>}
       <a class="btn ghost" href={sms}><Icon name="text" />Text</a>
     </div>
   </PageHero>

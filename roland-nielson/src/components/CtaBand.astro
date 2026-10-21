@@ -2,7 +2,8 @@
 import ShortForm from './ShortForm.astro';
 import CrisisBox from './CrisisBox.astro';
 import Icon from './Icon.astro';
-import { site, tel, sms, hoursText } from '../config/site';
+import { site, tel, sms, whatsapp, hoursText } from '../config/site';
+const wa = whatsapp('Hi Roland, I found you on rolandnielson.com. ');
 interface Props { heading?: string; text?: string; showHours?: boolean; freeCallLink?: boolean; }
 const {
   heading = 'Tell me what keeps happening.',
@@ -21,6 +22,7 @@ const {
         <a class="btn brass" href={site.booking} rel="noopener"><Icon name="calendar" />Book a Free Discovery Call</a>
         <a class="btn ghost" href={tel}><Icon name="phone" />Call {site.phone.display}</a>
         <a class="btn ghost" href={sms}><Icon name="text" />Text</a>
+        {wa && <a class="btn ghost" href={wa} rel="noopener"><Icon name="whatsapp" />WhatsApp</a>}
       </div>
       {showHours
         ? <p class="hours-note">Hours: {hoursText}. In person in Omaha, by video or by phone.</p>
