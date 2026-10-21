@@ -110,6 +110,15 @@ This is a free lead-generation tool built from the October 2026 team brief. It h
 - **Links in:** Home (separate band), the men's life coaching page, three blog posts, the footer and the mobile menu. The privacy policy has an assessment section.
 - **Roland to approve:** the wording, the follow-up process, the consent text, and the 24-month retention period stated in the privacy policy.
 
+## Lead and assessment emails (own mailbox, SMTP)
+
+`netlify/functions/submission-created.mjs` runs on every real (non-spam) form submission. It sends email through Roland's own mailbox over SMTP, with no third-party email service:
+- **Contact form:** Roland gets the lead (name, phone, message, preferred contact). Reply-To is set to the visitor.
+- **Assessment:** Roland gets the full results: contact details, four scores, motivators, reflections, all 20 answers, and a "Call" button.
+- **Visitor copy:** the visitor gets their results only if they tick "Email me a copy of my results". That option shows on the page when `assessmentSettings.resultsEmail = true`.
+
+Netlify environment variables (functions scope): `SMTP_HOST` (e.g. `mail.rolandnielson.com`), `SMTP_PORT` (`465`), `SMTP_USER` (`roland@rolandnielson.com`), `SMTP_PASS` (mark as secret). Optional: `ALERT_EMAIL_TO`, `ALERT_EMAIL_FROM`. Delivery results show in Netlify → Logs → Functions → `submission-created`.
+
 ## Analytics (GA4)
 
 Set `ga4Id` in `site.ts`. That loads GA4 with Consent Mode and shows a small cookie notice. The site sends these events, each with `page_path`: `click_call`, `click_text`, `click_email`, `click_calendly`, `generate_lead` (form submit) and `video_play`. In GA4, mark `generate_lead`, `click_call` and `click_calendly` as key events. Set `gscToken` for the Search Console verification meta tag, or verify with DNS instead.
