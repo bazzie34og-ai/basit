@@ -161,25 +161,6 @@ function init(form: HTMLFormElement) {
       d.append(h, p); return d;
     }));
 
-    // WhatsApp: pre-typed summary the participant can send to Roland with one tap.
-    const wa = results.querySelector<HTMLAnchorElement>('[data-ppa-wa]');
-    if (wa) {
-      const val = (n: string) => (form.elements.namedItem(n) as HTMLInputElement | null)?.value?.trim() || '';
-      const lines = [
-        'Hi Roland, here are my Personal Patterns Assessment results from rolandnielson.com:',
-        `Name: ${val('name')}`,
-        `Phone: ${val('phone')}`,
-        `Email: ${val('email')}`,
-        '',
-        ...CATEGORIES.map((c) => `${c.name}: ${scores[c.key]}/25 (${band(scores[c.key])})`),
-        mot ? `\nWhat motivates me: ${mot}` : null,
-        improve ? `Area I most want to improve: ${improve}` : null,
-        obstacle ? `What keeps getting in my way: ${obstacle}` : null,
-      ].filter((l) => l !== null);
-      wa.href = `${wa.dataset.waBase}?text=${encodeURIComponent(lines.join('\n'))}`;
-      wa.hidden = false;
-    }
-
     const status = results.querySelector('[data-ppa-status]')!;
     const optIn = form.elements.namedItem('results_email') as HTMLInputElement | null;
     const emailOptIn = optIn?.type === 'checkbox' && optIn.checked;

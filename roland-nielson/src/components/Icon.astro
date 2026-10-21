@@ -1,5 +1,5 @@
 ---
-interface Props { name: 'phone' | 'text' | 'calendar' | 'mail' | 'arrow' | 'play' | 'pin' | 'clock' | 'whatsapp'; }
+interface Props { name: 'phone' | 'text' | 'calendar' | 'mail' | 'arrow' | 'play' | 'pin' | 'clock'; }
 const { name } = Astro.props;
 const paths: Record<Props['name'], string> = {
   phone: 'M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1z',
@@ -10,7 +10,6 @@ const paths: Record<Props['name'], string> = {
   play: 'M8 5v14l11-7z',
   pin: 'M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21zm0-9a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5z',
   clock: 'M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zm0-13v4l3 2',
-  whatsapp: 'M12 3.5a8.5 8.5 0 0 0-7.3 12.8L3.5 20.5l4.3-1.1A8.5 8.5 0 1 0 12 3.5zM9 8.5c.3 2.6 2.6 5.3 5.5 6l1.2-1.4-1.9-1-1 .8a5 5 0 0 1-2.3-2.3l.8-1-1-1.9z',
 };
 const filled = name === 'phone' || name === 'play';
 ---

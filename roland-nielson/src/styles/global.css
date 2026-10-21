@@ -171,7 +171,6 @@ em.serif, .serif-i { font-family: var(--serif); font-style: italic; }
 .dark .section-head p:not(.eyebrow), .navy .section-head p:not(.eyebrow) { color: #b9c2cf; }
 
 /* Buttons */
-[hidden] { display: none !important; }
 .btn {
   --btn-bg: var(--ink); --btn-fg: var(--bone);
   display: inline-flex; align-items: center; justify-content: center; gap: 0.55em;

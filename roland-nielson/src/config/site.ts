@@ -19,9 +19,6 @@ export const site = {
     display: '(402) 577-0738',
     e164: '+14025770738',
   },
-  // WhatsApp number with country code, digits only (e.g. '14025770738').
-  // Empty = WhatsApp buttons stay hidden.
-  whatsapp: '14023010103',
   email: 'roland@rolandnielson.com',
   booking: 'https://calendly.com/rolandnielson/free-20-minute-discovery-call',
   bookingLabel: 'Free 20-minute discovery call',
@@ -202,11 +199,6 @@ export const POLICY = '';
 // Helpers ---------------------------------------------------------------------
 export const tel = `tel:${site.phone.e164}`;
 export const sms = `sms:${site.phone.e164}`;
-// WhatsApp click-to-chat link, optionally with a pre-typed message. '' when no number is set.
-export const whatsapp = (text = '') => {
-  const n = site.whatsapp.replace(/\D/g, '');
-  return n ? `https://wa.me/${n}${text ? `?text=${encodeURIComponent(text)}` : ''}` : '';
-};
 export const mailto = `mailto:${site.email}`;
 export const abs = (path: string) => new URL(path, site.url).href;
 export const hasOffice = Boolean(site.office.streetAddress && site.office.postalCode);

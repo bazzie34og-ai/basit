@@ -5,7 +5,7 @@ import Faq from '../components/Faq.astro';
 import RelatedLinks from '../components/RelatedLinks.astro';
 import FormHidden from '../components/FormHidden.astro';
 import Icon from '../components/Icon.astro';
-import { site, abs, assessmentSettings, whatsapp } from '../config/site';
+import { site, abs, assessmentSettings } from '../config/site';
 import { page } from '../data/pages';
 import { faqPage, ids } from '../lib/schema';
 import { CATEGORIES, QUESTIONS, SCALE, MOTIVATORS, MAX_MOTIVATORS, BANDS, VERSION, FORM_NAME } from '../data/assessment.mjs';
@@ -216,7 +216,6 @@ const steps = [
         <p class="cta-q">Want to talk about your patterns and one change you want to make? Book a free 20-minute discovery call.</p>
         <div class="btn-row">
           <a class="btn brass" href={site.booking} rel="noopener" data-ppa-book="results"><Icon name="calendar" />Book Your Free 20-Minute Discovery Call</a>
-          {whatsapp() && <a class="btn ghost" href={whatsapp()} rel="noopener" data-ppa-wa data-wa-base={whatsapp()} hidden><Icon name="whatsapp" />Send My Results to Roland on WhatsApp</a>}
           <button class="btn ghost" type="button" data-ppa-save>Save My Results</button>
         </div>
         <p class="muted small" data-scope>This is an original, unvalidated coaching reflection tool, not a clinical assessment.</p>
