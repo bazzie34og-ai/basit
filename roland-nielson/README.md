@@ -117,7 +117,9 @@ This is a free lead-generation tool built from the October 2026 team brief. It h
 - **Assessment:** Roland gets the full results: contact details, four scores, motivators, reflections, all 20 answers, and a "Call" button.
 - **Visitor copy:** the visitor gets their results only if they tick "Email me a copy of my results". That option shows on the page when `assessmentSettings.resultsEmail = true`.
 
-Netlify environment variables (functions scope): `SMTP_HOST` (e.g. `mail.rolandnielson.com`), `SMTP_PORT` (`465`), `SMTP_USER` (`roland@rolandnielson.com`), `SMTP_PASS` (mark as secret). Optional: `ALERT_EMAIL_TO`, `ALERT_EMAIL_FROM`. Delivery results show in Netlify → Logs → Functions → `submission-created`.
+The mail server (`mail.rolandnielson.com`, port 465) and user (`roland@rolandnielson.com`) default in `netlify/mail-config.mjs`. The only Netlify environment variable needed is **`SMTP_PASS`**, the mailbox password, marked secret. `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `ALERT_EMAIL_TO` and `ALERT_EMAIL_FROM` can override the defaults. After changing a variable, redeploy.
+
+**Checking it works:** every deploy runs `netlify/plugins/smtp-check`. It tests DNS and the mailbox login, and while `netlify/plugins/smtp-check/send-test` exists it also sends a test email. Results, and every delivery outcome, are stored in the hidden **site-diagnostics** form (Netlify → Forms). No passwords are ever recorded.
 
 ## Analytics (GA4)
 
