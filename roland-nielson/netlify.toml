@@ -55,3 +55,7 @@
 
 [functions]
   directory = "netlify/functions"
+
+# Deploy-time email self-check (see netlify/plugins/smtp-check). Never fails the build.
+[[plugins]]
+  package = "./netlify/plugins/smtp-check"
