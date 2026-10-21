@@ -6,7 +6,7 @@
 import dns from 'node:dns/promises';
 import nodemailer from 'nodemailer';
 import { logDiagnostic } from '../../lib-diagnostics.mjs';
-import { mailConfig } from '../../mail-config.mjs';
+import { mailConfig, transportOptions } from '../../mail-config.mjs';
 import { existsSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 
@@ -45,7 +45,9 @@ async function check(utils) {
 
   let ok = false;
   if (host && user && pass) {
-    const t = nodemailer.createTransport({ host, port, secure: port === 465, auth: { user, pass }, connectionTimeout: 10000, greetingTimeout: 10000, socketTimeout: 15000 });
+    const { servername, options } = await transportOptions();
+    lines.push(`TLS certificate name used: ${servername}`);
+    const t = nodemailer.createTransport(options);
     try {
       await t.verify();
       ok = true;
