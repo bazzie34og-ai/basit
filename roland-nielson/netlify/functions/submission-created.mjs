@@ -16,6 +16,7 @@
 //   ALERT_EMAIL_FROM  sender shown to people (default "Roland Nielson <SMTP_USER>")
 //   TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN, TWILIO_FROM, ALERT_SMS_TO → text alerts
 import nodemailer from 'nodemailer';
+import { logDiagnostic } from '../lib-diagnostics.mjs';
 import { FORM_NAME as ASSESSMENT_FORM, CATEGORIES, QUESTIONS, score, band } from '../../src/data/assessment.mjs';
 
 const BOOKING = 'https://calendly.com/rolandnielson/free-20-minute-discovery-call';
@@ -189,5 +190,6 @@ export const handler = async (event) => {
 
   const log = results.map((r) => (r.status === 'fulfilled' ? r.value : `error: ${r.reason?.message ?? r.reason}`)).join(' | ');
   console.log(`${payload.form_name} → ${log}`);
+  await logDiagnostic(`Email delivery: ${payload.form_name}`, `${clean(d.name)}: ${log}`);
   return { statusCode: 200, body: log };
 };

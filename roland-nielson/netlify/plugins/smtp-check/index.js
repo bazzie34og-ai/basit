@@ -5,11 +5,19 @@
 // Set SMTP_TEST_SEND=1 for one deploy to also send a real test email to ALERT_EMAIL_TO.
 import dns from 'node:dns/promises';
 import nodemailer from 'nodemailer';
+import { logDiagnostic } from '../../lib-diagnostics.mjs';
+
+let result = null;
 
 const env = (k, d = '') => process.env[k] || d;
 
 export const onPostBuild = async ({ utils }) => {
   try { await check(utils); } catch (e) { console.log(`[smtp-check] skipped: ${e.message}`); }
+};
+
+// After the deploy is live, store the result in the "site-diagnostics" form.
+export const onSuccess = async () => {
+  if (result) await logDiagnostic(result.title, result.summary);
 };
 
 async function check(utils) {
@@ -50,5 +58,7 @@ async function check(utils) {
   }
   const summary = lines.join('\n');
   console.log(`[smtp-check]\n${summary}`);
-  utils.status.show({ title: ok ? 'Email check: working' : 'Email check: NOT working', summary });
+  const title = ok ? 'Email check: working' : 'Email check: NOT working';
+  result = { title, summary };
+  utils.status.show({ title, summary });
 }
