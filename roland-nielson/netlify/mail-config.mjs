@@ -1,14 +1,16 @@
 // Non-secret mail settings. Environment variables override these.
-// The only value that must live in Netlify is SMTP_PASS (the mailbox password).
+// The only value that must live in Netlify is SMTP_PASS (the mailbox password)
+// or GMAIL_APP_PASSWORD (send through Roland's Gmail instead).
 import dns from 'node:dns/promises';
 
-// Where Netlify's own form-notification emails go (no mailbox password needed).
-// Set on each deploy by netlify/plugins/smtp-check. ALERT_EMAILS overrides (comma-separated).
-export const notifyEmails = () =>
-  (process.env.ALERT_EMAILS || 'roland@rolandnielson.com,rolandnielson@gmail.com').split(',').map((s) => s.trim()).filter(Boolean);
-export const notifyForms = ['coaching-inquiry', 'personal-patterns-assessment'];
-
-export const mailConfig = () => ({
+// Free fallback that needs no change to any existing password: a Gmail "app password"
+// for Roland's Gmail (GMAIL_APP_PASSWORD). When set, mail is sent through Gmail.
+export const mailConfig = () => process.env.GMAIL_APP_PASSWORD ? {
+  host: 'smtp.gmail.com',
+  port: 465,
+  user: (process.env.GMAIL_USER || 'rolandnielson@gmail.com').trim(),
+  pass: process.env.GMAIL_APP_PASSWORD.replace(/\s+/g, ''), // Google shows it in groups of four
+} : ({
   host: process.env.SMTP_HOST || 'mail.rolandnielson.com',
   port: Number(process.env.SMTP_PORT || 465),
   user: (process.env.SMTP_USER || 'roland@rolandnielson.com').trim(),
