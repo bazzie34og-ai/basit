@@ -5,8 +5,8 @@ import dns from 'node:dns/promises';
 export const mailConfig = () => ({
   host: process.env.SMTP_HOST || 'mail.rolandnielson.com',
   port: Number(process.env.SMTP_PORT || 465),
-  user: process.env.SMTP_USER || 'roland@rolandnielson.com',
-  pass: process.env.SMTP_PASS || '',
+  user: (process.env.SMTP_USER || 'roland@rolandnielson.com').trim(),
+  pass: (process.env.SMTP_PASS || '').trim(), // ignore spaces copied with the password
 });
 
 // Shared hosting (Namecheap) serves mail.<domain> with a certificate for the
