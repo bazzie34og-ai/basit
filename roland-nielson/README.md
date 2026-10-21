@@ -119,7 +119,7 @@ This is a free lead-generation tool built from the October 2026 team brief. It h
 
 The mail server (`mail.rolandnielson.com`, port 465) and user (`roland@rolandnielson.com`) default in `netlify/mail-config.mjs`. The only Netlify environment variable needed is **`SMTP_PASS`**, the mailbox password, marked secret. `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `ALERT_EMAIL_TO` and `ALERT_EMAIL_FROM` can override the defaults. After changing a variable, redeploy.
 
-**Free alternative (no change to the mailbox password):** set **`GMAIL_APP_PASSWORD`** (secret) to a Google app password for `rolandnielson@gmail.com` (Google Account → Security → 2-Step Verification on → App passwords). Mail is then sent through Gmail (`smtp.gmail.com`), from that Gmail address. `GMAIL_USER` overrides the Gmail address.
+**Free alternative (no change to the mailbox password):** set **`GMAIL_APP_PASSWORD`** (secret) to a Google app password for `rolandnielson@gmail.com` (Google Account → Security → 2-Step Verification on → App passwords). Mail is then sent through Gmail (`smtp.gmail.com`), from that Gmail address. `GMAIL_USER` overrides the Gmail address (it must be the account that created the app password).
 
 **Checking it works:** every deploy runs `netlify/plugins/smtp-check`. It tests DNS and the mailbox login, and while `netlify/plugins/smtp-check/send-test` exists it also sends a test email. Results, and every delivery outcome, are stored in the hidden **site-diagnostics** form (Netlify → Forms). No passwords are ever recorded.
 
