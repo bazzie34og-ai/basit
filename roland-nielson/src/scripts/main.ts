@@ -6,6 +6,19 @@ const gtag = (): Gtag | undefined => (window as unknown as { gtag?: Gtag }).gtag
 const track = (event: string, params: Record<string, unknown> = {}) =>
   gtag()?.('event', event, { page_path: location.pathname, ...params });
 
+// --- Hide the "Powered by Netlify" badge -------------------------------------
+// Netlify injects it after load (sometimes inside a shadow root), so watch the page and remove it.
+const isBadge = (el: Element) => {
+  const text = `${el.textContent ?? ''} ${el.shadowRoot?.textContent ?? ''}`;
+  return /powered by netlify/i.test(text) && text.length < 200;
+};
+const removeBadges = () => {
+  for (const el of Array.from(document.body?.children ?? [])) if (el.tagName !== 'MAIN' && el.tagName !== 'HEADER' && el.tagName !== 'FOOTER' && isBadge(el)) el.remove();
+  document.querySelectorAll('a[href*="netlify.com"]').forEach((a) => a.remove());
+};
+removeBadges();
+new MutationObserver(removeBadges).observe(document.documentElement, { childList: true, subtree: true });
+
 // --- Mobile menu --------------------------------------------------------------
 const header = document.querySelector<HTMLElement>('[data-header]');
 const menuBtn = document.querySelector<HTMLButtonElement>('[data-menu-btn]');
