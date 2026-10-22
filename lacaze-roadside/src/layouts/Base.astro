@@ -52,12 +52,13 @@ const jsonld = JSON.stringify({ '@context': 'https://schema.org', '@graph': grap
   <meta name="twitter:title" content={title} />
   <meta name="twitter:description" content={description} />
   <meta name="twitter:image" content={ogImage} />
+  {/* Allowed in netlify.toml's CSP by its sha256 hash; if you change this line, update the hash there. */}
   <script is:inline>document.documentElement.classList.add('js')</script>
   <script is:inline type="application/ld+json" set:html={jsonld} />
   {b.ga4Id && (
     <>
       <script is:inline async src={`https://www.googletagmanager.com/gtag/js?id=${b.ga4Id}`}></script>
-      <script is:inline define:vars={{ id: b.ga4Id }}>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}window.gtag=gtag;gtag('js',new Date());gtag('config',id);</script>
+      <script is:inline src="/js/gtag-init.js" data-ga-id={b.ga4Id}></script>
     </>
   )}
   <slot name="head" />

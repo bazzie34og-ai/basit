@@ -10,6 +10,8 @@
   # Launched on lacazeroadside.com, so this is "false".
   PREVIEW_MODE = "false"
 
+# The CSP has no 'unsafe-inline' for scripts: only the one inline line in Base.astro is allowed (by hash).
+# This also stops Netlify's injected "Powered by Netlify" badge from rendering.
 [[headers]]
   for = "/*"
   [headers.values]
@@ -18,7 +20,7 @@
     Referrer-Policy = "strict-origin-when-cross-origin"
     Permissions-Policy = "geolocation=(self), camera=(), microphone=(), payment=(), usb=()"
     Strict-Transport-Security = "max-age=31536000; includeSubDomains"
-    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://*.google-analytics.com https://*.googletagmanager.com https://*.google.com https://*.gstatic.com; font-src 'self'; connect-src 'self' https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com; frame-src https://maps.google.com https://www.google.com; form-action 'self'; base-uri 'self'; frame-ancestors 'none'; object-src 'none'"
+    Content-Security-Policy = "default-src 'self'; script-src 'self' 'sha256-Du+OJKJSbdUgz5nrHeWWINvez6XKDDU/tyj/5c2uvwo=' https://www.googletagmanager.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://*.google-analytics.com https://*.googletagmanager.com https://*.google.com https://*.gstatic.com; font-src 'self'; connect-src 'self' https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com; frame-src https://maps.google.com https://www.google.com; form-action 'self'; base-uri 'self'; frame-ancestors 'none'; object-src 'none'"
 
 [[headers]]
   for = "/_astro/*"
