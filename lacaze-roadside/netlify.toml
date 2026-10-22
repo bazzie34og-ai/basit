@@ -6,9 +6,9 @@
 
 [build.environment]
   NODE_VERSION = "22"
-  # Keep "true" until the custom domain is connected. "true" adds <meta name="robots" content="noindex">
-  # to every page so Google doesn't index the netlify.app address. Set to "false" at launch.
-  PREVIEW_MODE = "true"
+  # "true" adds <meta name="robots" content="noindex"> to every page (hides the site from Google).
+  # Launched on lacazeroadside.com, so this is "false".
+  PREVIEW_MODE = "false"
 
 [[headers]]
   for = "/*"
