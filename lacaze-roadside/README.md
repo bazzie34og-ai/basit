@@ -57,24 +57,23 @@ Red **DEV TODO** notes (for values still waiting on John) appear only in `npm ru
 
 ---
 
-## Form submissions → John's email (FormSubmit, free)
+## Form submissions → John's email (Netlify Forms)
 
-The "Request help" form sends each request by email to **lacazeroadside@gmail.com** through [FormSubmit](https://formsubmit.co). It's free, needs no account, and doesn't use Netlify's paid form notifications. The address comes from `email` in `src/data/business.json`.
+The "Request help" form (`roadside-request`) is a Netlify Form. Every request is **saved** in Netlify (**Forms → roadside-request**) and **emailed** to John by a Netlify notification.
 
-**One-time activation (required):**
-1. Send one test request from the live site.
-2. FormSubmit emails lacazeroadside@gmail.com with the subject "Action Required: Activate FormSubmit". Open it and click **Activate Form**. Check spam if it isn't in the inbox.
-3. Done. From then on, every request arrives as an email titled "New roadside help request — LaCaze website", with name, phone, service, location (a Google Maps link when "Use my location" is used), notes and the page it came from.
+**Email notification (one-time setup):**
+1. Netlify → project **lacaze-roadside** → **Project configuration → Notifications → Emails and webhooks** (some accounts show it under **Forms → Form notifications**).
+2. **Add notification → Email notification**. Event: *New form submission*. Form: `roadside-request`. Email: **lacazeroadside@gmail.com**. Save.
+3. Send a test from https://lacazeroadside.com. It shows up under **Forms** within seconds, and the email follows shortly after. Emails come from `formresponses@netlify.com`, so check Spam the first time and mark it "Not spam".
 
 How it behaves:
 - The form sends in the background, then shows `/thank-you/`.
-- If sending fails (no signal, or the form isn't activated yet), the customer sees "We couldn't send your request just now. Please call (832) 949-4837" and their details stay filled in.
-- Spam protection: a hidden `_honey` field, plus the 10-digit phone check.
-- Without JavaScript, the form posts to FormSubmit directly and redirects to `/thank-you/`.
-- To change the inbox, edit `email` in `business.json` and redeploy. A new address needs the one-time activation again.
-- *(Optional)* For text alerts, set up a Gmail filter on that subject that forwards to a phone, or use Zapier's Gmail → SMS.
+- If sending fails (for example, no signal), the customer sees "We couldn't send your request just now. Please call (832) 949-4837" and their details stay filled in.
+- Spam protection: Netlify's spam filter, a hidden `bot-field` honeypot, and the 10-digit phone check. If a real request is ever missing, look in **Forms → Spam submissions**.
+- Without JavaScript, the form posts normally and lands on `/thank-you/`.
+- *(Optional)* For text alerts: a Gmail filter on the subject "New roadside help request" that forwards to a phone, or Zapier's Netlify → SMS.
 
-**Call and Text buttons** are plain phone links (`tel:+18329494837`, `sms:+18329494837`). They need no backend and cost nothing.
+**Call and Text buttons** are plain phone links (`tel:+18329494837`, `sms:+18329494837`). They need no backend.
 
 ## Click tracking (GA4)
 
@@ -110,7 +109,7 @@ In GA4, mark `call_click` and `form_submit` as **key events** (conversions).
 - [ ] Add the GA4 measurement ID → `ga4Id`
 - [ ] Add the Search Console verification → `searchConsoleVerification`, then verify in Google Search Console
 - [ ] **Submit the sitemap** in Search Console: `https://<domain>/sitemap-index.xml`
-- [ ] Send a test request and click **Activate Form** in the FormSubmit email (see above)
+- [ ] Add the Netlify email notification (see above) and send a test request
 - [ ] **Add the website link to the Google Business Profile**, and make sure its name, phone and service area match the site footer exactly
 - [ ] Test the Call and Text buttons on a real iPhone and a real Android phone
 - [ ] Run the home page and one service page through Google's [Rich Results Test](https://search.google.com/test/rich-results)

@@ -4,17 +4,14 @@ import { b, abs, tel } from '../lib/site.js';
 interface Props { id?: string; preset?: string }
 const { id = 'request-form', preset = '' } = Astro.props;
 const opts = ['Jump start', 'Lockout', 'Fuel delivery', 'Not sure'];
-// Requests are emailed to John by FormSubmit (free, no account): https://formsubmit.co
-// The first request ever sent triggers a one-time "Activate form" email to the inbox below.
-const endpoint = `https://formsubmit.co/${b.email}`;
+// Netlify Forms: requests are saved in Netlify (Forms → roadside-request) and emailed to John
+// by a Netlify form notification (see README → "Form submissions").
 ---
-<form class="form" id={id} name="roadside-request" method="POST" action={endpoint} data-ajax={`https://formsubmit.co/ajax/${b.email}`} novalidate data-request-form>
-  <input type="hidden" name="_subject" value="New roadside help request — LaCaze website" />
-  <input type="hidden" name="_template" value="table" />
-  <input type="hidden" name="_captcha" value="false" />
-  <input type="hidden" name="_next" value={abs('/thank-you/')} />
+<form class="form" id={id} name="roadside-request" method="POST" action="/thank-you/" data-netlify="true" netlify-honeypot="bot-field" data-ajax="/" novalidate data-request-form>
+  <input type="hidden" name="form-name" value="roadside-request" />
+  <input type="hidden" name="subject" value="New roadside help request — LaCaze website" />
   <input type="hidden" name="page" value={abs(Astro.url.pathname)} />
-  <p class="hp" aria-hidden="true"><label>Leave this empty <input type="text" name="_honey" tabindex="-1" autocomplete="off" /></label></p>
+  <p class="hp" aria-hidden="true"><label>Leave this empty <input type="text" name="bot-field" tabindex="-1" autocomplete="off" /></label></p>
   <h3>Request help</h3>
   <p class="muted">Takes 20 seconds. {b.ownerFirstName} calls you right back.</p>
   <div class="field-row">

@@ -98,7 +98,7 @@ document.querySelectorAll('[data-request-form]').forEach((form) => {
       form.querySelector('.has-error input, .has-error select')?.focus();
       return;
     }
-    if (form.elements._honey?.value) { e.preventDefault(); return; }
+    if (form.elements['bot-field']?.value) { e.preventDefault(); return; }
     track('form_submit', { form_name: 'roadside-request', service: field('service').value, page_path: location.pathname });
     // Send in the background and go to the thank-you page; without JS the form posts normally.
     if (!form.dataset.ajax || !window.fetch) return;
@@ -108,9 +108,9 @@ document.querySelectorAll('[data-request-form]').forEach((form) => {
     const label = submitBtn.textContent;
     submitBtn.textContent = 'Sending…';
     try {
-      const res = await fetch(form.dataset.ajax, { method: 'POST', headers: { Accept: 'application/json' }, body: new FormData(form) });
-      const data = await res.json().catch(() => ({}));
-      if (!res.ok || String(data.success) !== 'true') throw new Error(data.message || res.status);
+      // Netlify Forms takes URL-encoded posts; any 2xx means the request was stored.
+      const res = await fetch(form.dataset.ajax, { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: new URLSearchParams(new FormData(form)).toString() });
+      if (!res.ok) throw new Error(res.status);
       location.href = '/thank-you/';
     } catch (err) {
       errBox.hidden = false;
