@@ -19,6 +19,8 @@ export default defineConfig({
   build: { format: 'directory', inlineStylesheets: 'always' },
   compressHTML: true,
   prefetch: false,
+  // Never inline bundled scripts: the CSP has no 'unsafe-inline' in script-src (blocks Netlify's badge).
+  vite: { build: { assetsInlineLimit: 0 } },
   devToolbar: { enabled: false },
   integrations: [netlifyRedirects],
   markdown: {

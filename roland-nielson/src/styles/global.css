@@ -385,6 +385,3 @@ th { font-family: var(--sans); font-size: 0.8rem; letter-spacing: 0.12em; text-t
 
 /* Space for the mobile sticky bar */
 @media (max-width: 899px) { body { padding-bottom: 72px; } }
-
-/* Hide the "Powered by Netlify" badge Netlify injects on hosted pages (nothing on this site uses these names). */
-[id*="netlify" i], [class*="netlify" i], a[href*="netlify.com"], netlify-badge { display: none !important; visibility: hidden !important; }

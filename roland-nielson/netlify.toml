@@ -11,6 +11,11 @@
   pretty_urls = true
 
 # Security headers for every page.
+# script-src has no 'unsafe-inline': that blocks Netlify's "Powered by Netlify" badge
+# (an inline script Netlify adds at its servers). The only inline script the site keeps
+# is the one-line 'js' class setter in src/layouts/Base.astro, allowed by its sha256 hash.
+# If that line changes, update the hash:
+#   printf "%s" "<exact script text>" | openssl dgst -sha256 -binary | base64
 [[headers]]
   for = "/*"
   [headers.values]
@@ -20,7 +25,7 @@
     Referrer-Policy = "strict-origin-when-cross-origin"
     Permissions-Policy = "camera=(), microphone=(), geolocation=(), payment=(), usb=()"
     Cross-Origin-Opener-Policy = "same-origin"
-    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://i.ytimg.com https://*.google-analytics.com https://*.googletagmanager.com https://maps.gstatic.com https://*.googleapis.com https://*.ggpht.com; font-src 'self'; media-src 'self'; frame-src https://www.youtube-nocookie.com https://www.google.com https://maps.google.com https://calendly.com; connect-src 'self' https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com; form-action 'self'; base-uri 'self'; frame-ancestors 'self'; object-src 'none'; upgrade-insecure-requests"
+    Content-Security-Policy = "default-src 'self'; script-src 'self' 'sha256-/x7W7R75k8Roq0WaVRQX9blP4OufE5xbAdzklGxsgpw=' https://www.googletagmanager.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://i.ytimg.com https://*.google-analytics.com https://*.googletagmanager.com https://maps.gstatic.com https://*.googleapis.com https://*.ggpht.com; font-src 'self'; media-src 'self'; frame-src https://www.youtube-nocookie.com https://www.google.com https://maps.google.com https://calendly.com; connect-src 'self' https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com; form-action 'self'; base-uri 'self'; frame-ancestors 'self'; object-src 'none'; upgrade-insecure-requests"
 
 # Hashed build assets never change: cache for a year.
 [[headers]]

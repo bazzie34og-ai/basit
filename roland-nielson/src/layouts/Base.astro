@@ -86,18 +86,11 @@ const ga = site.ga4Id;
 
     <slot name="head" />
     <script type="application/ld+json" set:html={jsonLd} />
+    {/* Allowed by its sha256 hash in the CSP (netlify.toml). If you change this line, update that hash. */}
     <script is:inline>document.documentElement.classList.add('js');</script>
     {ga && (
       <>
-        <script is:inline define:vars={{ ga }}>
-          window.dataLayer = window.dataLayer || [];
-          function gtag(){dataLayer.push(arguments);}
-          window.gtag = gtag;
-          var c = null; try { c = localStorage.getItem('rn-consent'); } catch (e) {}
-          gtag('consent', 'default', { ad_storage: 'denied', ad_user_data: 'denied', ad_personalization: 'denied', analytics_storage: c === 'granted' ? 'granted' : 'denied' });
-          gtag('js', new Date());
-          gtag('config', ga, { anonymize_ip: true });
-        </script>
+        <script is:inline src="/scripts/gtag-init.js" data-ga={ga}></script>
         <script is:inline async src={`https://www.googletagmanager.com/gtag/js?id=${ga}`}></script>
       </>
     )}
