@@ -18,3 +18,7 @@ By default, the form opens the visitor's email app with the message already fill
 
 ## Deploy
 Upload `index.html` to any static host, such as GitHub Pages, Netlify, Vercel or Cloudflare Pages.
+
+## Smith & Shine website
+
+The Smith & Shine (mobile valeting, Telford) site lives in [`smith-and-shine/`](smith-and-shine/). See its README.

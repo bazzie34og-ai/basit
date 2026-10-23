@@ -1,0 +1,19 @@
+---
+// Only rendered when PREVIEW_MODE is on.
+---
+<div class="ribbon" id="preview-ribbon" role="note">
+  <p>Preview prepared for Smith &amp; Shine by Abdul Basit · Primo Partners</p>
+  <button type="button" data-dismiss-ribbon aria-label="Dismiss preview note">×</button>
+</div>
+<style>
+  .ribbon {
+    display: flex; align-items: center; justify-content: center; gap: 0.5rem;
+    background: var(--ivory-2); color: var(--ink); font-size: 0.8125rem; font-weight: 600;
+    padding: 0 0 0 1rem; border-bottom: 1px solid #d8ccb4; text-align: center;
+  }
+  .ribbon p { padding-block: 0.35rem; }
+  .ribbon button {
+    border: 0; background: transparent; width: 44px; height: 36px; font-size: 1.25rem; line-height: 1; color: var(--ink-soft);
+  }
+  .ribbon button:hover { color: var(--oxide); }
+</style>

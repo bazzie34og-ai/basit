@@ -1,0 +1,42 @@
+---
+import { Picture } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+
+const photos = import.meta.glob<{ default: ImageMetadata }>('/src/assets/photos/*.jpg', { eager: true });
+const brand = import.meta.glob<{ default: ImageMetadata }>('/src/assets/brand/*.{jpg,png}', { eager: true });
+
+interface Props {
+  name: string;          // file name without extension
+  alt: string;
+  sizes?: string;
+  class?: string;
+  loading?: 'lazy' | 'eager';
+  priority?: boolean;
+  /** max display width in CSS px; we never go past ~1.1x the original */
+  maxWidth?: number;
+  position?: string;
+}
+
+const { name, alt, sizes = '(min-width: 1024px) 40vw, 100vw', class: cls, priority = false, position } = Astro.props;
+const key = `/src/assets/photos/${name}.jpg`;
+const mod = photos[key] ?? Object.entries(brand).find(([k]) => k.includes(`/${name}.`))?.[1];
+if (!mod) throw new Error(`Photo not found: ${name}`);
+const src = mod.default;
+// Never upscale: only offer widths up to the original's width.
+const widths = [360, 480, 640, 800, 960, 1200].filter((w) => w < src.width);
+widths.push(src.width);
+---
+<Picture
+  src={src}
+  alt={alt}
+  widths={widths}
+  sizes={sizes}
+  formats={['avif', 'webp']}
+  fallbackFormat="jpg"
+  quality={72}
+  loading={priority ? 'eager' : 'lazy'}
+  decoding={priority ? 'sync' : 'async'}
+  fetchpriority={priority ? 'high' : 'auto'}
+  class={cls}
+  style={position ? `object-position:${position}` : undefined}
+/>

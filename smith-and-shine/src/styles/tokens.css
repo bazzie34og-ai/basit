@@ -1,0 +1,64 @@
+/* Fraunces (from @fontsource-variable/fraunces), subset to the characters this site
+   uses with the optical-size axis kept. Rebuild with scripts/subset-fonts.py. */
+@font-face { font-family: 'Fraunces Variable'; font-style: normal; font-display: swap; font-weight: 400 800; src: url('/fonts/fraunces-normal.woff2') format('woff2-variations'); }
+@font-face { font-family: 'Fraunces Variable'; font-style: italic; font-display: swap; font-weight: 400 700; src: url('/fonts/fraunces-italic.woff2') format('woff2-variations'); }
+
+/* Metric-matched fallbacks so the web-font swap doesn't shift the layout (CLS) */
+@font-face { font-family: 'Manrope Fallback'; src: local('Arial'), local('Liberation Sans'), local('Helvetica'); font-weight: 400 500; size-adjust: 103.5%; ascent-override: 103%; descent-override: 29%; line-gap-override: 0%; }
+@font-face { font-family: 'Manrope Fallback'; src: local('Arial Bold'), local('Arial-BoldMT'), local('Liberation Sans Bold'), local('Helvetica Bold'); font-weight: 600 800; size-adjust: 97%; ascent-override: 106%; descent-override: 30%; line-gap-override: 0%; }
+@font-face { font-family: 'Fraunces Fallback'; src: local('Times New Roman'), local('Liberation Serif'), local('Times'); font-weight: 300 500; size-adjust: 98.8%; ascent-override: 99%; descent-override: 25.8%; line-gap-override: 0%; }
+@font-face { font-family: 'Fraunces Fallback'; font-style: italic; src: local('Times New Roman Italic'), local('TimesNewRomanPS-ItalicMT'), local('Liberation Serif Italic'), local('Times Italic'); font-weight: 300 700; size-adjust: 108%; ascent-override: 90%; descent-override: 28%; line-gap-override: 0%; }
+@font-face { font-family: 'Fraunces Fallback'; src: local('Times New Roman Bold'), local('TimesNewRomanPS-BoldMT'), local('Liberation Serif Bold'), local('Times Bold'); font-weight: 550 900; size-adjust: 110%; ascent-override: 104%; descent-override: 27%; line-gap-override: 0%; }
+
+/* Smith & Shine design tokens: "Ironbridge & Gold" */
+:root {
+  /* Colour */
+  --iron: #1E1F23;        /* main dark: cast iron, not pure black */
+  --iron-2: #2A2C31;      /* dark panels */
+  --iron-3: #34363C;      /* raised plates, borders on iron */
+  --ivory: #F6F1E7;       /* main light background */
+  --ivory-2: #ECE4D4;     /* rules, table stripes */
+  --paper: #FBF8F1;       /* the owner's note */
+  --ink: #17181B;         /* body text on ivory */
+  --ink-soft: #4A4C52;    /* secondary text on ivory (7.9:1) */
+  --gold: #C9A24B;        /* brand gold, sampled from the logo */
+  --gold-light: #E9C877;  /* highlights */
+  --gold-ink: #8A6A1E;    /* gold text on ivory: LARGE text only (4.48:1) */
+  --gold-ink-strong: #765811; /* gold text on ivory at body sizes (5.9:1) */
+  --oxide: #8E3B2B;       /* iron-oxide red, small accents */
+  --steel: #8B9097;       /* muted text on --iron (5.1:1) */
+  --steel-light: #A9AEB5; /* muted text on --iron-2 (6.4:1) */
+  --whatsapp: #1F7A4D;    /* deep, not neon; white text 5.4:1 */
+
+  --gold-leaf: linear-gradient(100deg, #B8892F, #F1D27E 45%, #B8892F);
+
+  /* Type */
+  --font-display: 'Fraunces Variable', 'Fraunces Fallback', Georgia, serif;
+  --font-body: 'Manrope', 'Manrope Fallback', Arial, sans-serif;
+  --step--1: 0.875rem;
+  --step-0: 1.0625rem;   /* 17px body */
+  --step-1: 1.25rem;
+  --step-2: clamp(1.45rem, 1.2rem + 1vw, 1.8rem);
+  --step-3: clamp(1.8rem, 1.4rem + 1.8vw, 2.6rem);
+  --step-4: clamp(2.2rem, 1.5rem + 3.2vw, 3.6rem);
+  --step-5: clamp(2.5rem, 1.6rem + 4.4vw, 4.6rem);
+  --label-tracking: 0.08em;
+
+  /* Space: deliberately uneven so sections don't all share one rhythm */
+  --gutter: clamp(1rem, 4vw, 2.5rem);
+  --s-1: 0.5rem;
+  --s-2: 1rem;
+  --s-3: 1.5rem;
+  --s-4: 2.5rem;
+  --s-5: clamp(3rem, 6vw, 5rem);
+  --s-6: clamp(4rem, 9vw, 7.5rem);
+
+  --w-text: 40rem;
+  --w-mid: 62rem;
+  --w-wide: 78rem;
+
+  --radius: 3px;
+  --rivet: radial-gradient(circle at 35% 35%, #5d5f66 0 30%, #2b2d32 70%);
+  --shadow-plate: 0 1px 0 rgba(255, 255, 255, 0.04) inset, 0 20px 40px -24px rgba(0, 0, 0, 0.6);
+  --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+}

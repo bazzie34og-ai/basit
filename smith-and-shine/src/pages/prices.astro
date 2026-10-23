@@ -1,0 +1,154 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import PriceBoard from '../components/PriceBoard.astro';
+import FaqList from '../components/FaqList.astro';
+import CtaBand from '../components/CtaBand.astro';
+import Photo from '../components/Photo.astro';
+import Icon from '../components/Icon.astro';
+import { sizes, monthlyPlan, serviceById, formatGBP, whatsappHref, reviewByName } from '../config/site.ts';
+import { faqSchema, type Crumb, type Faq } from '../lib/schema.ts';
+
+const full = serviceById('full-valet')!.from!;
+const mini = serviceById('mini-valet')!.from!;
+const deep = serviceById('full-valet-deep')!.from!;
+const det = serviceById('detailing')!.from!;
+const pc = serviceById('paint-correction')!.from!;
+const waText = 'Hi Chris, I’ve looked at your prices. My car is a … and I’m thinking about the …';
+const crumbs: Crumb[] = [{ name: 'Home', url: '/' }, { name: 'Prices', url: '/prices/' }];
+
+const faqs: Faq[] = [
+  { q: 'What does “from” mean on your prices?', a: 'It’s the starting price. A bigger car or a heavier job can cost more, and Chris will always tell you the exact price before he starts. The price we quote is the price you pay.' },
+  { q: 'How much is a full valet price in Telford?', a: `A full valet is from £${full}. A mini valet & polish is from £${mini}, and a full valet & deep clean is from £${deep}.` },
+  { q: 'Why is the monthly plan cheaper than a one-off valet?', a: 'Because a car that’s cleaned every month never gets bad, each visit takes less time. That saving goes to you.' },
+  { q: 'Why are ceramic coating and PPF on quote?', a: 'They depend on the car’s size, the state of the paint and, for PPF, how much of the car you want covered. Send us a photo and we’ll give you a fixed price.' },
+];
+
+const choose = [
+  { if: 'It’s mostly fine, just needs a freshen-up', then: 'Mini Valet & Polish', price: `from £${mini}`, url: '/mini-valet-telford/' },
+  { if: 'It needs doing properly, inside and out', then: 'Full Valet', price: `from £${full}`, url: '/full-valet-telford/' },
+  { if: 'Kids, dogs, stains or a smell you can’t place', then: 'Full Valet & Deep Clean', price: `from £${deep}`, url: '/full-valet-telford/#deep-clean' },
+  { if: 'You want it looking like this all the time', then: 'Monthly Detail Package', price: `from £${monthlyPlan.prices[0].price} a visit`, url: monthlyPlan.url },
+  { if: 'The paint looks dull or swirly in the sun', then: 'Detailing & Paint Correction', price: `from £${pc}`, url: '/paint-correction-telford/' },
+  { if: 'You want the shine to last for ages', then: 'Ceramic coating', price: 'on quote', url: '/ceramic-coating-telford/' },
+];
+---
+<Base
+  title={`Car Valeting Prices Telford: Full Valet from £${full}`}
+  description={`Car valeting prices in Telford, in full. Mini valet £${mini}, full valet £${full}, detailing £${det}, paint correction £${pc}, monthly plan from £30. Fixed prices.`}
+  waText={waText}
+  crumbs={crumbs}
+  schema={[faqSchema(faqs)]}
+>
+  <PageHero
+    crumbs={crumbs}
+    eyebrow="2026 price list"
+    h1="Valeting & Detailing Prices, Telford"
+    photo="ford-ranger-wildtrak-orange-wash"
+    alt="Orange Ford Ranger mid-wash: 4x4 and SUV car valeting prices in Telford start at £60 a visit on the monthly plan"
+    price={`Full valet from ${formatGBP(full)}`}
+    priceNote="The price we quote is the price you pay"
+    waText={waText}
+  >
+    <p>Every car valeting price we charge in Telford, right here. No “message for a price”, no surprises, no upsell speeches.</p>
+  </PageHero>
+
+  <section class="iron-2 section-lg" aria-label="Price board">
+    <div class="wrap-mid">
+      <PriceBoard title="The full price list" />
+    </div>
+  </section>
+
+  <section class="ivory section-lg" aria-labelledby="choose-h">
+    <div class="wrap">
+      <h2 id="choose-h">Which one do I need?</h2>
+      <p class="lede muted" style="margin:.75rem 0 2rem">Find the line that sounds like your car.</p>
+      <ol class="choose" role="list">
+        {choose.map((c) => (
+          <li>
+            <a href={c.url}>
+              <span class="if">{c.if}</span>
+              <span class="then"><span class="svc-name">{c.then}</span> <span class="svc-price">{c.price}</span></span>
+              <Icon name="arrow" class="arr" />
+            </a>
+          </li>
+        ))}
+      </ol>
+      <p style="margin-top:1.5rem">Still not sure? <a href={whatsappHref('Hi Chris, which clean do I need? Here’s a photo of my car:')} data-track="whatsapp_click">Send Chris a photo</a> and he’ll tell you straight.</p>
+    </div>
+  </section>
+
+  <section class="ivory-2 section-lg" id="sizes" aria-labelledby="sizes-h">
+    <div class="wrap sizes-grid">
+      <div>
+        <h2 id="sizes-h">What size is my car?</h2>
+        <p class="muted" style="margin:.75rem 0 1.5rem">The monthly plan is priced by size. If you’re between two, tell us the make and model and we’ll sort it.</p>
+        <table class="size-table">
+          <caption class="visually-hidden">Car sizes and monthly plan prices</caption>
+          <thead><tr><th scope="col">Size</th><th scope="col">For example</th><th scope="col">Monthly plan</th></tr></thead>
+          <tbody>
+            {sizes.map((s) => {
+              const m = monthlyPlan.prices.find((p) => p.size === s.id);
+              return (
+                <tr>
+                  <th scope="row">{s.label}</th>
+                  <td>{s.hint}</td>
+                  <td class="num">{m ? `${formatGBP(m.price)} a visit` : s.id === 'van' ? `Van mini valet from ${formatGBP(serviceById('van-mini')!.from!)}` : `Clean & shine from ${formatGBP(serviceById('moto-clean')!.from!)}`}</td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
+      <figure class="sizes-photo">
+        <div class="photo"><Photo name="jaguar-and-cupra-two-cars-detailed" alt="Two SUVs, a Jaguar F-Pace and a Cupra Formentor, after valeting on one driveway" sizes="(min-width: 900px) 34vw, 92vw" /></div>
+        <figcaption class="caption">Two cars, one visit. Ask about doing the whole drive.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="ivory section" aria-labelledby="pq">
+    <div class="wrap-mid promise">
+      <p class="label label-gold">Why customers trust our prices</p>
+      <blockquote id="pq">“{reviewByName('Josh P.').text}”</blockquote>
+      <p class="muted">Josh P., Google review</p>
+    </div>
+  </section>
+
+  <section class="ivory section" aria-labelledby="pfaq">
+    <div class="wrap faq-grid">
+      <h2 id="pfaq">Price questions</h2>
+      <FaqList faqs={faqs} />
+    </div>
+  </section>
+
+  <CtaBand waText={waText} heading="Seen the price? Let’s book it." />
+</Base>
+
+<style>
+  h2 { font-size: var(--step-4); }
+  .choose { border-top: 2px solid var(--ink); }
+  .choose a {
+    display: grid; gap: 0.35rem 2rem; padding: 1.15rem 2.5rem 1.15rem 0; border-bottom: 1px solid #d9cfbb;
+    text-decoration: none; position: relative;
+  }
+  @media (min-width: 760px) { .choose a { grid-template-columns: 1fr 1fr; align-items: baseline; } }
+  .if { color: var(--ink-soft); }
+  .svc-name { font-family: var(--font-display); font-size: 1.3rem; font-weight: 650; }
+  .svc-price { font-weight: 700; color: var(--gold-ink-strong); white-space: nowrap; }
+  .choose :global(.arr) { position: absolute; right: 0.25rem; top: 50%; transform: translateY(-50%); width: 1.25rem; height: 1.25rem; color: var(--gold-ink); }
+  .choose a:hover .svc-name { text-decoration: underline; text-decoration-color: var(--gold-ink); }
+  .sizes-grid { display: grid; gap: 2.5rem; align-items: start; }
+  @media (min-width: 900px) { .sizes-grid { grid-template-columns: 1.3fr 0.7fr; gap: 4rem; } }
+  .size-table { width: 100%; border-collapse: collapse; font-size: 0.9375rem; }
+  .size-table th, .size-table td { text-align: left; padding: 0.85rem 0.75rem 0.85rem 0; border-bottom: 1px solid #cfc3ab; vertical-align: top; }
+  .size-table thead th { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.08em; border-bottom: 2px solid var(--ink); }
+  .size-table tbody th { font-family: var(--font-display); font-size: 1.15rem; font-weight: 650; white-space: nowrap; }
+  .num { font-weight: 700; white-space: nowrap; }
+  @media (max-width: 560px) { .num { white-space: normal; } }
+  .sizes-photo .photo { aspect-ratio: 720 / 521; }
+  .promise blockquote { font-family: var(--font-display); font-size: var(--step-3); line-height: 1.25; margin: 0.75rem 0; font-weight: 500; }
+  .faq-grid { display: grid; gap: 2rem; }
+  @media (min-width: 900px) { .faq-grid { grid-template-columns: 0.7fr 1.3fr; gap: 4rem; } }
+  .faq-grid h2 { font-size: var(--step-3); }
+</style>

@@ -1,0 +1,100 @@
+---
+import Service from '../layouts/Service.astro';
+import Photo from '../components/Photo.astro';
+import { serviceById, reviewFragments, whatsappHref, features } from '../config/site.ts';
+import type { Faq } from '../lib/schema.ts';
+
+const pc = serviceById('paint-correction')!.from!;
+const waText = 'Hi Chris, could I get a ceramic coating quote? My car is a … and here’s a photo:';
+
+const faqs: Faq[] = [
+  { q: 'What is a ceramic coating?', a: 'A liquid coating that hardens into a thin, glossy layer on top of your paint. Water beads off, dirt struggles to stick, and the car is much easier to wash.' },
+  { q: 'How much is ceramic coating in Telford?', a: 'Ceramic coating is priced on quote, because it depends on the car’s size and how much prep the paint needs. Send us a photo of your car and we’ll give you a fixed price.' },
+  { q: 'Does ceramic coating remove scratches?', a: `No. A coating protects the paint you’ve got. If there are swirls or light scratches, paint correction (from £${pc}) comes first, so you’re not sealing the swirls in.` },
+  { q: 'Is it worth it on a Tesla or a new car?', a: 'New cars are a great time to coat, because the paint is at its best. After a detail with us, one Tesla Model 3 owner said the car looked better than the day they collected it.' },
+];
+---
+<Service
+  title="Ceramic Coating Telford & Shropshire | Smith & Shine"
+  description="Ceramic coating in Telford and across Shropshire, applied at your home. Deep gloss, water beading and easier washing. Price on quote: send us a photo."
+  h1="Ceramic Coating in Telford & Shropshire"
+  eyebrow="Detailing & Protection · price on quote"
+  crumbName="Ceramic coating"
+  photo="tesla-model-3-grey-detail"
+  alt="Grey Tesla Model 3 with glossy, reflective paint on a Telford driveway, ready for ceramic coating"
+  photoPosition="40% 30%"
+  price="Price on quote"
+  priceNote="Send us a photo of your car"
+  waText={waText}
+  serviceName="Ceramic coating"
+  serviceType="Ceramic paint coating"
+  faqs={faqs}
+  reviews={['Matt S.']}
+  kind="premium"
+  related={[
+    { url: '/paint-correction-telford/', label: 'Paint correction', note: `from £${pc}, do this first` },
+    ...(features.ppf.enabled ? [{ url: '/paint-protection-film-telford/', label: 'Paint protection film', note: 'for stone chips' }] : []),
+    { url: '/prices/', label: 'All prices' },
+    { url: '/guides/paint-correction-vs-ceramic-coating/', label: 'Guide: paint correction vs ceramic coating' },
+    { url: '/book/?service=ceramic', label: 'Ask for a ceramic quote' },
+  ]}
+>
+  <Fragment slot="intro">
+    <p><strong>Ceramic coating: a hard, glossy layer on your paint that makes washing easier and beads water.</strong></p>
+    <p>Applied at your home in Telford or anywhere we cover in Shropshire. Price on quote: send us a photo of your car.</p>
+  </Fragment>
+
+  <section class="svc ivory" aria-labelledby="cc-how">
+    <div class="wrap">
+      <h2 id="cc-how">How we do it</h2>
+      <ol class="steps" role="list">
+        <li><span class="n">1</span><h3>Look</h3><p>You send a photo. Chris checks the paint and tells you whether it needs correcting first.</p></li>
+        <li><span class="n">2</span><h3>Prep</h3><p>A thorough wash and decontamination. If there are swirls, <a href="/paint-correction-telford/">paint correction</a> comes next. A coating seals in whatever’s underneath, good or bad.</p></li>
+        <li><span class="n">3</span><h3>Coat</h3><p>The coating goes on panel by panel and is left to cure. The gazebo keeps the weather off.</p></li>
+        <li><span class="n">4</span><h3>Look after it</h3><p>We’ll tell you how to wash it so the coating lasts. Or let us do it on the <a href="/monthly-valet-plan/">monthly plan</a>.</p></li>
+      </ol>
+      <p class="muted todo-note">Product brands and warranty details are confirmed with your quote.</p>
+    </div>
+  </section>
+
+  <section class="svc iron" aria-labelledby="cc-ev">
+    <div class="wrap split">
+      <div>
+        <p class="label label-gold">Teslas &amp; EVs</p>
+        <h2 id="cc-ev">“{reviewFragments.tesla.text}”</h2>
+        <p class="muted">{reviewFragments.tesla.name}, {reviewFragments.tesla.car} owner, Google review.</p>
+        <p style="margin-top:1rem">New cars, EVs especially, often come with soft paint that marks easily. Getting it protected early keeps that showroom look for longer.</p>
+        <div class="btn-row" style="margin-top:1.75rem">
+          <a class="btn btn-primary" href={whatsappHref(waText)} data-track="whatsapp_click">Send a photo for a quote</a>
+        </div>
+      </div>
+      <figure>
+        <div class="photo"><Photo name="tesla-model-3-grey-detail" alt="Side view of a grey Tesla Model 3 reflecting a brick house in its paint" sizes="(min-width: 900px) 34vw, 92vw" position="60% 40%" /></div>
+        <figcaption class="caption">Tesla Model 3 · “better than the day I collected it”</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="svc ivory" aria-labelledby="cc-vs">
+    <div class="wrap-text prose">
+      <h2 id="cc-vs">Ceramic, wax or PPF?</h2>
+      <p><strong>Wax and sealants</strong> look lovely but wear off in weeks. The hydrophobic protection in our <a href="/monthly-valet-plan/">monthly plan</a> tops it up every visit.</p>
+      <p><strong>Ceramic coating</strong> lasts much longer and is harder wearing. It’s about gloss and easy cleaning. It won’t stop a stone chip.</p>
+      {features.ppf.enabled && <p><strong>Paint protection film (PPF)</strong> is a clear film that physically takes stone chips. See <a href="/paint-protection-film-telford/">PPF in Telford</a>.</p>}
+      <p>Still deciding? Read <a href="/guides/paint-correction-vs-ceramic-coating/">paint correction vs ceramic coating</a>, check our <a href="/prices/">prices</a>, or just <a href="/book/?service=ceramic">ask for a quote</a>.</p>
+    </div>
+  </section>
+</Service>
+
+<style>
+  .steps { display: grid; gap: 1px; background: #d9cfbb; border: 1px solid #d9cfbb; counter-reset: s; }
+  @media (min-width: 760px) { .steps { grid-template-columns: repeat(2, 1fr); } }
+  @media (min-width: 1100px) { .steps { grid-template-columns: repeat(4, 1fr); } }
+  .steps li { background: var(--ivory); padding: 1.5rem 1.25rem; }
+  .steps .n { font-family: var(--font-display); font-style: italic; font-size: 2.5rem; color: var(--gold-ink); line-height: 1; }
+  .steps h3 { margin: 0.5rem 0; }
+  .steps p { color: var(--ink-soft); }
+  .steps a { color: var(--ink); }
+  .todo-note { margin-top: 1.25rem; font-size: 0.9375rem; }
+  #cc-ev { font-size: var(--step-3); font-style: italic; font-weight: 500; margin: 0.5rem 0 0.75rem; }
+</style>

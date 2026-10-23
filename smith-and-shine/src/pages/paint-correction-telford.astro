@@ -1,0 +1,118 @@
+---
+import Service from '../layouts/Service.astro';
+import Photo from '../components/Photo.astro';
+import { serviceById, formatGBP, reviewByName, whatsappHref } from '../config/site.ts';
+import type { Faq } from '../lib/schema.ts';
+
+const pc = serviceById('paint-correction')!.from!;
+const det = serviceById('detailing')!.from!;
+const waText = 'Hi Chris, could I get a paint correction price? My car is a … and here’s a photo of the paint:';
+
+const faqs: Faq[] = [
+  { q: 'What is paint correction?', a: 'Paint correction is machine polishing that removes swirls and light scratches from your car’s clear coat, so the paint reflects properly again.' },
+  { q: 'Will paint correction remove all scratches?', a: 'No, and anyone who promises that is fibbing. It removes swirls and light scratches. Deep scratches can be improved, not always removed. If a scratch has gone through to the primer, it needs a body shop.' },
+  { q: 'How much is paint correction in Telford?', a: `Detailing & paint correction is from £${pc}. The final price depends on the size of the car and the state of the paint, so send us a photo and we’ll give you a fixed price.` },
+  { q: 'Should I get ceramic coating after paint correction?', a: 'It’s the best time to do it. Correction gets the paint as good as it can be, and a ceramic coating helps keep it that way. Ceramic is priced on quote.' },
+  { q: 'Can you do it on my driveway?', a: 'Yes. Like everything we do, paint correction is mobile. We bring the machine polishers, pads and the gazebo to your home in Telford or nearby.' },
+];
+const andrew = reviewByName('Andrew P.');
+---
+<Service
+  title={`Paint Correction Telford: Swirl Removal from £${pc}`}
+  description={`Paint correction in Telford from £${pc}: machine polishing that removes swirls and light scratches, at your home. Honest advice on what’s fixable.`}
+  h1="Paint Correction in Telford"
+  eyebrow={`Detailing & Protection · from ${formatGBP(pc)}`}
+  crumbName="Paint correction"
+  photo="jaguar-xe-red-gloss-detail"
+  alt="Red Jaguar XE with deep, swirl-free gloss after paint correction in Telford by Smith & Shine"
+  photoPosition="50% 55%"
+  price={`from ${formatGBP(pc)}`}
+  priceNote="Detailing & paint correction"
+  waText={waText}
+  serviceName="Paint correction"
+  serviceType="Paint correction (machine polishing)"
+  minPrice={pc}
+  faqs={faqs}
+  reviews={['Matt S.']}
+  kind="premium"
+  related={[
+    { url: '/ceramic-coating-telford/', label: 'Ceramic coating', note: 'lock the finish in' },
+    { url: '/car-detailing-telford/', label: 'Car detailing', note: `from £${det}` },
+    { url: '/prices/', label: 'All prices' },
+    { url: '/guides/paint-correction-vs-ceramic-coating/', label: 'Guide: paint correction vs ceramic coating' },
+    { url: '/book/?service=paint-correction', label: 'Book paint correction' },
+  ]}
+>
+  <Fragment slot="intro">
+    <p><strong>Paint correction: machine polishing that removes swirls and light scratches.</strong> It’s what turns a dull, spider-webbed bonnet back into a mirror.</p>
+    <p>Paint correction in Telford, done on your driveway, with honest advice about what’s fixable.</p>
+  </Fragment>
+
+  <section class="svc ivory" aria-labelledby="pc-honest">
+    <div class="wrap split">
+      <div class="prose">
+        <h2 id="pc-honest">The honest version</h2>
+        <p>Your car’s paint has a clear layer on top. Automatic car washes, dirty sponges and “just a quick wipe” leave fine scratches in it. In sunlight they look like spider webs round every light. That’s swirling.</p>
+        <p>Machine polishing (swirl removal) takes a tiny, controlled amount off that clear layer until the surface is level again. Light reflects straight, and the gloss comes back.</p>
+        <div class="callout">
+          <p><strong>What it can’t do:</strong> make deep scratches vanish. It removes swirls and light scratches. Deep scratches can be improved, not always removed. Chris will show you which is which before he starts, so you know exactly what you’re paying for.</p>
+        </div>
+      </div>
+      <figure class="scratch">
+        <svg viewBox="0 0 320 220" role="img" aria-labelledby="sd-t">
+          <title id="sd-t">Diagram: swirls sit in the clear coat and can be polished out; deep scratches reach the colour layer and can only be improved.</title>
+          <rect x="0" y="40" width="320" height="50" class="cc" />
+          <rect x="0" y="90" width="320" height="50" class="base" />
+          <rect x="0" y="140" width="320" height="40" class="primer" />
+          <path d="M30 40 l8 6 l8 -6 M60 40 l6 5 l6 -5 M90 40 l7 6 l7 -6" class="swirl" />
+          <path d="M220 40 l12 78 l12 -78" class="deep" />
+          <text x="10" y="30" class="t">Swirls: polished out</text>
+          <text x="170" y="30" class="t">Deep scratch: improved</text>
+          <text x="10" y="70" class="s">Clear coat</text>
+          <text x="10" y="120" class="s light">Colour</text>
+          <text x="10" y="165" class="s light">Primer</text>
+        </svg>
+      </figure>
+    </div>
+  </section>
+
+  <section class="svc iron" aria-labelledby="pc-jag">
+    <div class="wrap split flip">
+      <div>
+        <p class="label label-gold">Real job, real review</p>
+        <h2 id="pc-jag">The Jaguar XE.</h2>
+        <blockquote class="big-q">“{andrew.text}”</blockquote>
+        <p class="muted">{andrew.name}, Google review. Chris’s reply: “It’s was challenging, but we got there in the end. She has come up better than we anticipated.”</p>
+        <div class="btn-row" style="margin-top:1.75rem">
+          <a class="btn btn-primary" href={whatsappHref(waText)} data-track="whatsapp_click">Send a photo of your paint</a>
+        </div>
+      </div>
+      <figure>
+        <div class="photo"><Photo name="jaguar-xe-red-gloss-detail" alt="The same red Jaguar XE from above, showing the reflections across the bonnet and roof" sizes="(min-width: 900px) 34vw, 92vw" position="50% 35%" /></div>
+        <figcaption class="caption">Andrew’s Jaguar XE after its time with Chris.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="svc ivory" aria-labelledby="pc-after">
+    <div class="wrap-text prose">
+      <h2 id="pc-after">After correction: protect it</h2>
+      <p>Freshly corrected paint is the best canvas there is for a <a href="/ceramic-coating-telford/">ceramic coating</a>. The coating doesn’t fix swirls; it helps stop new ones and makes washing much easier. If you’d rather not coat it, the <a href="/monthly-valet-plan/">monthly plan</a> includes hydrophobic paint protection every visit.</p>
+      <p>Not sure which you need? Our guide, <a href="/guides/paint-correction-vs-ceramic-coating/">paint correction vs ceramic coating</a>, explains it without the jargon. Or check the <a href="/prices/">price board</a> and <a href="/book/?service=paint-correction">book</a>.</p>
+    </div>
+  </section>
+</Service>
+
+<style>
+  .scratch { background: var(--paper); border: 1px solid #e3d8c3; padding: 1.25rem; }
+  .scratch svg { width: 100%; height: auto; font-family: var(--font-body); }
+  .cc { fill: #f3e7c9; }
+  .base { fill: #b5473a; }
+  .primer { fill: #9c9a95; }
+  .swirl { fill: none; stroke: var(--ink); stroke-width: 1.5; }
+  .deep { fill: var(--paper); stroke: var(--ink); stroke-width: 1.5; }
+  .t { font-size: 12px; font-weight: 700; fill: var(--ink); }
+  .s { font-size: 11px; font-weight: 600; fill: var(--ink-soft); }
+  .s.light { fill: #fff; }
+  .big-q { font-family: var(--font-display); font-size: var(--step-1); line-height: 1.5; margin: 1rem 0; color: var(--ivory); }
+</style>

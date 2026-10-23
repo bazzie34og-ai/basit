@@ -1,0 +1,80 @@
+---
+import Service from '../layouts/Service.astro';
+import Photo from '../components/Photo.astro';
+import { serviceById, inclusions, formatGBP, monthlyPlan, whatsappHref } from '../config/site.ts';
+import type { Faq } from '../lib/schema.ts';
+
+const van = serviceById('van-mini')!.from!;
+const waText = 'Hi Chris, I’d like a price for van valeting. It’s a … and my postcode is …';
+
+const faqs: Faq[] = [
+  { q: 'How much is van valeting in Telford?', a: `A van mini valet is from £${van}. For a full valet on a van, or a bigger job, send us the make and model and a photo and we’ll give you a fixed price.` },
+  { q: 'Can you valet my van at work?', a: 'Yes. We’re mobile, so we can come to your yard, unit or driveway around Telford, as long as there’s room to work around the van.' },
+  { q: 'Do you valet vans before they’re sold?', a: 'We do. One customer had a full valet on their van for resale and said it “almost looks like new again”. A clean van photographs better and sells quicker.' },
+  { q: 'Do you clean the load area?', a: 'Tell us what’s in the back and what state it’s in when you book, and Chris will say what he can do and what it costs.' },
+];
+---
+<Service
+  title={`Van Valeting Telford: Mobile Van Valet from £${van}`}
+  description={`Mobile van valeting in Telford from £${van}. Cab, outside and windows cleaned at your home or yard. Full van valets for resale on quote. Fixed prices.`}
+  h1="Van Valeting in Telford"
+  eyebrow={`Vans · from ${formatGBP(van)}`}
+  crumbName="Van valeting"
+  photo="ford-ranger-wildtrak-orange-wash"
+  alt="Orange Ford Ranger pickup mid-wash during mobile van and pickup valeting in Telford"
+  price={`from ${formatGBP(van)}`}
+  priceNote="Van mini valet · bigger jobs on quote"
+  waText={waText}
+  serviceName="Van valeting"
+  serviceType="Van valeting"
+  minPrice={van}
+  faqs={faqs}
+  reviews={['Luke D.', 'Kyle H.']}
+  kind="valet"
+  related={[
+    { url: monthlyPlan.url, label: 'Monthly valet plan', note: 'keep the work van presentable' },
+    { url: '/prices/', label: 'All prices' },
+    { url: '/ceramic-coating-telford/', label: 'Ceramic coating', note: 'easier washing for working vans' },
+    { url: '/guides/valet-before-selling-your-car-or-van/', label: 'Guide: valet before you sell' },
+    { url: '/book/?service=van-mini&size=van', label: 'Book a van valet' },
+  ]}
+>
+  <Fragment slot="intro">
+    <p>Van valeting in Telford for work vans, family vans and the odd VW Buzz. We come to your yard or driveway, so the van’s only off the road for as long as it takes.</p>
+  </Fragment>
+
+  <section class="svc ivory" aria-labelledby="van-what">
+    <div class="wrap split">
+      <div>
+        <h2 id="van-what">Van mini valet, from £{van}</h2>
+        <p class="lede">Your van is your shop window. Customers notice a clean one.</p>
+        <ul class="ticks" role="list" style="margin-top:1.5rem">
+          {inclusions.vanMini.map((i) => <li>{i}</li>)}
+        </ul>
+      </div>
+      <div class="glance plate">
+        <span class="rivets" aria-hidden="true"></span>
+        <h3>Bigger job?</h3>
+        <p class="leader"><span>Van mini valet</span><span class="dots" aria-hidden="true"></span><b class="gold-text">from £{van}</b></p>
+        <p class="leader"><span>Van full valet</span><span class="dots" aria-hidden="true"></span><b>on quote</b></p>
+        <p>Full van valets depend on the size and the state of the cab. Send a photo and the make and model and Chris will give you a fixed price.</p>
+        <a class="btn btn-primary" href={whatsappHref('Hi Chris, could I get a price for a full valet on my van? It’s a … Here’s a photo:')} data-track="whatsapp_click">Send a photo for a price</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="svc ivory-2" aria-labelledby="van-sell">
+    <div class="wrap split flip">
+      <div class="prose">
+        <h2 id="van-sell">Selling the van?</h2>
+        <blockquote>“I couldn’t be happier with the end result. Almost looks like new again!”</blockquote>
+        <p>That’s Luke D., who had a full valet on the van before selling it. Buyers judge a van by the cab: the seats, the dash, the footwells. If it looks cared for, they assume the engine was too.</p>
+        <p>Our <a href="/guides/valet-before-selling-your-car-or-van/">pre-sale valet guide</a> covers what buyers notice first. If you run more than one van, ask about the <a href={monthlyPlan.url} data-upsell="monthly-van">monthly plan</a> and we’ll keep the fleet presentable.</p>
+      </div>
+      <figure>
+        <div class="photo"><Photo name="mercedes-a45-amg-matte-grey-gazebo-setup" alt="Smith & Shine gazebo, products and kit set up on a driveway, ready for a mobile valet" sizes="(min-width: 900px) 34vw, 92vw" /></div>
+        <figcaption class="caption">The set-up: gazebo, kit, done on your drive or yard.</figcaption>
+      </figure>
+    </div>
+  </section>
+</Service>

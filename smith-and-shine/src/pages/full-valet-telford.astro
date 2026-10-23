@@ -1,0 +1,98 @@
+---
+import Service from '../layouts/Service.astro';
+import Photo from '../components/Photo.astro';
+import { serviceById, inclusions, formatGBP, monthlyPlan, whatsappHref } from '../config/site.ts';
+import type { Faq } from '../lib/schema.ts';
+
+const full = serviceById('full-valet')!.from!;
+const deep = serviceById('full-valet-deep')!.from!;
+const mini = serviceById('mini-valet')!.from!;
+const waText = 'Hi Chris, I’d like a full valet please. My car is a … and my postcode is …';
+
+const faqs: Faq[] = [
+  { q: 'How much is a full valet in Telford?', a: `A full valet is from £${full}. If the car needs stains, pet hair or spills sorting, the full valet & deep clean is from £${deep}. We tell you the price before we start, and that’s the price you pay.` },
+  { q: 'Do I need to take my car anywhere?', a: 'No. It’s a mobile full valet, so we come to your home, driveway or work in Telford and the surrounding Shropshire towns.' },
+  { q: 'Is a full valet worth it over a mini valet?', a: `If the inside needs proper attention, yes. A mini valet (from £${mini}) is a freshen-up. A full valet gets into every surface inside and out, which is what most people want for a first clean or before selling.` },
+  { q: 'My car is a bit of a state. Is that a problem?', a: 'Not at all. Customers regularly tell us their car was a tip before we started. If it needs extra time on stains or pet hair, Chris will suggest the deep clean and tell you the price first.' },
+];
+---
+<Service
+  title={`Full Valet Telford: Inside & Out from £${full} | Smith & Shine`}
+  description={`Full car valet in Telford, on your driveway. Every surface inside and out from £${full}; deep clean for stains and pet hair from £${deep}. Fixed prices.`}
+  h1="Full Car Valet in Telford"
+  eyebrow={`Valeting · from ${formatGBP(full)}`}
+  crumbName="Full valet"
+  photo="jaguar-red-leather-interior-valet"
+  alt="Jaguar F-Pace red leather seats spotless after a full valet in Telford by Smith & Shine"
+  price={`from ${formatGBP(full)}`}
+  priceNote="Fixed before we start · at your door"
+  waText={waText}
+  serviceName="Full car valet"
+  serviceType="Car valeting"
+  minPrice={full}
+  faqs={faqs}
+  reviews={['Tasha K.', 'John J.']}
+  kind="valet"
+  related={[
+    { url: monthlyPlan.url, label: 'Monthly valet plan', note: `from £${monthlyPlan.prices[0].price} a visit` },
+    { url: '/prices/', label: 'All prices', note: 'and car sizes' },
+    { url: '/paint-correction-telford/', label: 'Paint correction', note: 'for swirls and light scratches' },
+    { url: '/guides/mini-valet-vs-full-valet/', label: 'Guide: mini valet vs full valet' },
+    { url: '/book/?service=full-valet', label: 'Book a full valet', note: '3 quick steps' },
+  ]}
+>
+  <Fragment slot="intro">
+    <p>Our full car valet in Telford is the proper one: every surface, inside and out, done on your driveway while you get on with your day.</p>
+    <p>It’s the clean most people book first, and the one that turns “I’m embarrassed to give anyone a lift” into “has this been valeted?”.</p>
+  </Fragment>
+
+  <section class="svc ivory" aria-labelledby="fv-what">
+    <div class="wrap split">
+      <div>
+        <h2 id="fv-what">What a full valet covers</h2>
+        <p class="lede">Outside, then inside, then a walk round with you at the end so you can see what we did.</p>
+        <ul class="ticks" role="list" style="margin-top:1.5rem">
+          {inclusions.fullValet.map((i) => <li>{i}</li>)}
+        </ul>
+        <p class="muted" style="margin-top:1rem;font-size:.9375rem">Every car is different, so Chris will tell you up front if yours needs anything extra.</p>
+      </div>
+      <div class="glance plate">
+        <span class="rivets" aria-hidden="true"></span>
+        <h3>At a glance</h3>
+        <p class="leader"><span>Full Valet</span><span class="dots" aria-hidden="true"></span><b class="gold-text">from £{full}</b></p>
+        <p class="leader"><span>Full Valet &amp; Deep Clean</span><span class="dots" aria-hidden="true"></span><b class="gold-text">from £{deep}</b></p>
+        <p class="leader"><span>Mini Valet &amp; Polish</span><span class="dots" aria-hidden="true"></span><b class="gold-text">from £{mini}</b></p>
+        <p>The price we quote is the price you pay. No surprises, no upsell speeches.</p>
+        <a class="btn btn-primary" href="/book/?service=full-valet" data-track="book_start">Book a full valet</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="svc ivory-2" id="deep-clean" aria-labelledby="fv-deep">
+    <div class="wrap split flip">
+      <div>
+        <h2 id="fv-deep">Full valet &amp; deep clean, from £{deep}</h2>
+        <p class="lede">For family cars, dog cars, “someone spilt a milkshake in 2023” cars.</p>
+        <p style="margin-top:1rem">The deep clean is the full valet plus extra time where it counts: seats and carpets, stains, pet hair and smells. One customer told us their car was “a tip with ground in dirt, marks and stains (dog owners)”. It went home gleaming.</p>
+        <ul class="ticks" role="list" style="margin-top:1.5rem">
+          {inclusions.deepClean.map((i) => <li>{i}</li>)}
+        </ul>
+        <p style="margin-top:1.25rem">Got a specific disaster? <a href={whatsappHref('Hi Chris, I think my car needs the deep clean. Here’s a photo:')} data-track="whatsapp_click">WhatsApp us a photo</a> and we’ll tell you straight.</p>
+      </div>
+      <figure>
+        <div class="photo"><Photo name="mercedes-amg-interior-detail" alt="Mercedes-AMG interior with clean seats, carpets and dashboard after Smith & Shine valeting" sizes="(min-width: 900px) 34vw, 92vw" /></div>
+        <figcaption class="caption">Mercedes-AMG interior, mats and all.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="svc ivory" aria-labelledby="fv-when">
+    <div class="wrap-text prose">
+      <h2 id="fv-when">When to book a full valet</h2>
+      <p><strong>First time with us.</strong> Start with a full valet, then keep it there with the <a href={monthlyPlan.url} data-upsell="monthly-full-valet">monthly plan</a>. It costs far less to keep a car clean than to rescue it.</p>
+      <p><strong>Selling the car or van.</strong> A clean car photographs better and sells quicker. Our <a href="/guides/valet-before-selling-your-car-or-van/">pre-sale valet guide</a> explains what buyers notice.</p>
+      <p><strong>After a holiday, a house move or a muddy winter.</strong> Telford’s back lanes and the M54 spray do a number on paint and carpets alike.</p>
+      <p><strong>Leasing car going back.</strong> A proper clean helps the inspection go smoothly. If there are swirls or light scratches, ask about <a href="/paint-correction-telford/">paint correction</a> too.</p>
+    </div>
+  </section>
+</Service>

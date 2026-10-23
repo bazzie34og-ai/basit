@@ -1,0 +1,142 @@
+---
+import { getCollection, render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import AreaMap from '../../components/AreaMap.astro';
+import Photo from '../../components/Photo.astro';
+import FaqList from '../../components/FaqList.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import Icon from '../../components/Icon.astro';
+import {
+  monthlyPlan, serviceById, formatGBP, telHref, whatsappHref, phone, googleRating, social, areaPages,
+} from '../../config/site.ts';
+import { faqSchema, type Crumb } from '../../lib/schema.ts';
+
+export async function getStaticPaths() {
+  const areas = await getCollection('areas');
+  return areas.map((a) => ({ params: { slug: a.id }, props: { area: a } }));
+}
+
+const { area } = Astro.props;
+const d = area.data;
+const { Content } = await render(area);
+const crumbs: Crumb[] = [
+  { name: 'Home', url: '/' },
+  { name: 'Areas', url: '/areas/' },
+  { name: d.name, url: `/areas/${area.id}/` },
+];
+const full = serviceById('full-valet')!.from!;
+const mini = serviceById('mini-valet')!.from!;
+const det = serviceById('detailing')!.from!;
+const others = areaPages.filter((a) => a.url !== `/areas/${area.id}/`);
+---
+<Base title={d.title} description={d.description} waText={d.waText} crumbs={crumbs} schema={[faqSchema(d.faqs)]}>
+  <section class="ahero iron">
+    <div class="wrap ahero-grid">
+      <div>
+        <Breadcrumbs crumbs={crumbs} />
+        <p class="label label-gold" style="margin-top:1rem">Mobile · we come to you</p>
+        <h1>{d.h1}</h1>
+        <p class="lead">{d.lead}</p>
+        <p class="from">Full valet from <span class="gold-text">£{full}</span> · Monthly plan from <span class="gold-text">£{monthlyPlan.prices[0].price}</span></p>
+        <div class="btn-row">
+          <a class="btn btn-primary" href={whatsappHref(d.waText)} data-track="whatsapp_click"><Icon name="whatsapp" /> WhatsApp your postcode</a>
+          <a class="btn btn-ghost" href={telHref} data-track="call_click"><Icon name="phone" /> Call {phone}</a>
+        </div>
+        <p class="rating"><a href={social.googleReviews} target="_blank" rel="noopener">{googleRating.summary}</a></p>
+      </div>
+      <div class="map-card plate">
+        <span class="rivets" aria-hidden="true"></span>
+        <AreaMap highlight={d.mapHighlight} tone="iron" />
+      </div>
+    </div>
+  </section>
+
+  <section class="ivory section-lg">
+    <div class="wrap body-grid">
+      <article class="prose area-prose">
+        <Content />
+      </article>
+      <aside class="side">
+        <div class="villages">
+          <h2 class="label label-gold">Where we go in and around {d.name}</h2>
+          <ul role="list">{d.villages.map((v) => <li><Icon name="pin" class="pin" />{v}</li>)}</ul>
+          <p class="muted small">Not listed? WhatsApp your postcode and we’ll tell you.</p>
+        </div>
+        <div class="mini-board plate">
+          <span class="rivets" aria-hidden="true"></span>
+          <h2 class="label label-gold">Popular in {d.name}</h2>
+          <a class="leader" href="/mini-valet-telford/"><span>Mini Valet &amp; Polish</span><span class="dots" aria-hidden="true"></span><b>£{mini}+</b></a>
+          <a class="leader" href="/full-valet-telford/"><span>Full Valet</span><span class="dots" aria-hidden="true"></span><b>£{full}+</b></a>
+          <a class="leader" href="/car-detailing-telford/"><span>Detailing</span><span class="dots" aria-hidden="true"></span><b>£{det}+</b></a>
+          <a class="leader" href={monthlyPlan.url} data-upsell={`monthly-${area.id}`}><span>Monthly plan</span><span class="dots" aria-hidden="true"></span><b>£{monthlyPlan.prices[0].price}+</b></a>
+          <a class="text-link" href="/prices/">All prices</a>
+        </div>
+        <figure>
+          <div class="photo"><Photo name={d.photo} alt={d.alt} sizes="(min-width: 900px) 26vw, 92vw" /></div>
+          <figcaption class="caption">{d.caption}</figcaption>
+        </figure>
+      </aside>
+    </div>
+  </section>
+
+  <section class="ivory-2 section" aria-labelledby="mp-teaser">
+    <div class="wrap-mid teaser">
+      <div>
+        <p class="label label-gold">Keep it that way</p>
+        <h2 id="mp-teaser">A monthly valet in {d.name}, from £{monthlyPlan.prices[0].price}.</h2>
+        <p class="muted">Same day each month, 12-point clean, on your drive. {monthlyPlan.prices.map((p) => `${p.label} ${formatGBP(p.price)}`).join(' · ')}.</p>
+      </div>
+      <a class="btn btn-ink" href={monthlyPlan.url} data-upsell={`monthly-teaser-${area.id}`}>See the monthly plan</a>
+    </div>
+  </section>
+
+  <section class="ivory section" aria-labelledby="afaq">
+    <div class="wrap faq-grid">
+      <div>
+        <h2 id="afaq">{d.name} questions</h2>
+        <p class="muted">Also covering: {others.map((o, i) => <>{i > 0 && ', '}<a href={o.url}>{o.name}</a></>)} and <a href="/">Telford</a>.</p>
+      </div>
+      <FaqList faqs={d.faqs} />
+    </div>
+  </section>
+
+  <CtaBand waText={d.waText} heading={`Your car, your ${d.name} driveway, our kit.`} />
+</Base>
+
+<style>
+  .ahero { padding: 0.5rem 0 var(--s-5); }
+  .ahero-grid { display: grid; gap: 2.5rem; align-items: center; }
+  @media (min-width: 980px) { .ahero-grid { grid-template-columns: 1.1fr 0.9fr; gap: 4rem; } }
+  h1 { font-size: var(--step-5); margin: 0.6rem 0 1rem; max-width: 9.0em; }
+  .lead { font-size: var(--step-1); color: #e7e1d4; max-width: 42ch; }
+  .from { margin: 1.25rem 0 1.5rem; font-family: var(--font-display); font-size: 1.25rem; }
+  .from .gold-text { font-weight: 700; font-size: 1.4em; }
+  .rating { margin-top: 1rem; font-size: 0.9375rem; }
+  .rating a { color: var(--gold-light); text-decoration: none; display: inline-block; padding-block: 0.5rem; }
+  .map-card { padding: 1rem; }
+  .body-grid { display: grid; gap: 3rem; }
+  @media (min-width: 980px) { .body-grid { grid-template-columns: minmax(0, 1fr) 21rem; gap: 5rem; } }
+  .area-prose :global(h2) { font-size: var(--step-3); margin-top: 2.2rem; }
+  .area-prose :global(h2:first-child) { margin-top: 0; }
+  .side { display: grid; gap: 2rem; align-content: start; }
+  @media (min-width: 980px) { .side { position: sticky; top: 6rem; } }
+  .villages ul { margin-top: 0.75rem; columns: 2; column-gap: 1rem; }
+  .villages li { display: flex; gap: 0.35rem; align-items: center; padding: 0.3rem 0; font-weight: 600; break-inside: avoid; }
+  .villages :global(.pin) { width: 1rem; height: 1rem; color: var(--gold-ink); flex: none; }
+  .small { font-size: 0.875rem; margin-top: 0.5rem; }
+  .mini-board { padding: 1.75rem 1.25rem 1.25rem; color: var(--ivory); display: grid; }
+  .mini-board .leader { padding: 0.6rem 0; border-bottom: 1px solid var(--iron-3); text-decoration: none; min-height: 44px; align-items: center; }
+  .mini-board .leader:hover span:first-child { color: var(--gold-light); }
+  .mini-board b { font-family: var(--font-display); color: var(--gold-light); }
+  .mini-board .text-link { margin-top: 0.75rem; justify-self: start; }
+  .mini-board h2 { margin-bottom: 0.25rem; }
+  .side figure .photo { aspect-ratio: 4 / 5; }
+  .teaser { display: grid; gap: 1.5rem; align-items: center; }
+  @media (min-width: 900px) { .teaser { grid-template-columns: 1fr auto; gap: 3rem; } }
+  .teaser h2 { font-size: var(--step-3); margin: 0.5rem 0; }
+  .faq-grid { display: grid; gap: 2rem; }
+  @media (min-width: 900px) { .faq-grid { grid-template-columns: 0.7fr 1.3fr; gap: 4rem; } }
+  .faq-grid h2 { font-size: var(--step-3); margin-bottom: 0.75rem; }
+  .faq-grid .muted a { color: var(--ink); }
+</style>

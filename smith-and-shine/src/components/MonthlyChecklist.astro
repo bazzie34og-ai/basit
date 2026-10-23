@@ -1,0 +1,21 @@
+---
+import Icon from './Icon.astro';
+import { monthlyPlan } from '../config/site.ts';
+interface Props { columns?: 1 | 2 }
+const { columns = 2 } = Astro.props;
+---
+<ol class:list={['checklist', `cols-${columns}`]} role="list">
+  {monthlyPlan.includes.map((item, i) => (
+    <li><span class="n" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span><Icon name="check" class="tick" /><span>{item}</span></li>
+  ))}
+</ol>
+<style>
+  .checklist { display: grid; gap: 0 2rem; counter-reset: c; }
+  @media (min-width: 640px) { .cols-2 { grid-template-columns: 1fr 1fr; } }
+  li {
+    display: grid; grid-template-columns: 1.6rem 1.3rem 1fr; align-items: baseline; gap: 0.5rem;
+    padding: 0.7rem 0; border-bottom: 1px solid #d9cfbb; font-weight: 500;
+  }
+  .n { font-size: 0.75rem; font-weight: 700; color: var(--ink-soft); letter-spacing: 0.06em; }
+  .checklist :global(.tick) { width: 1.2rem; height: 1.2rem; color: var(--gold-ink); transform: translateY(0.2em); }
+</style>

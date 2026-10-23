@@ -1,0 +1,18 @@
+---
+import { Image } from 'astro:assets';
+import logo from '../assets/brand/smith-and-shine-gold-logo-transparent.png';
+// Official gold logo. Only ever on iron. Never recolour, stretch or redraw.
+interface Props { width: number; class?: string; priority?: boolean; alt?: string }
+const { width, class: cls, priority = false, alt = 'Smith & Shine: Detailing & Valeting Specialists' } = Astro.props;
+---
+<Image
+  src={logo}
+  alt={alt}
+  width={width}
+  densities={[1, 2]}
+  format="webp"
+  quality={85}
+  class={cls}
+  loading={priority ? 'eager' : 'lazy'}
+  fetchpriority={priority ? 'high' : undefined}
+/>

@@ -1,0 +1,43 @@
+---
+import Base from '../layouts/Base.astro';
+import BridgeArch from '../components/BridgeArch.astro';
+import Photo from '../components/Photo.astro';
+import Icon from '../components/Icon.astro';
+import { nav } from '../config/site.ts';
+---
+<Base title="Page Not Found | Smith & Shine" description="Sorry, that page doesn’t exist. Here’s the way back." noindex>
+  <section class="iron nf">
+    <div class="wrap nf-grid">
+      <div>
+        <p class="label label-gold">404</p>
+        <h1>Looks like this page took a wrong turn off the A5.</h1>
+        <p class="lead">It happens to the best of us. Here’s the way back.</p>
+        <div class="btn-row" style="margin-top:1.5rem">
+          <a class="btn btn-primary" href="/">Home</a>
+          <a class="btn btn-ghost" href="/prices/">Prices</a>
+          <a class="btn btn-ghost" href="/book/"><Icon name="calendar" /> Book</a>
+        </div>
+        <ul class="links" role="list">
+          {[...nav.valeting.links, ...nav.detailing.links].map((l) => <li><a href={l.url}>{l.label}</a></li>)}
+        </ul>
+      </div>
+      <figure class="flag">
+        <div class="photo"><Photo name="smith-and-shine-flag-on-tower" alt="A Smith & Shine flag flying from the top of a tall mast" sizes="(min-width: 900px) 26vw, 70vw" /></div>
+        <figcaption class="caption">Flying the flag for clean cars.</figcaption>
+      </figure>
+    </div>
+    <div class="arch" aria-hidden="true"><BridgeArch /></div>
+  </section>
+</Base>
+<style>
+  .nf { padding: var(--s-5) 0 0; overflow: hidden; }
+  .nf-grid { display: grid; gap: 2.5rem; align-items: center; }
+  @media (min-width: 900px) { .nf-grid { grid-template-columns: 1.3fr 0.7fr; gap: 4rem; } }
+  h1 { font-size: var(--step-4); margin: 0.5rem 0 1rem; max-width: 10.8em; }
+  .lead { color: #e7e1d4; font-size: var(--step-1); }
+  .links { display: flex; flex-wrap: wrap; gap: 0 1.25rem; margin-top: 1.75rem; }
+  .links a { color: var(--steel-light); display: inline-block; padding-block: 0.6rem; }
+  .links a:hover { color: var(--gold-light); }
+  .flag .photo { aspect-ratio: 720 / 863; max-width: 22rem; }
+  .arch { width: min(1000px, 140%); margin: 2rem 0 0 50%; transform: translateX(-50%); }
+</style>

@@ -1,0 +1,89 @@
+---
+import Breadcrumbs from './Breadcrumbs.astro';
+import Photo from './Photo.astro';
+import Icon from './Icon.astro';
+import { telHref, whatsappHref, googleRating, social, phone } from '../config/site.ts';
+import type { Crumb } from '../lib/schema.ts';
+
+interface Props {
+  crumbs: Crumb[];
+  eyebrow: string;
+  h1: string;
+  photo?: string;
+  alt?: string;
+  photoPosition?: string;
+  /** e.g. "from £70" or "Price on quote" */
+  price?: string;
+  priceNote?: string;
+  waText: string;
+  layout?: 'right' | 'left';
+}
+const { crumbs, eyebrow, h1, photo, alt = '', photoPosition, price, priceNote, waText, layout = 'right' } = Astro.props;
+---
+<section class:list={['phero iron', `phero--${layout}`, { 'no-photo': !photo }]}>
+  <div class="wrap grid">
+    <div class="copy">
+      <Breadcrumbs crumbs={crumbs} />
+      <p class="label label-gold eyebrow">{eyebrow}</p>
+      <h1>{h1}</h1>
+      <div class="intro"><slot /></div>
+      {price && (
+        <p class="price-tag">
+          <span class="amt">{price}</span>
+          {priceNote && <span class="pn">{priceNote}</span>}
+        </p>
+      )}
+      <div class="btn-row">
+        <a class="btn btn-primary" href={whatsappHref(waText)} data-track="whatsapp_click"><Icon name="whatsapp" /> WhatsApp for a price</a>
+        <a class="btn btn-ghost" href={telHref} data-track="call_click" aria-label={`Call ${phone}`}><Icon name="phone" /> Call</a>
+        <a class="btn btn-ghost" href="/book/" data-track="book_start"><Icon name="calendar" /> Book</a>
+      </div>
+      <p class="rating"><a href={social.googleReviews} target="_blank" rel="noopener">{googleRating.summary}</a></p>
+    </div>
+    {photo && (
+      <div class="frame">
+        <div class="photo"><Photo name={photo} alt={alt} priority sizes="(min-width: 900px) 40vw, 92vw" position={photoPosition} /></div>
+        <slot name="caption" />
+      </div>
+    )}
+  </div>
+</section>
+<style>
+  .phero { padding: 0.5rem 0 var(--s-5); position: relative; overflow: hidden; }
+  .phero::after {
+    content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 1px; background: var(--gold-leaf); opacity: 0.5;
+  }
+  .grid { display: grid; gap: 2rem; align-items: center; }
+  @media (min-width: 900px) {
+    .grid { grid-template-columns: 1.15fr 0.85fr; gap: 4rem; }
+    .phero--left .frame { order: -1; }
+    .phero--left .grid { grid-template-columns: 0.85fr 1.15fr; }
+    .no-photo .grid { grid-template-columns: minmax(0, 46rem); }
+  }
+  .eyebrow { margin-top: 1rem; }
+  h1 { font-size: var(--step-5); margin: 0.6rem 0 1.1rem; max-width: 9.6em; }
+  .intro { font-size: var(--step-1); line-height: 1.5; max-width: 40ch; color: #e7e1d4; }
+  .intro :global(p + p) { margin-top: 0.8rem; }
+  .price-tag { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.25rem 0.9rem; margin: 1.5rem 0 1.5rem; }
+  .amt {
+    font-family: var(--font-display); font-weight: 700; font-size: var(--step-3);
+    background: var(--gold-leaf); -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  .pn { color: var(--steel); font-size: 0.9375rem; font-weight: 600; }
+  .rating { margin-top: 1.1rem; font-size: 0.9375rem; }
+  .rating a { color: var(--gold-light); text-decoration: none; display: inline-block; padding-block: 0.5rem; }
+  .rating a:hover { text-decoration: underline; }
+  .frame { position: relative; }
+  .photo { aspect-ratio: 4 / 5; border-radius: var(--radius); position: relative; z-index: 1; }
+  .frame::before {
+    content: ''; position: absolute; inset: 14px -14px -14px 14px; border: 1px solid var(--gold); opacity: 0.7;
+  }
+  @media (max-width: 520px) {
+    .btn-row .btn { flex: 1 1 0; padding-inline: 0.75rem; }
+    .btn-row .btn-primary { flex-basis: 100%; }
+  }
+  @media (max-width: 899px) {
+    .photo { aspect-ratio: 4 / 3; }
+    .frame { margin-right: 14px; }
+  }
+</style>

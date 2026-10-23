@@ -1,0 +1,37 @@
+---
+import Base from '../layouts/Base.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import { business, phone } from '../config/site.ts';
+import { GA4_ID } from '../config/env.ts';
+import type { Crumb } from '../lib/schema.ts';
+const crumbs: Crumb[] = [{ name: 'Home', url: '/' }, { name: 'Privacy', url: '/privacy/' }];
+---
+<Base title="Privacy | Smith & Shine" description="How Smith & Shine uses the details you send us when you book a valet. Short, plain English." crumbs={crumbs}>
+  <section class="ivory section">
+    <div class="wrap-text">
+      <Breadcrumbs crumbs={crumbs} tone="ivory" />
+      <div class="prose">
+        <h1>Privacy</h1>
+        <p>Short version: we use your details to sort out your valet, and nothing else. We never sell them, and we never add you to a mailing list.</p>
+        <h2>What we collect</h2>
+        <p>When you book through this website we receive what you type into the form: your name, phone number, postcode, vehicle, the service you want, and anything optional you add, such as your email, notes and photos of the car. We also record which page you booked from and, if you came from an advert or link, the campaign details in that link.</p>
+        <h2>What we use it for</h2>
+        <ul>
+          <li>To contact you about your booking, by WhatsApp, text, phone or email.</li>
+          <li>To work out a price and plan the visit.</li>
+          <li>To keep a record of the jobs we’ve done.</li>
+        </ul>
+        <h2>Where it’s kept</h2>
+        <p>Booking requests are stored securely with our website host (Netlify) and emailed to {business.name} using an email delivery service (Resend). We keep booking records for as long as we need them for the business and for our accounts.</p>
+        <h2>Analytics and cookies</h2>
+        <p>{GA4_ID ? 'We use Google Analytics to count visits, but only if you say yes to the analytics question when you first visit. You can change your mind by clearing this site’s data in your browser.' : 'This website doesn’t use advertising or tracking cookies.'} We store a few small things in your browser to make the site work, such as remembering that you closed a notice.</p>
+        <h2>Your rights</h2>
+        <p>You can ask us what we hold about you, ask us to correct it, or ask us to delete it. Just message or call {business.owner} on {phone}.</p>
+        <!-- TODO-CONFIRM: business legal name / data controller details if required -->
+      </div>
+    </div>
+  </section>
+</Base>
+<style>
+  h1 { font-size: var(--step-4); margin-top: 1rem; }
+</style>

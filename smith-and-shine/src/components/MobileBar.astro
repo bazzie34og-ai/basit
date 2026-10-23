@@ -1,0 +1,30 @@
+---
+import Icon from './Icon.astro';
+import { telHref, whatsappHref } from '../config/site.ts';
+interface Props { waText: string }
+const { waText } = Astro.props;
+---
+<nav class="mbar" aria-label="Quick contact">
+  <a class="wa" href={whatsappHref(waText)} data-track="whatsapp_click"><Icon name="whatsapp" /><span>WhatsApp</span></a>
+  <a href={telHref} data-track="call_click"><Icon name="phone" /><span>Call</span></a>
+  <a href="/book/" data-track="book_start"><Icon name="calendar" /><span>Book</span></a>
+</nav>
+<style>
+  .mbar {
+    position: fixed; z-index: 50; left: 0; right: 0; bottom: 0;
+    display: grid; grid-template-columns: 1.3fr 1fr 1fr;
+    background: var(--iron); border-top: 1px solid var(--gold);
+    padding-bottom: env(safe-area-inset-bottom);
+    box-shadow: 0 -10px 30px -12px rgba(0, 0, 0, 0.45);
+  }
+  .mbar a {
+    display: flex; align-items: center; justify-content: center; gap: 0.45rem;
+    min-height: 60px; color: var(--ivory); text-decoration: none;
+    font-weight: 700; font-size: 0.9375rem; letter-spacing: 0.03em;
+  }
+  .mbar a + a { border-left: 1px solid var(--iron-3); }
+  .mbar :global(svg) { width: 21px; height: 21px; color: var(--gold); }
+  .mbar .wa { background: var(--gold); color: var(--iron); }
+  .mbar .wa :global(svg) { color: var(--iron); }
+  @media (min-width: 768px) { .mbar { display: none; } }
+</style>

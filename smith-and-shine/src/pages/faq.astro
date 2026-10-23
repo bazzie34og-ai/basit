@@ -1,0 +1,89 @@
+---
+import Base from '../layouts/Base.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import FaqList from '../components/FaqList.astro';
+import CtaBand from '../components/CtaBand.astro';
+import { phone, monthlyPlan, serviceById, business, areaServed } from '../config/site.ts';
+import { faqSchema, type Crumb, type Faq } from '../lib/schema.ts';
+
+const crumbs: Crumb[] = [{ name: 'Home', url: '/' }, { name: 'FAQ', url: '/faq/' }];
+const waText = 'Hi Chris, I’ve got a question about valeting: …';
+const p = (id: string) => serviceById(id)!.from!;
+
+const groups: { title: string; faqs: Faq[] }[] = [
+  {
+    title: 'Booking',
+    faqs: [
+      { q: 'How do I book a valet?', a: `WhatsApp or call Chris on ${phone}, or use the 3-step booking form on this website. Tell us your car, your postcode and what you’d like doing.` },
+      { q: 'How quickly will you reply?', a: `${business.replyPromise} If it’s urgent, say so in your message and we’ll do our best to fit you in.` },
+      { q: 'When do you work?', a: `${business.hoursText}. Ask when you message and we’ll find a day that suits you.` },
+    ],
+  },
+  {
+    title: 'Where and how',
+    faqs: [
+      { q: 'Where do you cover?', a: `We’re based in Telford and cover ${areaServed.slice(1).join(', ')}, plus the villages around them. Not sure? WhatsApp your postcode.` },
+      { q: 'Do you really come to my house?', a: 'Yes. We’re fully mobile and come to your home, driveway or work. We bring our own kit and a gazebo for the weather.' },
+      { q: 'What if it rains on the day?', a: 'The gazebo handles most showers. If the weather is properly wild, we’ll talk to you and sort another day.' },
+    ],
+  },
+  {
+    title: 'Prices',
+    faqs: [
+      { q: 'How much does a car valet cost?', a: `A mini valet & polish is from £${p('mini-valet')}, a full valet from £${p('full-valet')}, and a full valet & deep clean from £${p('full-valet-deep')}. The monthly plan is from £${monthlyPlan.prices[0].price} a visit.` },
+      { q: 'Will the price change on the day?', a: 'No. We give you a price before we start, and the price we quote is the price you pay.' },
+      { q: 'Why are ceramic coating and PPF priced on quote?', a: 'They depend on the car, the state of the paint and how much you want covered. Send us a photo and we’ll give you a fixed price.' },
+    ],
+  },
+  {
+    title: 'The work',
+    faqs: [
+      { q: 'What is paint correction?', a: 'Machine polishing that removes swirls and light scratches from the clear coat. Deep scratches can be improved, not always removed.' },
+      { q: 'What is a ceramic coating?', a: 'A hard, glossy layer on top of the paint that makes washing easier and beads water. It doesn’t remove scratches, so paint correction often comes first.' },
+      { q: 'Can you get dog hair out?', a: `Yes. Dog hair, stains and smells are what the full valet & deep clean (from £${p('full-valet-deep')}) is for.` },
+      { q: 'Do you valet vans and motorbikes?', a: `Yes. Van mini valets are from £${p('van-mini')}. Motorbike clean & shine is from £${p('moto-clean')} and a full detail from £${p('moto-detail')}.` },
+    ],
+  },
+];
+const all = groups.flatMap((g) => g.faqs);
+---
+<Base
+  title="Car Valeting Questions, Answered | Smith & Shine"
+  description="Answers to the questions people ask Chris about car valeting in Telford: booking, prices, rain, dog hair, paint correction and ceramic coating."
+  waText={waText}
+  crumbs={crumbs}
+  schema={[faqSchema(all)]}
+>
+  <section class="iron fhero">
+    <div class="wrap-mid">
+      <Breadcrumbs crumbs={crumbs} />
+      <h1>Valeting Questions, Answered</h1>
+      <p class="lead">The things people ask Chris, usually over a cuppa. Can’t see yours? WhatsApp it.</p>
+      <nav class="jump" aria-label="FAQ sections">
+        {groups.map((g) => <a href={`#${g.title.toLowerCase().replace(/\W+/g, '-')}`}>{g.title}</a>)}
+      </nav>
+    </div>
+  </section>
+  <section class="ivory section-lg">
+    <div class="wrap-mid">
+      {groups.map((g) => (
+        <div class="group" id={g.title.toLowerCase().replace(/\W+/g, '-')}>
+          <h2>{g.title}</h2>
+          <FaqList faqs={g.faqs} />
+        </div>
+      ))}
+    </div>
+  </section>
+  <CtaBand waText={waText} heading="Still wondering?" text="WhatsApp Chris with your question. He’s happy to talk shop." />
+</Base>
+
+<style>
+  .fhero { padding: 0.5rem 0 var(--s-5); }
+  h1 { font-size: var(--step-5); margin: 1rem 0; max-width: 8.4em; }
+  .lead { font-size: var(--step-1); color: #e7e1d4; }
+  .jump { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1.75rem; }
+  .jump a { padding: 0.55rem 1rem; border: 1px solid var(--iron-3); text-decoration: none; font-weight: 700; font-size: 0.9375rem; min-height: 44px; display: inline-flex; align-items: center; }
+  .jump a:hover { border-color: var(--gold); color: var(--gold-light); }
+  .group + .group { margin-top: 3.5rem; }
+  .group h2 { font-size: var(--step-3); margin-bottom: 0.75rem; }
+</style>

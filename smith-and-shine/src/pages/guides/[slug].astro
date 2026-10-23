@@ -1,0 +1,104 @@
+---
+import { getCollection, render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import Photo from '../../components/Photo.astro';
+import FaqList from '../../components/FaqList.astro';
+import Icon from '../../components/Icon.astro';
+import BridgeArch from '../../components/BridgeArch.astro';
+import { whatsappHref, monthlyPlan, guides as guideLinks } from '../../config/site.ts';
+import { SITE_URL } from '../../config/env.ts';
+import { articleSchema, faqSchema, type Crumb } from '../../lib/schema.ts';
+
+export async function getStaticPaths() {
+  const all = await getCollection('guides');
+  return all.map((g) => ({ params: { slug: g.id }, props: { guide: g } }));
+}
+const { guide } = Astro.props;
+const d = guide.data;
+const { Content } = await render(guide);
+const url = `/guides/${guide.id}/`;
+const crumbs: Crumb[] = [
+  { name: 'Home', url: '/' },
+  { name: 'Car Care Notes', url: '/guides/' },
+  { name: d.h1.split(':')[0].split('?')[0], url },
+];
+const waText = `Hi Chris, I’ve just read “${d.h1}” on your website and I’ve got a question: …`;
+const more = guideLinks.filter((g) => g.url !== url).slice(0, 3);
+const dateText = new Date(d.date).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+---
+<Base
+  title={d.title}
+  description={d.description}
+  waText={waText}
+  crumbs={crumbs}
+  ogType="article"
+  schema={[articleSchema(SITE_URL, { title: d.h1, description: d.description, url, date: d.date, image: `/og/guides-${guide.id}.png` }), faqSchema(d.faqs)]}
+>
+  <article>
+    <header class="ivory ghead">
+      <div class="wrap-text">
+        <Breadcrumbs crumbs={crumbs} tone="ivory" />
+        <p class="label label-gold" style="margin-top:1.25rem">Car Care Notes · by Chris · <time datetime={d.date}>{dateText}</time></p>
+        <h1>{d.h1}</h1>
+        <p class="standfirst">{d.standfirst}</p>
+      </div>
+      <figure class="wrap-mid gphoto">
+        <div class="photo"><Photo name={d.photo} alt={d.alt} sizes="(min-width: 1000px) 62rem, 100vw" priority /></div>
+      </figure>
+    </header>
+
+    <div class="ivory gbody">
+      <div class="wrap-text prose">
+        <Content />
+      </div>
+
+      <aside class="wrap-text soft-cta" aria-label="Book">
+        <div class="plate cta-plate">
+          <span class="rivets" aria-hidden="true"></span>
+          <p class="cta-text">{d.cta.text}</p>
+          <div class="btn-row">
+            <a class="btn btn-primary" href={d.cta.url} data-track="book_start">{d.cta.label}</a>
+            <a class="btn btn-ghost" href={whatsappHref(waText)} data-track="whatsapp_click"><Icon name="whatsapp" /> Ask Chris</a>
+          </div>
+        </div>
+      </aside>
+
+      <section class="wrap-text gfaq" aria-labelledby="gfaq-h">
+        <h2 id="gfaq-h">Quick answers</h2>
+        <FaqList faqs={d.faqs} />
+      </section>
+
+      <nav class="wrap-text more" aria-label="More car care notes">
+        <div class="div" aria-hidden="true"><BridgeArch tone="ink" /></div>
+        <h2 class="label label-gold">More car care notes</h2>
+        <ul role="list">
+          {more.map((m) => <li><a href={m.url}>{m.label} <Icon name="arrow" class="arr" /></a></li>)}
+          <li><a href={monthlyPlan.url}>The monthly plan, from £{monthlyPlan.prices[0].price} <Icon name="arrow" class="arr" /></a></li>
+        </ul>
+      </nav>
+    </div>
+  </article>
+</Base>
+
+<style>
+  .ghead { padding-top: 0.5rem; }
+  h1 { font-size: var(--step-4); margin: 0.75rem 0 1rem; }
+  .standfirst { font-size: var(--step-1); color: var(--ink-soft); font-family: var(--font-display); font-style: italic; line-height: 1.45; }
+  .gphoto { margin-top: 2rem; }
+  .gphoto .photo { aspect-ratio: 16 / 9; max-height: 34rem; }
+  .gbody { padding: var(--s-4) 0 var(--s-5); }
+  .prose :global(h2) { font-size: var(--step-3); }
+  .prose :global(p), .prose :global(li) { font-size: 1.125rem; line-height: 1.7; }
+  .soft-cta { margin-top: 3rem; }
+  .cta-plate { padding: 2rem 1.5rem 1.5rem; color: var(--ivory); }
+  .cta-text { font-family: var(--font-display); font-size: var(--step-2); line-height: 1.25; margin-bottom: 1.25rem; }
+  .gfaq { margin-top: 3.5rem; }
+  .gfaq h2 { font-size: var(--step-3); margin-bottom: 0.75rem; }
+  .more { margin-top: 3.5rem; }
+  .div { width: min(300px, 70%); margin: 0 auto 2rem; }
+  .more ul { margin-top: 0.75rem; border-top: 1px solid #d9cfbb; }
+  .more a { display: flex; justify-content: space-between; align-items: center; padding: 0.9rem 0; border-bottom: 1px solid #d9cfbb; text-decoration: none; font-family: var(--font-display); font-size: 1.2rem; font-weight: 600; min-height: 44px; }
+  .more :global(.arr) { width: 1.1rem; height: 1.1rem; color: var(--gold-ink); }
+  .more a:hover { text-decoration: underline; text-decoration-color: var(--gold-ink); }
+</style>

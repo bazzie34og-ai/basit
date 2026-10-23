@@ -1,0 +1,86 @@
+---
+import Service from '../layouts/Service.astro';
+import Photo from '../components/Photo.astro';
+import { serviceById, inclusions, formatGBP, monthlyPlan } from '../config/site.ts';
+import type { Faq } from '../lib/schema.ts';
+
+const mini = serviceById('mini-valet')!.from!;
+const full = serviceById('full-valet')!.from!;
+const monthly = monthlyPlan.prices[0].price;
+const waText = 'Hi Chris, could I book a mini valet & polish? My car is a … and my postcode is …';
+
+const faqs: Faq[] = [
+  { q: 'How much is a mini valet in Telford?', a: `A mini valet & polish is from £${mini}. That’s the price we quote before we start, and the price you pay.` },
+  { q: 'How long does a mini valet take?', a: 'Less time than a full valet, so it fits round a working day or a Saturday morning. Chris will give you a rough time when you book, based on your car.' },
+  { q: 'Mini valet or monthly plan?', a: `If you’d like it looking this good all the time, the monthly plan (from £${monthly} a visit) includes more than a mini valet and costs less per visit. The mini valet is great as a one-off.` },
+  { q: 'Will a mini valet sort out stains?', a: `Not really. It’s a freshen-up. For stains, spills or pet hair, the full valet & deep clean is the one to book.` },
+];
+---
+<Service
+  title={`Mini Valet Telford: Valet & Polish from £${mini}`}
+  description={`Mini valet & polish in Telford from £${mini}. A quick, proper freshen-up inside and out, done on your driveway. Fixed price, no surprises.`}
+  h1="Mini Valet & Polish, Telford"
+  eyebrow={`Valeting · from ${formatGBP(mini)}`}
+  crumbName="Mini valet"
+  photo="peugeot-308-gt-blue-detail"
+  alt="Glossy blue Peugeot 308 GT on a driveway: the finish we aim for with every mini valet in Telford"
+  price={`from ${formatGBP(mini)}`}
+  priceNote="Inside and out · with a polish"
+  waText={waText}
+  serviceName="Mini valet & polish"
+  serviceType="Car valeting"
+  minPrice={mini}
+  faqs={faqs}
+  reviews={['Matt S.']}
+  kind="valet"
+  heroLayout="left"
+  related={[
+    { url: monthlyPlan.url, label: 'Monthly valet plan', note: `better value from £${monthly}` },
+    { url: '/full-valet-telford/', label: 'Full valet', note: `from £${full}` },
+    { url: '/prices/', label: 'All prices' },
+    { url: '/ceramic-coating-telford/', label: 'Ceramic coating', note: 'make the shine last' },
+    { url: '/guides/mini-valet-vs-full-valet/', label: 'Guide: mini valet vs full valet' },
+    { url: '/book/?service=mini-valet', label: 'Book a mini valet' },
+  ]}
+>
+  <Fragment slot="intro">
+    <p>A mini valet in Telford for cars that are mostly fine and just need bringing back up to scratch. Quick, tidy, and finished with a polish so it actually shines.</p>
+  </Fragment>
+
+  <section class="svc ivory" aria-labelledby="mv-what">
+    <div class="wrap split">
+      <div>
+        <h2 id="mv-what">What you get</h2>
+        <ul class="ticks" role="list">
+          {inclusions.miniValet.map((i) => <li>{i}</li>)}
+        </ul>
+        <div class="callout">
+          <p><strong>Honest bit:</strong> a mini valet is a freshen-up, not a rescue. If the seats have a history, you want the <a href="/full-valet-telford/#deep-clean">full valet &amp; deep clean</a>.</p>
+        </div>
+      </div>
+      <div class="glance plate">
+        <span class="rivets" aria-hidden="true"></span>
+        <h3>Mini or full?</h3>
+        <p class="leader"><span>Mini Valet &amp; Polish</span><span class="dots" aria-hidden="true"></span><b class="gold-text">£{mini}+</b></p>
+        <p class="leader"><span>Full Valet</span><span class="dots" aria-hidden="true"></span><b class="gold-text">£{full}+</b></p>
+        <p class="leader"><span>Monthly plan, small car</span><span class="dots" aria-hidden="true"></span><b class="gold-text">£{monthly}</b></p>
+        <p>Regulars on the monthly plan get a 12-point clean every visit for less than a one-off mini valet.</p>
+        <a class="btn btn-primary" href="/book/?service=mini-valet" data-track="book_start">Book a mini valet</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="svc ivory-2" aria-labelledby="mv-who">
+    <div class="wrap split flip">
+      <div class="prose">
+        <h2 id="mv-who">Who books a mini valet?</h2>
+        <p>Mostly people who look after their car already and want a hand. Busy parents between full valets. Commuters whose car lives on the M54. The second car in a two-car household: one review mentions “a mini valet for one and some paint correction and protection work on the other”, done in the same visit.</p>
+        <p>If that sounds like you every month, the <a href={monthlyPlan.url} data-upsell="monthly-mini">monthly plan</a> will work out better. If the car needs more than a freshen-up, the <a href="/guides/mini-valet-vs-full-valet/">mini vs full valet guide</a> will help you choose.</p>
+      </div>
+      <figure>
+        <div class="photo"><Photo name="nissan-qashqai-red-paint-gloss" alt="Red Nissan Qashqai paintwork with clear reflections after a clean by Smith & Shine" sizes="(min-width: 900px) 34vw, 92vw" /></div>
+        <figcaption class="caption">Nissan Qashqai. The polish is the point.</figcaption>
+      </figure>
+    </div>
+  </section>
+</Service>

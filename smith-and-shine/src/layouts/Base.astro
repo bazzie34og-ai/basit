@@ -1,0 +1,112 @@
+---
+import '@fontsource/manrope/400.css';
+import '@fontsource/manrope/500.css';
+import '@fontsource/manrope/700.css';
+import '../styles/global.css';
+
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import MobileBar from '../components/MobileBar.astro';
+import PreviewRibbon from '../components/PreviewRibbon.astro';
+import { PREVIEW_MODE, SITE_URL, GA4_ID } from '../config/env.ts';
+import { business } from '../config/site.ts';
+import { businessSchema, breadcrumbSchema, type Crumb } from '../lib/schema.ts';
+
+interface Props {
+  title: string;
+  description: string;
+  /** Short title on the OG image; defaults to the H1 */
+  ogHeading?: string;
+  noindex?: boolean;
+  crumbs?: Crumb[];
+  /** Where breadcrumbs render: inside the page hero (slot) or not at all */
+  schema?: Record<string, unknown>[];
+  /** Pre-filled WhatsApp text for this page */
+  waText?: string;
+  ogType?: 'website' | 'article';
+}
+
+const {
+  title, description, noindex = false, crumbs, schema = [],
+  waText = 'Hi Chris, I’d like a price for a valet. My car is a … and my postcode is …',
+  ogType = 'website',
+} = Astro.props;
+
+const path = Astro.url.pathname;
+const canonical = `${SITE_URL}${path}`;
+const ogSlug = path === '/' ? 'home' : path.replace(/^\/|\/$/g, '').replace(/\//g, '-');
+const ogImage = `${SITE_URL}/og/${ogSlug}.png`;
+const robots = PREVIEW_MODE || noindex ? 'noindex, nofollow' : 'index, follow, max-image-preview:large';
+
+const ld = [businessSchema(SITE_URL), ...(crumbs ? [breadcrumbSchema(SITE_URL, crumbs)] : []), ...schema];
+---
+<!doctype html>
+<html lang="en-GB" data-ga={GA4_ID || undefined}>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>{title}</title>
+  <meta name="description" content={description} />
+  <link rel="canonical" href={canonical} />
+  <meta name="robots" content={robots} />
+  <meta name="theme-color" content="#1E1F23" />
+  <link rel="preload" href="/fonts/fraunces-normal.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png" />
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  <link rel="manifest" href="/manifest.webmanifest" />
+  <link rel="sitemap" href="/sitemap-index.xml" />
+
+  <meta property="og:type" content={ogType} />
+  <meta property="og:site_name" content={business.name} />
+  <meta property="og:locale" content="en_GB" />
+  <meta property="og:title" content={title} />
+  <meta property="og:description" content={description} />
+  <meta property="og:url" content={canonical} />
+  <meta property="og:image" content={ogImage} />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content={`${business.name}: ${title}`} />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content={title} />
+  <meta name="twitter:description" content={description} />
+  <meta name="twitter:image" content={ogImage} />
+
+  <script is:inline>document.documentElement.classList.add('js')</script>
+  {ld.map((obj) => <script type="application/ld+json" set:html={JSON.stringify(obj)} />)}
+  <slot name="head" />
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  {PREVIEW_MODE && <PreviewRibbon />}
+  <Header waText={waText} />
+  <main id="main" tabindex="-1">
+    <slot />
+  </main>
+  <Footer />
+  <MobileBar waText={waText} />
+  {GA4_ID && (
+    <div id="consent" class="consent iron" hidden role="region" aria-label="Analytics choice">
+      <p>Can we count visits with Google Analytics? No ads, no selling data.</p>
+      <div class="btn-row">
+        <button type="button" class="btn btn-primary" data-consent="yes">That’s fine</button>
+        <button type="button" class="btn btn-ghost" data-consent="no">No thanks</button>
+      </div>
+    </div>
+  )}
+  <script>
+    import '../scripts/site.ts';
+  </script>
+</body>
+</html>
+
+<style>
+  main:focus { outline: none; }
+  .consent {
+    position: fixed; z-index: 60; left: 1rem; right: 1rem; bottom: 76px;
+    display: flex; flex-wrap: wrap; gap: 0.75rem 1.25rem; align-items: center; justify-content: space-between;
+    padding: 1rem 1.25rem; border: 1px solid var(--gold); border-radius: var(--radius); font-size: 0.9375rem;
+    max-width: 44rem; margin-inline: auto;
+  }
+  @media (min-width: 768px) { .consent { bottom: 1rem; } }
+</style>

@@ -1,0 +1,24 @@
+---
+import type { Review } from '../config/site.ts';
+interface Props { review: Review; size?: 'lg' | 'md' | 'sm'; tone?: 'ivory' | 'iron' | 'paper' }
+const { review, size = 'md', tone = 'ivory' } = Astro.props;
+---
+<figure class:list={['rq', size, `t-${tone}`]}>
+  <p class="stars" aria-label="5 out of 5 stars on Google">★★★★★</p>
+  <blockquote><p>{review.text}</p></blockquote>
+  <figcaption><strong>{review.name}</strong> <span>· {review.tag} · Google</span></figcaption>
+</figure>
+<style>
+  .rq { position: relative; }
+  .stars { color: var(--gold-ink-strong); letter-spacing: 0.15em; font-size: 0.9rem; }
+  :global(.iron) .stars, .rq.t-iron .stars { color: var(--gold); }
+  blockquote { margin: 0.6rem 0 0.9rem; font-family: var(--font-display); line-height: 1.4; font-weight: 450; }
+  .lg blockquote { font-size: var(--step-2); line-height: 1.32; font-weight: 500; }
+  .md blockquote { font-size: 1.2rem; }
+  .sm blockquote { font-size: 1.05rem; }
+  .lg blockquote p::before { content: '“'; position: absolute; left: -0.1em; top: -0.35em; font-size: 5rem; color: var(--gold); opacity: 0.35; line-height: 1; }
+  figcaption { font-size: 0.875rem; }
+  figcaption span { color: var(--ink-soft); }
+  .rq.t-iron figcaption span { color: var(--steel-light); }
+  .rq.t-paper { background: var(--paper); padding: 1.5rem; border: 1px solid #e3d8c3; }
+</style>

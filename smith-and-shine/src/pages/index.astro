@@ -1,0 +1,518 @@
+---
+import Base from '../layouts/Base.astro';
+import Photo from '../components/Photo.astro';
+import Logo from '../components/Logo.astro';
+import Icon from '../components/Icon.astro';
+import BridgeArch from '../components/BridgeArch.astro';
+import PriceBoard from '../components/PriceBoard.astro';
+import MonthlyChecklist from '../components/MonthlyChecklist.astro';
+import HowItWorks from '../components/HowItWorks.astro';
+import ReviewQuote from '../components/ReviewQuote.astro';
+import CuppaNote from '../components/CuppaNote.astro';
+import AreaMap from '../components/AreaMap.astro';
+import FaqList from '../components/FaqList.astro';
+import CtaBand from '../components/CtaBand.astro';
+import {
+  phone, telHref, whatsappHref, googleRating, social, monthlyPlan, formatGBP, reviewByName,
+  reviewFragments, telfordVillages, areaPages, features, serviceById,
+} from '../config/site.ts';
+import { faqSchema, type Faq } from '../lib/schema.ts';
+
+const waText = 'Hi Chris, I’d like a valet please. My car is a … and my postcode is TF…';
+const fullValet = serviceById('full-valet')!.from!;
+const mini = serviceById('mini-valet')!.from!;
+const deep = serviceById('full-valet-deep')!.from!;
+const monthlyFrom = monthlyPlan.prices[0].price;
+
+const faqs: Faq[] = [
+  { q: 'Do you really come to me?', a: 'Yes. We’re fully mobile, so we come to your home, driveway or work anywhere in Telford and the nearby Shropshire towns. You don’t need to drive anywhere or sit in a queue.' },
+  { q: 'How much is a full valet in Telford?', a: `A full valet is from £${fullValet}. A mini valet & polish is from £${mini}, and a full valet & deep clean is from £${deep}. Every price is on our prices page, and the price we quote is the price you pay.` },
+  { q: 'What’s the difference between a mini valet and a full valet?', a: `A mini valet & polish (from £${mini}) is a quick freshen-up inside and out with a polish. A full valet (from £${fullValet}) does every surface properly, inside and out. If you’ve got stains, spills or pet hair, the full valet & deep clean (from £${deep}) is the one.` },
+  { q: 'What does the monthly plan include?', a: `Twelve things, every visit: ${monthlyPlan.includes.join(', ').toLowerCase()}. It’s £30 per visit for small cars, £40 for medium, £50 for large and £60 for 4x4s and SUVs.` },
+  { q: 'Will paint correction remove every scratch?', a: 'Paint correction is machine polishing that removes swirls and light scratches. Deep scratches can be improved, but not always removed. Chris will look at your car and tell you honestly what to expect before he starts.' },
+  { q: 'What happens if it rains?', a: 'We bring a gazebo, so a bit of good old English weather doesn’t usually stop us. If it’s properly wild, we’ll talk to you and sort another day.' },
+  { q: 'Do you valet vans and motorbikes?', a: 'Yes. A van mini valet is from £60. For motorbikes, a clean & shine is from £60 and a full detail is from £120.' },
+  { q: 'How do I book?', a: 'WhatsApp or call Chris on ' + phone + ', or use the 3-step booking form. Tell us your car and postcode and we’ll come back with a day and a price.' },
+];
+---
+<Base
+  title="Mobile Car Valeting Telford & Detailing | Smith & Shine"
+  description={`Mobile valeting in Telford: we come to your driveway. Full valets from £${fullValet}, monthly plans from £${monthlyFrom}. Fixed prices, ${googleRating.label} five-star Google reviews.`}
+  waText={waText}
+  schema={[faqSchema(faqs)]}
+>
+  <!-- ============ HERO ============ -->
+  <section class="hero iron">
+    <div class="hero-grid">
+      <div class="hero-copy">
+        <p class="label label-gold">Family-run · Fully mobile · Telford, Shropshire</p>
+        <h1>Mobile Valeting &amp; Detailing in Telford, <span class="ital">at Your Door</span></h1>
+        <p class="hero-price">
+          We come to you. <strong>Full valets from <span class="gold-text">£{fullValet}</span>.</strong>
+        </p>
+        <p class="hero-sub">
+          Proper car valeting in Telford and across Shropshire, by {`Chris`} and the team.
+          Mobile valeting means we bring the kit to your driveway, home or work.
+          Monthly plans from £{monthlyFrom}.
+        </p>
+        <div class="btn-row hero-ctas">
+          <a class="btn btn-primary" href={whatsappHref(waText)} data-track="whatsapp_click"><Icon name="whatsapp" /> WhatsApp Chris</a>
+          <a class="btn btn-ghost" href={telHref} data-track="call_click"><Icon name="phone" /> Call {phone}</a>
+        </div>
+        <p class="hero-reviews">
+          <a href={social.googleReviews} target="_blank" rel="noopener"><span class="stars" aria-hidden="true">★★★★★</span> {googleRating.label} Google reviews</a>
+          <span class="sep" aria-hidden="true">·</span>
+          <a href="/reviews/">{social.facebook.recommend} recommend on Facebook</a>
+        </p>
+      </div>
+
+      <div class="hero-visual">
+        <div class="arch-window">
+          <Photo
+            name="jaguar-fpace-grey-bonnet-gloss-reflections"
+            alt="Jaguar F-Pace bonnet reflecting the clouds after a full detail by Smith & Shine in Telford"
+            priority
+            sizes="(min-width: 1000px) 34vw, 82vw"
+          />
+          <span class="sweep" aria-hidden="true"></span>
+        </div>
+        <div class="logo-plate plate">
+          <span class="rivets" aria-hidden="true"></span>
+          <Logo width={300} alt="Smith & Shine: Detailing & Valeting Specialists, Auto Detailing Aficionado" />
+        </div>
+        <p class="hero-caption">Jaguar F-Pace. That’s the sky in the bonnet.</p>
+      </div>
+    </div>
+    <div class="hero-bridge" aria-hidden="true"><BridgeArch /></div>
+  </section>
+
+  <!-- ============ NOT ANOTHER CAR WASH ============ -->
+  <section class="contrast ivory section-lg" aria-labelledby="nacw">
+    <div class="wrap contrast-grid">
+      <figure class="contrast-photo reveal">
+        <div class="photo"><Photo name="mercedes-a45-amg-matte-grey-gazebo-setup" alt="Smith & Shine gazebo and kit set up on a customer’s driveway in Telford, with a matte grey Mercedes-AMG A45 underneath" sizes="(min-width: 900px) 34vw, 92vw" /></div>
+        <figcaption class="caption">We come to you: gazebo up, kit out, on a customer’s driveway.</figcaption>
+      </figure>
+      <div class="contrast-copy">
+        <p class="label label-gold reveal">Why Smith &amp; Shine</p>
+        <h2 id="nacw" class="reveal">Not another car wash.</h2>
+        <p class="lede reveal">A proper clean, by someone who actually cares how it looks when he drives off.</p>
+        <dl class="ledger">
+          <div class="reveal">
+            <dt>The queue at the car wash</dt>
+            <dd><strong>Your driveway.</strong> We come to your home or work. You carry on with your day.</dd>
+          </div>
+          <div class="reveal">
+            <dt>Rushed, and nobody tells you anything</dt>
+            <dd><strong>Explained.</strong> Chris tells you what he’s done and what the car needs next time.</dd>
+          </div>
+          <div class="reveal">
+            <dt>Guess the price, then get upsold</dt>
+            <dd><strong>Fixed prices, on this website.</strong> The price we quote is the price you pay.</dd>
+          </div>
+        </dl>
+        <blockquote class="pull reveal">
+          <p>“{reviewFragments.carWashes.text}”</p>
+          <footer>{reviewFragments.carWashes.name}, Google review</footer>
+        </blockquote>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ PRICE BOARD ============ -->
+  <section class="prices iron section-lg" aria-label="Prices">
+    <div class="wrap-mid">
+      <div class="prices-intro">
+        <p class="label label-gold">No “message for a price”</p>
+        <p class="prices-lede">Every price is right here. Full valet from £{fullValet}. <span class="muted">The price we quote is the price you pay.</span></p>
+      </div>
+      <PriceBoard title="Our prices, in full" showQuote={false} />
+      <div class="prices-foot">
+        <p class="muted">Not sure what your car needs? Send Chris a photo and he’ll tell you straight.</p>
+        <a class="text-link" href="/prices/">Prices explained, with sizes <Icon name="arrow" class="arr" /></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ MONTHLY PLAN ============ -->
+  <section class="monthly ivory section-lg" aria-labelledby="monthly-h">
+    <div class="wrap">
+      <div class="monthly-top">
+        <div>
+          <p class="label label-gold reveal">The {monthlyPlan.name}</p>
+          <h2 id="monthly-h" class="reveal">Keep it looking like this, every month, from <span class="amt">£{monthlyFrom}</span>.</h2>
+        </div>
+        <p class="lede reveal">Most of our regulars never go back to the car wash. Same day each month, same 12-point clean, on your driveway.</p>
+      </div>
+      <div class="monthly-grid">
+        <div class="monthly-left">
+          <ul class="sizes" role="list">
+            {monthlyPlan.prices.map((p) => (
+              <li class="reveal"><span class="sz">{p.label}</span><span class="pr">{formatGBP(p.price)}</span><span class="pv">per visit</span></li>
+            ))}
+          </ul>
+          <figure class="two-cars reveal">
+            <div class="photo"><Photo name="jaguar-and-cupra-two-cars-detailed" alt="A Jaguar F-Pace and a Cupra Formentor side by side on a Telford driveway after their monthly detail" sizes="(min-width: 900px) 40vw, 92vw" /></div>
+            <figcaption class="caption">Two cars, one driveway, one visit. Ask about doing the whole drive.</figcaption>
+          </figure>
+          <ReviewQuote review={reviewByName('Matt S.')} size="sm" />
+        </div>
+        <div class="monthly-right">
+          <h3 class="label label-gold">What every visit includes</h3>
+          <MonthlyChecklist />
+          <div class="btn-row monthly-cta">
+            <a class="btn btn-ink" href="/book/?service=monthly" data-track="book_start" data-track-label="monthly">Book your first visit</a>
+            <a class="text-link" href={monthlyPlan.url} data-upsell="monthly-home">How the monthly plan works</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ PREMIUM WORK ============ -->
+  <section class="premium ivory-2 section-lg" aria-labelledby="premium-h">
+    <div class="wrap">
+      <header class="premium-head">
+        <p class="label label-gold reveal">Detailing &amp; protection</p>
+        <h2 id="premium-h" class="reveal">When a valet isn’t enough.</h2>
+        <p class="lede reveal">For the car you’re proud of. Detailing and paint correction have prices below. Ceramic and PPF are on quote: send us a photo.</p>
+      </header>
+
+      <ol class="pieces" role="list">
+        <li class="piece piece-a reveal">
+          <div class="photo"><Photo name="jaguar-xe-red-gloss-detail" alt="Red Jaguar XE with deep gloss after paint correction by Smith & Shine in Telford" sizes="(min-width: 900px) 30vw, 92vw" /></div>
+          <div class="piece-copy">
+            <span class="roman" aria-hidden="true">I.</span>
+            <h3><a href="/paint-correction-telford/">Paint correction</a></h3>
+            <p><strong>Machine polishing that removes swirls and light scratches.</strong> Deep scratches can be improved, not always removed, and we’ll tell you which is which before we start.</p>
+            <p class="q">“…the damage was barely noticeable after her time with him.” <span>Andrew P., Jaguar XE</span></p>
+            <p class="from">Detailing &amp; paint correction from <b>£160</b></p>
+          </div>
+        </li>
+        <li class="piece piece-b reveal">
+          <div class="photo"><Photo name="classic-vw-beetle-blue-front-detail" alt="Classic pale blue VW Beetle bonnet after a careful detail on a Shropshire driveway" sizes="(min-width: 900px) 22vw, 92vw" /></div>
+          <div class="piece-copy">
+            <span class="roman" aria-hidden="true">II.</span>
+            <h3><a href="/car-detailing-telford/">Detailing</a></h3>
+            <p>Slower, deeper work on paint, wheels, trim and interior. Classics and pride-and-joys welcome.</p>
+            <p class="from">From <b>£110</b></p>
+          </div>
+        </li>
+        <li class="piece piece-c reveal">
+          <div class="photo"><Photo name="tesla-model-3-grey-detail" alt="Grey Tesla Model 3 on a block-paved Telford driveway after a detail and protection" sizes="(min-width: 900px) 22vw, 92vw" /></div>
+          <div class="piece-copy">
+            <span class="roman" aria-hidden="true">III.</span>
+            <h3><a href="/ceramic-coating-telford/">Ceramic coating</a></h3>
+            <p>A hard, glossy layer on the paint. Water beads off and washing gets easier.</p>
+            <p class="q">“{reviewFragments.tesla.text}” <span>{reviewFragments.tesla.name}, {reviewFragments.tesla.car}</span></p>
+            <p class="from">Price on quote: <a href={whatsappHref('Hi Chris, could I get a ceramic coating quote? Here’s a photo of my car:')} data-track="whatsapp_click">send a photo</a></p>
+          </div>
+        </li>
+        {features.ppf.enabled && (
+          <li class="piece piece-d reveal">
+            <div class="photo"><Photo name="jaguar-fpace-grey-side-wheel-detail" alt="Side of a grey Jaguar F-Pace reflecting the sky, showing the kind of paint PPF protects" sizes="(min-width: 900px) 22vw, 92vw" /></div>
+            <div class="piece-copy">
+              <span class="roman" aria-hidden="true">IV.</span>
+              <h3><a href="/paint-protection-film-telford/">Paint protection film</a></h3>
+              <p>Clear film that takes the stone chips so your paint doesn’t.</p>
+              <p class="from">Price on quote: <a href={whatsappHref('Hi Chris, could I get a PPF quote? Here’s a photo of my car:')} data-track="whatsapp_click">send a photo</a></p>
+            </div>
+          </li>
+        )}
+      </ol>
+    </div>
+  </section>
+
+  <!-- ============ GALLERY ============ -->
+  <section class="gallery ivory section-lg" aria-labelledby="gallery-h">
+    <div class="wrap">
+      <div class="gallery-head">
+        <h2 id="gallery-h" class="reveal">Recent work, <span class="ital">all real</span>.</h2>
+        <p class="muted reveal">Every photo here is a Smith &amp; Shine job, snapped on a phone on the customer’s drive. No stock photos. Number plates blurred.</p>
+      </div>
+      <div class="mosaic">
+        <figure class="m m1 reveal"><div class="photo"><Photo name="classic-vw-beetle-blue-side-detail" alt="Classic blue VW Beetle gleaming in the sun on a Shropshire driveway after a Smith & Shine detail" sizes="(min-width: 900px) 30vw, 60vw" /></div><figcaption class="caption">Classic VW Beetle</figcaption></figure>
+        <figure class="m m2 reveal"><div class="photo"><Photo name="ford-ranger-wildtrak-orange-wash" alt="Orange Ford Ranger Wildtrak pickup, wet and gleaming after a wash" sizes="(min-width: 900px) 22vw, 45vw" /></div><figcaption class="caption">Ford Ranger · “made my ranger look brand new”</figcaption></figure>
+        <figure class="m m3 reveal"><div class="photo"><Photo name="harley-motorbike-detail" alt="Black Harley-Davidson motorbike with gleaming paint and chrome after a clean by Smith & Shine" sizes="(min-width: 900px) 30vw, 92vw" /></div><figcaption class="caption">Harley-Davidson</figcaption></figure>
+        <figure class="m m4 reveal"><div class="photo"><Photo name="audi-s5-cabriolet-grey-detail" alt="Grey Audi S5 Cabriolet with mirror-like paint after a Smith & Shine valet" sizes="(min-width: 900px) 36vw, 92vw" /></div><figcaption class="caption">Audi S5 Cabriolet</figcaption></figure>
+        <figure class="m m5 reveal"><div class="photo"><Photo name="jaguar-red-leather-interior-valet" alt="Jaguar F-Pace red leather seats, clean and fresh after interior valeting" sizes="(min-width: 900px) 22vw, 45vw" /></div><figcaption class="caption">Jaguar F-Pace interior</figcaption></figure>
+        <figure class="m m6 reveal"><div class="photo"><Photo name="nissan-qashqai-red-paint-gloss" alt="Red Nissan Qashqai with deep reflections in the paint after a Smith & Shine clean" sizes="(min-width: 900px) 22vw, 45vw" /></div><figcaption class="caption">Nissan Qashqai</figcaption></figure>
+        <figure class="m m7 reveal"><div class="photo"><Photo name="ford-focus-rs-smith-and-shine-plate" alt="Grey Ford Focus RS wearing a Smith&Shine show plate after a detail" sizes="(min-width: 900px) 22vw, 45vw" /></div><figcaption class="caption">Focus RS · Wearing our plate</figcaption></figure>
+        <figure class="m m8 reveal"><div class="photo"><Photo name="peugeot-308-gt-blue-detail" alt="Blue Peugeot 308 GT, glossy on a block-paved driveway after a valet" sizes="(min-width: 900px) 30vw, 92vw" /></div><figcaption class="caption">Peugeot 308 GT</figcaption></figure>
+      </div>
+      <p class="gallery-more"><a class="text-link" href={social.instagram.url} target="_blank" rel="noopener">More on Instagram {social.instagram.handle} <Icon name="arrow" class="arr" /></a></p>
+    </div>
+  </section>
+
+  <HowItWorks tone="ivory-2" />
+
+  <!-- ============ REVIEWS ============ -->
+  <section class="reviews ivory section-lg" aria-labelledby="reviews-h">
+    <div class="wrap">
+      <div class="reviews-head">
+        <h2 id="reviews-h" class="reveal">What Telford says.</h2>
+        <p class="summary reveal">
+          <a href={social.googleReviews} target="_blank" rel="noopener"><b>{googleRating.summary}</b></a>
+          <span>{social.facebook.recommend} recommend on Facebook ({social.facebook.reviewCount} reviews)</span>
+        </p>
+      </div>
+      <div class="rgrid">
+        <div class="r r-lead reveal"><ReviewQuote review={reviewByName('Aimee P.')} size="lg" /></div>
+        <div class="r reveal"><ReviewQuote review={reviewByName('John J.')} /></div>
+        <div class="r reveal"><ReviewQuote review={reviewByName('Tasha K.')} /></div>
+        <div class="r r-cuppa reveal"><CuppaNote /></div>
+        <div class="r reveal"><ReviewQuote review={reviewByName('Andrew P.')} size="sm" /></div>
+        <div class="r reveal"><ReviewQuote review={reviewByName('Josh P.')} size="sm" /></div>
+        <div class="r reveal"><ReviewQuote review={reviewByName('Iain W.')} size="sm" /></div>
+      </div>
+      <p class="reviews-more"><a class="text-link" href="/reviews/">Read more reviews <Icon name="arrow" class="arr" /></a></p>
+    </div>
+  </section>
+
+  <!-- ============ AREAS ============ -->
+  <section class="areas ivory-2 section-lg" aria-labelledby="areas-h">
+    <div class="wrap areas-grid">
+      <div class="areas-copy">
+        <p class="label label-gold reveal">Where we valet</p>
+        <h2 id="areas-h" class="reveal">Telford first. Then wherever the M54 takes us.</h2>
+        <p class="reveal">We’re a mobile valeting service based in Telford, so every estate in town is on the doorstep:</p>
+        <p class="villages reveal">{telfordVillages.join(' · ')}</p>
+        <p class="reveal">And we regularly head out to:</p>
+        <ul class="town-links" role="list">
+          {areaPages.map((a) => <li class="reveal"><a href={a.url}>{a.name}</a></li>)}
+        </ul>
+        <p class="muted small reveal">Somewhere else nearby? WhatsApp your postcode. If we can get there, we will.</p>
+      </div>
+      <div class="map-wrap reveal"><AreaMap /></div>
+    </div>
+  </section>
+
+  <!-- ============ FAQ ============ -->
+  <section class="faq ivory section" aria-labelledby="faq-h">
+    <div class="wrap faq-grid">
+      <div>
+        <h2 id="faq-h" class="reveal">Questions people ask Chris.</h2>
+        <p class="muted reveal">Usually over a cuppa. <a href="/faq/">All questions</a></p>
+      </div>
+      <FaqList faqs={faqs} />
+    </div>
+  </section>
+
+  <!-- ============ OWNER'S NOTE ============ -->
+  <section class="note-wrap ivory section" aria-labelledby="note-h">
+    <div class="wrap-mid note-grid">
+      <article class="letter reveal">
+        <h2 id="note-h" class="label label-gold">A note from Chris</h2>
+        <p class="first">Hello, I’m Chris, or Mr Smith if you’ve read the reviews.</p>
+        <p>Here’s how I work. I come to you. I tell you what I’m going to do and what it’ll cost before I start, and that’s the price. When I’m done, I walk you round the car and tell you what I did and what it’ll need next time.</p>
+        <p>Honestly, the best part of my job is turning a dirty car back to showroom condition. Family wagons with four kids’ worth of crumbs, dog-hair specials, the Jag that needed a bit of love on the passenger side. Bring them on.</p>
+        <p>If you put the kettle on, I won’t say no. Cake is optional, but noted.</p>
+        <p class="sig">Chris</p>
+        <p class="sig-sub">Smith &amp; Shine, Telford</p>
+      </article>
+      <aside class="note-aside reveal">
+        <a href="/about/" class="text-link">Meet Chris properly <Icon name="arrow" class="arr" /></a>
+      </aside>
+    </div>
+  </section>
+
+  <CtaBand waText={waText} />
+</Base>
+
+<style>
+  /* ---------- Hero ---------- */
+  .hero { position: relative; overflow: hidden; padding-top: clamp(1.5rem, 4vw, 3.5rem); }
+  .hero-grid {
+    width: min(100% - 2 * var(--gutter), 84rem); margin-inline: auto;
+    display: grid; gap: 2.5rem; align-items: center; position: relative; z-index: 1;
+  }
+  @media (min-width: 1000px) { .hero-grid { grid-template-columns: 1.2fr 0.8fr; gap: 3rem; } }
+  .hero-copy { padding-top: 0.5rem; }
+  .hero h1 { font-size: clamp(2.4rem, 1.4rem + 4.6vw, 5rem); line-height: 1.02; margin: 0.9rem 0 1.25rem; max-width: 9.0em; }
+  .hero h1 .ital { color: var(--gold-light); font-weight: 500; display: block; }
+  .hero-price { font-size: clamp(1.25rem, 1rem + 1vw, 1.6rem); font-family: var(--font-display); line-height: 1.3; }
+  .hero-price strong { font-weight: 700; }
+  .hero-price .gold-text { font-size: 1.2em; }
+  .hero-sub { margin-top: 0.9rem; max-width: 46ch; color: #d9d3c6; }
+  .hero-ctas { margin-top: 1.75rem; }
+  .hero-ctas .btn { min-height: 54px; font-size: 1rem; }
+  @media (max-width: 520px) { .hero-ctas .btn { width: 100%; } }
+  .hero-reviews { margin-top: 1.25rem; display: flex; flex-wrap: wrap; gap: 0 0.6rem; font-size: 0.9375rem; font-weight: 600; }
+  .hero-reviews a { color: var(--ivory); text-decoration: none; padding-block: 0.6rem; }
+  .hero-reviews a:hover { color: var(--gold-light); text-decoration: underline; }
+  .hero-reviews .stars { color: var(--gold); letter-spacing: 0.1em; }
+  .sep { color: var(--steel); padding-block: 0.6rem; }
+
+  .hero-visual { position: relative; width: min(100%, 30rem); justify-self: center; margin-bottom: 1rem; }
+  .arch-window {
+    position: relative; aspect-ratio: 4 / 5; overflow: hidden;
+    border-radius: 50% 50% 0 0 / 40% 40% 0 0; background: var(--iron-2);
+  }
+  .arch-window :global(img) { width: 100%; height: 100%; object-fit: cover; object-position: 50% 60%; }
+  .hero-visual::before {
+    content: ''; position: absolute; inset: -12px -12px auto; aspect-ratio: 4 / 5; height: auto;
+    border: 1px solid var(--gold); border-bottom: 0; border-radius: 50% 50% 0 0 / 40% 40% 0 0;
+    width: calc(100% + 24px); pointer-events: none;
+  }
+  .sweep { position: absolute; inset: 0; pointer-events: none; }
+  @media (prefers-reduced-motion: no-preference) {
+    .sweep {
+      background: linear-gradient(115deg, transparent 35%, rgba(255, 255, 255, 0.28) 48%, transparent 60%);
+      transform: translateX(-110%); animation: sweep 1.8s 0.6s var(--ease) forwards;
+    }
+    @keyframes sweep { to { transform: translateX(110%); } }
+  }
+  .logo-plate {
+    position: relative; margin: -3.5rem auto 0; width: 86%; padding: 1rem 1.25rem; z-index: 2;
+    background: var(--iron);
+  }
+  .logo-plate :global(img) { width: 100%; height: auto; }
+  .hero-caption { text-align: center; color: var(--steel); font-size: 0.8125rem; margin-top: 0.75rem; font-style: italic; }
+  .hero-bridge { width: min(980px, 150%); margin: 1.5rem 0 0 50%; transform: translateX(-50%); opacity: 0.75; }
+  @media (min-width: 1000px) { .hero-bridge { margin-top: 0.5rem; } }
+
+  /* ---------- Not another car wash ---------- */
+  .contrast-grid { display: grid; gap: 2.5rem; }
+  @media (min-width: 900px) { .contrast-grid { grid-template-columns: 0.75fr 1.25fr; gap: 5rem; align-items: start; } }
+  .contrast-photo .photo { aspect-ratio: 3 / 4; }
+  @media (min-width: 900px) { .contrast-photo { margin-top: 4rem; } }
+  .contrast h2 { font-size: var(--step-5); margin: 0.5rem 0 1rem; }
+  .ledger { margin-top: 2rem; border-top: 2px solid var(--ink); }
+  .ledger > div { display: grid; gap: 0.35rem 2rem; padding: 1.1rem 0; border-bottom: 1px solid #d9cfbb; }
+  @media (min-width: 640px) { .ledger > div { grid-template-columns: 0.9fr 1.3fr; align-items: baseline; } }
+  .ledger dt { color: var(--ink-soft); text-decoration: line-through; text-decoration-color: var(--oxide); text-decoration-thickness: 2px; }
+  .ledger dd strong { font-family: var(--font-display); font-size: 1.25rem; font-weight: 650; }
+  .pull { margin-top: 2.25rem; padding-left: 1.25rem; border-left: 3px solid var(--gold); max-width: 46ch; }
+  .pull p { font-family: var(--font-display); font-style: italic; font-size: 1.2rem; line-height: 1.4; }
+  .pull footer { font-size: 0.875rem; color: var(--ink-soft); margin-top: 0.5rem; }
+
+  /* ---------- Price board ---------- */
+  .prices-intro { display: grid; gap: 0.5rem; margin-bottom: 2.5rem; max-width: 44rem; }
+  .prices-lede { font-family: var(--font-display); font-size: var(--step-3); line-height: 1.15; font-weight: 600; }
+  .prices-lede .muted { display: block; font-size: 0.6em; font-style: italic; font-weight: 450; margin-top: 0.5rem; }
+  .prices-foot { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 1rem; margin-top: 1.75rem; align-items: center; }
+  .text-link :global(.arr) { width: 1em; height: 1em; }
+
+  /* ---------- Monthly ---------- */
+  .monthly-top { display: grid; gap: 1rem 4rem; align-items: end; margin-bottom: 3rem; }
+  @media (min-width: 900px) { .monthly-top { grid-template-columns: 1.4fr 1fr; } }
+  .monthly h2 { font-size: var(--step-4); margin-top: 0.5rem; max-width: 18ch; }
+  .amt { color: var(--gold-ink); font-style: italic; }
+  .monthly-grid { display: grid; gap: 3rem; }
+  @media (min-width: 900px) { .monthly-grid { grid-template-columns: 1fr 1.1fr; gap: 5rem; } }
+  .sizes { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px; background: var(--ink); border: 1px solid var(--ink); margin-bottom: 2rem; }
+  @media (min-width: 560px) { .sizes { grid-template-columns: repeat(4, 1fr); } }
+  .sizes li { background: var(--ivory); padding: 1rem 0.9rem; display: grid; }
+  .sz { font-size: 0.8125rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; }
+  .pr { font-family: var(--font-display); font-size: 2.2rem; font-weight: 700; line-height: 1.1; color: var(--ink); }
+  .pv { font-size: 0.8125rem; color: var(--ink-soft); }
+  .two-cars { margin-bottom: 2rem; }
+  .two-cars .photo { aspect-ratio: 720 / 521; }
+  .monthly-right h3 { margin-bottom: 0.5rem; }
+  .monthly-cta { margin-top: 2rem; align-items: center; gap: 1rem 1.5rem; }
+
+  /* ---------- Premium ---------- */
+  .premium-head { max-width: 46rem; margin-bottom: 3rem; }
+  .premium h2 { font-size: var(--step-4); margin: 0.5rem 0 1rem; }
+  .pieces { display: grid; gap: 3rem 2.5rem; }
+  .piece .photo { aspect-ratio: 4 / 5; }
+  .piece-copy { margin-top: 1rem; }
+  .roman { font-family: var(--font-display); font-style: italic; color: var(--gold-ink); font-size: 1.1rem; }
+  .piece h3 { font-size: var(--step-2); margin: 0.1rem 0 0.6rem; }
+  .piece h3 a { text-decoration: none; }
+  .piece h3 a:hover { text-decoration: underline; text-decoration-color: var(--gold-ink); }
+  .piece p { color: var(--ink-soft); }
+  .piece p strong { color: var(--ink); }
+  .piece .q { font-family: var(--font-display); font-style: italic; color: var(--ink); margin-top: 0.75rem; font-size: 1.05rem; }
+  .piece .q span { display: block; font-family: var(--font-body); font-style: normal; font-size: 0.8125rem; color: var(--ink-soft); margin-top: 0.25rem; }
+  .from { margin-top: 0.75rem; font-weight: 700; color: var(--ink) !important; }
+  .from b { font-family: var(--font-display); font-size: 1.35rem; color: var(--gold-ink); }
+  .from a { color: var(--ink); text-decoration-color: var(--gold-ink); }
+  @media (min-width: 900px) {
+    .pieces { grid-template-columns: 1.35fr 1fr 1fr; grid-template-rows: auto auto; }
+    .piece-a { grid-row: span 2; display: grid; grid-template-rows: 1fr auto; }
+    .piece-a .photo { aspect-ratio: auto; min-height: 30rem; }
+    .piece-b .photo, .piece-c .photo, .piece-d .photo { aspect-ratio: 5 / 4; }
+    .piece-d { grid-column: 2 / span 2; display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; align-items: center; }
+    .piece-d .piece-copy { margin-top: 0; }
+  }
+
+  /* ---------- Gallery ---------- */
+  .gallery-head { display: grid; gap: 1rem 4rem; margin-bottom: 2.5rem; align-items: end; }
+  @media (min-width: 900px) { .gallery-head { grid-template-columns: 1fr 1fr; } }
+  .gallery h2 { font-size: var(--step-4); }
+  .mosaic { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; }
+  .m .photo { height: 100%; }
+  .m { display: grid; grid-template-rows: 1fr auto; }
+  .m1, .m3, .m4, .m8 { grid-column: span 2; }
+  .m1 .photo { aspect-ratio: 4 / 3; }
+  .m2 .photo, .m5 .photo, .m6 .photo, .m7 .photo { aspect-ratio: 3 / 4; }
+  .m3 .photo { aspect-ratio: 1; }
+  .m4 .photo { aspect-ratio: 720 / 520; }
+  .m8 .photo { aspect-ratio: 720 / 498; }
+  @media (min-width: 900px) {
+    .mosaic { grid-template-columns: repeat(12, 1fr); grid-auto-rows: 4.5rem; gap: 1.25rem; }
+    .m .photo { aspect-ratio: auto !important; }
+    .m1 { grid-column: 1 / span 4; grid-row: 1 / span 6; }
+    .m2 { grid-column: 5 / span 3; grid-row: 1 / span 5; }
+    .m3 { grid-column: 8 / span 5; grid-row: 1 / span 5; }
+    .m4 { grid-column: 5 / span 5; grid-row: 6 / span 5; }
+    .m5 { grid-column: 10 / span 3; grid-row: 6 / span 6; }
+    .m6 { grid-column: 1 / span 2; grid-row: 7 / span 5; }
+    .m7 { grid-column: 3 / span 2; grid-row: 7 / span 5; }
+    .m8 { grid-column: 5 / span 5; grid-row: 11 / span 4; }
+  }
+  .gallery-more { margin-top: 2rem; }
+
+  /* ---------- Reviews ---------- */
+  .reviews-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: end; gap: 1rem 3rem; margin-bottom: 3rem; }
+  .reviews h2 { font-size: var(--step-4); }
+  .summary { display: grid; gap: 0.25rem; text-align: left; }
+  .summary a { color: var(--ink); text-decoration-color: var(--gold-ink); }
+  .summary span { color: var(--ink-soft); font-size: 0.9375rem; }
+  .rgrid { display: grid; gap: 2.5rem; }
+  @media (min-width: 760px) { .rgrid { grid-template-columns: 1fr 1fr; gap: 3rem 3.5rem; } .r-lead { grid-column: span 2; } }
+  @media (min-width: 1100px) {
+    .rgrid { grid-template-columns: 1.4fr 1fr 1fr; }
+    .r-lead { grid-column: 1; grid-row: span 2; padding-right: 2rem; border-right: 1px solid #d9cfbb; }
+    .r-cuppa { grid-column: 1; grid-row: 3 / span 2; align-self: center; justify-self: center; }
+  }
+  .reviews-more { margin-top: 2.5rem; }
+
+  /* ---------- Areas ---------- */
+  .areas-grid { display: grid; gap: 2.5rem; align-items: center; }
+  @media (min-width: 980px) { .areas-grid { grid-template-columns: 0.9fr 1.1fr; gap: 4rem; } }
+  .areas h2 { font-size: var(--step-4); margin: 0.5rem 0 1.25rem; max-width: 16ch; }
+  .areas-copy > p + p { margin-top: 0.9rem; }
+  .villages { font-weight: 600; line-height: 1.8; }
+  .town-links { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.75rem; }
+  .town-links a {
+    display: inline-flex; align-items: center; min-height: 44px; padding: 0.4rem 0.9rem; border: 1px solid var(--ink);
+    text-decoration: none; font-weight: 700; font-size: 0.9375rem; border-radius: var(--radius);
+  }
+  .town-links a:hover { background: var(--ink); color: var(--ivory); }
+  .small { font-size: 0.9375rem; margin-top: 1.25rem !important; }
+  .map-wrap { background: var(--ivory); padding: 1rem; border: 1px solid #d9cfbb; }
+
+  /* ---------- FAQ ---------- */
+  .faq-grid { display: grid; gap: 2rem; }
+  @media (min-width: 900px) { .faq-grid { grid-template-columns: 0.7fr 1.3fr; gap: 4rem; } }
+  .faq h2 { font-size: var(--step-3); margin-bottom: 0.75rem; }
+  .faq .muted a { color: var(--ink); }
+
+  /* ---------- Owner's note ---------- */
+  .note-wrap { padding-top: 0; }
+  .note-grid { display: grid; gap: 1.5rem; }
+  .letter {
+    background: var(--paper); padding: clamp(1.75rem, 5vw, 3.5rem); border: 1px solid #e3d8c3;
+    box-shadow: 0 30px 50px -40px rgba(23, 24, 27, 0.6);
+    border-top: 3px solid var(--gold);
+  }
+  .letter h2 { margin-bottom: 1.25rem; font-family: var(--font-body); font-size: 0.8125rem; }
+  .letter p { font-family: var(--font-display); font-size: 1.2rem; line-height: 1.7; max-width: 52ch; font-weight: 420; }
+  .letter p + p { margin-top: 0.9rem; }
+  .letter .first { font-size: var(--step-2); font-weight: 600; line-height: 1.3; }
+  .sig { font-style: italic; font-size: 2.4rem !important; font-weight: 500 !important; color: var(--gold-ink); margin-top: 1.5rem !important; line-height: 1 !important; transform: rotate(-3deg); transform-origin: left; }
+  .sig-sub { font-family: var(--font-body) !important; font-size: 0.875rem !important; color: var(--ink-soft); margin-top: 0.4rem !important; }
+  .note-aside { justify-self: end; }
+</style>

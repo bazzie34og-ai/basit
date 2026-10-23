@@ -1,0 +1,115 @@
+---
+/**
+ * The gold price board: prices set like an engraved plaque on riveted iron.
+ * Every number comes from config.
+ */
+import { monthlyPlan, activeServices, formatGBP } from '../config/site.ts';
+interface Props { id?: string; headingLevel?: 2 | 3; title?: string; showQuote?: boolean }
+const { id = 'prices', headingLevel = 2, title = 'The price board', showQuote = true } = Astro.props;
+const H = `h${headingLevel}` as 'h2' | 'h3';
+const cars = activeServices.filter((s) => s.group === 'cars');
+const bikes = activeServices.filter((s) => s.group === 'motorbikes');
+const vans = activeServices.filter((s) => s.group === 'vans');
+const quote = activeServices.filter((s) => s.group === 'quote' && s.id !== 'not-sure');
+---
+<div class="board plate" id={id}>
+  <span class="rivets" aria-hidden="true"></span>
+  <header class="board-head">
+    <p class="label label-gold">Smith &amp; Shine · 2026 prices</p>
+    <H class="board-title">{title}</H>
+    <hr class="rule-gold" />
+  </header>
+
+  <div class="board-grid">
+    <section class="monthly" aria-labelledby={`${id}-monthly`}>
+      <p class="badge label">Best value</p>
+      <h3 id={`${id}-monthly`} class="row-title"><a href={monthlyPlan.url}>{monthlyPlan.name}</a></h3>
+      <p class="sub">Per visit, every month, on your driveway.</p>
+      <ul role="list" class="rows">
+        {monthlyPlan.prices.map((p) => (
+          <li class="leader"><span>{p.label}</span><span class="dots" aria-hidden="true"></span><span class="price gold-text">{formatGBP(p.price)}</span></li>
+        ))}
+      </ul>
+      <p class="fine">12-point clean inside and out. <a href={monthlyPlan.url} data-upsell="monthly-from-board">What’s included</a></p>
+    </section>
+
+    <section class="cars" aria-labelledby={`${id}-cars`}>
+      <h3 id={`${id}-cars`} class="label label-gold col-title">Valeting &amp; detailing</h3>
+      <ul role="list" class="rows">
+        {cars.map((s) => (
+          <li>
+            <a class="leader" href={s.url}><span class="name">{s.name}</span><span class="dots" aria-hidden="true"></span><span class="price"><small>from</small> <span class="gold-text">{formatGBP(s.from!)}</span></span></a>
+            <p class="blurb">{s.blurb}</p>
+          </li>
+        ))}
+      </ul>
+    </section>
+
+    <section class="others" aria-label="Motorbikes, vans and protection">
+      <h3 class="label label-gold col-title">Motorbikes</h3>
+      <ul role="list" class="rows">
+        {bikes.map((s) => (
+          <li><a class="leader" href={s.url}><span class="name">{s.name}</span><span class="dots" aria-hidden="true"></span><span class="price"><small>from</small> <span class="gold-text">{formatGBP(s.from!)}</span></span></a></li>
+        ))}
+      </ul>
+      <h3 class="label label-gold col-title">Vans</h3>
+      <ul role="list" class="rows">
+        {vans.map((s) => (
+          <li><a class="leader" href={s.url}><span class="name">{s.name}</span><span class="dots" aria-hidden="true"></span><span class="price"><small>from</small> <span class="gold-text">{formatGBP(s.from!)}</span></span></a></li>
+        ))}
+      </ul>
+      <h3 class="label label-gold col-title">Protection</h3>
+      <ul role="list" class="rows">
+        {quote.map((s) => (
+          <li><a class="leader" href={s.url}><span class="name">{s.name}</span><span class="dots" aria-hidden="true"></span><span class="price quote">on quote</span></a></li>
+        ))}
+      </ul>
+      <p class="fine">Ceramic and PPF: send us a photo of your car for a price.</p>
+    </section>
+  </div>
+
+  {showQuote && (
+    <p class="promise"><span class="ital">The price we quote is the price you pay.</span> No surprises, no upsell speeches.</p>
+  )}
+</div>
+
+<style>
+  .board { padding: clamp(1.5rem, 4vw, 3rem) clamp(1.1rem, 4vw, 3rem) clamp(1.5rem, 4vw, 2.5rem); color: var(--ivory); }
+  .board-head { text-align: left; margin-bottom: 1.75rem; }
+  .board-title { font-size: var(--step-4); margin: 0.4rem 0 1rem; font-weight: 600; }
+  .rule-gold { max-width: 9rem; }
+  .board-grid { display: grid; gap: 2.25rem; }
+  @media (min-width: 900px) { .board-grid { grid-template-columns: 1.05fr 1.2fr 1fr; gap: 2.5rem; } }
+
+  .monthly {
+    position: relative; padding: 1.4rem 1.25rem 1.25rem; border: 1px solid var(--gold);
+    background: linear-gradient(160deg, rgba(201, 162, 75, 0.12), rgba(201, 162, 75, 0.02) 60%);
+    align-self: start;
+  }
+  .badge {
+    position: absolute; top: -0.75rem; left: 1rem; background: var(--gold); color: var(--iron);
+    padding: 0.2rem 0.55rem; font-size: 0.75rem;
+  }
+  .row-title { font-size: var(--step-2); }
+  .row-title a { text-decoration: none; }
+  .row-title a:hover { color: var(--gold-light); }
+  .sub { color: var(--steel-light); font-size: 0.9375rem; margin: 0.35rem 0 0.75rem; }
+  .col-title { margin-bottom: 0.4rem; }
+  .others .col-title + .rows { margin-bottom: 1.25rem; }
+  .rows li { border-bottom: 1px solid var(--iron-3); }
+  .rows > li > .leader, .rows > li.leader { padding-block: 0.6rem; min-height: 44px; align-items: baseline; }
+  .rows a { text-decoration: none; color: inherit; }
+  .rows a:hover .name { color: var(--gold-light); text-decoration: underline; text-decoration-color: var(--gold); }
+  .name, .monthly .leader > span:first-child { font-family: var(--font-display); font-size: 1.15rem; font-weight: 550; }
+  .price { font-family: var(--font-display); font-size: 1.45rem; font-weight: 700; white-space: nowrap; }
+  .price small { font-family: var(--font-body); font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--steel-light); margin-right: 0.15rem; }
+  .price.quote { font-size: 0.875rem; font-family: var(--font-body); text-transform: uppercase; letter-spacing: 0.08em; color: var(--gold-light); font-weight: 700; }
+  .blurb { font-size: 0.875rem; color: var(--steel-light); margin: -0.35rem 0 0.6rem; line-height: 1.45; }
+  .fine { font-size: 0.875rem; color: var(--steel-light); margin-top: 0.75rem; }
+  .fine a { color: var(--gold-light); }
+  .promise {
+    margin-top: 2rem; padding-top: 1.25rem; border-top: 1px dashed rgba(201, 162, 75, 0.45);
+    font-size: var(--step-1); color: var(--ivory);
+  }
+  .promise .ital { font-family: var(--font-display); color: var(--gold-light); }
+</style>

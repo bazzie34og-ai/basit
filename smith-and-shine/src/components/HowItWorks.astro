@@ -1,0 +1,53 @@
+---
+// Three steps along a bridge deck, rivets as the markers.
+interface Props { heading?: string; tone?: 'ivory' | 'ivory-2' }
+const { heading = 'How it works', tone = 'ivory' } = Astro.props;
+const steps = [
+  { t: 'Message us your car and postcode.', d: 'WhatsApp, call or use the form. A photo helps if you’re after paint work or ceramic.' },
+  { t: 'Pick a day.', d: 'Weekday or Saturday, at home or at work. We confirm the price before we turn up.' },
+  { t: 'We turn up with everything', d: 'Products, kit, and the gazebo if it looks like rain. You don’t lift a finger.' },
+];
+---
+<section class:list={['how section', tone]} aria-labelledby="how-h">
+  <div class="wrap">
+    <h2 id="how-h" class="reveal">{heading}</h2>
+    <ol class="deck" role="list">
+      {steps.map((s, i) => (
+        <li class="step reveal" style={`transition-delay:${i * 90}ms`}>
+          <span class="num" aria-hidden="true">{['I', 'II', 'III'][i]}</span>
+          <h3>{s.t}{i === 2 && <span class="kettle"> …and you put the kettle on.</span>}</h3>
+          <p>{s.d}</p>
+        </li>
+      ))}
+    </ol>
+  </div>
+</section>
+<style>
+  h2 { margin-bottom: 2.5rem; max-width: 14ch; }
+  .deck { position: relative; display: grid; gap: 2.25rem; padding-left: 2.75rem; }
+  .deck::before {
+    content: ''; position: absolute; left: 0.85rem; top: 0.4rem; bottom: 0.4rem; width: 2px;
+    background: repeating-linear-gradient(to bottom, var(--gold-ink) 0 10px, transparent 10px 16px);
+  }
+  .step { position: relative; }
+  .step::before {
+    content: ''; position: absolute; left: -2.35rem; top: 0.3rem; width: 16px; height: 16px; border-radius: 50%;
+    background: radial-gradient(circle at 35% 35%, #e9c877, #8a6a1e 70%); box-shadow: 0 0 0 4px var(--ivory);
+  }
+  .ivory-2 .step::before { box-shadow: 0 0 0 4px var(--ivory-2);
+  }
+  .num { font-family: var(--font-display); font-style: italic; color: var(--gold-ink); font-size: 1.1rem; font-weight: 600; }
+  h3 { font-size: var(--step-2); margin: 0.1rem 0 0.5rem; }
+  .kettle { font-style: italic; font-weight: 500; color: var(--oxide); }
+  p { color: var(--ink-soft); max-width: 36ch; }
+  @media (min-width: 900px) {
+    .deck { grid-template-columns: repeat(3, 1fr); padding-left: 0; padding-top: 2.75rem; gap: 3rem; }
+    .deck::before {
+      left: 0; right: 0; top: 0.85rem; bottom: auto; width: auto; height: 2px;
+      background: repeating-linear-gradient(to right, var(--gold-ink) 0 10px, transparent 10px 16px);
+    }
+    .step::before { left: 0; top: -2.4rem; }
+    .step:nth-child(2) { margin-top: 1.5rem; }
+    .step:nth-child(3) { margin-top: 3rem; }
+  }
+</style>

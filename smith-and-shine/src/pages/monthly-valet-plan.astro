@@ -1,0 +1,121 @@
+---
+import Service from '../layouts/Service.astro';
+import Photo from '../components/Photo.astro';
+import MonthlyChecklist from '../components/MonthlyChecklist.astro';
+import { monthlyPlan, serviceById, formatGBP, reviewFragments, whatsappHref } from '../config/site.ts';
+import type { Faq } from '../lib/schema.ts';
+
+const from = monthlyPlan.prices[0].price;
+const mini = serviceById('mini-valet')!.from!;
+const full = serviceById('full-valet')!.from!;
+const waText = 'Hi Chris, I’m interested in the Monthly Detail Package. My car is a … and my postcode is …';
+const sizeLine = monthlyPlan.prices.map((p) => `£${p.price} for ${p.label.toLowerCase()}`).join(', ');
+
+const faqs: Faq[] = [
+  { q: 'How much is the monthly car valet plan?', a: `It’s priced per visit by the size of your car: ${sizeLine}.` },
+  { q: 'What’s included every month?', a: `All twelve: ${monthlyPlan.includes.join(', ').toLowerCase()}.` },
+  { q: 'Is the monthly plan just a wash?', a: 'No. As well as the 3-stage wash, every visit includes a polish, hydrophobic paint protection, a full interior vacuum including the boot, and the seats and dashboard cleaned.' },
+  { q: 'Can you do two cars on the same visit?', a: 'Yes, and plenty of our regulars do. Tell us about both cars when you book and we’ll do the whole drive in one go.' },
+  { q: 'What if my car is filthy before the first visit?', a: `If it needs a rescue first, we’ll suggest a full valet (from £${full}) to start, then the monthly plan keeps it there.` },
+];
+---
+<Service
+  title={`Monthly Car Valet Plan Telford: from £${from} | Smith & Shine`}
+  description={`Monthly car valet in Telford: a 12-point clean on your driveway every month from £${from} a visit. Small £30, medium £40, large £50, 4x4 & SUV £60.`}
+  h1={`Monthly Car Valet Plan, Telford: from £${from}`}
+  eyebrow="The Monthly Detail Package"
+  crumbName="Monthly plan"
+  photo="jaguar-and-cupra-two-cars-detailed"
+  alt="Jaguar F-Pace and Cupra Formentor side by side on a Telford driveway after their monthly car valet"
+  photoPosition="40% 50%"
+  price={`from ${formatGBP(from)} a visit`}
+  priceNote="Same 12-point clean, every month"
+  waText={waText}
+  serviceName="Monthly car valet plan"
+  serviceType="Car maintenance valet"
+  minPrice={from}
+  faqs={faqs}
+  reviews={['Aimee P.', 'Andrew R.']}
+  kind="valet"
+  related={[
+    { url: '/prices/', label: 'All prices', note: 'and car sizes' },
+    { url: '/full-valet-telford/', label: 'Full valet', note: `from £${full}, a good first visit` },
+    { url: '/ceramic-coating-telford/', label: 'Ceramic coating', note: 'makes monthly washes even easier' },
+    { url: '/guides/how-often-should-you-valet-your-car/', label: 'Guide: how often should you valet your car?' },
+    { url: '/book/?service=monthly', label: 'Book your first visit' },
+  ]}
+>
+  <Fragment slot="intro">
+    <p>{monthlyPlan.pitch}?</p>
+    <p>A monthly car valet in Telford, done on your driveway: same 12-point clean every visit, inside and out. Keep it looking like this every month. Most of our regulars never go back to the car wash.</p>
+  </Fragment>
+
+  <section class="svc ivory" aria-labelledby="mp-sizes">
+    <div class="wrap">
+      <h2 id="mp-sizes">Four sizes. One price per visit.</h2>
+      <ul class="sizes" role="list">
+        {monthlyPlan.prices.map((p) => (
+          <li>
+            <span class="sz">{p.label}</span>
+            <span class="pr">{formatGBP(p.price)}</span>
+            <span class="pv">per visit</span>
+            <a class="pick" href={`/book/?service=monthly&size=${p.size}`} data-track="book_start" data-track-label={`monthly-${p.size}`}>Book this size</a>
+          </li>
+        ))}
+      </ul>
+      <p class="muted">Not sure which size your car is? <a href="/prices/#sizes">See the size guide</a>, or just tell us the make and model.</p>
+    </div>
+  </section>
+
+  <section class="svc ivory-2" aria-labelledby="mp-inc">
+    <div class="wrap split">
+      <div>
+        <h2 id="mp-inc">What every visit includes</h2>
+        <MonthlyChecklist columns={1} />
+      </div>
+      <div class="value plate">
+        <span class="rivets" aria-hidden="true"></span>
+        <h3>Why it’s the best value we do</h3>
+        <p class="leader"><span>One-off mini valet</span><span class="dots" aria-hidden="true"></span><b>from £{mini}</b></p>
+        <p class="leader"><span>One-off full valet</span><span class="dots" aria-hidden="true"></span><b>from £{full}</b></p>
+        <p class="leader hl"><span>Monthly, small car</span><span class="dots" aria-hidden="true"></span><b class="gold-text">£{from}</b></p>
+        <p>Because we see the car every month, it never gets bad. That means less time per visit, and we pass that on.</p>
+        <a class="btn btn-primary" href="/book/?service=monthly" data-track="book_start" data-track-label="monthly">Book your first visit</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="svc ivory" aria-labelledby="mp-proof">
+    <div class="wrap split flip">
+      <div class="prose">
+        <h2 id="mp-proof">“See you next month.”</h2>
+        <p>That’s how a lot of our reviews end, and how a lot of Chris’s replies end too. “See you next month pal.” “See you in 2 weeks buddy.” Regulars are the backbone of Smith &amp; Shine.</p>
+        <p><strong>Family cars.</strong> One customer with four children put it best: the car gets grubby, and the ease of Chris coming to the house is the point. Monthly means it never gets to the crisp-packet-archaeology stage.</p>
+        <p><strong>The whole drive.</strong> Two cars? Three cars and a motorbike? “{reviewFragments.threeCars.text}”, says one customer. Tell us what’s on the drive and we’ll do it in one visit.</p>
+        <p><strong>4x4s and SUVs.</strong> £60 a visit. One Ranger owner said Chris “{reviewFragments.ranger.text}”, and Chris replied “See you in 2 weeks buddy.”</p>
+        <p><a href={whatsappHref('Hi Chris, could you do a monthly visit for more than one car? We’ve got:')} data-track="whatsapp_click">WhatsApp us about the whole drive</a></p>
+      </div>
+      <figure>
+        <div class="photo"><Photo name="ford-ranger-wildtrak-orange-wash" alt="Orange Ford Ranger Wildtrak, wet and shining mid-wash on a monthly valet visit" sizes="(min-width: 900px) 34vw, 92vw" /></div>
+        <figcaption class="caption">Ford Ranger · 4x4 &amp; SUV, £60 a visit</figcaption>
+      </figure>
+    </div>
+  </section>
+</Service>
+
+<style>
+  .sizes { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px; background: var(--ink); border: 1px solid var(--ink); margin: 1rem 0 1.25rem; }
+  @media (min-width: 760px) { .sizes { grid-template-columns: repeat(4, 1fr); } }
+  .sizes li { background: var(--ivory); padding: 1.25rem 1rem; display: grid; gap: 0.15rem; }
+  .sz { font-size: 0.8125rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; }
+  .pr { font-family: var(--font-display); font-size: clamp(2.2rem, 5vw, 3.2rem); font-weight: 700; line-height: 1.05; }
+  .pv { font-size: 0.8125rem; color: var(--ink-soft); }
+  .pick { margin-top: 0.6rem; font-weight: 700; font-size: 0.875rem; color: var(--ink); text-decoration-color: var(--gold-ink); min-height: 44px; display: inline-flex; align-items: center; }
+  .value { padding: 2rem 1.5rem 1.75rem; color: var(--ivory); }
+  .value h3 { font-size: var(--step-2); margin-bottom: 0.75rem; }
+  .value .leader { padding-block: 0.55rem; border-bottom: 1px solid var(--iron-3); }
+  .value .leader b { font-family: var(--font-display); font-size: 1.3rem; }
+  .value .hl span:first-child { color: var(--gold-light); font-weight: 700; }
+  .value p:not(.leader) { color: var(--steel-light); font-size: 0.9375rem; margin-top: 0.9rem; }
+  .value .btn { width: 100%; margin-top: 1.25rem; }
+</style>

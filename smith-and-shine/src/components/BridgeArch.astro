@@ -1,0 +1,58 @@
+---
+/**
+ * The Iron Bridge arch (1779), drawn as a single gold line.
+ * Used as the hero's lower frame, as a section divider and on the 404 page.
+ * It draws itself once when scrolled into view (skipped with reduced motion).
+ */
+interface Props { class?: string; tone?: 'gold' | 'ink' | 'steel'; label?: string; }
+const { class: cls, tone = 'gold', label } = Astro.props;
+---
+<svg
+  class:list={['bridge', `bridge--${tone}`, 'draw', cls]}
+  viewBox="0 0 1200 304"
+  preserveAspectRatio="xMidYMax meet"
+  role={label ? 'img' : undefined}
+  aria-label={label}
+  aria-hidden={label ? undefined : 'true'}
+  fill="none"
+  stroke="currentColor"
+  stroke-linecap="round"
+>
+  <!-- deck and railing -->
+  <path pathLength="1" stroke-width="2" d="M40 64 H1160 M40 72 H1160 M40 50 H1160" />
+  <path pathLength="1" stroke-width="1" d="M350 50 V64 M370 50 V64 M390 50 V64 M410 50 V64 M430 50 V64 M450 50 V64 M470 50 V64 M490 50 V64 M510 50 V64 M530 50 V64 M550 50 V64 M570 50 V64 M590 50 V64 M610 50 V64 M630 50 V64 M650 50 V64 M670 50 V64 M690 50 V64 M710 50 V64 M730 50 V64 M750 50 V64 M770 50 V64 M790 50 V64 M810 50 V64 M830 50 V64 M850 50 V64" />
+  <!-- the three arch rings -->
+  <path pathLength="1" stroke-width="2.4" d="M365 300 A235 235 0 0 1 835 300" />
+  <path pathLength="1" stroke-width="1.4" d="M386 300 A214 214 0 0 1 814 300" />
+  <path pathLength="1" stroke-width="1.4" d="M418 300 A182 182 0 0 1 782 300" />
+  <!-- ribs between rings -->
+  <path pathLength="1" stroke-width="1" d="M778.0 262.2 L809.3 255.5 M760.7 214.6 L789.0 199.5 M730.9 173.6 L753.9 151.3 M691.0 142.4 L707.0 114.7 M644.0 123.4 L651.8 92.4 M600.0 118.0 L600.0 86.0 M556.0 123.4 L548.2 92.4 M509.0 142.4 L493.0 114.7 M469.1 173.6 L446.1 151.3 M439.3 214.6 L411.0 199.5 M422.0 262.2 L390.7 255.5" />
+  <!-- spandrel uprights and the famous rings -->
+  <path pathLength="1" stroke-width="1.2" d="M418 72 V151.3 M462 72 V109.8 M506 72 V84.6 M694 72 V84.6 M738 72 V109.8 M782 72 V151.3" />
+  <circle pathLength="1" stroke-width="1.4" cx="378" cy="112" r="30" />
+  <circle pathLength="1" stroke-width="1.4" cx="822" cy="112" r="30" />
+  <circle pathLength="1" stroke-width="1" cx="352" cy="190" r="13" />
+  <circle pathLength="1" stroke-width="1" cx="848" cy="190" r="13" />
+  <!-- abutments and approaches -->
+  <path pathLength="1" stroke-width="1.6" d="M330 72 V300 M345 72 V300 M855 72 V300 M870 72 V300 M120 72 V112 M200 72 V112 M280 72 V112 M920 72 V112 M1000 72 V112 M1080 72 V112" />
+  <!-- the Severn -->
+  <path pathLength="1" stroke-width="1" class="water" d="M0 300 Q25 296 50 300 Q75 304 100 300 Q125 296 150 300 Q175 304 200 300 Q225 296 250 300 Q275 304 300 300 Q325 296 350 300 Q375 304 400 300 Q425 296 450 300 Q475 304 500 300 Q525 296 550 300 Q575 304 600 300 Q625 296 650 300 Q675 304 700 300 Q725 296 750 300 Q775 304 800 300 Q825 296 850 300 Q875 304 900 300 Q925 296 950 300 Q975 304 1000 300 Q1025 296 1050 300 Q1075 304 1100 300 Q1125 296 1150 300 Q1175 304 1200 300" />
+</svg>
+
+<style>
+  .bridge { width: 100%; height: auto; overflow: visible; }
+  .bridge--gold { color: var(--gold); }
+  .bridge--ink { color: var(--gold-ink); }
+  .bridge--steel { color: var(--steel); }
+  .water { opacity: 0.55; }
+  @media (prefers-reduced-motion: no-preference) {
+    :global(.js) .draw :is(path, circle) {
+      stroke-dasharray: 1;
+      stroke-dashoffset: 1;
+      transition: stroke-dashoffset 2.2s cubic-bezier(0.45, 0, 0.2, 1);
+    }
+    :global(.js) .draw.is-in :is(path, circle) { stroke-dashoffset: 0; }
+    :global(.js) .draw.is-in circle { transition-delay: 0.9s; }
+    :global(.js) .draw.is-in path:nth-of-type(n + 4) { transition-delay: 0.5s; }
+  }
+</style>

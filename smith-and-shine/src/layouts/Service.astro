@@ -1,0 +1,156 @@
+---
+import Base from './Base.astro';
+import PageHero from '../components/PageHero.astro';
+import FaqList from '../components/FaqList.astro';
+import CtaBand from '../components/CtaBand.astro';
+import Upsell from '../components/Upsell.astro';
+import ReviewQuote from '../components/ReviewQuote.astro';
+import Icon from '../components/Icon.astro';
+import BridgeArch from '../components/BridgeArch.astro';
+import { SITE_URL } from '../config/env.ts';
+import { reviewByName } from '../config/site.ts';
+import { faqSchema, serviceSchema, type Crumb, type Faq } from '../lib/schema.ts';
+
+interface Props {
+  title: string;
+  description: string;
+  h1: string;
+  eyebrow: string;
+  crumbName: string;
+  photo?: string;
+  alt?: string;
+  photoPosition?: string;
+  price?: string;
+  priceNote?: string;
+  waText: string;
+  serviceName: string;
+  serviceType?: string;
+  minPrice?: number | null;
+  faqs: Faq[];
+  reviews?: string[];
+  kind: 'valet' | 'premium';
+  related: { url: string; label: string; note?: string }[];
+  heroLayout?: 'right' | 'left';
+}
+
+const p = Astro.props;
+const path = Astro.url.pathname;
+const crumbs: Crumb[] = [
+  { name: 'Home', url: '/' },
+  { name: p.crumbName, url: path },
+];
+const schema = [
+  serviceSchema(SITE_URL, { name: p.serviceName, serviceType: p.serviceType, description: p.description, url: path, minPrice: p.minPrice }),
+  faqSchema(p.faqs),
+];
+---
+<Base title={p.title} description={p.description} waText={p.waText} crumbs={crumbs} schema={schema}>
+  <PageHero
+    crumbs={crumbs}
+    eyebrow={p.eyebrow}
+    h1={p.h1}
+    photo={p.photo}
+    alt={p.alt}
+    photoPosition={p.photoPosition}
+    price={p.price}
+    priceNote={p.priceNote}
+    waText={p.waText}
+    layout={p.heroLayout}
+  >
+    <slot name="intro" />
+  </PageHero>
+
+  <slot />
+
+  {p.kind === 'valet' && (
+    <section class="ivory section-tight upsell-wrap" aria-label="Keep it looking good">
+      <div class="wrap-mid"><Upsell /></div>
+    </section>
+  )}
+
+  {p.reviews && p.reviews.length > 0 && (
+    <section class="ivory-2 section svc-reviews" aria-labelledby="svc-rev-h">
+      <div class="wrap">
+        <h2 id="svc-rev-h" class="label label-gold">From the reviews</h2>
+        <div class:list={['rev-row', { single: p.reviews.length === 1 }]}>
+          {p.reviews.map((n, i) => <ReviewQuote review={reviewByName(n)} size={i === 0 ? 'lg' : 'md'} />)}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <section class="ivory section svc-faq" aria-labelledby="svc-faq-h">
+    <div class="wrap faq-grid">
+      <div>
+        <h2 id="svc-faq-h">Good questions.</h2>
+        <p class="muted">Ask anything else on WhatsApp. Chris is happy to talk shop.</p>
+      </div>
+      <FaqList faqs={p.faqs} />
+    </div>
+  </section>
+
+  <section class="ivory section-tight related" aria-labelledby="related-h">
+    <div class="wrap">
+      <div class="divider" aria-hidden="true"><BridgeArch tone="ink" /></div>
+      <h2 id="related-h" class="label label-gold">Where next</h2>
+      <ul role="list" class="rel">
+        {p.related.map((r) => (
+          <li><a href={r.url}><span class="rl">{r.label}</span>{r.note && <span class="rn">{r.note}</span>}<Icon name="arrow" class="arr" /></a></li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <CtaBand waText={p.waText} />
+</Base>
+
+<style>
+  .svc-reviews h2 { margin-bottom: 2rem; }
+  .rev-row { display: grid; gap: 2.5rem 4rem; }
+  @media (min-width: 900px) { .rev-row { grid-template-columns: 1.3fr 1fr; align-items: start; } .rev-row.single { grid-template-columns: minmax(0, 46rem); } }
+  .faq-grid { display: grid; gap: 2rem; }
+  @media (min-width: 900px) { .faq-grid { grid-template-columns: 0.7fr 1.3fr; gap: 4rem; } }
+  .svc-faq h2 { font-size: var(--step-3); margin-bottom: 0.75rem; }
+  .divider { width: min(420px, 80%); margin: 0 auto 2.5rem; opacity: 0.9; }
+  .related h2 { margin-bottom: 1rem; }
+  .rel { display: grid; gap: 0; border-top: 1px solid #d9cfbb; }
+  @media (min-width: 760px) { .rel { grid-template-columns: repeat(2, 1fr); column-gap: 3rem; } }
+  .rel a {
+    display: flex; align-items: baseline; gap: 0.75rem; padding: 1rem 0; border-bottom: 1px solid #d9cfbb;
+    text-decoration: none; min-height: 44px;
+  }
+  .rl { font-family: var(--font-display); font-size: 1.25rem; font-weight: 600; }
+  .rn { color: var(--ink-soft); font-size: 0.9375rem; }
+  .rel :global(.arr) { width: 1.1rem; height: 1.1rem; margin-left: auto; color: var(--gold-ink); align-self: center; transition: transform 0.2s var(--ease); }
+  .rel a:hover .rl { text-decoration: underline; text-decoration-color: var(--gold-ink); }
+  .rel a:hover :global(.arr) { transform: translateX(4px); }
+  .upsell-wrap { padding-top: 0; }
+
+  /* shared building blocks for the service pages' own sections */
+  :global(.svc) { padding-block: var(--s-5); }
+  :global(.svc h2) { font-size: var(--step-4); margin-bottom: 1.25rem; }
+  :global(.svc .split) { display: grid; gap: 2.5rem; align-items: start; }
+  @media (min-width: 900px) {
+    :global(.svc .split) { grid-template-columns: 1.15fr 0.85fr; gap: 5rem; }
+    :global(.svc .split.flip) { grid-template-columns: 0.85fr 1.15fr; }
+    :global(.svc .split.flip > :first-child) { order: 2; }
+  }
+  :global(.svc .ticks) { list-style: none; padding: 0; display: grid; gap: 0; }
+  :global(.svc .ticks li) { padding: 0.65rem 0 0.65rem 1.9rem; border-bottom: 1px solid #d9cfbb; position: relative; }
+  :global(.svc .ticks li::before) {
+    content: ''; position: absolute; left: 0.2rem; top: 1.05rem; width: 0.9rem; height: 0.5rem;
+    border-left: 2.2px solid var(--gold-ink); border-bottom: 2.2px solid var(--gold-ink); transform: rotate(-45deg);
+  }
+  :global(.iron .ticks li), :global(.svc.iron .ticks li) { border-color: var(--iron-3); }
+  :global(.svc .callout) {
+    border-left: 3px solid var(--oxide); padding: 1rem 1.25rem; background: var(--paper); margin-top: 1.5rem;
+  }
+  :global(.svc .callout strong) { color: var(--oxide); }
+  :global(.svc figure .photo) { aspect-ratio: 4 / 5; }
+  :global(.svc .glance) { padding: 2rem 1.5rem 1.75rem; color: var(--ivory); }
+  :global(.svc .glance h3) { font-size: var(--step-2); margin-bottom: 0.75rem; }
+  :global(.svc .glance .leader) { padding-block: 0.55rem; border-bottom: 1px solid var(--iron-3); }
+  :global(.svc .glance .leader b) { font-family: var(--font-display); font-size: 1.35rem; }
+  :global(.svc .glance p) { color: var(--steel-light); font-size: 0.9375rem; margin-top: 0.9rem; }
+  :global(.svc .glance .btn) { width: 100%; margin-top: 1.25rem; }
+</style>

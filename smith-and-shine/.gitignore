@@ -1,0 +1,11 @@
+node_modules/
+dist/
+.astro/
+.netlify/
+.env
+.env.*
+!.env.example
+# Raw photos may show number plates; only the blurred copies in src/assets/photos are committed.
+assets/photos-original/
+scripts/fonts/.cache/
+.cache/

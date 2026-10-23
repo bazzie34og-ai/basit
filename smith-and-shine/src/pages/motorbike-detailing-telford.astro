@@ -1,0 +1,92 @@
+---
+import Service from '../layouts/Service.astro';
+import Photo from '../components/Photo.astro';
+import { serviceById, formatGBP, monthlyPlan, reviewFragments, whatsappHref } from '../config/site.ts';
+import type { Faq } from '../lib/schema.ts';
+
+const clean = serviceById('moto-clean')!.from!;
+const detail = serviceById('moto-detail')!.from!;
+const waText = 'Hi Chris, I’d like my motorbike cleaned. It’s a … and my postcode is …';
+
+const faqs: Faq[] = [
+  { q: 'How much is motorbike valeting in Telford?', a: `A motorbike clean & shine is from £${clean}. A full motorbike detail is from £${detail}.` },
+  { q: 'What’s the difference between the clean & shine and the full detail?', a: 'The clean & shine is a careful wash and shine for a bike that’s looked after. The full detail takes longer and goes deeper into the engine, chrome, paint and wheels.' },
+  { q: 'Do you come to me for motorbikes too?', a: 'Yes. Same as the cars: we come to your home or driveway in Telford and around Shropshire.' },
+  { q: 'Can you do the bike and the car on the same visit?', a: 'Yes. One customer had three cars and a motorbike done. Tell us everything on the drive when you book.' },
+];
+---
+<Service
+  title={`Motorbike Detailing & Valeting Telford, from £${clean}`}
+  description={`Motorbike valeting and detailing in Telford. Clean & shine from £${clean}, full detail from £${detail}, done at your home. Harleys, sports bikes, scooters.`}
+  h1="Motorbike Valeting & Detailing, Telford"
+  eyebrow={`Motorbikes · from ${formatGBP(clean)}`}
+  crumbName="Motorbikes"
+  photo="harley-motorbike-detail"
+  alt="Black Harley-Davidson with glossy tank and chrome after motorbike detailing in Telford"
+  photoPosition="50% 50%"
+  price={`from ${formatGBP(clean)}`}
+  priceNote={`Full detail from ${formatGBP(detail)}`}
+  waText={waText}
+  serviceName="Motorbike valeting and detailing"
+  serviceType="Motorcycle detailing"
+  minPrice={clean}
+  faqs={faqs}
+  kind="valet"
+  heroLayout="left"
+  related={[
+    { url: monthlyPlan.url, label: 'Monthly valet plan', note: 'for the car on the same drive' },
+    { url: '/prices/', label: 'All prices' },
+    { url: '/ceramic-coating-telford/', label: 'Ceramic coating', note: 'on quote' },
+    { url: '/guides/how-often-should-you-valet-your-car/', label: 'Guide: how often to valet' },
+    { url: '/book/?size=motorbike', label: 'Book a motorbike clean' },
+  ]}
+>
+  <Fragment slot="intro">
+    <p>Motorbike detailing in Telford, by someone who knows that a bike is never “just a bike”. Chrome, paint and the bits a hose can’t reach, cleaned on your own driveway.</p>
+  </Fragment>
+
+  <section class="svc ivory" aria-labelledby="mb-two">
+    <div class="wrap">
+      <h2 id="mb-two">Two ways to do it</h2>
+      <div class="two">
+        <article class="opt">
+          <p class="label label-gold">Clean &amp; Shine</p>
+          <p class="amt">from <span>£{clean}</span></p>
+          <p>A careful wash and shine for a bike you already look after. Good before a show, a rideout or after a wet weekend.</p>
+          <a class="text-link" href="/book/?service=moto-clean&size=motorbike" data-track="book_start">Book a clean &amp; shine</a>
+        </article>
+        <article class="opt opt-dark iron">
+          <p class="label label-gold">Full Detail</p>
+          <p class="amt">from <span class="gold-text">£{detail}</span></p>
+          <p class="muted">The proper job. Engine, chrome, paint and wheels, slowly. For the bike that gets more attention than the car.</p>
+          <a class="text-link" href="/book/?service=moto-detail&size=motorbike" data-track="book_start">Book a full detail</a>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="svc ivory-2" aria-labelledby="mb-drive">
+    <div class="wrap split">
+      <div class="prose">
+        <h2 id="mb-drive">The bike and the car, one visit</h2>
+        <p>“{reviewFragments.threeCars.text}”, wrote one customer. That’s the beauty of a mobile valeter: once we’re set up on the drive, doing the bike as well is easy.</p>
+        <p>Shropshire’s roads aren’t kind to bikes. Salt in winter, farm mud round Newport and Shifnal, and tree sap if you park under anything near Ironbridge. A regular clean stops it settling into the finish.</p>
+        <p><a href={whatsappHref('Hi Chris, could you do my motorbike and car on the same visit? We’ve got:')} data-track="whatsapp_click">WhatsApp us what’s on the drive</a></p>
+      </div>
+      <figure>
+        <div class="photo"><Photo name="harley-motorbike-detail" alt="Close view of a Harley-Davidson engine and exhaust, cleaned and shining" sizes="(min-width: 900px) 34vw, 92vw" position="40% 50%" /></div>
+        <figcaption class="caption">Harley-Davidson, on the customer’s lawn.</figcaption>
+      </figure>
+    </div>
+  </section>
+</Service>
+
+<style>
+  .two { display: grid; gap: 1.25rem; margin-top: 1rem; }
+  @media (min-width: 760px) { .two { grid-template-columns: 1fr 1fr; } }
+  .opt { padding: 1.75rem 1.5rem; border: 1px solid var(--ink); display: grid; gap: 0.6rem; align-content: start; }
+  .opt-dark { border-color: var(--iron); }
+  .amt { font-family: var(--font-display); font-size: 1.1rem; }
+  .amt span { font-size: 2.6rem; font-weight: 700; }
+  .opt .text-link { justify-self: start; }
+</style>

@@ -1,0 +1,100 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import AreaMap from '../../components/AreaMap.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import Icon from '../../components/Icon.astro';
+import BridgeArch from '../../components/BridgeArch.astro';
+import { telfordVillages, whatsappHref, business } from '../../config/site.ts';
+import type { Crumb } from '../../lib/schema.ts';
+
+const areas = (await getCollection('areas')).sort((a, b) => a.data.order - b.data.order);
+const crumbs: Crumb[] = [{ name: 'Home', url: '/' }, { name: 'Areas', url: '/areas/' }];
+const waText = 'Hi Chris, do you cover my area? My postcode is …';
+---
+<Base
+  title="Mobile Valeting Shropshire: Areas We Cover"
+  description="Mobile valeting across Shropshire from our Telford base: Shrewsbury, Shifnal, Albrighton, Newport, Bridgnorth, Ironbridge, Madeley and Broseley."
+  waText={waText}
+  crumbs={crumbs}
+>
+  <section class="iron hub-hero">
+    <div class="wrap">
+      <Breadcrumbs crumbs={crumbs} />
+      <div class="hub-grid">
+        <div>
+          <p class="label label-gold" style="margin-top:1rem">Areas</p>
+          <h1>Where We Valet Across Shropshire</h1>
+          <p class="lead">Mobile valeting across Shropshire, from a base in Telford. {business.serviceModel} If you can see the Wrekin from your drive, there’s a good chance we can get to you.</p>
+          <a class="btn btn-primary" href={whatsappHref(waText)} data-track="whatsapp_click"><Icon name="whatsapp" /> Check your postcode</a>
+        </div>
+        <div class="map-card plate"><span class="rivets" aria-hidden="true"></span><AreaMap tone="iron" /></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="ivory section-lg" aria-labelledby="telford-h">
+    <div class="wrap telford">
+      <div>
+        <p class="label label-gold">Home turf</p>
+        <h2 id="telford-h">Telford</h2>
+        <p>Every estate in Telford is on our doorstep. <a href="/">See Telford valeting</a>.</p>
+      </div>
+      <ul class="vill" role="list">{telfordVillages.map((v) => <li>{v}</li>)}</ul>
+    </div>
+  </section>
+
+  <section class="ivory-2 section-lg" aria-labelledby="towns-h">
+    <div class="wrap">
+      <h2 id="towns-h">And the towns around it</h2>
+      <ol class="towns" role="list">
+        {areas.map((a, i) => (
+          <li>
+            <a href={`/areas/${a.id}/`}>
+              <span class="no" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+              <span class="nm">{a.data.h1.replace(/^(Mobile )?(Car )?Valeting( & Detailing)? in /, '')}</span>
+              <span class="ld">{a.data.lead.split('. ')[0]}.</span>
+              <span class="vl">{a.data.villages.slice(0, 5).join(' · ')}</span>
+              <Icon name="arrow" class="arr" />
+            </a>
+          </li>
+        ))}
+      </ol>
+      <div class="arch-div" aria-hidden="true"><BridgeArch tone="ink" /></div>
+      <p class="else">Somewhere else in Shropshire? <a href={whatsappHref(waText)} data-track="whatsapp_click">WhatsApp your postcode</a>. If we can get there, we will.</p>
+    </div>
+  </section>
+
+  <CtaBand waText={waText} />
+</Base>
+
+<style>
+  .hub-hero { padding: 0.5rem 0 var(--s-5); }
+  .hub-grid { display: grid; gap: 2.5rem; align-items: center; }
+  @media (min-width: 980px) { .hub-grid { grid-template-columns: 1fr 1fr; gap: 4rem; } }
+  h1 { font-size: var(--step-5); margin: 0.6rem 0 1rem; max-width: 8.4em; }
+  .lead { font-size: var(--step-1); color: #e7e1d4; max-width: 40ch; margin-bottom: 1.75rem; }
+  .map-card { padding: 1rem; }
+  h2 { font-size: var(--step-4); margin: 0.4rem 0 1rem; }
+  .telford { display: grid; gap: 2rem; }
+  @media (min-width: 900px) { .telford { grid-template-columns: 0.8fr 1.2fr; gap: 4rem; align-items: start; } }
+  .telford a { color: var(--ink); text-decoration-color: var(--gold-ink); }
+  .vill { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+  .vill li { padding: 0.45rem 0.85rem; border: 1px solid #cfc3ab; font-weight: 600; font-size: 0.9375rem; background: var(--paper); }
+  .towns { border-top: 2px solid var(--ink); margin-top: 1.5rem; }
+  .towns a {
+    display: grid; grid-template-columns: 2.5rem 1fr; gap: 0.25rem 1rem; padding: 1.4rem 2.5rem 1.4rem 0;
+    border-bottom: 1px solid #cfc3ab; text-decoration: none; position: relative;
+  }
+  @media (min-width: 900px) { .towns a { grid-template-columns: 3rem 1fr 1.3fr; } .vl { grid-column: 3; grid-row: 1 / span 2; align-self: center; } }
+  .no { font-family: var(--font-display); font-style: italic; color: var(--gold-ink); font-size: 1.1rem; grid-row: span 2; }
+  .nm { font-family: var(--font-display); font-size: var(--step-2); font-weight: 650; line-height: 1.15; }
+  .ld { color: var(--ink-soft); grid-column: 2; }
+  .vl { font-size: 0.875rem; font-weight: 600; color: var(--ink-soft); grid-column: 2; }
+  .towns :global(.arr) { position: absolute; right: 0.25rem; top: 50%; transform: translateY(-50%); width: 1.3rem; height: 1.3rem; color: var(--gold-ink); }
+  .towns a:hover .nm { text-decoration: underline; text-decoration-color: var(--gold-ink); }
+  .arch-div { width: min(380px, 70%); margin: 3rem auto 1.5rem; }
+  .else { text-align: center; }
+  .else a { color: var(--ink); }
+</style>

@@ -1,0 +1,160 @@
+---
+import Logo from './Logo.astro';
+import Icon from './Icon.astro';
+import { nav, phone, telHref, whatsappHref } from '../config/site.ts';
+
+interface Props { waText: string }
+const { waText } = Astro.props;
+const path = Astro.url.pathname;
+const isIn = (links: { url: string }[]) => links.some((l) => path.startsWith(l.url));
+const cur = (url: string) => (path === url || (url !== '/' && path.startsWith(url)) ? 'page' : undefined);
+---
+<header class="site-header iron">
+  <div class="bar">
+    <a href="/" class="brand" aria-label="Smith & Shine, home">
+      <Logo width={128} priority alt="Smith & Shine" />
+    </a>
+
+    <nav class="primary" aria-label="Main">
+      <ul role="list">
+        <li>
+          <details class="dd" data-dd>
+            <summary class:list={[{ active: isIn(nav.valeting.links) }]}>{nav.valeting.label}</summary>
+            <ul role="list" class="dd-panel">
+              {nav.valeting.links.map((l) => (
+                <li><a href={l.url} aria-current={cur(l.url)}><span>{l.label}</span><span class="note">{l.note}</span></a></li>
+              ))}
+            </ul>
+          </details>
+        </li>
+        <li>
+          <details class="dd" data-dd>
+            <summary class:list={[{ active: isIn(nav.detailing.links) }]}>{nav.detailing.label}</summary>
+            <ul role="list" class="dd-panel">
+              {nav.detailing.links.map((l) => (
+                <li><a href={l.url} aria-current={cur(l.url)}><span>{l.label}</span><span class="note">{l.note}</span></a></li>
+              ))}
+            </ul>
+          </details>
+        </li>
+        {nav.simple.map((l) => <li><a class="top" href={l.url} aria-current={cur(l.url)}>{l.label}</a></li>)}
+        <li><a class="top" href={nav.book.url} aria-current={cur(nav.book.url)}>{nav.book.label}</a></li>
+      </ul>
+    </nav>
+
+    <div class="actions">
+      <a class="tel" href={telHref} data-track="call_click" aria-label={`Call ${phone}`}><Icon name="phone" /><span>{phone}</span></a>
+      <a class="btn btn-primary wa" href={whatsappHref(waText)} data-track="whatsapp_click">
+        <Icon name="whatsapp" /><span>Book on WhatsApp</span>
+      </a>
+    </div>
+
+    <details class="mm" data-dd>
+      <summary aria-label="Menu"><Icon name="menu" class="i-open" /><Icon name="close" class="i-close" /><span>Menu</span></summary>
+      <div class="mm-panel iron">
+        <nav aria-label="Mobile">
+          <p class="label label-gold">{nav.valeting.label}</p>
+          <ul role="list">
+            {nav.valeting.links.map((l) => <li><a href={l.url}><span>{l.label}</span><span class="note">{l.note}</span></a></li>)}
+          </ul>
+          <p class="label label-gold">{nav.detailing.label}</p>
+          <ul role="list">
+            {nav.detailing.links.map((l) => <li><a href={l.url}><span>{l.label}</span><span class="note">{l.note}</span></a></li>)}
+          </ul>
+          <ul role="list" class="mm-simple">
+            {nav.simple.map((l) => <li><a href={l.url}>{l.label}</a></li>)}
+            <li><a href={nav.book.url}>Book online</a></li>
+          </ul>
+          <a class="btn btn-primary mm-call" href={telHref} data-track="call_click"><Icon name="phone" /> Call {phone}</a>
+        </nav>
+      </div>
+    </details>
+  </div>
+</header>
+
+<style>
+  .site-header {
+    position: relative; z-index: 40;
+    border-bottom: 1px solid rgba(201, 162, 75, 0.28);
+  }
+  @media (min-width: 768px) { .site-header { position: sticky; top: 0; } }
+  .bar {
+    display: flex; align-items: center; gap: 1rem;
+    width: min(100% - 2 * var(--gutter), 90rem); margin-inline: auto;
+    min-height: 64px;
+  }
+  .brand { display: block; flex: none; padding-block: 6px; }
+  .brand :global(img) { width: 112px; height: auto; }
+  @media (min-width: 1100px) { .brand :global(img) { width: 128px; } }
+
+  .primary { display: none; margin-left: auto; }
+  .primary > ul { display: flex; gap: 0.25rem; align-items: center; }
+  .primary a.top, .dd summary {
+    display: inline-flex; align-items: center; min-height: 44px; padding: 0 0.7rem;
+    font-weight: 600; font-size: 0.9375rem; text-decoration: none; color: var(--ivory);
+    border-radius: var(--radius);
+  }
+  .primary a.top:hover, .dd summary:hover { color: var(--gold-light); }
+  .primary a[aria-current='page'], .dd summary.active { color: var(--gold-light); box-shadow: inset 0 -2px 0 var(--gold); }
+  .dd { position: relative; }
+  .dd summary { list-style: none; cursor: pointer; gap: 0.35rem; }
+  .dd summary::-webkit-details-marker { display: none; }
+  .dd summary::after {
+    content: ''; width: 6px; height: 6px; border-right: 1.5px solid currentColor; border-bottom: 1.5px solid currentColor;
+    transform: rotate(45deg) translateY(-2px); margin-left: 0.2rem;
+  }
+  .dd[open] summary::after { transform: rotate(-135deg) translateY(-1px); }
+  .dd-panel {
+    position: absolute; top: calc(100% + 8px); left: 0; min-width: 18rem;
+    background: var(--iron-2); border: 1px solid var(--iron-3); border-top: 2px solid var(--gold);
+    padding: 0.5rem; box-shadow: 0 24px 40px -20px rgba(0, 0, 0, 0.7);
+  }
+  .dd-panel a, .mm-panel ul a {
+    display: flex; justify-content: space-between; gap: 1rem; align-items: center;
+    min-height: 44px; padding: 0.4rem 0.75rem; text-decoration: none; border-radius: 2px;
+  }
+  .dd-panel a:hover, .mm-panel ul a:hover { background: var(--iron-3); color: var(--gold-light); }
+  .note { font-size: 0.8125rem; color: var(--steel-light); font-weight: 600; white-space: nowrap; }
+
+  .actions { display: none; align-items: center; gap: 1rem; margin-left: auto; }
+  .tel {
+    display: inline-flex; align-items: center; gap: 0.45rem; min-height: 44px;
+    font-weight: 700; text-decoration: none; color: var(--ivory); white-space: nowrap; letter-spacing: 0.02em;
+  }
+  .tel :global(svg) { width: 18px; height: 18px; color: var(--gold); }
+  .tel:hover { color: var(--gold-light); }
+  .wa { min-height: 44px; padding-block: 0.6rem; white-space: nowrap; }
+
+  .mm { margin-left: auto; }
+  .mm summary {
+    list-style: none; display: inline-flex; align-items: center; gap: 0.45rem; min-height: 44px; min-width: 44px;
+    padding: 0 0.75rem; border: 1px solid rgba(246, 241, 231, 0.3); border-radius: var(--radius);
+    font-weight: 700; font-size: 0.875rem; letter-spacing: 0.06em; text-transform: uppercase; cursor: pointer;
+  }
+  .mm summary::-webkit-details-marker { display: none; }
+  .mm summary :global(svg) { width: 20px; height: 20px; }
+  .mm :global(.i-close) { display: none; }
+  .mm[open] :global(.i-close) { display: block; }
+  .mm[open] :global(.i-open) { display: none; }
+  .mm-panel {
+    position: absolute; left: 0; right: 0; top: 100%;
+    border-top: 1px solid var(--iron-3); border-bottom: 2px solid var(--gold);
+    padding: 1rem var(--gutter) 1.5rem; max-height: calc(100dvh - 64px); overflow-y: auto;
+  }
+  .mm-panel .label { margin: 1rem 0 0.25rem; }
+  .mm-panel ul a { padding-inline: 0; border-bottom: 1px solid var(--iron-3); font-weight: 600; }
+  .mm-simple { margin-top: 1rem; display: grid; grid-template-columns: 1fr 1fr; gap: 0 1.25rem; }
+  .mm-simple a { font-family: var(--font-display); font-size: 1.25rem; }
+  .mm-call { width: 100%; margin-top: 1.25rem; }
+
+  @media (min-width: 768px) {
+    .actions { display: flex; }
+    .mm { margin-left: 0; }
+  }
+  @media (min-width: 1180px) {
+    .primary { display: block; }
+    .actions { margin-left: 0.75rem; }
+    .mm { display: none; }
+  }
+  @media (min-width: 768px) and (max-width: 1279px) { .tel span { display: none; } .tel { padding-inline: 0.5rem; } }
+</style>

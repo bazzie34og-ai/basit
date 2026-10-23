@@ -1,0 +1,41 @@
+---
+import Icon from './Icon.astro';
+import { phone, telHref, whatsappHref, business } from '../config/site.ts';
+interface Props { waText: string; heading?: string; text?: string }
+const {
+  waText,
+  heading = 'Your car, your driveway, our kit.',
+  text = 'Message us your car and postcode. We’ll come back with a day and a fixed price.',
+} = Astro.props;
+---
+<section class="band iron" aria-labelledby="cta-band-h">
+  <div class="wrap band-inner">
+    <div class="copy">
+      <p class="label label-gold">Booking</p>
+      <h2 id="cta-band-h">{heading} <span class="ital gold-text">You just put the kettle on.</span></h2>
+      <p class="muted">{text} {business.replyPromise}</p>
+    </div>
+    <div class="card plate">
+      <span class="rivets" aria-hidden="true"></span>
+      <a class="btn btn-primary big" href={whatsappHref(waText)} data-track="whatsapp_click"><Icon name="whatsapp" /> WhatsApp Chris</a>
+      <a class="btn btn-ghost big" href={telHref} data-track="call_click"><Icon name="phone" /> Call {phone}</a>
+      <a class="text-link" href="/book/" data-track="book_start">Or book online in 3 steps <Icon name="arrow" class="arr" /></a>
+      <p class="urgent">Urgent? WhatsApp us and say so. We’ll do our best to fit you in.</p>
+    </div>
+  </div>
+</section>
+<style>
+  .band { padding-block: var(--s-5); position: relative; }
+  .band::before {
+    content: ''; position: absolute; inset: 0 0 auto; height: 1px; background: var(--gold-leaf); opacity: 0.6;
+  }
+  .band-inner { display: grid; gap: 2rem; align-items: center; }
+  @media (min-width: 900px) { .band-inner { grid-template-columns: 1.3fr 1fr; gap: 4rem; } }
+  h2 { font-size: var(--step-4); margin: 0.5rem 0 1rem; }
+  h2 .ital { display: block; }
+  .card { padding: 2rem 1.5rem 1.5rem; display: grid; gap: 0.75rem; }
+  .big { width: 100%; min-height: 56px; font-size: 1rem; }
+  .text-link { justify-self: start; margin-top: 0.25rem; }
+  .text-link :global(.arr) { width: 1em; height: 1em; }
+  .urgent { font-size: 0.875rem; color: var(--steel-light); }
+</style>

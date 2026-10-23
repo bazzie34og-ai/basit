@@ -1,0 +1,110 @@
+---
+import Service from '../layouts/Service.astro';
+import Photo from '../components/Photo.astro';
+import { serviceById, inclusions, formatGBP, reviewFragments, whatsappHref } from '../config/site.ts';
+import type { Faq } from '../lib/schema.ts';
+
+const det = serviceById('detailing')!.from!;
+const pc = serviceById('paint-correction')!.from!;
+const full = serviceById('full-valet')!.from!;
+const waText = 'Hi Chris, I’d like a price for car detailing. My car is a … and my postcode is …';
+
+const faqs: Faq[] = [
+  { q: 'How much is car detailing in Telford?', a: `Detailing is from £${det}. Detailing & paint correction is from £${pc}. Send a photo of the car and Chris will give you a fixed price before he starts.` },
+  { q: 'What’s the difference between a valet and a detail?', a: 'A valet gets the car clean. A detail gets it as good as it can be: slower, deeper work on the paint, wheels, trim and interior, with protection at the end.' },
+  { q: 'Do you detail classic cars?', a: 'Yes, and Chris loves them. Older paint and trim need a gentler approach, so tell us about the car when you book and we’ll talk it through.' },
+  { q: 'Do you cover the rest of Shropshire?', a: 'We’re based in Telford and regularly detail cars in Shrewsbury, Shifnal, Albrighton, Newport, Bridgnorth, Ironbridge, Madeley and Broseley.' },
+];
+---
+<Service
+  title={`Car Detailing Telford & Shropshire, from £${det}`}
+  description={`Car detailing in Telford and across Shropshire from £${det}, at your home. Paint, wheels, trim and interior. Classics and pride-and-joys welcome.`}
+  h1="Car Detailing in Telford"
+  eyebrow={`Detailing · from ${formatGBP(det)}`}
+  crumbName="Car detailing"
+  photo="classic-vw-beetle-blue-side-detail"
+  alt="Classic pale blue VW Beetle on a sunny Shropshire driveway after car detailing by Smith & Shine"
+  photoPosition="50% 45%"
+  price={`from ${formatGBP(det)}`}
+  priceNote={`With paint correction from ${formatGBP(pc)}`}
+  waText={waText}
+  serviceName="Car detailing"
+  serviceType="Car detailing"
+  minPrice={det}
+  faqs={faqs}
+  reviews={['Andrew R.', 'Kyle H.']}
+  kind="premium"
+  related={[
+    { url: '/paint-correction-telford/', label: 'Paint correction', note: `from £${pc}` },
+    { url: '/ceramic-coating-telford/', label: 'Ceramic coating', note: 'on quote' },
+    { url: '/prices/', label: 'All prices' },
+    { url: '/guides/paint-correction-vs-ceramic-coating/', label: 'Guide: paint correction vs ceramic' },
+    { url: '/book/?service=detailing', label: 'Book a detail' },
+  ]}
+>
+  <Fragment slot="intro">
+    <p>Car detailing in Telford for the car you actually care about. Not a quick wash and a squirt of tyre shine: slower, deeper work, done on your driveway.</p>
+  </Fragment>
+
+  <section class="svc ivory" aria-labelledby="cd-what">
+    <div class="wrap split">
+      <div>
+        <h2 id="cd-what">What goes into a detail</h2>
+        <ul class="ticks" role="list">
+          {inclusions.detailing.map((i) => <li>{i}</li>)}
+        </ul>
+        <p class="muted" style="margin-top:1rem;font-size:.9375rem">Every car is different. Chris will look at yours, tell you what he’d do, and give you the price before he starts.</p>
+      </div>
+      <div class="glance plate">
+        <span class="rivets" aria-hidden="true"></span>
+        <h3>Valet, detail or correction?</h3>
+        <p class="leader"><span>Full Valet</span><span class="dots" aria-hidden="true"></span><b class="gold-text">£{full}+</b></p>
+        <p class="leader"><span>Detailing</span><span class="dots" aria-hidden="true"></span><b class="gold-text">£{det}+</b></p>
+        <p class="leader"><span>Detailing &amp; Paint Correction</span><span class="dots" aria-hidden="true"></span><b class="gold-text">£{pc}+</b></p>
+        <p>Paint correction is machine polishing that removes swirls and light scratches.</p>
+        <a class="btn btn-primary" href={whatsappHref('Hi Chris, could I get a detailing price? Here’s a photo of my car:')} data-track="whatsapp_click">Send a photo for a price</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="svc iron" aria-labelledby="cd-classic">
+    <div class="wrap classic">
+      <figure class="c1">
+        <div class="photo"><Photo name="classic-vw-beetle-blue-front-detail" alt="Bonnet of a classic VW Beetle with smooth, glossy pale blue paint after detailing" sizes="(min-width: 900px) 30vw, 92vw" /></div>
+      </figure>
+      <div class="c2">
+        <p class="label label-gold">Classics &amp; pride-and-joys</p>
+        <h2 id="cd-classic">Old paint deserves patience.</h2>
+        <p>Classic cars, weekend cars, the one under a cover in the garage. Older paint is often thinner and softer, and original trim doesn’t come back if you get it wrong. So it’s gentle products, the right pad and plenty of time.</p>
+        <p class="pull">“…knows his onions (and is happy to talk shop too!)”</p>
+        <p class="muted">A Google reviewer, on Chris bringing “some much needed shine back to my pride and joy”.</p>
+      </div>
+      <figure class="c3">
+        <div class="photo"><Photo name="audi-s5-cabriolet-grey-detail" alt="Grey Audi S5 Cabriolet with sharp reflections in the paint, detailed in Telford" sizes="(min-width: 900px) 26vw, 92vw" /></div>
+        <figcaption class="caption">Audi S5 Cabriolet</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="svc ivory" aria-labelledby="cd-ev">
+    <div class="wrap-text prose">
+      <h2 id="cd-ev">Teslas and EVs</h2>
+      <p>Electric cars get detailed the same way as any other, with a bit of extra care round the charging port and the big glass roofs. One Tesla Model 3 owner said: “{reviewFragments.tesla.text}”</p>
+      <p>If you want that finish to last, pair your detail with a <a href="/ceramic-coating-telford/">ceramic coating</a>. If the paint has swirls from automatic washes, start with <a href="/paint-correction-telford/">paint correction</a>. Our <a href="/guides/paint-correction-vs-ceramic-coating/">correction vs ceramic guide</a> explains the difference in plain English.</p>
+      <p>We detail across Shropshire: Telford, <a href="/areas/shrewsbury/">Shrewsbury</a>, <a href="/areas/bridgnorth/">Bridgnorth</a>, <a href="/areas/shifnal-albrighton/">Shifnal</a> and the villages in between.</p>
+    </div>
+  </section>
+</Service>
+
+<style>
+  .classic { display: grid; gap: 2rem; align-items: center; }
+  @media (min-width: 900px) {
+    .classic { grid-template-columns: 0.9fr 1.1fr 0.7fr; gap: 3rem; }
+    .c3 { align-self: end; }
+  }
+  .classic h2 { font-size: var(--step-4); margin: 0.5rem 0 1rem; }
+  .c2 > p + p { margin-top: 0.9rem; }
+  .pull { font-family: var(--font-display); font-style: italic; font-size: var(--step-2); color: var(--gold-light); line-height: 1.3; }
+  .c1 .photo { aspect-ratio: 3 / 4; }
+  .c3 .photo { aspect-ratio: 720 / 520 !important; }
+</style>

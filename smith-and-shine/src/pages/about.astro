@@ -1,0 +1,97 @@
+---
+import Base from '../layouts/Base.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import Photo from '../components/Photo.astro';
+import CtaBand from '../components/CtaBand.astro';
+import Logo from '../components/Logo.astro';
+import { reviewFragments, social, business } from '../config/site.ts';
+import type { Crumb } from '../lib/schema.ts';
+
+const crumbs: Crumb[] = [{ name: 'Home', url: '/' }, { name: 'Meet Chris', url: '/about/' }];
+const waText = 'Hi Chris, I’ve just read about you on the website. Could you have a look at my car? It’s a …';
+---
+<Base
+  title="Meet Chris, Telford’s Auto Detailing Aficionado"
+  description="Meet Chris, the Mr Smith behind Smith & Shine: family-run mobile valeting and detailing in Telford. Fixed prices, honest advice, and a weakness for cake."
+  waText={waText}
+  crumbs={crumbs}
+>
+  <section class="iron ab-hero">
+    <div class="wrap">
+      <Breadcrumbs crumbs={crumbs} />
+      <div class="ab-grid">
+        <div>
+          <p class="label label-gold" style="margin-top:1rem">About Smith &amp; Shine</p>
+          <h1>Meet Chris: the Auto Detailing Aficionado</h1>
+          <p class="lead">Mr Smith to some customers, Chris to everyone else. He runs Smith &amp; Shine, a family-run mobile valeting and detailing business in Telford, with the team alongside him.</p>
+        </div>
+        <div class="logo-plate plate"><span class="rivets" aria-hidden="true"></span><Logo width={360} /></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="ivory section-lg" aria-labelledby="ab-how">
+    <div class="wrap ab-split">
+      <div class="prose">
+        <h2 id="ab-how">How Chris works</h2>
+        <p><strong>He comes to you.</strong> Home, driveway or work. The gazebo goes up, the kit comes out, and you get on with your day.</p>
+        <p><strong>He tells you the price first.</strong> Every price is on this website, and the price he quotes is the price you pay. One customer summed it up: “sticks to a quoted price”.</p>
+        <p><strong>He explains everything.</strong> One customer wrote: “{reviewFragments.informative.text}” Another said he “{reviewFragments.onions.text}”. If you want to talk shop about pads and polishes, you’ve found your man. If you don’t, he’ll keep it short.</p>
+        <p><strong>He’s honest about what’s possible.</strong> Paint correction removes swirls and light scratches; deep scratches can be improved, not always removed. He’ll tell you which is which before he starts.</p>
+        <p><strong>He loves the dirty ones.</strong> In his own words, replying to a customer: “Best part of my job is turning a dirty car back to showroom condition.”</p>
+      </div>
+      <figure class="gz">
+        <div class="photo"><Photo name="mercedes-a45-amg-matte-grey-gazebo-setup" alt="Smith & Shine’s gazebo, products and kit set up on a customer’s driveway in Telford" sizes="(min-width: 900px) 34vw, 92vw" /></div>
+        <figcaption class="caption">The office, on a good day.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="ivory-2 section" aria-labelledby="ab-tea">
+    <div class="wrap-mid tea">
+      <h2 id="ab-tea">On tea, cake and English weather</h2>
+      <p>Read Chris’s replies to his Google reviews and you’ll spot a theme. “The cake and cuppa was magic. Cake discount now in affect lol.” “A BIG thank you for the best cuppa tea I’ve had in .... forever lol.” “Flipping rained since. Good old English weather lol.” And a personal favourite: “Fanny the fiat, name of legands.”</p>
+      <p>That’s Smith &amp; Shine. Proper work, done by people you’re happy to have on your drive. You put the kettle on; we’ll do the rest.</p>
+    </div>
+  </section>
+
+  <section class="ivory section-lg" aria-labelledby="ab-flag">
+    <div class="wrap flag-grid">
+      <figure class="flag">
+        <div class="photo"><Photo name="ford-focus-rs-smith-and-shine-plate" alt="Grey Ford Focus RS wearing a Smith&Shine show plate on a block-paved driveway" sizes="(min-width: 900px) 30vw, 80vw" /></div>
+        <figcaption class="caption">Wearing the plate with pride.</figcaption>
+      </figure>
+      <div class="prose">
+        <h2 id="ab-flag">The team</h2>
+        <p>Smith &amp; Shine is a family-run business. You’ll usually see Chris, and on bigger jobs {business.teamLine.toLowerCase().replace('chris and ', '')} too. Reviews mention “Chris and his team” and “great guys”, and one customer got “three cars and a motorbike” done in a single visit, which takes more than one pair of hands.</p>
+        <blockquote>“Awesome service all round by Chris and his team.” <br /><small>Luke D., Google review</small></blockquote>
+        <p>We’re based in Telford and work across Shropshire: <a href="/areas/shrewsbury/">Shrewsbury</a>, <a href="/areas/shifnal-albrighton/">Shifnal and Albrighton</a>, <a href="/areas/newport-shropshire/">Newport</a>, <a href="/areas/bridgnorth/">Bridgnorth</a> and <a href="/areas/ironbridge-madeley-broseley/">Ironbridge, Madeley and Broseley</a>.</p>
+        <p>Follow the work on Instagram at <a href={social.instagram.url} target="_blank" rel="noopener">{social.instagram.handle}</a>, or read <a href="/reviews/">what customers say</a>.</p>
+      </div>
+    </div>
+  </section>
+
+  <CtaBand waText={waText} heading="Fancy meeting Chris?" text="Message us your car and postcode, and he’ll come back with a day and a fixed price." />
+</Base>
+
+<style>
+  .ab-hero { padding: 0.5rem 0 var(--s-5); }
+  .ab-grid { display: grid; gap: 2.5rem; align-items: center; }
+  @media (min-width: 900px) { .ab-grid { grid-template-columns: 1.2fr 0.8fr; gap: 4rem; } }
+  h1 { font-size: var(--step-5); max-width: 8.4em; margin: 0.6rem 0 1rem; }
+  .lead { font-size: var(--step-1); color: #e7e1d4; max-width: 42ch; }
+  .logo-plate { padding: 1.5rem; }
+  .logo-plate :global(img) { width: 100%; height: auto; }
+  .ab-split { display: grid; gap: 2.5rem; }
+  @media (min-width: 900px) { .ab-split { grid-template-columns: 1.2fr 0.8fr; gap: 5rem; } .gz { margin-top: 5rem; } }
+  .prose h2 { font-size: var(--step-4); margin-top: 0; }
+  .gz .photo { aspect-ratio: 3 / 4; }
+  .tea { text-align: left; }
+  .tea h2 { font-size: var(--step-3); margin-bottom: 1rem; font-style: italic; font-weight: 600; }
+  .tea p { font-family: var(--font-display); font-size: 1.2rem; line-height: 1.6; }
+  .tea p + p { margin-top: 1rem; }
+  .flag-grid { display: grid; gap: 2.5rem; align-items: center; }
+  @media (min-width: 900px) { .flag-grid { grid-template-columns: 0.75fr 1.25fr; gap: 5rem; } }
+  .flag .photo { aspect-ratio: 718 / 1143; }
+  .flag figcaption { font-family: var(--font-display); font-style: italic; text-transform: none; letter-spacing: 0; font-size: 1.15rem; color: var(--ink); }
+</style>

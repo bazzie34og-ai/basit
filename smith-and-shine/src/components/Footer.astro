@@ -1,0 +1,112 @@
+---
+import Logo from './Logo.astro';
+import Icon from './Icon.astro';
+import BridgeArch from './BridgeArch.astro';
+import {
+  business, phone, telHref, social, activeServices, areaPages, guides, googleRating, telfordVillages,
+} from '../config/site.ts';
+
+const serviceLinks = [
+  { url: '/monthly-valet-plan/', label: 'Monthly valet plan' },
+  { url: '/mini-valet-telford/', label: 'Mini valet & polish' },
+  { url: '/full-valet-telford/', label: 'Full valet' },
+  { url: '/car-detailing-telford/', label: 'Car detailing' },
+  { url: '/paint-correction-telford/', label: 'Paint correction' },
+  { url: '/ceramic-coating-telford/', label: 'Ceramic coating' },
+  ...(activeServices.some((s) => s.id === 'ppf') ? [{ url: '/paint-protection-film-telford/', label: 'Paint protection film' }] : []),
+  { url: '/motorbike-detailing-telford/', label: 'Motorbike detailing' },
+  { url: '/van-valeting-telford/', label: 'Van valeting' },
+];
+const year = new Date().getFullYear();
+---
+<footer class="site-footer iron" id="footer">
+  <div class="arch" aria-hidden="true"><BridgeArch tone="steel" /></div>
+  <div class="wrap grid">
+    <div class="nap">
+      <Logo width={220} />
+      <!-- NAP: identical on every page and must match the Google profile exactly -->
+      <p class="nap-block">
+        <strong class="nap-name">{business.name}</strong><br />
+        <span>{business.descriptor}</span><br />
+        <a href={telHref} class="nap-tel" data-track="call_click">{phone}</a>
+      </p>
+      <p class="muted small">{business.serviceModel} {business.hoursText}.</p>
+      <ul class="social" role="list">
+        <li><a href={social.instagram.url} rel="me noopener" target="_blank" aria-label={`Instagram ${social.instagram.handle}`}><Icon name="instagram" /></a></li>
+        {social.facebook.url && <li><a href={social.facebook.url} rel="me noopener" target="_blank" aria-label="Facebook"><Icon name="facebook" /></a></li>}
+      </ul>
+      <p class="small"><a href={social.googleReviews} rel="noopener" target="_blank">{googleRating.summary}</a></p>
+    </div>
+
+    <nav aria-label="Services" class="col">
+      <p class="label label-gold">Services</p>
+      <ul role="list">
+        {serviceLinks.map((l) => <li><a href={l.url}>{l.label}</a></li>)}
+        <li><a href="/prices/">All prices</a></li>
+      </ul>
+    </nav>
+
+    <nav aria-label="Areas" class="col">
+      <p class="label label-gold">Areas</p>
+      <ul role="list">
+        <li><a href="/">Telford</a></li>
+        {areaPages.map((l) => <li><a href={l.url}>{l.name}</a></li>)}
+        <li><a href="/areas/">All areas</a></li>
+      </ul>
+      <p class="muted small villages">Also: {telfordVillages.join(', ')}.</p>
+    </nav>
+
+    <nav aria-label="More" class="col">
+      <p class="label label-gold">Smith &amp; Shine</p>
+      <ul role="list">
+        <li><a href="/about/">Meet Chris</a></li>
+        <li><a href="/reviews/">Reviews</a></li>
+        <li><a href="/faq/">FAQ</a></li>
+        <li><a href="/book/">Book online</a></li>
+        <li><a href="/guides/">Car care notes</a></li>
+        <li><a href="/privacy/">Privacy</a></li>
+      </ul>
+      <p class="label label-gold guides-label">Guides</p>
+      <ul role="list">
+        {guides.map((g) => <li><a href={g.url}>{g.label}</a></li>)}
+      </ul>
+    </nav>
+  </div>
+  <div class="wrap base">
+    <p>© {year} {business.name}. Family-run in Telford, Shropshire.</p>
+    <p class="muted">Your car, your driveway, our kit. You just put the kettle on.</p>
+  </div>
+</footer>
+
+<style>
+  .site-footer { position: relative; padding: 0 0 var(--s-4); overflow: hidden; }
+  .arch { width: min(1100px, 140%); margin: 0 auto; opacity: 0.35; transform: translateY(2px); padding-top: var(--s-4); }
+  .grid {
+    display: grid; gap: 2.5rem 2rem; padding-block: var(--s-4);
+    border-top: 1px solid rgba(201, 162, 75, 0.35);
+  }
+  @media (min-width: 720px) { .grid { grid-template-columns: 1fr 1fr; } }
+  @media (min-width: 1060px) { .grid { grid-template-columns: 1.35fr 1fr 1fr 1fr; } }
+  .nap :global(img) { width: 200px; height: auto; margin-bottom: 1.25rem; }
+  .nap-block { line-height: 1.7; }
+  .nap-name { font-family: var(--font-display); font-size: 1.25rem; font-weight: 650; }
+  .nap-tel { font-weight: 700; color: var(--gold-light); font-size: 1.125rem; display: inline-block; padding-block: 0.4rem; }
+  .small { font-size: 0.9375rem; margin-top: 0.75rem; }
+  .col ul { margin-top: 0.5rem; }
+  .col a, .small a { display: inline-block; padding-block: 0.55rem; text-decoration: none; color: var(--ivory); }
+  .col a:hover, .small a:hover { color: var(--gold-light); text-decoration: underline; }
+  .col li { line-height: 1.2; }
+  .guides-label { margin-top: 1.5rem; }
+  .villages { font-size: 0.875rem; margin-top: 1rem; line-height: 1.6; }
+  .social { display: flex; gap: 0.5rem; margin-top: 1rem; }
+  .social a {
+    display: grid; place-items: center; width: 44px; height: 44px; border: 1px solid var(--iron-3);
+    border-radius: 50%; color: var(--gold);
+  }
+  .social a:hover { border-color: var(--gold); }
+  .social :global(svg) { width: 20px; height: 20px; }
+  .base {
+    display: flex; flex-wrap: wrap; justify-content: space-between; gap: 0.5rem 2rem;
+    border-top: 1px solid var(--iron-3); padding-top: 1.25rem; font-size: 0.875rem;
+  }
+</style>

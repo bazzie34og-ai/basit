@@ -1,0 +1,96 @@
+---
+/**
+ * A simple, stylised map of Telford and the towns we cover.
+ * Positions are projected from real lat/long; the Severn, M54 and A5 are
+ * hand-simplified. Not to scale for navigation, obviously.
+ */
+interface Props { highlight?: string | null; class?: string; tone?: 'ivory' | 'iron' }
+const { highlight = null, class: cls, tone = 'ivory' } = Astro.props;
+
+const P = (lat: number, lon: number) => ({ x: +((lon + 2.85) * 1034).toFixed(1), y: +((52.8 - lat) * 1706).toFixed(1) });
+interface Town { name: string; slug: string; url: string; x: number; y: number; dx: number; dy: number; hub?: boolean; small?: boolean; anchor?: 'start' | 'middle' | 'end' }
+const towns: Town[] = [
+  { name: 'Telford', slug: 'telford', url: '/', ...P(52.676, -2.447), hub: true, dx: 14, dy: -12 },
+  { name: 'Wellington', slug: 'telford', url: '/', ...P(52.700, -2.517), dx: -10, dy: -12, anchor: 'end', small: true },
+  { name: 'Shrewsbury', slug: 'shrewsbury', url: '/areas/shrewsbury/', ...P(52.708, -2.754), dx: 0, dy: -16, anchor: 'middle' },
+  { name: 'Newport', slug: 'newport-shropshire', url: '/areas/newport-shropshire/', ...P(52.769, -2.378), dx: 12, dy: 5 },
+  { name: 'Shifnal', slug: 'shifnal-albrighton', url: '/areas/shifnal-albrighton/', ...P(52.666, -2.373), dx: 12, dy: 18 },
+  { name: 'Albrighton', slug: 'shifnal-albrighton', url: '/areas/shifnal-albrighton/', ...P(52.637, -2.279), dx: -6, dy: 22, anchor: 'end' },
+  { name: 'Madeley', slug: 'ironbridge-madeley-broseley', url: '/areas/ironbridge-madeley-broseley/', ...P(52.637, -2.448), dx: 12, dy: 5, small: true },
+  { name: 'Ironbridge', slug: 'ironbridge-madeley-broseley', url: '/areas/ironbridge-madeley-broseley/', ...P(52.628, -2.486), dx: -12, dy: -6, anchor: 'end' },
+  { name: 'Broseley', slug: 'ironbridge-madeley-broseley', url: '/areas/ironbridge-madeley-broseley/', ...P(52.612, -2.483), dx: -12, dy: 12, anchor: 'end', small: true },
+  { name: 'Bridgnorth', slug: 'bridgnorth', url: '/areas/bridgnorth/', ...P(52.535, -2.42), dx: 14, dy: 5 },
+];
+const severn = 'M60 140 C80 150 90 160 99 157 S150 190 176 205 S240 280 258 290 S310 270 331 278 S360 296 376 293 S410 305 424 316 S440 360 445 392 S440 430 445 452 S455 490 470 520';
+const m54 = 'M300 162 C340 175 390 190 424 198 S480 218 507 225 S580 250 640 268';
+const a5 = 'M300 162 C270 168 230 172 207 171 S150 158 134 154 S110 156 99 157';
+const tel = towns[0];
+---
+<svg class:list={['map', `t-${tone}`, cls]} viewBox="40 20 620 470" role="group" aria-label="Map of the areas Smith & Shine covers around Telford">
+  <defs>
+    <pattern id="hatch" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(35)">
+      <line x1="0" y1="0" x2="0" y2="8" class="hatch" />
+    </pattern>
+  </defs>
+  <!-- coverage rings from Telford -->
+  <circle cx={tel.x} cy={tel.y} r="120" class="ring" />
+  <circle cx={tel.x} cy={tel.y} r="250" class="ring ring-2" />
+  <circle cx={tel.x} cy={tel.y} r="58" fill="url(#hatch)" class="hub-area" />
+  <path d={severn} class="river" />
+  <text x="190" y="236" class="feature" transform="rotate(48 190 236)">River Severn</text>
+  <path d={m54} class="road" />
+  <text x="598" y="244" class="feature road-label" transform="rotate(14 598 244)">M54</text>
+  <path d={a5} class="road minor" />
+  <text x="230" y="160" class="feature road-label">A5</text>
+  {towns.map((t) => {
+    const on = highlight ? t.slug === highlight : t.hub;
+    return (
+      <a href={t.url} aria-label={`${t.name}: car valeting`} class:list={['town', { on, hub: t.hub, small: t.small }]}>
+        <circle cx={t.x} cy={t.y} r={t.hub ? 9 : t.small ? 4 : 6} class="dot" />
+        {t.hub && <circle cx={t.x} cy={t.y} r="15" class="halo" />}
+        <text x={t.x + t.dx} y={t.y + t.dy} text-anchor={t.anchor ?? 'start'}>{t.name}</text>
+      </a>
+    );
+  })}
+  <g class="compass" transform="translate(620 60)" aria-hidden="true">
+    <path d="M0 -18 L5 0 L0 18 L-5 0 Z" />
+    <text y="-24" text-anchor="middle">N</text>
+  </g>
+</svg>
+
+<style>
+  .map { width: 100%; height: auto; font-family: var(--font-body); }
+  .ring { fill: none; stroke: var(--gold-ink); stroke-width: 1; stroke-dasharray: 3 6; opacity: 0.55; }
+  .ring-2 { opacity: 0.3; }
+  .hatch { stroke: var(--gold); stroke-width: 1.2; opacity: 0.45; }
+  .hub-area { stroke: none; }
+  .river { fill: none; stroke: #7f97a8; stroke-width: 5; stroke-linecap: round; opacity: 0.55; }
+  .road { fill: none; stroke: var(--ink-soft); stroke-width: 2.2; stroke-dasharray: 10 5; opacity: 0.55; }
+  .road.minor { stroke-width: 1.5; }
+  .feature { font-size: 12px; font-style: italic; fill: #5d6f7c; font-family: var(--font-display); }
+  .road-label { fill: var(--ink-soft); font-style: normal; font-family: var(--font-body); font-weight: 700; font-size: 11px; letter-spacing: 0.08em; }
+  .town text { font-size: 17px; font-weight: 700; fill: var(--ink); paint-order: stroke; stroke: var(--ivory); stroke-width: 5px; stroke-linejoin: round; }
+  .town.small text { font-size: 13px; font-weight: 600; fill: var(--ink-soft); }
+  .town .dot { fill: var(--iron); stroke: var(--ivory); stroke-width: 2; }
+  .town.on .dot { fill: var(--gold); stroke: var(--iron); stroke-width: 2; }
+  .town.hub text { font-family: var(--font-display); font-size: 24px; font-weight: 700; }
+  .halo { fill: none; stroke: var(--gold-ink); stroke-width: 1.5; }
+  .town:hover text, .town:focus-visible text { fill: var(--oxide); text-decoration: underline; }
+  .town:focus-visible { outline: none; }
+  .town:focus-visible .dot { stroke: var(--oxide); stroke-width: 4; }
+  .compass path { fill: var(--gold-ink); }
+  .compass text { font-size: 12px; font-weight: 700; fill: var(--ink-soft); }
+
+  .map.t-iron .town text { fill: var(--ivory); stroke: var(--iron); }
+  .map.t-iron .town.small text { fill: var(--steel-light); }
+  .map.t-iron .town .dot { fill: var(--ivory); stroke: var(--iron); }
+  .map.t-iron .town.on .dot { fill: var(--gold); }
+  .map.t-iron .road { stroke: var(--steel); }
+  .map.t-iron .road-label { fill: var(--steel-light); }
+  .map.t-iron .ring { stroke: var(--gold); }
+  .map.t-iron .halo { stroke: var(--gold); }
+  .map.t-iron .feature { fill: #93a9b8; }
+  .map.t-iron .compass path { fill: var(--gold); }
+  .map.t-iron .compass text { fill: var(--steel-light); }
+  .map.t-iron .town:hover text { fill: var(--gold-light); }
+</style>

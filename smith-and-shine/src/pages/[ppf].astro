@@ -1,0 +1,91 @@
+---
+/**
+ * Paint protection film page. Behind a flag: set features.ppf.enabled = false
+ * in src/config/site.ts and this page, its links and its form option all go.
+ */
+import Service from '../layouts/Service.astro';
+import Photo from '../components/Photo.astro';
+import { features, serviceById, whatsappHref } from '../config/site.ts';
+import type { Faq } from '../lib/schema.ts';
+
+export function getStaticPaths() {
+  return features.ppf.enabled ? [{ params: { ppf: 'paint-protection-film-telford' } }] : [];
+}
+
+const pc = serviceById('paint-correction')!.from!;
+const waText = 'Hi Chris, could I get a PPF quote? My car is a … and I’d like these areas covered:';
+
+const faqs: Faq[] = [
+  { q: 'What is paint protection film (PPF)?', a: 'A clear, tough film fitted over the paint. It takes stone chips, scuffs and light scrapes so the paint underneath doesn’t.' },
+  { q: 'How much is PPF in Telford?', a: 'PPF is priced on quote because it depends on the car and how much of it you want covered. Send us a photo and tell us which areas you’re thinking of.' },
+  { q: 'Is PPF better than ceramic coating?', a: 'They do different jobs. PPF stops physical damage like stone chips. Ceramic coating adds gloss and makes washing easier. Some people have both: film on the front, coating everywhere.' },
+  { q: 'Should the paint be corrected before PPF goes on?', a: `Ideally, yes. Film covers what’s underneath, so any swirls are best polished out first. Paint correction is from £${pc}.` },
+];
+---
+<Service
+  title="Paint Protection Film (PPF) Telford | Smith & Shine"
+  description="Paint protection film (PPF) in Telford and Shropshire. Clear film that takes the stone chips so your paint doesn’t. Price on quote: send us a photo."
+  h1="Paint Protection Film (PPF) in Telford"
+  eyebrow="Detailing & Protection · price on quote"
+  crumbName="Paint protection film"
+  photo="ford-focus-rs-smith-and-shine-plate"
+  alt="Front of a grey Ford Focus RS, the bonnet and bumper where paint protection film takes stone chips"
+  photoPosition="50% 60%"
+  price="Price on quote"
+  priceNote="Send a photo and the areas you want covered"
+  waText={waText}
+  serviceName="Paint protection film (PPF)"
+  serviceType="Paint protection film"
+  faqs={faqs}
+  kind="premium"
+  heroLayout="left"
+  related={[
+    { url: '/ceramic-coating-telford/', label: 'Ceramic coating', note: 'gloss and easy washing' },
+    { url: '/paint-correction-telford/', label: 'Paint correction', note: `from £${pc}` },
+    { url: '/prices/', label: 'All prices' },
+    { url: '/guides/paint-correction-vs-ceramic-coating/', label: 'Guide: paint correction vs ceramic coating' },
+    { url: '/book/?service=ppf', label: 'Ask for a PPF quote' },
+  ]}
+>
+  <Fragment slot="intro">
+    <p><strong>PPF: clear film over the paint that takes stone chips so your paint doesn’t.</strong></p>
+    <p>Fitted at your home in Telford or nearby. Price on quote: send us a photo.</p>
+  </Fragment>
+
+  <section class="svc ivory" aria-labelledby="ppf-why">
+    <div class="wrap split">
+      <div class="prose">
+        <h2 id="ppf-why">Why people fit PPF</h2>
+        <p>The M54, the A5 and every gritted lane in Shropshire throw stones at the front of your car. Each one is a tiny chip in the paint, and over a few years the bonnet and bumper start to look peppered.</p>
+        <p>PPF is a clear, flexible film that sits over the paint and soaks up those hits. You can’t really see it, but you’ll see the difference at trade-in time.</p>
+        <p><strong>Good candidates:</strong> new cars, performance cars, lease cars you want to hand back without charges, and anything with a long motorway commute.</p>
+        <p class="muted">Film brand, warranty and the coverage options are confirmed with your quote.</p>
+      </div>
+      <div class="glance plate">
+        <span class="rivets" aria-hidden="true"></span>
+        <h3>Get a PPF quote</h3>
+        <p>Send us:</p>
+        <ul class="ticks" role="list">
+          <li>The make and model</li>
+          <li>A photo of the front of the car</li>
+          <li>Which areas you’d like covered</li>
+        </ul>
+        <a class="btn btn-primary" href={whatsappHref(waText)} data-track="whatsapp_click">WhatsApp for a quote</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="svc ivory-2" aria-labelledby="ppf-pair">
+    <div class="wrap split flip">
+      <div class="prose">
+        <h2 id="ppf-pair">PPF, ceramic, or both?</h2>
+        <p>Think of PPF as armour and <a href="/ceramic-coating-telford/">ceramic coating</a> as polish that stays put. Film stops chips. Ceramic makes everything glossy and easy to clean. A popular combination is film on the high-impact areas and ceramic across the rest.</p>
+        <p>Whatever you choose, the paint should be at its best before it’s covered. That’s where <a href="/paint-correction-telford/">paint correction</a> comes in. See all <a href="/prices/">prices</a>, or <a href="/book/?service=ppf">book a quote visit</a>.</p>
+      </div>
+      <figure>
+        <div class="photo"><Photo name="jaguar-fpace-grey-side-wheel-detail" alt="Grey Jaguar F-Pace side panels reflecting clouds, the kind of finish worth protecting with PPF" sizes="(min-width: 900px) 34vw, 92vw" /></div>
+        <figcaption class="caption">Paint like this is worth protecting.</figcaption>
+      </figure>
+    </div>
+  </section>
+</Service>

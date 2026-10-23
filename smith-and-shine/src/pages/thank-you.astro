@@ -1,0 +1,76 @@
+---
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+import BridgeArch from '../components/BridgeArch.astro';
+import { whatsappHref, social, business, phone, telHref } from '../config/site.ts';
+const waText = 'Hi Chris, I’ve just sent a booking request on the website.';
+---
+<Base
+  title="Thanks, We’ve Got Your Booking | Smith & Shine"
+  description="Thanks for your booking request. Here’s what happens next."
+  waText={waText}
+  noindex
+>
+  <section class="iron ty">
+    <div class="wrap-mid">
+      <p class="label label-gold">Booking request sent</p>
+      <h1>Thank you<span id="ty-name"></span>. Kettle on?</h1>
+      <p class="lead">Your request is with Chris. {business.replyPromise}</p>
+      <div class="arch" aria-hidden="true"><BridgeArch /></div>
+    </div>
+  </section>
+  <section class="ivory section">
+    <div class="wrap-mid ty-grid">
+      <div>
+        <h2>What happens next</h2>
+        <ol class="next" role="list">
+          <li><b>Chris reads your request</b> and looks at any photos you sent.</li>
+          <li><b>He gets in touch</b> by WhatsApp, text or a call to agree a day and confirm the price.</li>
+          <li><b>We turn up with everything</b> on the day. You put the kettle on.</li>
+        </ol>
+        <div class="sent" id="ty-sent" hidden>
+          <h3 class="label label-gold">What you sent</h3>
+          <pre id="ty-summary"></pre>
+        </div>
+      </div>
+      <div class="side">
+        <a class="btn btn-primary" id="ty-wa" href={whatsappHref(waText)} data-track="whatsapp_click"><Icon name="whatsapp" /> Message Chris on WhatsApp</a>
+        <a class="btn btn-outline-ink" href={telHref} data-track="call_click"><Icon name="phone" /> Call {phone}</a>
+        <p class="muted">Been with us before? We’d love a review.</p>
+        <a class="text-link" href={social.googleWriteReview} target="_blank" rel="noopener">Leave us a Google review <Icon name="arrow" class="arr" /></a>
+      </div>
+    </div>
+  </section>
+</Base>
+<script>
+  import { whatsappHref } from '../config/site.ts';
+  try {
+    const raw = sessionStorage.getItem('ss_last_booking');
+    if (raw) {
+      const b = JSON.parse(raw) as { name?: string; summary?: string };
+      if (b.name) document.getElementById('ty-name')!.textContent = `, ${b.name.split(' ')[0]}`;
+      if (b.summary) {
+        document.getElementById('ty-summary')!.textContent = b.summary;
+        document.getElementById('ty-sent')!.hidden = false;
+        (document.getElementById('ty-wa') as HTMLAnchorElement).href = whatsappHref(b.summary);
+      }
+    }
+  } catch { /* storage blocked */ }
+</script>
+<style>
+  .ty { padding: var(--s-5) 0 0; overflow: hidden; }
+  h1 { font-size: var(--step-5); margin: 0.5rem 0 1rem; }
+  .lead { font-size: var(--step-1); color: #e7e1d4; }
+  .arch { margin-top: 2rem; opacity: 0.8; }
+  .ty-grid { display: grid; gap: 2.5rem; }
+  @media (min-width: 860px) { .ty-grid { grid-template-columns: 1.3fr 0.7fr; gap: 4rem; } }
+  h2 { font-size: var(--step-3); margin-bottom: 1rem; }
+  .next { counter-reset: n; }
+  .next li { counter-increment: n; padding: 1rem 0 1rem 3rem; border-bottom: 1px solid #d9cfbb; position: relative; }
+  .next li::before { content: counter(n); position: absolute; left: 0; top: 0.9rem; font-family: var(--font-display); font-style: italic; font-size: 1.6rem; color: var(--gold-ink); }
+  .sent { margin-top: 2rem; }
+  pre { white-space: pre-wrap; font-family: var(--font-body); background: var(--paper); border: 1px solid #e3d8c3; padding: 1rem 1.25rem; margin-top: 0.5rem; font-size: 0.9375rem; }
+  .side { display: grid; gap: 0.75rem; align-content: start; }
+  .side .muted { margin-top: 1rem; }
+  .text-link :global(.arr) { width: 1em; height: 1em; }
+</style>
