@@ -9,6 +9,7 @@ export interface ServicePage {
   h1: string; // use *word* for the one italic phrase
   lede: string;
   photo?: { key: string; caption: string; alt: string };
+  gallery?: { key: string; caption: string; alt: string }[];
   pairKeys?: string[];
   includes: string[];
   blocks: Block[];
@@ -27,6 +28,7 @@ export const servicePages: Record<string, ServicePage> = {
     lede: 'Lounges, bedrooms, hallways, stairs and landings. We take out the dirt that hoovering leaves behind, treat the stains, and leave your carpets fresh and soft underfoot.',
     photo: { key: 'hallway-carpet-drying-air-movers', caption: 'Hallway · after extraction', alt: 'A freshly cleaned hallway carpet drying with air movers in place' },
     pairKeys: ['hallway'],
+    gallery: [{ key: 'carpet-lounge-grey-extraction-wand', caption: 'Lounge · hot water extraction', alt: 'A grey lounge carpet mid-clean, with fan-shaped stripes left by the extraction wand' }],
     includes: [
       'A walk round with you first, to agree the plan and the price',
       'Furniture moved and put back, edges and skirting protected',
@@ -118,6 +120,8 @@ export const servicePages: Record<string, ServicePage> = {
     description: 'Sofa and upholstery cleaning in Cardiff and Newport. Fabric sofas, corner sofas, armchairs. Patch-tested first. WhatsApp a photo for a fixed price.',
     h1: 'Sofa & upholstery cleaning, *patch-tested first*',
     lede: 'Fabric sofas, corner sofas, armchairs and footstools. The seat you sit in every evening collects more than you think. We lift it out gently and leave the fabric fresh, soft and clean.',
+    photo: { key: 'sofa-grey-corner-footstool-after', caption: 'Corner sofa & footstool · after', alt: 'A grey fabric corner sofa and round footstool after cleaning' },
+    gallery: [{ key: 'sofa-light-grey-corner-after', caption: 'Corner sofa · after', alt: 'A light grey corner sofa with chaise after cleaning' }],
     includes: [
       'Check of the fabric label and a patch test on a hidden spot',
       'Hoover of seats, backs, arms and the gaps between',
@@ -207,6 +211,7 @@ export const servicePages: Record<string, ServicePage> = {
     description: 'Rug cleaning in Cardiff and Newport. Restore colour, remove dirt and revive your rugs, including wool and shaggy rugs. Fixed price from a photo.',
     h1: 'Rug cleaning to *revive* colour and feel',
     lede: 'Restore colour, remove dirt and revive your rugs. From a modern shaggy rug to a wool rug you inherited, we clean them in your home and tell you honestly what to expect.',
+    photo: { key: 'bedroom-rug-flat-after', caption: 'Bedroom rug · after', alt: 'A cream textured rug in a bedroom after cleaning' },
     includes: [
       'A look at the fibre, backing and fringe before we start',
       'Patch test for colour fastness',

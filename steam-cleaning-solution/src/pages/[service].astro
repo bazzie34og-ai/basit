@@ -4,7 +4,7 @@ import PageHead from '../components/PageHead.astro';
 import Faq from '../components/Faq.astro';
 import FinalCta from '../components/sections/FinalCta.astro';
 import BeforeAfterSection from '../components/sections/BeforeAfterSection.astro';
-import Icon from '../components/Icon.astro';
+import Plate from '../components/Plate.astro';
 import { services, towns, priceLabel, PHOTO_QUOTE_LINE, enabledServices, type ServiceKey } from '../config/site';
 import { servicePages, type ServicePage } from '../content/servicePages';
 import { faqSchema, serviceSchema } from '../lib/schema';
@@ -66,6 +66,7 @@ const priceLine = s.fromPrice != null ? priceLabel(s) : PHOTO_QUOTE_LINE;
           <li><a href="/quote/">Get a quote online</a></li>
         </ul>
       </div>
+      {page.gallery?.map((g) => <Plate photoKey={g.key} alt={g.alt} caption={g.caption} class="svc__plate" />)}
     </aside>
   </div>
 
@@ -101,6 +102,7 @@ const priceLine = s.fromPrice != null ? priceLabel(s) : PHOTO_QUOTE_LINE;
   }
   .svc { display: grid; gap: 3rem; padding-block: var(--s-9); }
   .svc__body > h2:first-child { margin-top: 0; }
+  .svc__aside :global(.svc__plate) { margin-top: 2.5rem; }
   .svc__card { background: var(--sage-50); padding: 1.5rem 1.6rem; }
   .svc__card ul { list-style: none; padding: 0; margin: 0.5rem 0 1.5rem; }
   .svc__card ul:last-child { margin-bottom: 0; }
@@ -108,7 +110,7 @@ const priceLine = s.fromPrice != null ? priceLabel(s) : PHOTO_QUOTE_LINE;
   .svc__card a:hover { text-decoration: underline; }
   @media (min-width: 960px) {
     .svc { grid-template-columns: 7.5fr 4fr; gap: 5rem; }
-    .svc__aside { position: sticky; top: 2rem; align-self: start; }
+    .svc__aside { align-self: start; }
   }
   .svc-areas { border-top: 1px solid var(--sage-200); }
   .svc-areas__h { font-size: clamp(1.7rem, 3vw, 2.3rem); }

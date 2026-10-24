@@ -2,10 +2,13 @@
 
 Drop the client's files here, then run `npm run assets` (it also runs on every build).
 
-The asset pack was not in the repository when the site was built, so pages show honest
-"Photo to come" plates (preview only) and a type-only wordmark until these files arrive.
+All files below are in place. If a photo is missing, the preview shows a "Photo to come"
+plate and a live build hides it; if a logo is missing, a type-only wordmark is used.
 
 ## photos/ (720px-wide originals, never upscaled)
+- `sofa-grey-corner-footstool-after.jpg`: sofa page plate
+- `sofa-light-grey-corner-after.jpg`: sofa page, second plate
+- `bedroom-rug-flat-after.jpg`: rug page plate
 - `carpet-lounge-grey-extraction-wand.jpg`: home hero plate
 - `hallway-carpet-drying-air-movers.jpg`: carpet page plate
 - `hallway-carpet-before-after.jpg`: composite, left before / right after

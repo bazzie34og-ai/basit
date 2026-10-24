@@ -12,7 +12,7 @@ const a = photo(pair.after)!;
 const w = (img: ImageMetadata) => [...new Set([Math.min(560, img.width), Math.min(840, img.width)])];
 const sizes = '(max-width: 900px) calc(100vw - 52px), 540px';
 ---
-<figure class="ba" data-ba style={`--ratio:${a.width}/${a.height}`}>
+<figure class="ba" data-ba style={`--ratio:${a.width}/${a.height};--w:${Math.min(a.width, b.width)}px`}>
   <div class="ba__mount">
     <div class="ba__stage">
       <div class="ba__half ba__half--after">
@@ -34,7 +34,9 @@ const sizes = '(max-width: 900px) calc(100vw - 52px), 540px';
 </figure>
 
 <style>
-  .ba { margin: 0; max-width: 560px; }
+  /* Never wider than the source: halves are ~350px, so no upscaling */
+  .ba { margin: 0; max-width: calc(var(--w) * 2 + 26px); }
+  .ba.is-live { max-width: calc(var(--w) + 20px); }
   .ba__mount { background: var(--paper); padding: 10px; position: relative; box-shadow: 0 18px 40px -26px rgba(19, 32, 26, 0.3); }
   .ba__mount::after { content: ''; position: absolute; inset: 10px; border: 1px solid var(--oak); pointer-events: none; z-index: 2; }
   /* No-JS: side by side */

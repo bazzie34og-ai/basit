@@ -30,7 +30,7 @@ const widths = img ? [...new Set([Math.min(base, img.width), Math.min(Math.round
           widths={widths}
           sizes="(max-width: 600px) calc(100vw - 52px), 540px"
           loading={eager ? 'eager' : 'lazy'}
-          fetchpriority={eager ? 'high' : 'auto'}
+          fetchpriority="auto"
           decoding="async"
           class="plate__img"
         />

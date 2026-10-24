@@ -5,9 +5,9 @@ import { waLink, waText } from '../../config/site';
 interface Props { keys?: string[]; heading?: string; intro?: string; hideEmpty?: boolean }
 const { hideEmpty = false, keys = ['hallway', 'stairs1'], heading = 'Before & after', intro = 'Real jobs, photographed on the day. Drag the line, or use your arrow keys.' } = Astro.props;
 const notes: Record<string, string> = {
-  hallway: 'Pre-treated, then hot water extraction.',
-  stairs1: 'Cleaned step by step with a hand tool.',
-  stairs2: 'Stairs and landing in one visit.',
+  hallway: 'Stains and traffic marks lifted.',
+  stairs1: 'Wand stripes on every step after the clean.',
+  stairs2: 'Grey stair carpet, before and after.',
   patio: 'Patio path, before and after.',
   skylight: 'Skylight glass, before and after.',
 };
@@ -34,8 +34,11 @@ const live = keys.map((k) => ({ k, p: pairs[k] as Pair })).filter(({ p }) => p &
   .ba-sec__head h2 { margin-top: 0.6rem; }
   .ba-sec__head p:not(.label) { margin-top: 1rem; max-width: 40ch; }
   .ba-sec__pair { display: grid; gap: 2.5rem; }
-  @media (min-width: 900px) {
-    .ba-sec__pair { grid-template-columns: 1fr 1fr; align-items: start; }
-    .ba-sec__pair > :global(:nth-child(2)) { margin-top: 4rem; }
+  @media (min-width: 820px) {
+    .ba-sec__pair { grid-template-columns: repeat(2, auto); justify-content: start; gap: 3rem; align-items: start; }
+    .ba-sec__pair > :global(:nth-child(2)) { margin-top: 5rem; }
+  }
+  @media (min-width: 1150px) {
+    .ba-sec__grid { grid-template-columns: 3.6fr 8.4fr; gap: 3rem; }
   }
 </style>

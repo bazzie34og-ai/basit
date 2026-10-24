@@ -93,7 +93,7 @@ The cost guide shows these as credited market prices, clearly marked "not our pr
 
 ## Photos and logo
 
-See `assets/README.md`. The asset pack was not in the repository, so until it arrives the preview shows "Photo to come" plates and a type-only wordmark (on a live build, missing photos are simply hidden). **Ask the owner for the original logo file**, because the supplied cut-outs come from a flyer and are soft.
+Client photos and logos are in `assets/` (see `assets/README.md`). The build splits the before/after composites by detecting the white gutter, trims the logo margins, and makes AVIF/WebP without upscaling past the 720px sources. **Ask the owner for the original logo file**, because the supplied cut-outs come from a flyer and are soft.
 
 Font fallbacks in `src/styles/global.css` are metric-matched to Instrument Serif and Hanken Grotesk (measured from the font files with opentype.js), which keeps CLS near zero while fonts load.
 

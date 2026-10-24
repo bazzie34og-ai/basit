@@ -136,7 +136,8 @@ async function logos() {
   await mkdir(OUT_LOGOS, { recursive: true });
   for (const f of ['logo-script-forest-transparent.png', 'logo-script-cream-transparent.png']) {
     const src = path.join(SRC_LOGOS, f);
-    if (existsSync(src)) await copyFile(src, path.join(OUT_LOGOS, f));
+    // Trim transparent margins so the rendered width is all logo
+    if (existsSync(src)) await sharp(src).trim().png().toFile(path.join(OUT_LOGOS, f));
     else console.warn(`[assets] logo missing: assets/logos/${f} (type-only wordmark used instead)`);
   }
 }

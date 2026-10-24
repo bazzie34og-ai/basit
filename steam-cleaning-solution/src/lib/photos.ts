@@ -18,6 +18,9 @@ export function photo(key: string): ImageMetadata | undefined {
 export const catalogue = {
   lounge: { key: 'carpet-lounge-grey-extraction-wand', caption: 'Lounge · hot water extraction', alt: 'A grey lounge carpet mid-clean, with fan-shaped stripes left by the extraction wand' },
   hallwayDrying: { key: 'hallway-carpet-drying-air-movers', caption: 'Hallway · after extraction', alt: 'A freshly cleaned hallway carpet drying with air movers in place' },
+  sofaGrey: { key: 'sofa-grey-corner-footstool-after', caption: 'Corner sofa & footstool · after', alt: 'A grey fabric corner sofa and round footstool after cleaning' },
+  sofaLight: { key: 'sofa-light-grey-corner-after', caption: 'Corner sofa · after', alt: 'A light grey corner sofa with chaise after cleaning' },
+  rug: { key: 'bedroom-rug-flat-after', caption: 'Bedroom rug · after', alt: 'A cream textured rug in a bedroom after cleaning' },
 } as const;
 
 export interface Pair { before: string; after: string; caption: string; alt: string; }
