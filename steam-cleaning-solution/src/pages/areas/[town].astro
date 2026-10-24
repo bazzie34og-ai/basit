@@ -1,0 +1,10 @@
+---
+import AreaPageBody from '../../components/AreaPageBody.astro';
+import { towns } from '../../config/site';
+import { areaPages } from '../../content/areas';
+export function getStaticPaths() {
+  return towns.filter((t) => t.path.startsWith('/areas/') && areaPages[t.slug]).map((t) => ({ params: { town: t.slug }, props: { town: t, page: areaPages[t.slug] } }));
+}
+const { town, page } = Astro.props;
+---
+<AreaPageBody town={town} page={page} />

@@ -1,0 +1,29 @@
+---
+import Icon from './Icon.astro';
+import { tel, waLink, waText } from '../config/site';
+interface Props { waSubject: string }
+const { waSubject } = Astro.props;
+---
+<nav class="mbar" aria-label="Quick contact">
+  <a class="mbar__btn mbar__btn--wa" href={waLink(waText(waSubject))} data-track="whatsapp_click" data-where="mobile_bar" rel="noopener"><Icon name="whatsapp" /><span>WhatsApp a photo</span></a>
+  <a class="mbar__btn" href={tel} data-track="call_click" data-where="mobile_bar"><Icon name="phone" /><span>Call</span></a>
+  <a class="mbar__btn" href="/quote/" data-where="mobile_bar"><Icon name="camera" /><span>Quote</span></a>
+</nav>
+<style>
+  .mbar {
+    position: fixed; left: 0; right: 0; bottom: 0; z-index: 40;
+    display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px;
+    padding: 8px 8px calc(8px + env(safe-area-inset-bottom, 0px));
+    background: var(--linen); border-top: 1px solid var(--sage-200);
+    box-shadow: 0 -10px 30px -22px rgba(19, 32, 26, 0.45);
+  }
+  .mbar__btn {
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px;
+    min-height: 48px; border-radius: var(--radius-btn); border: 1.5px solid var(--forest);
+    color: var(--forest); text-decoration: none; font-weight: 600; font-size: 0.78rem; line-height: 1.1; text-align: center;
+  }
+  .mbar__btn :global(svg) { width: 19px; height: 19px; }
+  .mbar__btn--wa { background: var(--forest); color: var(--linen); }
+  @media (min-width: 768px) { .mbar { display: none; } }
+  @media print { .mbar { display: none; } }
+</style>

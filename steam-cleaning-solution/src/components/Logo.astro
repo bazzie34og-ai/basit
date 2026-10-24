@@ -1,0 +1,43 @@
+---
+/**
+ * Uses the supplied script-logo cut-outs when they are in /assets/logos.
+ * Until then, a type-only wordmark (no script font: the script lives only in their logo image).
+ */
+import { Image } from 'astro:assets';
+import { business } from '../config/site';
+interface Props { tone?: 'forest' | 'cream'; size?: 'header' | 'footer' }
+const { tone = 'forest', size = 'header' } = Astro.props;
+const files = import.meta.glob<{ default: ImageMetadata }>('/src/assets/logos/*.png', { eager: true });
+const file = files[`/src/assets/logos/logo-script-${tone}-transparent.png`]?.default;
+---
+{file ? (
+  <Image src={file} alt={business.name} widths={[120, 150, 240, 300].filter((w) => w <= file.width)} sizes="(max-width: 767px) 120px, 150px" class:list={['logo-img', `logo-img--${size}`]} loading={size === 'header' ? 'eager' : 'lazy'} />
+) : (
+  <span class:list={['wordmark', `wordmark--${tone}`, `wordmark--${size}`]}>
+    <svg class="wordmark__roof" viewBox="0 0 32 22" aria-hidden="true" focusable="false"><path d="M3 17.5 16 6l13 11.5M22.8 11V5.6h2.8v7.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M16 21c-.3-.2-3.5-2.3-3.5-4.4 0-1.1.8-1.9 1.9-1.9.6 0 1.2.3 1.6.9.4-.6 1-.9 1.6-.9 1.1 0 1.9.8 1.9 1.9 0 2.1-3.2 4.2-3.5 4.4z" fill="var(--brass)"/></svg>
+    <span class="wordmark__text">
+      <span class="wordmark__name">Steam Cleaning</span>
+      <span class="wordmark__sub">Solution LTD</span>
+    </span>
+  </span>
+)}
+
+<style>
+  .logo-img { height: auto; }
+  .logo-img--header { width: 120px; }
+  .logo-img--footer { width: 170px; }
+  @media (min-width: 768px) { .logo-img--header { width: 150px; } }
+
+  .wordmark { display: inline-flex; align-items: center; gap: 0.55rem; line-height: 1; }
+  .wordmark--forest { color: var(--forest); }
+  .wordmark--cream { color: var(--linen); }
+  .wordmark__roof { width: 34px; height: auto; flex: none; }
+  .wordmark__text { display: flex; flex-direction: column; gap: 0.18rem; }
+  .wordmark__name { font-family: var(--font-display); font-size: 1.32rem; letter-spacing: -0.005em; white-space: nowrap; }
+  .wordmark__sub { font-size: 0.6rem; font-weight: 600; letter-spacing: 0.22em; text-transform: uppercase; }
+  .wordmark--footer .wordmark__name { font-size: 1.6rem; }
+  .wordmark--footer .wordmark__roof { width: 40px; }
+  @media (min-width: 768px) {
+    .wordmark--header .wordmark__name { font-size: 1.45rem; }
+  }
+</style>

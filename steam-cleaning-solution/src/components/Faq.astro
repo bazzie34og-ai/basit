@@ -1,0 +1,43 @@
+---
+/** Visible FAQ. The FAQPage schema is generated from the same array, so they always match. */
+interface Props { items: { q: string; a: string }[]; heading?: string; label?: string; id?: string }
+const { items, heading = 'Questions people ask us', label = 'FAQ', id = 'faq' } = Astro.props;
+---
+<section class="faq section" aria-labelledby={`${id}-h`}>
+  <div class="wrap faq__grid">
+    <div class="faq__head">
+      <p class="label label--forest">{label}</p>
+      <h2 id={`${id}-h`}>{heading}</h2>
+      <slot />
+    </div>
+    <div class="faq__list">
+      {items.map((f) => (
+        <details class="faq__item">
+          <summary><span>{f.q}</span><span class="faq__plus" aria-hidden="true"></span></summary>
+          <p>{f.a}</p>
+        </details>
+      ))}
+    </div>
+  </div>
+</section>
+<style>
+  .faq__grid { display: grid; gap: 2rem; }
+  .faq__head h2 { margin-top: 0.6rem; max-width: 12ch; }
+  .faq__head :global(p:not(.label)) { margin-top: 1rem; color: var(--muted); max-width: 36ch; }
+  .faq__list { border-top: 1px solid var(--sage-200); }
+  .faq__item { border-bottom: 1px solid var(--sage-200); }
+  .faq__item summary {
+    list-style: none; cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: 1.5rem;
+    min-height: 64px; padding-block: 1rem; font-weight: 600; font-size: 1.06rem;
+  }
+  .faq__item summary::-webkit-details-marker { display: none; }
+  .faq__plus { position: relative; width: 14px; height: 14px; flex: none; }
+  .faq__plus::before, .faq__plus::after { content: ''; position: absolute; left: 0; right: 0; top: 50%; height: 1.5px; background: var(--forest); transition: transform var(--t-fast) var(--ease); }
+  .faq__plus::after { transform: rotate(90deg); }
+  .faq__item[open] .faq__plus::after { transform: rotate(0deg); }
+  .faq__item p { padding-bottom: 1.25rem; max-width: 60ch; color: var(--ink); }
+  @media (min-width: 900px) {
+    .faq__grid { grid-template-columns: 4fr 7fr; gap: 4rem; }
+    .faq__head { position: sticky; top: 2rem; align-self: start; }
+  }
+</style>

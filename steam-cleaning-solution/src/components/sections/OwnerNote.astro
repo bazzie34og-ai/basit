@@ -1,0 +1,22 @@
+---
+import Icon from '../Icon.astro';
+import { owner } from '../../config/site';
+---
+{owner.name && (
+  <section class="owner section--tight" aria-labelledby="owner-h">
+    <div class="wrap">
+      <div class="owner__card">
+        <Icon name="heart" class="owner__heart" />
+        <h2 id="owner-h" class="visually-hidden">A note from {owner.name}</h2>
+        {owner.note.map((p) => <p>{p}</p>)}
+        <p class="owner__sign">{owner.name}, <span class="label">Owner</span></p>
+      </div>
+    </div>
+  </section>
+)}
+<style>
+  .owner__card { max-width: 680px; margin-inline: auto 8%; background: var(--paper); padding: clamp(2rem, 5vw, 3.5rem); position: relative; }
+  .owner__card :global(.owner__heart) { width: 26px; height: 26px; margin-bottom: 1rem; }
+  .owner__card p { font-family: var(--font-display); font-size: clamp(1.3rem, 2.2vw, 1.6rem); line-height: 1.4; }
+  .owner__sign { margin-top: 1.5rem !important; font-style: italic; }
+</style>

@@ -1,0 +1,38 @@
+---
+import { reviews, business, waLink } from '../../config/site';
+const fmt = (d: string) => new Date(d).toLocaleDateString('en-GB', { month: 'long', year: 'numeric' });
+---
+<section class="reviews section--tight" aria-labelledby="reviews-h">
+  <div class="wrap">
+    {reviews.length > 0 ? (
+      <>
+        <p class="label label--forest">In their words</p>
+        <h2 id="reviews-h">What customers say</h2>
+        <ul class="reviews__list">
+          {reviews.map((r) => (
+            <li>
+              <blockquote><p>{r.text}</p></blockquote>
+              <p class="reviews__by"><strong>{r.name}</strong> <span class="muted">· {r.source} · <time datetime={r.date}>{fmt(r.date)}</time></span></p>
+            </li>
+          ))}
+        </ul>
+      </>
+    ) : (
+      <div class="reviews__empty">
+        <h2 id="reviews-h" class="reviews__h">Ask us for references</h2>
+        <p>We’re new here on Google, so we won’t pretend to have hundreds of reviews. Our flyer says “References available on request”, and we mean it. Ask, and we’ll put you in touch with recent customers.</p>
+        {business.referencesOnRequest && <a class="text-link" href={waLink('Hi, could you send me some references from recent customers?')} data-track="whatsapp_click" data-where="reviews" rel="noopener">Ask for references on WhatsApp</a>}
+      </div>
+    )}
+  </div>
+</section>
+<style>
+  .reviews__empty { max-width: 640px; margin-left: auto; padding: 2rem 0 2rem 2rem; border-left: 1px solid var(--oak); }
+  .reviews__h { font-size: clamp(1.8rem, 3.4vw, 2.4rem); }
+  .reviews__empty p { margin-top: 0.8rem; color: var(--ink); }
+  .reviews__empty .text-link { margin-top: 0.75rem; }
+  .reviews__list { list-style: none; padding: 0; margin-top: 2rem; display: grid; gap: 2rem; }
+  .reviews__list blockquote p { font-family: var(--font-display); font-size: 1.5rem; line-height: 1.3; }
+  .reviews__by { margin-top: 0.75rem; font-size: 0.95rem; }
+  @media (min-width: 900px) { .reviews__list { grid-template-columns: 1.3fr 1fr; } .reviews__list li:nth-child(3n+2) { margin-top: 3rem; } }
+</style>

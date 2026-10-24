@@ -1,0 +1,39 @@
+---
+import { tenancyExtras, waLink, waText } from '../../config/site';
+const points = [
+  'End of tenancy carpets, kitchens and bathrooms',
+  tenancyExtras.photoReport ? 'Before and after photo report for your records' : null,
+  tenancyExtras.itemisedInvoice ? 'Itemised invoice for the deposit or inventory clerk' : null,
+  'Quick turnarounds between tenants',
+].filter(Boolean) as string[];
+---
+<section class="landlords" aria-labelledby="landlords-h">
+  <div class="wrap landlords__grid">
+    <div>
+      <p class="label">Landlords &amp; letting agents</p>
+      <h2 id="landlords-h">Between tenants, <em>without the chasing.</em></h2>
+      <p class="landlords__intro">Send the address, the dates and a few photos. We give you a fixed price, get in with the keys, and send you the evidence when it’s done.</p>
+      <div class="landlords__ctas">
+        <a class="btn btn--on-dark" href={waLink(waText('end of tenancy cleaning (landlord / letting agent)'))} data-track="whatsapp_click" data-where="landlord_band" rel="noopener">WhatsApp the details</a>
+        <a class="text-link landlords__link" href="/end-of-tenancy-cleaning-cardiff/">End of tenancy cleaning</a>
+      </div>
+    </div>
+    <ul class="landlords__list">
+      {points.map((p) => <li>{p}</li>)}
+    </ul>
+  </div>
+</section>
+<style>
+  .landlords { background: var(--forest-900); color: var(--on-dark); padding-block: clamp(3.5rem, 8vw, 6.5rem); }
+  .landlords h2 { color: var(--on-dark); margin-top: 0.6rem; max-width: 14ch; }
+  .landlords h2 em { color: var(--sage-200); }
+  .landlords .label { color: var(--on-dark-muted); }
+  .landlords__intro { margin-top: 1.25rem; max-width: 44ch; color: var(--on-dark-muted); }
+  .landlords__grid { display: grid; gap: 2.5rem; }
+  .landlords__ctas { display: flex; flex-wrap: wrap; gap: 1rem 1.5rem; align-items: center; margin-top: 2rem; }
+  .landlords__link { color: var(--linen); text-decoration-color: rgba(190, 201, 187, 0.5); }
+  .landlords__list { list-style: none; padding: 0; align-self: end; }
+  .landlords__list li { padding-block: 1.1rem; border-top: 1px solid rgba(185, 139, 94, 0.55); font-family: var(--font-display); font-size: clamp(1.3rem, 2vw, 1.6rem); line-height: 1.25; }
+  .landlords__list li:last-child { border-bottom: 1px solid rgba(185, 139, 94, 0.55); }
+  @media (min-width: 960px) { .landlords__grid { grid-template-columns: 6fr 5fr; gap: 5rem; } }
+</style>

@@ -1,0 +1,36 @@
+---
+/** Inner-page opening: asymmetric, H1 left, optional plate right. */
+import Ctas from './Ctas.astro';
+import Plate from './Plate.astro';
+import TrustLine from './TrustLine.astro';
+import { emph } from '../lib/text';
+interface Props { label: string; h1: string; lede: string; waSubject: string; photo?: { key: string; caption: string; alt: string }; priceLine?: string; priceNote?: string | null; ctas?: boolean }
+const { label, h1, lede, waSubject, photo, priceLine, priceNote, ctas = true } = Astro.props;
+---
+<section class:list={['phead', { 'phead--photo': photo }]}>
+  <div class="wrap phead__grid">
+    <div class="phead__text">
+      <p class="label label--forest">{label}</p>
+      <h1 set:html={emph(h1)} />
+      <p class="lede phead__lede">{lede}</p>
+      {priceLine && <p class="phead__price"><span class="label">Price</span> <span>{priceLine}{priceNote && <span class="muted">. {priceNote}</span>}</span></p>}
+      {ctas && <Ctas waSubject={waSubject} where="page_head" />}
+      {ctas && <TrustLine />}
+    </div>
+    {photo && <div class="phead__photo"><Plate photoKey={photo.key} alt={photo.alt} caption={photo.caption} eager /></div>}
+    <slot />
+  </div>
+</section>
+<style>
+  .phead { padding-block: clamp(1.5rem, 4vw, 3rem) clamp(3rem, 6vw, 5rem); }
+  .phead__grid { display: grid; gap: 2.5rem; align-items: center; }
+  .phead h1 { margin-top: 0.9rem; font-size: clamp(2.5rem, 6vw, 4.6rem); max-width: 16ch; }
+  .phead__lede { margin-top: 1.25rem; max-width: 46ch; font-size: clamp(1.1rem, 0.8vw + 0.95rem, 1.28rem); }
+  .phead__price { display: flex; gap: 0.75rem; align-items: baseline; margin: 1.5rem 0; padding: 0.75rem 0; border-block: 1px solid var(--sage-200); max-width: 46ch; font-weight: 500; }
+  .phead__text > :global(.ctas) { margin-top: 1.75rem; }
+  .phead__price + :global(.ctas) { margin-top: 0 !important; }
+  @media (min-width: 960px) {
+    .phead--photo .phead__grid { grid-template-columns: 7fr 5fr; gap: 4rem; }
+    .phead__photo { padding-top: 2rem; }
+  }
+</style>

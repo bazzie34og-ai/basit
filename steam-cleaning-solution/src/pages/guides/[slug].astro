@@ -1,0 +1,84 @@
+---
+import Base from '../../layouts/Base.astro';
+import Faq from '../../components/Faq.astro';
+import FinalCta from '../../components/sections/FinalCta.astro';
+import { guides, type GuideMeta } from '../../lib/guides';
+import { services, marketRanges, enabledServices, waLink, waText } from '../../config/site';
+import { articleSchema, faqSchema } from '../../lib/schema';
+
+type Md = { frontmatter: { faq: { q: string; a: string }[] }; compiledContent: () => string | Promise<string> };
+const files = import.meta.glob<Md>('../../content/guides/*.md', { eager: true });
+
+export function getStaticPaths() {
+  return guides.map((g) => ({ params: { slug: g.slug }, props: { meta: g } }));
+}
+const { meta } = Astro.props as { meta: GuideMeta };
+const md = files[`../../content/guides/${meta.slug}.md`];
+let html = await md.compiledContent();
+
+// Generated blocks, so the guide always matches the config.
+const table = `<table class="market"><caption>Typical Cardiff market prices (${marketRanges.source}). Not our prices.</caption><thead><tr><th scope="col">Job</th><th scope="col">Typical range</th></tr></thead><tbody>${marketRanges.rows.map((r) => `<tr><td>${r.item}</td><td>${r.range}</td></tr>`).join('')}</tbody></table>`;
+const priced = enabledServices().filter((s) => s.fromPrice != null);
+const ours = priced.length
+  ? `<div class="our-prices"><p class="label">Our starting prices</p><ul>${priced.map((s) => `<li><a href="${s.path}">${s.name}</a>: from £${s.fromPrice}${s.priceNote ? `. ${s.priceNote}` : ''}</li>`).join('')}</ul></div>`
+  : '';
+html = html.replace(/<div class="market-table" data-market-table><\/div>/, table).replace(/<div data-our-prices><\/div>/, ours);
+
+const words = html.replace(/<[^>]+>/g, ' ').split(/\s+/).filter(Boolean).length;
+const minutes = Math.max(3, Math.round(words / 220));
+const svc = services[meta.service];
+const faq = md.frontmatter.faq;
+const date = new Date(meta.published).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+---
+<Base
+  title={meta.title}
+  description={meta.description}
+  path={meta.path}
+  waSubject={svc.waSubject}
+  breadcrumbs={[{ name: 'Guides', href: '/guides/' }, { name: meta.short, href: meta.path }]}
+  schema={[articleSchema({ title: meta.h1, description: meta.description, path: meta.path, published: meta.published }), faqSchema(faq)]}
+>
+  <article class="guide">
+    <header class="wrap guide__head">
+      <p class="label label--forest">Guide · {minutes} minute read</p>
+      <h1>{meta.h1}</h1>
+      <p class="guide__meta muted">Published <time datetime={meta.published}>{date}</time></p>
+    </header>
+    <div class="wrap guide__grid">
+      <div class="guide__body prose" set:html={html} />
+      <aside class="guide__aside" aria-label="Related service">
+        <div class="guide__card">
+          <p class="label">The service</p>
+          <p class="guide__svc"><a href={svc.path}>{svc.name}</a></p>
+          <p class="muted">Fixed price from a photo. No hidden charges.</p>
+          <a class="btn btn--primary" href={waLink(waText(svc.waSubject))} data-track="whatsapp_click" data-where="guide_aside" rel="noopener">WhatsApp a photo</a>
+        </div>
+      </aside>
+    </div>
+  </article>
+  <Faq items={faq} heading="Quick answers" id="guide-faq" />
+  <FinalCta slot="pre-footer" waSubject={svc.waSubject} />
+</Base>
+
+<style>
+  .guide__head { padding-block: clamp(1.5rem, 4vw, 3rem) clamp(2rem, 4vw, 3rem); }
+  .guide__head h1 { margin-top: 0.8rem; font-size: clamp(2.3rem, 5.5vw, 4.2rem); max-width: 20ch; }
+  .guide__meta { margin-top: 1rem; font-size: 0.95rem; }
+  .guide__grid { display: grid; gap: 3rem; padding-bottom: var(--s-8); }
+  .guide__body { font-size: 1.08rem; }
+  .guide__body > :global(p:first-child) { font-size: 1.25rem; line-height: 1.5; }
+  .guide__body :global(h3) { font-family: var(--font-text); font-weight: 600; font-size: 1.12rem; letter-spacing: 0; }
+  .guide__body :global(.market) { width: 100%; border-collapse: collapse; margin-block: 1.5rem; background: var(--paper); }
+  .guide__body :global(.market caption) { text-align: left; font-size: 0.9rem; color: var(--muted); padding-bottom: 0.6rem; caption-side: top; }
+  .guide__body :global(.market th), .guide__body :global(.market td) { text-align: left; padding: 0.8rem 1rem; border-bottom: 1px solid var(--sage-200); }
+  .guide__body :global(.market th) { font-size: var(--fs-label); letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); font-weight: 600; }
+  .guide__body :global(.market td:last-child) { font-weight: 600; white-space: nowrap; }
+  .guide__body :global(.our-prices) { background: var(--sage-50); padding: 1.25rem 1.5rem; }
+  .guide__card { background: var(--paper); padding: 1.5rem; border-top: 2px solid var(--forest); display: grid; gap: 0.6rem; justify-items: start; }
+  .guide__svc { font-family: var(--font-display); font-size: 1.6rem; line-height: 1.15; }
+  .guide__svc a { color: var(--ink); }
+  @media (min-width: 960px) {
+    .guide__grid { grid-template-columns: 7.5fr 3.5fr; gap: 5rem; }
+    .guide__aside { position: sticky; top: 2rem; align-self: start; }
+  }
+</style>

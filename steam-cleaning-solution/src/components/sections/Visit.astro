@@ -1,0 +1,50 @@
+---
+import WandLines from '../WandLines.astro';
+import { visit } from '../../config/site';
+interface Props { divider?: boolean; headingLevel?: 'h2' | 'h3' }
+const { divider = true } = Astro.props;
+---
+{divider && <div class="visit-divider"><WandLines variant="divider" /></div>}
+<section class="visit section" id="the-visit" aria-labelledby="visit-h">
+  <div class="wrap visit__grid">
+    <div class="visit__head">
+      <p class="label label--forest">Your itinerary</p>
+      <h2 id="visit-h">The visit</h2>
+      <p>Nervous about letting a cleaner in? Most people are. So here is exactly what happens, from the day before to the moment we leave.</p>
+    </div>
+    <ol class="visit__card">
+      {visit.map((v) => (
+        <li class="visit__step">
+          <p class="label visit__when">{v.when}</p>
+          <div>
+            <h3>{v.title}</h3>
+            <p>{v.body}</p>
+          </div>
+        </li>
+      ))}
+    </ol>
+  </div>
+</section>
+<style>
+  .visit-divider { padding-top: clamp(2rem, 5vw, 3.5rem); }
+  .visit { padding-top: clamp(2.5rem, 5vw, 4rem); }
+  .visit__grid { display: grid; gap: 2.5rem; }
+  .visit__head h2 { margin-top: 0.5rem; font-size: clamp(2.6rem, 6vw, 4.4rem); }
+  .visit__head p:last-child { margin-top: 1rem; max-width: 34ch; color: var(--muted); }
+  .visit__card { list-style: none; margin: 0; background: var(--paper); padding: clamp(1.5rem, 4vw, 3rem) clamp(1.25rem, 4vw, 3rem); border-left: 3px solid var(--oak); box-shadow: 0 30px 60px -48px rgba(19, 32, 26, 0.5); }
+  .visit__step { display: grid; gap: 0.35rem; padding-block: 1.35rem; border-bottom: 1px dashed var(--sage-200); }
+  .visit__step:first-child { padding-top: 0; }
+  .visit__step:last-child { border-bottom: 0; padding-bottom: 0; }
+  .visit__when { color: var(--forest); }
+  .visit__step h3 { font-size: 1.55rem; }
+  .visit__step p:not(.label) { margin-top: 0.35rem; color: var(--ink); max-width: 52ch; }
+  @media (min-width: 700px) {
+    .visit__step { grid-template-columns: 9.5rem 1fr; gap: 1.5rem; }
+    .visit__when { padding-top: 0.45rem; }
+  }
+  @media (min-width: 960px) {
+    .visit__grid { grid-template-columns: 4fr 7fr; gap: 4rem; }
+    .visit__head { position: sticky; top: 2rem; align-self: start; }
+    .visit__card { margin-right: -1rem; }
+  }
+</style>

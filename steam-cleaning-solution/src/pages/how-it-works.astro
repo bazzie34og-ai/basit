@@ -1,0 +1,56 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHead from '../components/PageHead.astro';
+import PhotoSteps from '../components/sections/PhotoSteps.astro';
+import Visit from '../components/sections/Visit.astro';
+import BeforeWeArrive from '../components/sections/BeforeWeArrive.astro';
+import Faq from '../components/Faq.astro';
+import FinalCta from '../components/sections/FinalCta.astro';
+import { business, honesty, homeFaq, PHOTO_QUOTE_LINE } from '../config/site';
+import { faqSchema } from '../lib/schema';
+const faq = homeFaq.filter((f) => /dry|cost|pets|stains|furniture/i.test(f.q));
+---
+<Base title="How It Works | Photo Quote, The Visit, Drying & Aftercare" description="What happens from your first WhatsApp photo to the day after the clean: fixed pricing, the visit step by step, drying times, aftercare and how to prepare." path="/how-it-works/" breadcrumbs={[{ name: 'How it works', href: '/how-it-works/' }]} schema={[faqSchema(faq)]}>
+  <PageHead label="How it works" h1="No surprises, *start to finish*" lede="If you’ve heard the horror stories, this page is for you. Here is exactly how pricing works, what happens on the day, and how to look after your carpets afterwards." waSubject="cleaning" />
+  <PhotoSteps />
+
+  <section class="hiw section" aria-labelledby="pricing-h">
+    <div class="wrap hiw__grid">
+      <h2 id="pricing-h">How pricing works</h2>
+      <div class="prose">
+        <p><strong>{PHOTO_QUOTE_LINE}.</strong> Send a photo of each room or item and your postcode on WhatsApp. We reply with one fixed price, not a range.</p>
+        <p>{honesty.price} We walk round with you before we start to confirm it. If you’d like to add something on the day, we tell you the price for that before we do it.</p>
+        <p>Quotes are free, and there are no hidden charges.</p>
+      </div>
+    </div>
+  </section>
+
+  <Visit />
+
+  <section class="hiw section" aria-labelledby="drying-h">
+    <div class="wrap hiw__grid">
+      <h2 id="drying-h">Drying &amp; aftercare</h2>
+      <div class="prose">
+        <p>Most carpets are dry to walk on in {business.dryingTime}. Thick carpets, wool and damp, still days take longer.</p>
+        <ul>
+          <li>Open a window a crack and put the heating on low. Moving air dries carpets fastest.</li>
+          <li>Leave internal doors open so air can move around the house.</li>
+          <li>Keep outdoor shoes, pets and little ones off until it’s dry. Socks are fine.</li>
+          <li>Keep furniture on protectors until the carpet is fully dry.</li>
+          <li>Hoover once it’s dry to lift the pile. The wand stripes brush out as it settles.</li>
+          <li>If a mark reappears as it dries, message us. It usually needs a quick spot treatment.</li>
+        </ul>
+        <p><a href="/guides/how-long-does-carpet-take-to-dry/">Read the full drying guide</a>.</p>
+      </div>
+    </div>
+  </section>
+
+  <BeforeWeArrive />
+  <Faq items={faq} heading="Before you book" />
+  <FinalCta slot="pre-footer" />
+</Base>
+<style>
+  .hiw { border-top: 1px solid var(--sage-200); }
+  .hiw__grid { display: grid; gap: 1.5rem; }
+  @media (min-width: 900px) { .hiw__grid { grid-template-columns: 4fr 7fr; gap: 4rem; } }
+</style>

@@ -1,0 +1,85 @@
+---
+import Logo from './Logo.astro';
+import WandLines from './WandLines.astro';
+import { business, tel, waLink, waText, enabledServices, towns } from '../config/site';
+import { guides } from '../lib/guides';
+interface Props { waSubject: string }
+const { waSubject } = Astro.props;
+const year = new Date().getFullYear();
+---
+<footer class="site-footer">
+  <WandLines variant="strip" tone="forest" class="site-footer__wand" />
+  <div class="wrap site-footer__grid">
+    <div class="site-footer__nap" itemscope>
+      <a href="/" class="site-footer__logo" aria-label={`${business.name}, home`}><Logo tone="cream" size="footer" /></a>
+      <p class="site-footer__name">{business.name}</p>
+      <p class="site-footer__desc">{business.descriptor}</p>
+      <ul class="site-footer__contact">
+        <li><span class="label">Call</span> <a href={tel} data-track="call_click" data-where="footer">{business.phones.call.display}</a></li>
+        <li><span class="label">WhatsApp</span> <a href={waLink(waText(waSubject))} data-track="whatsapp_click" data-where="footer" rel="noopener">{business.phones.whatsapp.display}</a></li>
+        <li><span class="label">Email</span> <a href={`mailto:${business.email}`}>{business.email}</a></li>
+      </ul>
+      <p class="site-footer__hours">{business.hoursFallback}</p>
+    </div>
+
+    <nav class="site-footer__col" aria-label="Services">
+      <p class="label">What we clean</p>
+      <ul>{enabledServices().map((s) => <li><a href={s.path}>{s.name}</a></li>)}</ul>
+    </nav>
+    <nav class="site-footer__col" aria-label="Areas">
+      <p class="label">Where we work</p>
+      <ul>
+        {towns.map((t) => <li><a href={t.path}>{t.name}</a></li>)}
+        <li><a href="/areas/">All areas</a></li>
+      </ul>
+    </nav>
+    <nav class="site-footer__col" aria-label="Guides and company">
+      <p class="label">Useful</p>
+      <ul>
+        <li><a href="/how-it-works/">How it works</a></li>
+        <li><a href="/stains/">The stain index</a></li>
+        {guides.map((g) => <li><a href={g.path}>{g.short}</a></li>)}
+        <li><a href="/about/">About us</a></li>
+        <li><a href="/quote/">Get a quote</a></li>
+      </ul>
+    </nav>
+  </div>
+  <div class="wrap site-footer__base">
+    <p>© {year} {business.name}. {business.taglines.primary}</p>
+    <p class="site-footer__social">
+      <a href={business.social.instagram} rel="noopener">Instagram {business.social.instagramHandle}</a>
+      {business.social.facebook && <a href={business.social.facebook} rel="noopener">Facebook</a>}
+      <a href="/privacy/">Privacy</a>
+    </p>
+  </div>
+</footer>
+
+<style>
+  .site-footer { background: var(--forest-900); color: var(--on-dark); padding-bottom: 2rem; }
+  .site-footer a { color: var(--on-dark); }
+  .site-footer :global(.label) { color: var(--on-dark-muted); }
+  .site-footer__wand { opacity: 0.9; }
+  .site-footer__grid { display: grid; gap: 2.5rem; padding-block: 3.5rem 2.5rem; }
+  .site-footer__logo { display: inline-flex; text-decoration: none; margin-bottom: 1.25rem; }
+  .site-footer__name { font-family: var(--font-display); font-size: 1.6rem; line-height: 1.1; }
+  .site-footer__desc { color: var(--on-dark-muted); margin-top: 0.35rem; }
+  .site-footer__contact { list-style: none; padding: 0; margin-top: 1.25rem; display: grid; gap: 0.15rem; }
+  .site-footer__contact li { display: flex; align-items: center; gap: 0.75rem; min-height: 44px; }
+  .site-footer__contact .label { width: 5.6rem; flex: none; }
+  .site-footer__contact a { font-weight: 600; text-decoration-color: rgba(244, 241, 232, 0.35); }
+  .site-footer__hours { margin-top: 0.75rem; color: var(--on-dark-muted); font-size: var(--fs-small); }
+  .site-footer__col ul { list-style: none; padding: 0; margin-top: 0.75rem; }
+  .site-footer__col li a { display: inline-flex; min-height: 40px; align-items: center; text-decoration: none; font-size: 0.98rem; }
+  .site-footer__col li a:hover { text-decoration: underline; }
+  .site-footer__base { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0.75rem 2rem; box-shadow: inset 0 1px 0 rgba(190, 201, 187, 0.22); padding-top: 1rem; font-size: 0.9rem; color: var(--on-dark-muted); }
+  .site-footer__social { display: flex; flex-wrap: wrap; gap: 0.5rem 1.25rem; }
+  .site-footer__social a { display: inline-flex; min-height: 44px; align-items: center; }
+  @media (min-width: 768px) {
+    .site-footer__grid { grid-template-columns: 1.4fr 1fr 1fr; }
+    .site-footer__nap { grid-row: span 2; }
+  }
+  @media (min-width: 1100px) {
+    .site-footer__grid { grid-template-columns: 1.5fr 1fr 0.8fr 1.1fr; }
+    .site-footer__nap { grid-row: auto; }
+  }
+</style>

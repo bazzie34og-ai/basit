@@ -1,0 +1,205 @@
+---
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+import { ITEMS, MATTRESS_SIZES, DAYS, HEARD, LIMITS } from '../lib/quote';
+import { business, tel, waLink, waText, TURNSTILE_SITE_KEY, PHOTO_QUOTE_LINE } from '../config/site';
+---
+<Base title="Get a Quote | Carpet & Sofa Cleaning Cardiff" description="Get a fixed price for carpet, sofa, mattress or end of tenancy cleaning in Cardiff and Newport. Three short steps, or send it all on WhatsApp." path="/quote/" breadcrumbs={[{ name: 'Get a quote', href: '/quote/' }]} waSubject="cleaning">
+  <section class="q">
+    <div class="wrap q__grid">
+      <header class="q__head">
+        <p class="label label--forest">Get a quote</p>
+        <h1>A fixed price, <em>in three steps</em></h1>
+        <p class="lede">{PHOTO_QUOTE_LINE}. Quicker still: <a href={waLink(waText('cleaning'))} data-track="whatsapp_click" data-where="quote_head" rel="noopener">send a photo on WhatsApp</a> or call <a href={tel} data-track="call_click" data-where="quote_head">{business.phones.call.display}</a>.</p>
+      </header>
+
+      <form class="qf" method="post" action="/api/quote" enctype="multipart/form-data" data-quote data-wa={business.phones.whatsapp.wa} novalidate>
+        <p class="qf__progress label" data-progress hidden aria-live="polite">Step 1 of 3</p>
+        <div class="qf__errors" data-errors role="alert" tabindex="-1" hidden></div>
+
+        <fieldset class="qf__step" data-step="1">
+          <legend><span class="qf__n">1</span> What needs cleaning?</legend>
+          <p class="qf__hint" id="items-hint">Tick everything that applies, then set how many.</p>
+          <div class="chips" aria-describedby="items-hint" data-field="items">
+            {ITEMS.map((it) => (
+              <div class="chip">
+                <input type="checkbox" name="items" value={it.id} id={`i-${it.id}`} />
+                <label for={`i-${it.id}`} class="chip__label">{it.label}</label>
+                <div class="chip__qty">
+                  <label for={`q-${it.id}`} class="visually-hidden">{`How many ${it.units} (${it.label})`}</label>
+                  <select id={`q-${it.id}`} name={`qty_${it.id}`}>
+                    {Array.from({ length: it.max }, (_, n) => <option value={n + 1}>{n + 1} {n === 0 ? it.unit : it.units}</option>)}
+                  </select>
+                  {it.id === 'mattress' && (
+                    <>
+                      <label for="q-mattress-size" class="visually-hidden">Mattress size</label>
+                      <select id="q-mattress-size" name="mattress_size">
+                        {MATTRESS_SIZES.map((s) => <option value={s}>{s}</option>)}
+                      </select>
+                    </>
+                  )}
+                </div>
+              </div>
+            ))}
+            <div class="chip chip--other">
+              <input type="checkbox" name="items" value="other" id="i-other" />
+              <label for="i-other" class="chip__label">Something else</label>
+              <div class="chip__qty">
+                <label for="q-other" class="visually-hidden">What else needs cleaning?</label>
+                <input type="text" id="q-other" name="other" maxlength={LIMITS.other} placeholder="e.g. curtains, office, caravan" />
+              </div>
+            </div>
+          </div>
+          <p class="qf__err" data-err="items" hidden></p>
+          <div class="qf__nav" data-nav hidden><button type="button" class="btn btn--primary" data-next>Next: photos</button></div>
+        </fieldset>
+
+        <fieldset class="qf__step" data-step="2">
+          <legend><span class="qf__n">2</span> Add photos <span class="muted">(up to 4, optional)</span></legend>
+          <p class="qf__hint" id="photo-hint">A wide shot of the room or sofa, plus close-ups of any stains. Photos help us give you a fixed price.</p>
+          <label class="drop" for="photos">
+            <Icon name="camera" />
+            <span><strong>Choose photos</strong> or take them now</span>
+            <input type="file" id="photos" name="photos" accept="image/*" multiple aria-describedby="photo-hint" />
+          </label>
+          <ul class="thumbs" data-thumbs aria-live="polite"></ul>
+          <p class="qf__err" data-err="photos" hidden></p>
+          <div class="qf__nav" data-nav hidden><button type="button" class="btn btn--ghost" data-back>Back</button><button type="button" class="btn btn--primary" data-next>Next: your details</button></div>
+        </fieldset>
+
+        <fieldset class="qf__step" data-step="3">
+          <legend><span class="qf__n">3</span> Your details</legend>
+          <div class="qf__fields">
+            <div class="field"><label for="name">Name</label><input id="name" name="name" autocomplete="name" required maxlength={LIMITS.name} /><p class="qf__err" data-err="name" hidden></p></div>
+            <div class="field"><label for="phone">Phone</label><input id="phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" required maxlength={LIMITS.phone} /><p class="qf__err" data-err="phone" hidden></p></div>
+            <div class="field"><label for="postcode">Postcode</label><input id="postcode" name="postcode" autocomplete="postal-code" required maxlength={LIMITS.postcode} autocapitalize="characters" /><p class="qf__err" data-err="postcode" hidden></p></div>
+            <div class="field"><label for="email">Email <span class="muted">(optional, for a copy)</span></label><input id="email" name="email" type="email" autocomplete="email" maxlength={LIMITS.email} /><p class="qf__err" data-err="email" hidden></p></div>
+          </div>
+          <fieldset class="days">
+            <legend>Which days suit you?</legend>
+            <div class="days__list">
+              {DAYS.map((d) => <span class="day"><input type="checkbox" name="days" value={d} id={`d-${d}`} /><label for={`d-${d}`}>{d}</label></span>)}
+            </div>
+          </fieldset>
+          <div class="field"><label for="notes">Access notes <span class="muted">(parking, pets, stairs to the flat)</span></label><textarea id="notes" name="notes" rows="3" maxlength={LIMITS.notes}></textarea></div>
+          <div class="field field--half"><label for="heard">How did you hear about us?</label>
+            <select id="heard" name="heard"><option value="">Choose one</option>{HEARD.map((h) => <option>{h}</option>)}</select>
+          </div>
+
+          <div class="hp" aria-hidden="true">
+            <label for="company_website">Leave this empty</label>
+            <input id="company_website" name="company_website" tabindex="-1" autocomplete="off" />
+          </div>
+          <input type="hidden" name="ts" value="" data-ts />
+          <input type="hidden" name="touch" value="" data-touch />
+          {TURNSTILE_SITE_KEY && <div class="cf-turnstile" data-sitekey={TURNSTILE_SITE_KEY}></div>}
+
+          <div class="qf__summary" data-summary hidden>
+            <p class="label">Your request</p>
+            <p data-summary-text></p>
+          </div>
+
+          <div class="qf__nav qf__nav--final">
+            <button type="button" class="btn btn--ghost" data-back hidden>Back</button>
+            <button type="submit" class="btn btn--primary" data-submit>Send my quote request</button>
+          </div>
+          <p class="qf__alt" data-wa-alt hidden>
+            <a class="text-link" href="#" data-wa-build rel="noopener"><Icon name="whatsapp" class="qf__alt-icon" /> Send on WhatsApp instead</a>
+            <span class="muted">Opens WhatsApp with this summary. Add your photos in the chat.</span>
+          </p>
+          <p class="qf__small muted">We only use your details to reply to you. <a href="/privacy/">Privacy</a>.</p>
+        </fieldset>
+      </form>
+    </div>
+  </section>
+  {TURNSTILE_SITE_KEY && <script is:inline src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>}
+</Base>
+
+<script>
+  import { initQuoteForm } from '../scripts/quote-form';
+  initQuoteForm();
+</script>
+
+<style>
+  .q { padding-block: clamp(1.5rem, 4vw, 3rem) var(--s-9); }
+  .q__grid { display: grid; gap: 2.5rem; }
+  .q__head h1 { margin-top: 0.8rem; font-size: clamp(2.4rem, 5.5vw, 4.2rem); max-width: 12ch; }
+  .q__head .lede { margin-top: 1.25rem; max-width: 30ch; font-size: 1.15rem; }
+  @media (min-width: 1000px) {
+    .q__grid { grid-template-columns: 4fr 7fr; gap: 5rem; }
+    .q__head { position: sticky; top: 2rem; align-self: start; }
+  }
+
+  .qf { background: var(--paper); padding: clamp(1.25rem, 4vw, 2.75rem); border-top: 3px solid var(--forest); }
+  .qf fieldset { border: 0; padding: 0; min-width: 0; }
+  .qf__step + .qf__step { margin-top: 2.5rem; padding-top: 2.5rem; border-top: 1px solid var(--sage-200); }
+  :global(.js) .qf.is-stepped .qf__step + .qf__step { margin-top: 0; padding-top: 0; border-top: 0; }
+  .qf__step > legend { font-family: var(--font-display); font-size: clamp(1.6rem, 3vw, 2.1rem); line-height: 1.1; display: flex; gap: 0.6rem; align-items: baseline; flex-wrap: wrap; }
+  .qf__step > legend .muted { font-family: var(--font-text); font-size: 0.95rem; }
+  .qf__n { font-style: italic; color: var(--forest); }
+  .qf__hint { color: var(--muted); margin: 0.6rem 0 1.25rem; font-size: 0.98rem; }
+  .qf__progress { margin-bottom: 1rem; }
+  /* Pre-paint stepped layout when JS is on, so nothing shifts once the script runs */
+  :global(.js) .qf:not(.is-stepped) .qf__step:not([data-step='1']) { display: none; }
+  :global(.js) .qf:not(.is-stepped) [data-progress], :global(.js) .qf:not(.is-stepped) .qf__step[data-step='1'] [data-nav] { display: flex; }
+
+  .chips { display: grid; gap: 0.6rem; }
+  @media (min-width: 640px) { .chips { grid-template-columns: 1fr 1fr; } }
+  .chip { position: relative; border: 1.5px solid var(--sage-200); border-radius: var(--radius-btn); background: var(--linen); transition: border-color var(--t-fast); }
+  .chip input[type='checkbox'] { position: absolute; opacity: 0; left: 14px; top: 18px; width: 18px; height: 18px; }
+  .chip__label { display: flex; align-items: center; gap: 0.7rem; min-height: 54px; padding: 0.6rem 1rem; cursor: pointer; font-weight: 600; }
+  .chip__label::before { content: ''; width: 20px; height: 20px; border: 1.5px solid var(--forest); border-radius: 4px; background: var(--paper); flex: none; }
+  .chip:has(input:checked) { border-color: var(--forest); background: var(--sage-50); }
+  .chip input:checked + .chip__label::before { background: var(--forest) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath d='m5 10 3.5 3.5L15 7' fill='none' stroke='%23F4F1E8' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/16px no-repeat; }
+  .chip input:focus-visible + .chip__label { outline: 3px solid var(--focus); outline-offset: 2px; border-radius: var(--radius-btn); }
+  .chip__qty { display: flex; gap: 0.5rem; padding: 0 1rem 0.8rem 2.9rem; }
+  .chip:not(:has(input:checked)) .chip__qty { display: none; }
+  .chip__qty select, .chip__qty input { min-height: 44px; }
+  .chip--other .chip__qty input { width: 100%; }
+
+  .qf select, .qf input:not([type='checkbox']):not([type='file']), .qf textarea {
+    width: 100%; min-height: 48px; padding: 0.6rem 0.8rem; background: var(--paper); border: 1.5px solid #6B7A70; border-radius: var(--radius-btn); font-size: 1rem;
+  }
+  .qf select { width: auto; padding-right: 2rem; }
+  .qf textarea { resize: vertical; }
+  .qf [aria-invalid='true'] { border-color: #9B2C1F !important; }
+  .field { margin-top: 1.1rem; }
+  .field label { display: block; font-weight: 600; margin-bottom: 0.35rem; }
+  .field label .muted { font-weight: 400; }
+  .qf__fields { display: grid; gap: 0 1.25rem; }
+  @media (min-width: 640px) { .qf__fields { grid-template-columns: 1fr 1fr; } }
+  .qf__err { color: #9B2C1F; font-size: 0.92rem; margin-top: 0.35rem; font-weight: 500; }
+  .qf__errors { background: #FBEDEA; border-left: 3px solid #9B2C1F; padding: 0.9rem 1rem; margin-bottom: 1.25rem; color: #6E1E15; }
+  .qf__errors[hidden], .qf__err[hidden] { display: none; }
+
+  .drop { display: flex; align-items: center; gap: 0.8rem; padding: 1.1rem 1.2rem; border: 1.5px dashed var(--sage-500); border-radius: var(--radius-btn); background: var(--linen); cursor: pointer; min-height: 64px; }
+  .drop :global(svg) { width: 26px; height: 26px; color: var(--forest); flex: none; }
+  .drop input { font-size: 0.9rem; max-width: 100%; }
+  :global(.js) .drop input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+  .drop:focus-within { outline: 3px solid var(--focus); outline-offset: 2px; }
+  .thumbs { list-style: none; padding: 0; display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.5rem; margin-top: 0.75rem; }
+  .thumbs:empty { display: none; }
+  .thumbs :global(li) { position: relative; aspect-ratio: 1; background: var(--sage-50); }
+  .thumbs :global(img) { width: 100%; height: 100%; object-fit: cover; }
+  .thumbs :global(button) { position: absolute; top: 4px; right: 4px; width: 32px; height: 32px; border-radius: 50%; border: 0; background: var(--paper); color: var(--ink); font-size: 1.1rem; line-height: 1; box-shadow: 0 1px 4px rgba(0,0,0,.25); }
+
+  .days { margin-top: 1.25rem; }
+  .days legend { font-weight: 600; margin-bottom: 0.5rem; }
+  .days__list { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+  .day { position: relative; }
+  .day input { position: absolute; opacity: 0; inset: 0; }
+  .day label { display: inline-flex; align-items: center; min-height: 44px; padding: 0 0.9rem; border: 1.5px solid var(--sage-200); border-radius: 999px; cursor: pointer; font-weight: 500; background: var(--linen); }
+  .day input:checked + label { background: var(--forest); color: var(--linen); border-color: var(--forest); }
+  .day input:focus-visible + label { outline: 3px solid var(--focus); outline-offset: 2px; }
+
+  .hp { position: absolute; left: -10000px; width: 1px; height: 1px; overflow: hidden; }
+  .qf__summary { margin-top: 1.75rem; padding: 1rem 1.15rem; background: var(--sage-50); }
+  .qf__summary p:last-child { margin-top: 0.3rem; white-space: pre-line; }
+  .qf__nav { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 1.75rem; }
+  .qf__nav[hidden], [data-back][hidden] { display: none; }
+  .qf__alt { margin-top: 1.25rem; display: grid; gap: 0.1rem; }
+  .qf__alt[hidden] { display: none; }
+  .qf__alt :global(.qf__alt-icon) { width: 1.1em; height: 1.1em; margin-right: 0.4rem; }
+  .qf__small { margin-top: 1.5rem; font-size: 0.88rem; }
+  .qf.is-sending [data-submit] { opacity: 0.7; pointer-events: none; }
+</style>

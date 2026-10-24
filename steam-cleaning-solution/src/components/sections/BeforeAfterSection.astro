@@ -1,0 +1,41 @@
+---
+import BeforeAfter from '../BeforeAfter.astro';
+import { pairs, hasPair, type Pair } from '../../lib/photos';
+import { waLink, waText } from '../../config/site';
+interface Props { keys?: string[]; heading?: string; intro?: string; hideEmpty?: boolean }
+const { hideEmpty = false, keys = ['hallway', 'stairs1'], heading = 'Before & after', intro = 'Real jobs, photographed on the day. Drag the line, or use your arrow keys.' } = Astro.props;
+const notes: Record<string, string> = {
+  hallway: 'Pre-treated, then hot water extraction.',
+  stairs1: 'Cleaned step by step with a hand tool.',
+  stairs2: 'Stairs and landing in one visit.',
+  patio: 'Patio path, before and after.',
+  skylight: 'Skylight glass, before and after.',
+};
+const live = keys.map((k) => ({ k, p: pairs[k] as Pair })).filter(({ p }) => p && hasPair(p));
+---
+{!(hideEmpty && !live.length) && <section class="ba-sec section" aria-labelledby="ba-h">
+  <div class="wrap ba-sec__grid">
+    <div class="ba-sec__head">
+      <p class="label label--forest">Proof, not promises</p>
+      <h2 id="ba-h">{heading}</h2>
+      {live.length ? <p class="muted">{intro}</p> : (
+        <p class="muted">Our before and after photos are being added here. Want to see jobs like yours now? <a href={waLink('Hi, could you send me some before and after photos of jobs like mine?')} data-track="whatsapp_click" data-where="before_after" rel="noopener">Ask us on WhatsApp</a> and we’ll send some over.</p>
+      )}
+    </div>
+    {live.length > 0 && (
+      <div class="ba-sec__pair">
+        {live.map(({ k, p }) => <BeforeAfter pair={p} id={k} note={notes[k]} />)}
+      </div>
+    )}
+  </div>
+</section>}
+<style>
+  .ba-sec__grid { display: grid; gap: 2.5rem; }
+  .ba-sec__head h2 { margin-top: 0.6rem; }
+  .ba-sec__head p:not(.label) { margin-top: 1rem; max-width: 40ch; }
+  .ba-sec__pair { display: grid; gap: 2.5rem; }
+  @media (min-width: 900px) {
+    .ba-sec__pair { grid-template-columns: 1fr 1fr; align-items: start; }
+    .ba-sec__pair > :global(:nth-child(2)) { margin-top: 4rem; }
+  }
+</style>

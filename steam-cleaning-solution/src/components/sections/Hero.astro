@@ -1,0 +1,51 @@
+---
+import Ctas from '../Ctas.astro';
+import Plate from '../Plate.astro';
+import WandLines from '../WandLines.astro';
+import TrustLine from '../TrustLine.astro';
+import { business, PHOTO_QUOTE_LINE, honesty } from '../../config/site';
+import { catalogue } from '../../lib/photos';
+const label = ['Cardiff', 'Newport', business.sinceYear ? `Since ${business.sinceYear}` : null].filter(Boolean).join(' · ');
+---
+<section class="hero">
+  <div class="wrap hero__grid">
+    <div class="hero__text">
+      <p class="label label--forest">{label}</p>
+      <h1>Carpets, sofas &amp; mattresses, <em>cleaned properly.</em> <span class="hero__place">Cardiff &amp; Newport.</span></h1>
+      <p class="hero__promise">Send a photo on WhatsApp. Get a fixed price. We bring everything.</p>
+      <Ctas waSubject="carpet, sofa or mattress cleaning" where="hero" />
+      <TrustLine />
+    </div>
+    <div class="hero__panel">
+      <div class="hero__wand"><WandLines variant="panel" /></div>
+      <Plate photoKey={catalogue.lounge.key} alt={catalogue.lounge.alt} caption={catalogue.lounge.caption} eager tilt />
+      <aside class="hero__card" aria-label="How our prices work">
+        <p class="label">How the price works</p>
+        <p>{PHOTO_QUOTE_LINE}.</p>
+        <p class="muted">{honesty.price}</p>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero { padding-block: clamp(2rem, 6vw, 5rem) clamp(3rem, 7vw, 6rem); }
+  .hero__grid { display: grid; gap: 3rem; align-items: center; }
+  .hero h1 { margin-top: 1rem; max-width: 14ch; }
+  .hero__place { display: block; font-size: 0.62em; margin-top: 0.3em; color: var(--muted); letter-spacing: 0; }
+  .hero__promise { margin-top: 1.4rem; margin-bottom: 1.8rem; font-size: clamp(1.15rem, 1.1vw + 0.95rem, 1.35rem); max-width: 30ch; line-height: 1.45; }
+  .hero__panel { position: relative; background: var(--sage-50); padding: clamp(2rem, 5vw, 3.25rem) clamp(1.25rem, 4vw, 2.75rem) clamp(1.5rem, 4vw, 2.5rem); }
+  .hero__wand { position: absolute; inset: 0; overflow: hidden; }
+  .hero__panel :global(.plate) { position: relative; margin-inline: auto; }
+  .hero__card {
+    position: relative; margin: 1.5rem 0 0 auto; max-width: 300px;
+    background: var(--paper); padding: 1rem 1.15rem 1.1rem; border-top: 2px solid var(--forest);
+    box-shadow: 0 16px 30px -22px rgba(19, 32, 26, 0.45); font-size: 0.98rem;
+  }
+  .hero__card p + p { margin-top: 0.35rem; }
+  .hero__card .label { margin-bottom: 0.4rem; }
+  @media (min-width: 960px) {
+    .hero__grid { grid-template-columns: 7fr 5fr; gap: clamp(2.5rem, 5vw, 5rem); }
+    .hero__card { margin: -0.5rem -3.5rem -4rem auto; }
+  }
+</style>

@@ -1,0 +1,45 @@
+---
+import { stains } from '../../config/site';
+interface Props { full?: boolean; headingLevel?: 'h2' | 'h1' }
+const { full = false } = Astro.props;
+const sorted = [...stains].sort((a, b) => a.name.replace(/[“”]/g, '').localeCompare(b.name.replace(/[“”]/g, '')));
+const letter = (n: string) => n.replace(/[“”]/g, '').charAt(0).toUpperCase();
+---
+<section class="stains section" aria-labelledby="stains-h">
+  <div class="wrap">
+    <div class="stains__head">
+      <p class="label label--forest">A to Z, honestly</p>
+      <h2 id="stains-h">The stain index</h2>
+      <p>Dogs, kids, slime, black nail varnish, and the mystery marks from previous tenants. Here is what usually happens with each, in plain words. We’ll always patch-test and tell you before we start.</p>
+    </div>
+    <ul class="stains__list">
+      {sorted.map((s, i) => (
+        <li class="stains__item">
+          <span class="stains__letter" aria-hidden="true">{i === 0 || letter(sorted[i - 1].name) !== letter(s.name) ? letter(s.name) : ''}</span>
+          <div>
+            <h3>{s.name}</h3>
+            <p class="stains__outcome label">{s.outcome}</p>
+            <p>{s.note}</p>
+          </div>
+        </li>
+      ))}
+    </ul>
+    {!full && <p class="stains__more"><a class="text-link" href="/stains/">The full stain index, with what you can do before we arrive</a></p>}
+  </div>
+</section>
+<style>
+  .stains__head { display: grid; gap: 0.75rem; margin-bottom: 2.5rem; }
+  .stains__head p:last-child { color: var(--muted); max-width: 52ch; }
+  .stains__list { list-style: none; padding: 0; display: grid; column-gap: 4rem; }
+  .stains__item { display: grid; grid-template-columns: 2.4rem 1fr; gap: 0.75rem; padding-block: 1.25rem; border-top: 1px solid var(--sage-200); break-inside: avoid; }
+  .stains__letter { font-family: var(--font-display); font-style: italic; font-size: 2.3rem; line-height: 0.9; color: var(--sage-500); }
+  .stains__item h3 { font-size: 1.45rem; }
+  .stains__outcome { display: inline-block; margin: 0.4rem 0 0.45rem; padding: 0.15rem 0.5rem; background: var(--sage-50); color: var(--forest); }
+  .stains__item p:last-child { color: var(--ink); font-size: 0.99rem; max-width: 46ch; }
+  .stains__more { margin-top: 1.5rem; }
+  @media (min-width: 900px) {
+    .stains__head { grid-template-columns: 5fr 7fr; align-items: end; column-gap: 4rem; }
+    .stains__head .label { grid-column: 1 / -1; }
+    .stains__list { columns: 2; display: block; }
+  }
+</style>

@@ -1,0 +1,36 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHead from '../components/PageHead.astro';
+import OwnerNote from '../components/sections/OwnerNote.astro';
+import FinalCta from '../components/sections/FinalCta.astro';
+import { business, owner, honesty } from '../config/site';
+---
+<Base title="About Steam Cleaning Solution | Cardiff & Newport" description="A local carpet, upholstery and deep cleaning company for Cardiff, Newport and the surrounding areas. Fixed prices from a photo, honest about results." path="/about/" breadcrumbs={[{ name: 'About', href: '/about/' }]}>
+  <PageHead label="About us" h1="A local cleaner, *straight with you*" lede={`${business.name} cleans carpets, sofas, mattresses and homes across Cardiff, Newport and the surrounding areas. ${business.taglines.primary}.`} waSubject="cleaning" />
+  <OwnerNote />
+  <section class="about section" aria-labelledby="about-h">
+    <div class="wrap about__grid">
+      <h2 id="about-h">How we work</h2>
+      <div class="prose">
+        <p>We use deep steam and hot water extraction. Hot water extraction means we spray hot water and cleaning solution deep into the fibres, then suck it straight back out with the dirt.</p>
+        <ul>
+          <li>Stains and odours treated at the source</li>
+          <li>Fast drying</li>
+          {business.petSafe && <li>Pet and child friendly solutions</li>}
+          {business.ecoProducts && <li>Eco-friendly products</li>}
+          {business.insured && <li>Fully insured</li>}
+          {business.germClaimEvidence && <li>Kills 99% of germs ({business.germClaimEvidence})</li>}
+          <li>Free quotes, and no hidden charges</li>
+          {business.referencesOnRequest && <li>References available on request</li>}
+        </ul>
+        <p>{honesty.price} {honesty.patchTest}</p>
+        <p>You can see recent jobs on Instagram at <a href={business.social.instagram} rel="noopener">{business.social.instagramHandle}</a>{business.social.facebook && <> and on <a href={business.social.facebook} rel="noopener">Facebook</a></>}.</p>
+      </div>
+    </div>
+  </section>
+  <FinalCta slot="pre-footer" />
+</Base>
+<style>
+  .about__grid { display: grid; gap: 1.5rem; }
+  @media (min-width: 900px) { .about__grid { grid-template-columns: 4fr 7fr; gap: 4rem; } }
+</style>

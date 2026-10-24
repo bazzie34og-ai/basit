@@ -1,0 +1,177 @@
+@import './tokens.css';
+
+/* Metric-matched fallbacks, one per platform font, so text barely moves when web fonts swap in (CLS).
+   Values measured from the font files (scripts in README); Georgia estimated from Times metrics. */
+@font-face { font-family: 'IS Georgia'; src: local('Georgia'); size-adjust: 73%; ascent-override: 135.6%; descent-override: 42.5%; line-gap-override: 0%; }
+@font-face { font-family: 'IS Times'; src: local('Times New Roman'), local('Times'), local('Liberation Serif'); size-adjust: 83%; ascent-override: 119.3%; descent-override: 37.4%; line-gap-override: 0%; }
+@font-face { font-family: 'IS Noto'; src: local('Noto Serif'), local('NotoSerif-Regular'); size-adjust: 70.4%; ascent-override: 140.7%; descent-override: 44%; line-gap-override: 0%; }
+@font-face { font-family: 'IS DejaVu'; src: local('DejaVu Serif'); size-adjust: 65.5%; ascent-override: 151.2%; descent-override: 47.3%; line-gap-override: 0%; }
+@font-face { font-family: 'HG Arial'; src: local('Arial'), local('Helvetica'), local('Liberation Sans'); size-adjust: 100.5%; ascent-override: 99.5%; descent-override: 30.2%; line-gap-override: 0%; }
+@font-face { font-family: 'HG Roboto'; src: local('Roboto'), local('Roboto-Regular'); size-adjust: 101.3%; ascent-override: 98.7%; descent-override: 29.9%; line-gap-override: 0%; }
+@font-face { font-family: 'HG DejaVu'; src: local('DejaVu Sans'); size-adjust: 88.4%; ascent-override: 113.1%; descent-override: 34.3%; line-gap-override: 0%; }
+
+*, *::before, *::after { box-sizing: border-box; }
+* { margin: 0; }
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  scroll-padding-top: 96px;
+}
+@media (prefers-reduced-motion: no-preference) {
+  html { scroll-behavior: smooth; }
+}
+
+body {
+  background: var(--linen);
+  color: var(--ink);
+  font-family: var(--font-text);
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  font-weight: 400;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+@media (max-width: 767.98px) {
+  body { padding-bottom: calc(var(--mobile-bar-h) + env(safe-area-inset-bottom, 0px)); }
+}
+
+img, svg, picture { display: block; max-width: 100%; height: auto; }
+input, button, textarea, select { font: inherit; color: inherit; }
+button { cursor: pointer; }
+
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  line-height: 1.06;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+  text-wrap: balance;
+}
+h1 { font-size: var(--fs-h1); line-height: 1.02; }
+h2 { font-size: var(--fs-h2); }
+h3 { font-size: var(--fs-h3); line-height: 1.15; }
+h1 em, h2 em, h3 em { font-style: italic; color: var(--forest); }
+
+p, li { text-wrap: pretty; }
+p + p { margin-top: 1em; }
+
+a { color: var(--forest); text-decoration-thickness: 1px; text-underline-offset: 0.2em; }
+a:hover { text-decoration-thickness: 2px; }
+
+:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+::selection { background: var(--sage-200); color: var(--ink); }
+
+strong { font-weight: 600; }
+
+/* ---------- Layout helpers ---------- */
+.wrap {
+  width: 100%;
+  max-width: calc(var(--wrap) + var(--gutter) * 2);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+.wrap--narrow { max-width: calc(820px + var(--gutter) * 2); }
+.section { padding-block: var(--s-9); }
+.section--tight { padding-block: var(--s-8); }
+.prose { max-width: var(--measure); }
+.prose > * + * { margin-top: 1em; }
+.prose h2 { margin-top: 1.6em; font-size: clamp(1.8rem, 3.4vw, 2.5rem); }
+.prose h3 { margin-top: 1.4em; }
+.prose ul, .prose ol { padding-left: 1.2em; }
+.prose li + li { margin-top: 0.4em; }
+.prose li::marker { color: var(--sage-500); }
+
+.visually-hidden {
+  position: absolute !important;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0 0 0 0);
+  white-space: nowrap; border: 0;
+}
+
+/* ---------- Small-caps label ---------- */
+.label {
+  font-family: var(--font-text);
+  font-size: var(--fs-label);
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  line-height: 1.4;
+  color: var(--muted);
+}
+.label--forest { color: var(--forest); }
+
+.lede {
+  font-size: clamp(1.15rem, 1.2vw + 0.9rem, 1.4rem);
+  line-height: 1.45;
+  color: var(--ink);
+  max-width: 34ch;
+}
+.muted { color: var(--muted); }
+
+/* ---------- Buttons ---------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6em;
+  min-height: 52px;
+  padding: 0.75em 1.35em;
+  border-radius: var(--radius-btn);
+  border: 1.5px solid var(--forest);
+  font-family: var(--font-text);
+  font-weight: 600;
+  font-size: 1rem;
+  line-height: 1.2;
+  text-decoration: none;
+  transition: background-color var(--t-fast) var(--ease), color var(--t-fast) var(--ease), transform var(--t-fast) var(--ease);
+  -webkit-tap-highlight-color: transparent;
+}
+.btn svg { width: 1.2em; height: 1.2em; flex: none; }
+.btn--primary { background: var(--forest); color: var(--linen); }
+.btn--primary:hover { background: var(--forest-900); }
+.btn--ghost { background: transparent; color: var(--forest); }
+.btn--ghost:hover { background: var(--sage-50); }
+.btn--on-dark { background: var(--linen); color: var(--forest-900); border-color: var(--linen); }
+.btn--on-dark:hover { background: var(--paper); }
+.btn--ghost-dark { background: transparent; color: var(--linen); border-color: var(--on-dark-muted); }
+.btn--ghost-dark:hover { background: rgba(244, 241, 232, 0.08); }
+.btn:active { transform: translateY(1px); }
+
+.text-link {
+  font-weight: 600;
+  color: var(--forest);
+  text-decoration: underline;
+  text-decoration-color: var(--sage-200);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 0.25em;
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--tap);
+}
+.text-link:hover { text-decoration-color: var(--forest); }
+
+/* ---------- Rules ---------- */
+.rule-oak { border: 0; border-top: 1px solid var(--oak); width: 56px; margin-block: var(--s-5); }
+.hairline { border: 0; border-top: 1px solid var(--sage-200); }
+
+/* ---------- Reveal (calm fade + rise, once) ---------- */
+@media (prefers-reduced-motion: no-preference) {
+  .js [data-reveal] { opacity: 0; transform: translateY(12px); transition: opacity var(--t) var(--ease), transform var(--t) var(--ease); }
+  .js [data-reveal].is-in { opacity: 1; transform: none; }
+}
+
+/* ---------- Forced colours ---------- */
+@media (forced-colors: active) {
+  .btn { border: 2px solid ButtonText; }
+  .wand path { stroke: GrayText; }
+  .plate__mount { border: 1px solid CanvasText; }
+}

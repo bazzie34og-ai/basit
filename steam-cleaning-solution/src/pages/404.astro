@@ -1,0 +1,23 @@
+---
+import Base from '../layouts/Base.astro';
+import WandLines from '../components/WandLines.astro';
+---
+<Base title="Page not found | Steam Cleaning Solution" description="This page has been hoovered up. Here’s the way home." path="/404/" noindex>
+  <section class="nf">
+    <div class="nf__wand"><WandLines variant="field" /></div>
+    <div class="wrap nf__inner">
+      <p class="label label--forest">404</p>
+      <h1>This page has been <em>hoovered up.</em></h1>
+      <p class="lede">Here’s the way home.</p>
+      <p class="nf__links"><a class="btn btn--primary" href="/">Back to the home page</a> <a class="btn btn--ghost" href="/quote/">Get a quote</a></p>
+    </div>
+  </section>
+</Base>
+<style>
+  .nf { position: relative; overflow: hidden; padding-block: clamp(4rem, 12vw, 9rem); }
+  .nf__wand { position: absolute; inset: 0; }
+  .nf__inner { position: relative; }
+  .nf h1 { margin-top: 0.75rem; max-width: 12ch; }
+  .nf .lede { margin-top: 1rem; }
+  .nf__links { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 2rem; }
+</style>

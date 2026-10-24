@@ -1,0 +1,38 @@
+---
+import { beforeWeArrive } from '../../config/site';
+interface Props { id?: string }
+const { id = 'before-we-arrive' } = Astro.props;
+---
+<section class="bwa section--tight" id={id} aria-labelledby={`${id}-h`}>
+  <div class="wrap">
+    <div class="bwa__box">
+      <div class="bwa__main">
+        <p class="label label--forest">A little prep, a smoother visit</p>
+        <h2 id={`${id}-h`}>Before we arrive</h2>
+        <ul class="bwa__list">
+          {beforeWeArrive.items.map((it) => (
+            <li><span class="bwa__tick" aria-hidden="true"></span><span><strong>{it.title}.</strong> {it.body}</span></li>
+          ))}
+        </ul>
+      </div>
+      <aside class="bwa__aside">
+        <p class="label">How long it takes</p>
+        <p>{beforeWeArrive.duration}</p>
+      </aside>
+    </div>
+  </div>
+</section>
+<style>
+  .bwa__box { background: var(--sage-50); padding: clamp(1.75rem, 4vw, 3.25rem); display: grid; gap: 2rem; max-width: 1080px; }
+  .bwa h2 { margin-top: 0.5rem; font-size: clamp(2rem, 4vw, 2.8rem); }
+  .bwa__list { list-style: none; padding: 0; margin-top: 1.5rem; display: grid; gap: 1rem; }
+  .bwa__list li { display: grid; grid-template-columns: 22px 1fr; gap: 0.9rem; align-items: start; max-width: 58ch; }
+  .bwa__tick { width: 22px; height: 22px; border: 1.5px solid var(--forest); border-radius: 3px; margin-top: 0.2rem; position: relative; background: var(--paper); }
+  .bwa__tick::after { content: ''; position: absolute; left: 6px; top: 2px; width: 6px; height: 11px; border: solid var(--forest); border-width: 0 2px 2px 0; transform: rotate(45deg); }
+  .bwa__aside { border-top: 1px solid var(--sage-200); padding-top: 1.25rem; align-self: end; }
+  .bwa__aside p:last-child { margin-top: 0.4rem; font-family: var(--font-display); font-size: 1.35rem; line-height: 1.3; }
+  @media (min-width: 900px) {
+    .bwa__box { grid-template-columns: 7fr 4fr; gap: 3.5rem; }
+    .bwa__aside { border-top: 0; border-left: 1px solid var(--sage-200); padding: 0 0 0 2rem; }
+  }
+</style>

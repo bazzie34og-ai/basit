@@ -1,0 +1,39 @@
+---
+import { waLink, waText, business } from '../../config/site';
+const steps = [
+  'WhatsApp a photo and your postcode.',
+  'We reply with a fixed price.',
+  'We turn up with everything, including the drying fans.',
+];
+---
+<section class="steps" aria-labelledby="steps-h">
+  <div class="wrap steps__inner">
+    <div class="steps__head">
+      <h2 id="steps-h">Send a photo. <em>Get a price.</em></h2>
+      <p class="muted">No home visit to quote, no sales pitch. Send it to <a href={waLink(waText('cleaning'))} data-track="whatsapp_click" data-where="steps" rel="noopener">{business.phones.whatsapp.display}</a>.</p>
+    </div>
+    <ol class="steps__list">
+      {steps.map((s, i) => (
+        <li data-reveal style={`transition-delay:${i * 90}ms`}>
+          <span class="steps__num" aria-hidden="true">{i + 1}</span>
+          <p>{s}</p>
+        </li>
+      ))}
+    </ol>
+  </div>
+</section>
+<style>
+  .steps { background: var(--paper); border-block: 1px solid var(--sage-200); padding-block: clamp(3rem, 6vw, 4.5rem); }
+  .steps__inner { display: grid; gap: 2rem; }
+  .steps__head h2 { font-size: clamp(1.9rem, 3.6vw, 2.8rem); }
+  .steps__head p { margin-top: 0.75rem; max-width: 34ch; }
+  .steps__list { list-style: none; padding: 0; display: grid; gap: 1.5rem; counter-reset: s; }
+  .steps__list li { display: grid; grid-template-columns: auto 1fr; gap: 1.1rem; align-items: start; padding-top: 1.1rem; border-top: 1px solid var(--sage-200); }
+  .steps__num { font-family: var(--font-display); font-style: italic; font-size: clamp(3.6rem, 6vw, 5rem); line-height: 0.8; color: var(--forest); min-width: 0.7em; }
+  .steps__list p { font-size: 1.12rem; font-weight: 500; line-height: 1.4; padding-top: 0.25rem; max-width: 22ch; }
+  @media (min-width: 900px) {
+    .steps__inner { grid-template-columns: 3.4fr 8.6fr; gap: 3.5rem; align-items: end; }
+    .steps__list { grid-template-columns: repeat(3, 1fr); gap: 2rem; }
+    .steps__list li { grid-template-columns: 1fr; gap: 0.9rem; }
+  }
+</style>

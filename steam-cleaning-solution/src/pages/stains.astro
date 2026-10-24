@@ -1,0 +1,30 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHead from '../components/PageHead.astro';
+import StainIndex from '../components/sections/StainIndex.astro';
+import FinalCta from '../components/sections/FinalCta.astro';
+---
+<Base title="The Stain Index | What Comes Out of Carpets & Sofas" description="An honest A to Z of carpet and sofa stains: coffee, wine, dog accidents, nail varnish, slime and more. What usually lifts, and what to do before we arrive." path="/stains/" breadcrumbs={[{ name: 'Stain index', href: '/stains/' }]} waSubject="a stain">
+  <PageHead label="Stains, A to Z" h1="What will *actually* come out?" lede="Honest outcome words, not promises. Every stain is different, so we patch-test first and tell you what to expect before we start." waSubject="a stain" />
+  <StainIndex full />
+  <section class="first-aid section--tight" aria-labelledby="aid-h">
+    <div class="wrap first-aid__grid">
+      <h2 id="aid-h">First aid, before we arrive</h2>
+      <ol class="prose">
+        <li><strong>Blot, don’t rub.</strong> Press a white cloth or kitchen roll onto the spill. Rubbing spreads it and frays the fibres.</li>
+        <li><strong>Lift solids first.</strong> Scrape up wax, mud or slime gently with a blunt knife or spoon. Let mud dry first.</li>
+        <li><strong>A little cool water only.</strong> Hot water can set some stains, like blood and egg.</li>
+        <li><strong>Skip the bleach and strong sprays.</strong> They can strip colour and make a stain permanent.</li>
+        <li><strong>Don’t pour salt on red wine.</strong> It doesn’t help, and it can set the stain.</li>
+        <li><strong>Take a photo and send it to us.</strong> Tell us what it is and how old it is. That helps us plan the treatment and the price.</li>
+      </ol>
+    </div>
+    <p class="wrap"><a class="text-link" href="/stain-odour-removal-cardiff/">How we treat stains and pet odours</a></p>
+  </section>
+  <FinalCta slot="pre-footer" waSubject="a stain" />
+</Base>
+<style>
+  .first-aid { background: var(--sage-50); }
+  .first-aid__grid { display: grid; gap: 1.5rem; margin-bottom: 1rem; }
+  @media (min-width: 900px) { .first-aid__grid { grid-template-columns: 4fr 7fr; gap: 4rem; } }
+</style>

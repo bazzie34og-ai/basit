@@ -1,0 +1,65 @@
+/* "Housekeeping, Cardiff": design tokens.
+   Palette sampled from the client's forest-and-sage flyer. No dark mode: linen is the brand. */
+:root {
+  /* Colour */
+  --linen: #F4F1E8;      /* page background */
+  --paper: #FBFAF6;      /* raised surfaces */
+  --sage-50: #E6ECE1;    /* soft panels */
+  --sage-200: #BEC9BB;   /* dividers, wand-line motif */
+  --sage-500: #6F855E;   /* leaf accents, icons (large text / graphics only) */
+  --forest: #124932;     /* primary buttons, heading accents */
+  --forest-900: #0B2A1E; /* footer, dark bands */
+  --ink: #13201A;        /* body text */
+  --muted: #56645B;      /* secondary text (5.6:1 on linen) */
+  --oak: #B98B5E;        /* rules, photo mounts. Never text on linen */
+  --brass: #A8894A;      /* the heart, tiny highlights. Sparingly. Never text on linen */
+  --focus: #1F6F4E;
+
+  --on-dark: #F4F1E8;
+  --on-dark-muted: #C9D3C6;
+
+  /* Type */
+  --font-display: 'Instrument Serif', 'IS Georgia', 'IS Times', 'IS Noto', 'IS DejaVu', serif;
+  --font-text: 'Hanken Grotesk', 'HG Arial', 'HG Roboto', 'HG DejaVu', sans-serif;
+
+  --fs-h1: clamp(2.6rem, 7vw, 5.2rem);
+  --fs-h2: clamp(2rem, 4.4vw, 3.3rem);
+  --fs-h3: clamp(1.4rem, 2.2vw, 1.75rem);
+  --fs-body: clamp(1.0625rem, 0.4vw + 0.98rem, 1.125rem); /* 17–18px */
+  --fs-small: 0.9375rem;
+  --fs-label: 0.75rem; /* 12px small caps */
+  --lh-body: 1.6;
+
+  /* Space */
+  --s-1: 0.25rem;
+  --s-2: 0.5rem;
+  --s-3: 0.75rem;
+  --s-4: 1rem;
+  --s-5: 1.5rem;
+  --s-6: 2rem;
+  --s-7: 3rem;
+  --s-8: 4.5rem;
+  --s-9: clamp(4rem, 9vw, 7.5rem);
+  --gutter: 16px;
+
+  /* Layout */
+  --wrap: 1240px;
+  --measure: 62ch;
+  --radius: 3px;
+  --radius-btn: 6px;
+  --tap: 44px;
+
+  /* Motion */
+  --ease: cubic-bezier(.2, .7, .2, 1);
+  --t-fast: 200ms;
+  --t: 280ms;
+
+  --mobile-bar-h: 64px;
+}
+
+@media (min-width: 768px) {
+  :root { --gutter: 32px; }
+}
+@media (min-width: 1200px) {
+  :root { --gutter: 48px; }
+}

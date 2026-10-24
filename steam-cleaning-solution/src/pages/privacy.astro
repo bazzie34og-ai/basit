@@ -1,0 +1,25 @@
+---
+import Base from '../layouts/Base.astro';
+import { business } from '../config/site';
+---
+<Base title="Privacy | Steam Cleaning Solution" description="How we use the details and photos you send us for a quote, how long we keep them, and your rights." path="/privacy/" breadcrumbs={[{ name: 'Privacy', href: '/privacy/' }]}>
+  <section class="wrap wrap--narrow section prose">
+    <h1>Privacy</h1>
+    <p>This page explains what we do with the information you give us. In short: we use it to give you a quote and do the job, and nothing else.</p>
+    <h2>What we collect</h2>
+    <p>When you use our quote form, we collect your name, phone number, postcode, any email address you give us, what you’d like cleaned, your notes and up to four photos. We also note which page or advert brought you to us, so we know which adverts are worth paying for.</p>
+    <p>If you message us on WhatsApp or call us, we see the details you send in the usual way.</p>
+    <h2>How we use it</h2>
+    <p>To reply with a price, arrange the visit and keep a record of the job. We don’t sell your details or use them for marketing.</p>
+    <h2>Where it is stored</h2>
+    <p>Quote requests are stored securely with our website host, Netlify, and sent to our email inbox using Resend, an email delivery service. Both process data on our behalf.</p>
+    <h2>Analytics</h2>
+    <p>We only use Google Analytics if you say yes. If you say no, nothing is loaded.</p>
+    {/* TODO-CONFIRM: retention period (owner to agree) */}
+    <h2>How long we keep it</h2>
+    <p>We keep quote requests for up to two years, so we can look back at past jobs, then delete them. Ask and we’ll delete yours sooner.</p>
+    <h2>Your rights</h2>
+    <p>You can ask to see, correct or delete the information we hold about you. Email <a href={`mailto:${business.email}`}>{business.email}</a>. If you’re unhappy with how we’ve handled your data, you can complain to the Information Commissioner’s Office (ico.org.uk).</p>
+    <p class="muted">{business.name}</p>
+  </section>
+</Base>

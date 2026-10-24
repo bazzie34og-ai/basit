@@ -1,0 +1,118 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHead from '../components/PageHead.astro';
+import Faq from '../components/Faq.astro';
+import FinalCta from '../components/sections/FinalCta.astro';
+import BeforeAfterSection from '../components/sections/BeforeAfterSection.astro';
+import Icon from '../components/Icon.astro';
+import { services, towns, priceLabel, PHOTO_QUOTE_LINE, enabledServices, type ServiceKey } from '../config/site';
+import { servicePages, type ServicePage } from '../content/servicePages';
+import { faqSchema, serviceSchema } from '../lib/schema';
+import { guides } from '../lib/guides';
+import { plain } from '../lib/text';
+
+export function getStaticPaths() {
+  return enabledServices().map((s) => ({
+    params: { service: s.path.replace(/^\/|\/$/g, '') },
+    props: { page: servicePages[s.key] },
+  }));
+}
+const { page } = Astro.props as { page: ServicePage };
+const s = services[page.key];
+const related = s.related.map((k: ServiceKey) => services[k]).filter((r) => r.enabled);
+const where = towns.filter((t) => t.services.includes(page.key));
+const guide = guides.filter((g) => g.service === page.key);
+const priceLine = s.fromPrice != null ? priceLabel(s) : PHOTO_QUOTE_LINE;
+---
+<Base
+  title={page.title}
+  description={page.description}
+  path={s.path}
+  waSubject={s.waSubject}
+  breadcrumbs={[{ name: s.name, href: s.path }]}
+  schema={[serviceSchema(page.key, where.map((t) => t.name)), faqSchema(page.faq)]}
+>
+  <PageHead label={`${s.short} · Cardiff & Newport`} h1={page.h1} lede={page.lede} waSubject={s.waSubject} photo={page.photo} priceLine={priceLine} priceNote={s.fromPrice != null ? s.priceNote : null} />
+
+  <section class="incl" aria-labelledby="incl-h">
+    <div class="wrap incl__grid">
+      <h2 id="incl-h">What’s included</h2>
+      <ul class="incl__list">
+        {page.includes.map((i) => <li>{i}</li>)}
+      </ul>
+    </div>
+  </section>
+
+  <div class="wrap svc">
+    <article class="svc__body prose">
+      {page.blocks.map((b) => (
+        <>
+          <h2>{b.h2}</h2>
+          {b.body.map((p) => <p>{p}</p>)}
+          {b.list && <ul>{b.list.map((l) => <li>{l}</li>)}</ul>}
+        </>
+      ))}
+    </article>
+    <aside class="svc__aside" aria-label="Related">
+      <div class="svc__card">
+        <p class="label">Often booked with</p>
+        <ul>
+          {related.map((r) => <li><a href={r.path}>{r.name}</a></li>)}
+        </ul>
+        <p class="label">Before you book</p>
+        <ul>
+          <li><a href="/how-it-works/">How a visit works</a></li>
+          {guide.map((g) => <li><a href={g.path}>{g.short}</a></li>)}
+          <li><a href="/quote/">Get a quote online</a></li>
+        </ul>
+      </div>
+    </aside>
+  </div>
+
+  {page.pairKeys && <BeforeAfterSection hideEmpty keys={page.pairKeys} heading={`${s.short}: before & after`} />}
+
+  <section class="svc-areas section--tight" aria-labelledby="where-h">
+    <div class="wrap">
+      <h2 id="where-h" class="svc-areas__h">{s.name} near you</h2>
+      <p class="svc-areas__list">
+        {where.map((t, i) => <><a href={t.path}>{t.name}</a>{i < where.length - 1 ? ' · ' : ''}</>)}
+      </p>
+      <p class="muted">And the villages in between. Send your postcode with your photo and we’ll confirm.</p>
+    </div>
+  </section>
+
+  <Faq items={page.faq} heading={`${s.short}: your questions`} id="svc-faq">
+    <p>More on drying, parking and prep in <a href="/how-it-works/">how it works</a>.</p>
+  </Faq>
+
+  <FinalCta slot="pre-footer" waSubject={s.waSubject} />
+</Base>
+
+<style>
+  .incl { padding-block: clamp(2.5rem, 5vw, 4rem); background: var(--paper); border-block: 1px solid var(--sage-200); }
+  .incl__grid { display: grid; gap: 1.5rem; }
+  .incl h2 { font-size: clamp(1.8rem, 3vw, 2.4rem); }
+  .incl__list { list-style: none; padding: 0; display: grid; gap: 0 2.5rem; counter-reset: inc; }
+  .incl__list li { counter-increment: inc; display: grid; grid-template-columns: 2.2rem 1fr; padding-block: 0.7rem; border-bottom: 1px solid var(--sage-50); }
+  .incl__list li::before { content: counter(inc, decimal-leading-zero); font-size: var(--fs-label); letter-spacing: 0.14em; font-weight: 600; color: var(--forest); padding-top: 0.3rem; }
+  @media (min-width: 900px) {
+    .incl__grid { grid-template-columns: 3fr 9fr; gap: 3rem; }
+    .incl__list { grid-template-columns: 1fr 1fr; }
+  }
+  .svc { display: grid; gap: 3rem; padding-block: var(--s-9); }
+  .svc__body > h2:first-child { margin-top: 0; }
+  .svc__card { background: var(--sage-50); padding: 1.5rem 1.6rem; }
+  .svc__card ul { list-style: none; padding: 0; margin: 0.5rem 0 1.5rem; }
+  .svc__card ul:last-child { margin-bottom: 0; }
+  .svc__card a { display: flex; min-height: 44px; align-items: center; font-weight: 500; border-bottom: 1px solid var(--sage-200); text-decoration: none; }
+  .svc__card a:hover { text-decoration: underline; }
+  @media (min-width: 960px) {
+    .svc { grid-template-columns: 7.5fr 4fr; gap: 5rem; }
+    .svc__aside { position: sticky; top: 2rem; align-self: start; }
+  }
+  .svc-areas { border-top: 1px solid var(--sage-200); }
+  .svc-areas__h { font-size: clamp(1.7rem, 3vw, 2.3rem); }
+  .svc-areas__list { font-family: var(--font-display); font-size: clamp(1.4rem, 2.5vw, 1.9rem); line-height: 1.5; margin: 1rem 0 0.5rem; }
+  .svc-areas__list a { color: var(--ink); text-decoration-color: var(--sage-200); }
+  .svc-areas__list a:hover { color: var(--forest); }
+</style>

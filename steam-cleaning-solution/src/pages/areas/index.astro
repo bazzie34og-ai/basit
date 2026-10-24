@@ -1,0 +1,12 @@
+---
+import Base from '../../layouts/Base.astro';
+import PageHead from '../../components/PageHead.astro';
+import AreasList from '../../components/sections/AreasList.astro';
+import FinalCta from '../../components/sections/FinalCta.astro';
+import { towns, coreAreas } from '../../config/site';
+---
+<Base title="Areas We Cover | Cardiff, Newport & South Wales" description="Carpet, sofa and end of tenancy cleaning across Cardiff, Newport, Penarth, Barry, Caerphilly, Cwmbran and Pontypridd. Check your postcode on WhatsApp." path="/areas/" breadcrumbs={[{ name: 'Areas', href: '/areas/' }]} waSubject="cleaning (checking my area)">
+  <PageHead label="Service area" h1="Where we *clean*" lede={`We’re based in Cardiff and work across ${towns.map((t) => t.name).slice(1, -1).join(', ')} and ${towns[towns.length - 1].name}. If your postcode starts ${coreAreas.join(' or ')}, there’s a good chance we cover you.`} waSubject="cleaning (checking my area)" />
+  <AreasList />
+  <FinalCta slot="pre-footer" waSubject="cleaning (checking my area)" />
+</Base>

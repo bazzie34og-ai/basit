@@ -1,0 +1,18 @@
+---
+import Icon from './Icon.astro';
+import { business, tel, waLink, waText } from '../config/site';
+interface Props { waSubject?: string; tone?: 'light' | 'dark'; class?: string; where?: string }
+const { waSubject = 'cleaning', tone = 'light', class: cls, where = 'body' } = Astro.props;
+---
+<div class:list={['ctas', cls]}>
+  <a class:list={['btn', tone === 'dark' ? 'btn--on-dark' : 'btn--primary']} href={waLink(waText(waSubject))} data-track="whatsapp_click" data-where={where} rel="noopener">
+    <Icon name="whatsapp" /> WhatsApp a photo for a quote
+  </a>
+  <a class:list={['btn', tone === 'dark' ? 'btn--ghost-dark' : 'btn--ghost']} href={tel} data-track="call_click" data-where={where}>
+    <Icon name="phone" /> Call {business.phones.call.display}
+  </a>
+</div>
+<style>
+  .ctas { display: flex; flex-wrap: wrap; gap: 0.75rem; }
+  @media (max-width: 479px) { .ctas .btn { width: 100%; } }
+</style>

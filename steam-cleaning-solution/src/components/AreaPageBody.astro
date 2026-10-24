@@ -1,0 +1,71 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHead from './PageHead.astro';
+import Faq from './Faq.astro';
+import FinalCta from './sections/FinalCta.astro';
+import BeforeWeArrive from './sections/BeforeWeArrive.astro';
+import { services, towns, type Town } from '../config/site';
+import type { AreaPage } from '../content/areas';
+import { faqSchema } from '../lib/schema';
+import { plain } from '../lib/text';
+interface Props { town: Town; page: AreaPage }
+const { town, page } = Astro.props;
+const offered = town.services.map((k) => services[k]).filter((s) => s.enabled);
+const nearby = town.nearby.map((slug) => towns.find((t) => t.slug === slug)).filter(Boolean) as Town[];
+const crumbs = town.path.startsWith('/areas/') ? [{ name: 'Areas', href: '/areas/' }, { name: town.name, href: town.path }] : [{ name: town.name, href: town.path }];
+const subj = `cleaning in ${town.name}`;
+---
+<Base title={page.title} description={page.description} path={town.path} breadcrumbs={crumbs} waSubject={subj} schema={[faqSchema([page.faq])]}>
+  <PageHead label={`${town.name} · ${town.postcodes.join(' ')}`} h1={page.h1} lede={page.lede} waSubject={subj} />
+
+  <section class="area" aria-label={`Cleaning in ${town.name}`}>
+    <div class="wrap area__grid">
+      <div class="area__main prose">
+        <h2>Homes in {town.name}, and what they need</h2>
+        {page.homes.map((p) => <p>{p}</p>)}
+        <h2>Parking and access</h2>
+        {page.parking.map((p) => <p>{p}</p>)}
+        {page.local.map((p) => <p>{p}</p>)}
+        {page.hoods && (<><h2>{page.hoods.h2}</h2><p>{page.hoods.text}</p></>)}
+      </div>
+      <aside class="area__aside">
+        <div class="area__menu">
+          <p class="label">What we clean in {town.name}</p>
+          <ul>{offered.map((s) => <li><a href={s.path}>{s.name}</a></li>)}</ul>
+        </div>
+        <div class="area__near">
+          <p class="label">Nearby</p>
+          <p>{nearby.map((t, i) => <><a href={t.path}>{t.name}</a>{i < nearby.length - 1 ? ', ' : ''}</>)}</p>
+          <p class="label area__pc-label">Postcodes</p>
+          <p>{town.postcodes.join(', ')} and nearby</p>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <BeforeWeArrive id="prep" />
+
+  <Faq items={[page.faq]} heading={`A question we get in ${town.name}`} label={town.name} id="area-faq">
+    <p>For drying times, prices and pets, see <a href="/how-it-works/">how it works</a>.</p>
+  </Faq>
+
+  <FinalCta slot="pre-footer" waSubject={subj} heading={`Send us a photo from ${town.name}. We’ll tell you the price and what’s possible, honestly.`} />
+</Base>
+
+<style>
+  .area { padding-block: clamp(1rem, 3vw, 2rem) var(--s-9); }
+  .area__grid { display: grid; gap: 3rem; }
+  .area__main > h2:first-child { margin-top: 0; }
+  .area__aside { display: grid; gap: 1.5rem; align-content: start; }
+  .area__menu { background: var(--paper); padding: 1.5rem; border-top: 2px solid var(--forest); }
+  .area__menu ul { list-style: none; padding: 0; margin-top: 0.5rem; }
+  .area__menu a { display: flex; min-height: 44px; align-items: center; border-bottom: 1px solid var(--sage-50); text-decoration: none; font-family: var(--font-display); font-size: 1.25rem; color: var(--ink); }
+  .area__menu a:hover { color: var(--forest); }
+  .area__near { padding: 0 0.25rem; }
+  .area__near p:not(.label) { margin-top: 0.3rem; }
+  .area__pc-label { margin-top: 1.2rem; }
+  @media (min-width: 960px) {
+    .area__grid { grid-template-columns: 7.5fr 4fr; gap: 5rem; }
+    .area__aside { position: sticky; top: 2rem; align-self: start; }
+  }
+</style>

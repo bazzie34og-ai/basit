@@ -1,0 +1,90 @@
+---
+import Logo from './Logo.astro';
+import Icon from './Icon.astro';
+import { nav, business, tel, waLink, waText } from '../config/site';
+interface Props { path: string; waSubject: string }
+const { path, waSubject } = Astro.props;
+const isCurrent = (href: string) => path === href || (href !== '/' && href === '/areas/' && path.startsWith('/areas/'));
+---
+<header class="site-header">
+  <div class="wrap site-header__inner">
+    <a class="site-header__logo" href="/" aria-label={`${business.name}, home`}><Logo tone="forest" size="header" /></a>
+
+    <nav class="nav nav--desktop" aria-label="Main">
+      <ul>
+        {nav.map((n) => <li><a href={n.href} aria-current={isCurrent(n.href) ? 'page' : undefined}>{n.label}</a></li>)}
+      </ul>
+    </nav>
+
+    <div class="site-header__actions">
+      <a class="site-header__call" href={tel} data-track="call_click" data-where="header">
+        <span class="label">Call</span> {business.phones.call.display}
+      </a>
+      <a class="btn btn--primary site-header__wa" href={waLink(waText(waSubject))} data-track="whatsapp_click" data-where="header" rel="noopener">
+        <Icon name="whatsapp" /> WhatsApp a photo
+      </a>
+    </div>
+
+    <details class="nav nav--mobile">
+      <summary><span class="nav__burger" aria-hidden="true"></span><span>Menu</span></summary>
+      <div class="nav__panel">
+        <ul>
+          {nav.map((n) => <li><a href={n.href} aria-current={isCurrent(n.href) ? 'page' : undefined}>{n.label}</a></li>)}
+        </ul>
+        <p class="nav__contact">
+          <a href={tel} data-track="call_click" data-where="menu">Call {business.phones.call.display}</a>
+          <span class="muted">{business.hoursFallback}</span>
+        </p>
+      </div>
+    </details>
+  </div>
+</header>
+
+<style>
+  .site-header { position: relative; z-index: 20; background: var(--linen); border-bottom: 1px solid var(--sage-200); }
+  .site-header__inner { display: flex; align-items: center; gap: 1.5rem; min-height: 72px; padding-block: 0.6rem; }
+  .site-header__logo { display: inline-flex; text-decoration: none; margin-right: auto; min-height: 44px; align-items: center; }
+  .nav--desktop, .site-header__actions { display: none; }
+
+  .nav ul { list-style: none; padding: 0; }
+  .nav a { color: var(--ink); text-decoration: none; font-weight: 500; }
+  .nav a[aria-current='page'] { color: var(--forest); text-decoration: underline; text-decoration-color: var(--oak); text-underline-offset: 0.45em; }
+
+  /* Mobile menu: native <details>, works without JS */
+  .nav--mobile summary {
+    list-style: none; display: inline-flex; align-items: center; gap: 0.55rem;
+    min-height: 44px; padding: 0 0.9rem; border: 1px solid var(--sage-200); border-radius: var(--radius-btn);
+    font-weight: 600; color: var(--forest); cursor: pointer;
+  }
+  .nav--mobile summary::-webkit-details-marker { display: none; }
+  .nav__burger, .nav__burger::before { display: block; width: 16px; height: 1.5px; background: currentColor; position: relative; }
+  .nav__burger { box-shadow: 0 -5px 0 currentColor; top: 2.5px; }
+  .nav__burger::before { content: ''; top: 5px; position: absolute; }
+  .nav__panel {
+    position: absolute; left: 0; right: 0; top: 100%;
+    background: var(--paper); border-bottom: 1px solid var(--sage-200);
+    padding: 0.5rem var(--gutter) 1.25rem;
+    box-shadow: 0 24px 40px -30px rgba(19, 32, 26, 0.4);
+  }
+  .nav__panel li a { display: flex; align-items: center; min-height: 52px; font-family: var(--font-display); font-size: 1.6rem; border-bottom: 1px solid var(--sage-50); }
+  .nav__contact { display: flex; flex-direction: column; gap: 0.2rem; margin-top: 1rem; }
+  .nav__contact a { font-weight: 600; color: var(--forest); min-height: 44px; display: inline-flex; align-items: center; }
+
+  @media (min-width: 768px) {
+    .site-header__actions { display: flex; align-items: center; gap: 1.1rem; }
+    .site-header__call { color: var(--ink); text-decoration: none; font-weight: 600; white-space: nowrap; display: inline-flex; gap: 0.5rem; min-height: 44px; align-items: center; }
+    .site-header__call:hover { color: var(--forest); }
+    .site-header__wa { min-height: 46px; padding-inline: 1.05rem; font-size: 0.95rem; }
+  }
+  @media (min-width: 1080px) {
+    .nav--mobile { display: none; }
+    .site-header__logo { margin-right: 0; }
+    .nav--desktop { display: block; margin-inline: auto; }
+    .nav--desktop ul { display: flex; gap: clamp(0.9rem, 1.6vw, 1.6rem); }
+    .nav--desktop a { font-size: 0.98rem; display: inline-flex; min-height: 44px; align-items: center; white-space: nowrap; }
+    .nav--desktop a:hover { color: var(--forest); }
+  }
+  @media (min-width: 1080px) and (max-width: 1239px) {
+    .site-header__call .label { display: none; }
+  }
+</style>

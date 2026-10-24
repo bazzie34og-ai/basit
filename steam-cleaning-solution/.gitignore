@@ -1,0 +1,12 @@
+node_modules/
+dist/
+.astro/
+.netlify/
+.env
+.env.*
+!.env.example
+src/assets/photos/*
+!src/assets/photos/.gitkeep
+src/assets/logos/*
+!src/assets/logos/.gitkeep
+public/og/

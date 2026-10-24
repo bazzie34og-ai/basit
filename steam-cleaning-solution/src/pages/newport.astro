@@ -1,0 +1,7 @@
+---
+import AreaPageBody from '../components/AreaPageBody.astro';
+import { towns } from '../config/site';
+import { areaPages } from '../content/areas';
+const town = towns.find((t) => t.slug === 'newport')!;
+---
+<AreaPageBody town={town} page={areaPages.newport} />

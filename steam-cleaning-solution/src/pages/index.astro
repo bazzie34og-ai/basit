@@ -1,0 +1,41 @@
+---
+import Base from '../layouts/Base.astro';
+import Hero from '../components/sections/Hero.astro';
+import PhotoSteps from '../components/sections/PhotoSteps.astro';
+import BeforeAfterSection from '../components/sections/BeforeAfterSection.astro';
+import ServiceMenu from '../components/sections/ServiceMenu.astro';
+import Visit from '../components/sections/Visit.astro';
+import StainIndex from '../components/sections/StainIndex.astro';
+import BeforeWeArrive from '../components/sections/BeforeWeArrive.astro';
+import LandlordBand from '../components/sections/LandlordBand.astro';
+import Reviews from '../components/sections/Reviews.astro';
+import AreasList from '../components/sections/AreasList.astro';
+import OwnerNote from '../components/sections/OwnerNote.astro';
+import Faq from '../components/Faq.astro';
+import FinalCta from '../components/sections/FinalCta.astro';
+import { homeFaq } from '../config/site';
+import { faqSchema } from '../lib/schema';
+---
+<Base
+  title="Carpet Cleaning Cardiff & Newport | Sofas, Mattresses"
+  description="Carpet, sofa and mattress cleaning in Cardiff and Newport. WhatsApp a photo for a fixed price. Hot water extraction, stains treated, no hidden charges."
+  path="/"
+  waSubject="carpet, sofa or mattress cleaning"
+  schema={[faqSchema(homeFaq)]}
+>
+  <Hero />
+  <PhotoSteps />
+  <BeforeAfterSection />
+  <ServiceMenu />
+  <Visit />
+  <StainIndex />
+  <BeforeWeArrive />
+  <LandlordBand />
+  <Reviews />
+  <AreasList />
+  <OwnerNote />
+  <Faq items={homeFaq}>
+    <p>Straight answers to what people search for before they book. Anything else, just message us.</p>
+  </Faq>
+  <FinalCta slot="pre-footer" waSubject="carpet, sofa or mattress cleaning" />
+</Base>

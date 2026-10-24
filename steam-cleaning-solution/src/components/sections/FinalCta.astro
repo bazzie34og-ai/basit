@@ -1,0 +1,17 @@
+---
+import Ctas from '../Ctas.astro';
+interface Props { waSubject?: string; heading?: string }
+const { waSubject = 'cleaning', heading = 'Send us a photo. We’ll tell you the price and what’s possible, honestly.' } = Astro.props;
+---
+<section class="final" aria-label="Get a quote">
+  <div class="wrap final__inner">
+    <h2>{heading}</h2>
+    <Ctas waSubject={waSubject} tone="dark" where="final_cta" />
+  </div>
+</section>
+<style>
+  .final { background: var(--forest); color: var(--linen); padding-block: clamp(3.5rem, 8vw, 6rem) clamp(2.5rem, 5vw, 3.5rem); }
+  .final h2 { color: var(--linen); max-width: 22ch; font-size: clamp(2rem, 4.6vw, 3.4rem); margin-bottom: 2rem; }
+  .final__inner { display: grid; }
+  @media (min-width: 960px) { .final__inner { grid-template-columns: 7fr 5fr; align-items: end; gap: 3rem; } .final h2 { margin-bottom: 0; } .final :global(.ctas) { justify-content: flex-end; } }
+</style>

@@ -1,0 +1,97 @@
+---
+/**
+ * Before/after. Without JS: the two halves sit side by side, each labelled.
+ * With JS: an overlay with an accessible range input (arrow keys, Home/End, 50% start).
+ */
+import { Picture } from 'astro:assets';
+import { photo, type Pair } from '../lib/photos';
+interface Props { pair: Pair; note?: string; id: string }
+const { pair, note, id } = Astro.props;
+const b = photo(pair.before)!;
+const a = photo(pair.after)!;
+const w = (img: ImageMetadata) => [...new Set([Math.min(560, img.width), Math.min(840, img.width)])];
+const sizes = '(max-width: 900px) calc(100vw - 52px), 540px';
+---
+<figure class="ba" data-ba style={`--ratio:${a.width}/${a.height}`}>
+  <div class="ba__mount">
+    <div class="ba__stage">
+      <div class="ba__half ba__half--after">
+        <Picture src={a} alt={`${pair.alt}, after cleaning`} formats={['avif', 'webp']} widths={w(a)} sizes={sizes} loading="lazy" decoding="async" />
+        <span class="ba__tag label">After</span>
+      </div>
+      <div class="ba__half ba__half--before">
+        <Picture src={b} alt={`${pair.alt}, before cleaning`} formats={['avif', 'webp']} widths={w(b)} sizes={sizes} loading="lazy" decoding="async" />
+        <span class="ba__tag label">Before</span>
+      </div>
+      <span class="ba__handle" aria-hidden="true"></span>
+    </div>
+  </div>
+  <div class="ba__control" hidden>
+      <label class="label" for={`ba-${id}`}>Before / After</label>
+      <input id={`ba-${id}`} type="range" min="0" max="100" step="1" value="50" aria-valuetext="Showing half before, half after" />
+  </div>
+  <figcaption class="ba__caption"><span class="label">{pair.caption}</span>{note && <span class="ba__note"> {note}</span>}</figcaption>
+</figure>
+
+<style>
+  .ba { margin: 0; max-width: 560px; }
+  .ba__mount { background: var(--paper); padding: 10px; position: relative; box-shadow: 0 18px 40px -26px rgba(19, 32, 26, 0.3); }
+  .ba__mount::after { content: ''; position: absolute; inset: 10px; border: 1px solid var(--oak); pointer-events: none; z-index: 2; }
+  /* No-JS: side by side */
+  .ba__stage { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+  .ba__half--before { order: -1; }
+  .ba__half { position: relative; }
+  .ba__half :global(img) { width: 100%; height: 100%; object-fit: cover; aspect-ratio: var(--ratio); }
+  .ba__tag { position: absolute; left: 8px; top: 8px; background: var(--linen); color: var(--ink); padding: 0.2rem 0.5rem; }
+  .ba__handle { display: none; }
+  .ba__caption { margin-top: 0.85rem; padding-left: 10px; font-size: var(--fs-small); color: var(--muted); }
+  .ba__caption .label { color: var(--ink); }
+
+  /* Enhanced: overlay + range */
+  .ba.is-live .ba__stage { display: block; position: relative; overflow: hidden; aspect-ratio: var(--ratio); --pos: 50%; }
+  .ba.is-live .ba__half { position: absolute; inset: 0; }
+  .ba.is-live .ba__half--before { clip-path: inset(0 calc(100% - var(--pos)) 0 0); }
+  .ba.is-live .ba__half--after .ba__tag { left: auto; right: 8px; }
+  .ba.is-live .ba__handle {
+    display: block; position: absolute; top: 0; bottom: 0; left: var(--pos);
+    width: 2px; margin-left: -1px; background: var(--paper); box-shadow: 0 0 0 1px rgba(19, 32, 26, 0.25);
+  }
+  .ba.is-live .ba__handle::after {
+    content: ''; position: absolute; top: 50%; left: 50%; width: 34px; height: 34px; margin: -17px 0 0 -17px;
+    border-radius: 50%; background: var(--paper); border: 1px solid var(--oak);
+    background-image: linear-gradient(90deg, transparent 13px, var(--forest) 13px, var(--forest) 15px, transparent 15px, transparent 19px, var(--forest) 19px, var(--forest) 21px, transparent 21px);
+    background-size: 100% 12px; background-repeat: no-repeat; background-position: 0 center;
+  }
+  .ba__control { display: flex; align-items: center; gap: 0.75rem; padding: 12px 10px 0; }
+  .ba__control[hidden] { display: none; }
+  .ba__control label { color: var(--ink); white-space: nowrap; }
+  .ba__control input { flex: 1; min-height: 44px; accent-color: var(--forest); cursor: ew-resize; }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-ba]').forEach((fig) => {
+    const stage = fig.querySelector<HTMLElement>('.ba__stage')!;
+    const control = fig.querySelector<HTMLElement>('.ba__control')!;
+    const input = control.querySelector('input')!;
+    const set = () => {
+      const v = Number(input.value);
+      stage.style.setProperty('--pos', `${v}%`);
+      input.setAttribute('aria-valuetext', v <= 2 ? 'Showing after' : v >= 98 ? 'Showing before' : `${v}% before, ${100 - v}% after`);
+    };
+    control.hidden = false;
+    fig.classList.add('is-live');
+    input.addEventListener('input', set);
+    // Drag directly on the photo too
+    let dragging = false;
+    const move = (e: PointerEvent) => {
+      const r = stage.getBoundingClientRect();
+      input.value = String(Math.round(Math.min(100, Math.max(0, ((e.clientX - r.left) / r.width) * 100))));
+      set();
+    };
+    stage.addEventListener('pointerdown', (e) => { dragging = true; stage.setPointerCapture(e.pointerId); move(e); });
+    stage.addEventListener('pointermove', (e) => dragging && move(e));
+    stage.addEventListener('pointerup', () => (dragging = false));
+    stage.style.touchAction = 'pan-y';
+    set();
+  });
+</script>

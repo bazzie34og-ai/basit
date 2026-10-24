@@ -1,0 +1,23 @@
+---
+import Base from '../../layouts/Base.astro';
+import PageHead from '../../components/PageHead.astro';
+import { guides } from '../../lib/guides';
+---
+<Base title="Carpet & Upholstery Cleaning Guides | Cardiff" description="Plain-English guides on carpet drying times, deposits, pet smells, cleaning methods and prices, from a Cardiff and Newport cleaning company." path="/guides/" breadcrumbs={[{ name: 'Guides', href: '/guides/' }]}>
+  <PageHead label="Guides" h1="Straight answers, *written down*" lede="The questions we’re asked most, answered properly. No jargon, and honest about what cleaning can and can’t do." waSubject="cleaning" ctas={false} />
+  <section class="wrap glist">
+    <ol>
+      {guides.map((g, i) => (
+        <li><a href={g.path}><span class="glist__n">{String(i + 1).padStart(2, '0')}</span><span class="glist__t">{g.h1}</span><span class="glist__d muted">{g.description}</span></a></li>
+      ))}
+    </ol>
+  </section>
+</Base>
+<style>
+  .glist { padding-bottom: var(--s-9); }
+  .glist ol { list-style: none; padding: 0; border-top: 1px solid var(--sage-200); max-width: 960px; }
+  .glist a { display: grid; grid-template-columns: 3rem 1fr; gap: 0.3rem 1rem; padding-block: 1.5rem; border-bottom: 1px solid var(--sage-200); text-decoration: none; color: var(--ink); }
+  .glist__n { grid-row: span 2; font-size: var(--fs-label); letter-spacing: 0.14em; font-weight: 600; color: var(--forest); padding-top: 0.5rem; }
+  .glist__t { font-family: var(--font-display); font-size: clamp(1.5rem, 2.6vw, 2rem); line-height: 1.15; }
+  .glist a:hover .glist__t { color: var(--forest); }
+</style>

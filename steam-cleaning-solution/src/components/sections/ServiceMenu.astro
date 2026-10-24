@@ -1,0 +1,46 @@
+---
+import { enabledServices, priceLabel, PHOTO_QUOTE_LINE } from '../../config/site';
+const list = enabledServices();
+---
+<section class="menu section" aria-labelledby="menu-h">
+  <div class="wrap">
+    <div class="menu__card">
+      <header class="menu__head">
+        <p class="label">The housekeeping menu</p>
+        <h2 id="menu-h">What we clean</h2>
+        <p class="muted">{PHOTO_QUOTE_LINE}.</p>
+      </header>
+      <ul class="menu__list">
+        {list.map((s) => (
+          <li>
+            <a href={s.path} class="menu__item">
+              <span class="menu__row">
+                <span class="menu__name">{s.name}</span>
+                <span class="menu__dots" aria-hidden="true"></span>
+                <span class="menu__price">{priceLabel(s)}</span>
+              </span>
+              <span class="menu__line">{s.menuLine}</span>
+              {s.fromPrice != null && s.priceNote && <span class="menu__note">{s.priceNote}</span>}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </div>
+</section>
+<style>
+  .menu__card { background: var(--paper); max-width: 1060px; margin-inline: auto; padding: clamp(2rem, 5vw, 4rem) clamp(1.25rem, 5vw, 4.5rem); border: 1px solid var(--sage-200); outline: 1px solid var(--sage-200); outline-offset: -9px; }
+  .menu__head { text-align: center; max-width: 34rem; margin: 0 auto clamp(2rem, 4vw, 3rem); }
+  .menu__head h2 { margin-top: 0.5rem; }
+  .menu__head p:last-child { margin-top: 0.75rem; }
+  .menu__list { list-style: none; padding: 0; display: grid; gap: 0 4rem; }
+  .menu__item { display: block; padding-block: 1.05rem; text-decoration: none; color: var(--ink); border-bottom: 1px solid var(--sage-50); }
+  .menu__row { display: flex; align-items: baseline; gap: 0.6rem; }
+  .menu__name { font-family: var(--font-display); font-size: 1.45rem; line-height: 1.15; }
+  .menu__dots { flex: 1; min-width: 1.5rem; border-bottom: 2px dotted var(--sage-200); transform: translateY(-0.3em); }
+  .menu__price { font-size: var(--fs-label); font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--forest); white-space: nowrap; }
+  .menu__line { display: block; margin-top: 0.3rem; color: var(--muted); font-size: 0.98rem; max-width: 46ch; }
+  .menu__note { display: block; font-size: 0.85rem; color: var(--muted); font-style: italic; }
+  .menu__item:hover .menu__name { color: var(--forest); text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 0.18em; }
+  @media (min-width: 860px) { .menu__list { grid-template-columns: 1fr 1fr; } }
+</style>
