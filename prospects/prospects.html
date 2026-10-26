@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en-GB"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Website Prospects</title>
+<style>
+:root{--bg:#f6f7f9;--card:#fff;--ink:#1d2330;--mute:#5d6678;--line:#e3e6ec;--acc:#2456d6;--wa:#1f9d55}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+main{max-width:720px;margin:0 auto;padding:16px}h1{font-size:1.4rem;margin:.2em 0}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;margin:14px 0}
+.card header{display:flex;justify-content:space-between;gap:8px;align-items:start}h2{font-size:1.15rem;margin:0}
+h3{font-size:.8rem;text-transform:uppercase;letter-spacing:.04em;color:var(--mute);margin:14px 0 4px}
+.meta,.small{color:var(--mute);font-size:.9rem;margin:4px 0}.msg{background:#f1f4fb;border-radius:10px;padding:10px;margin:0}
+.conf{font-size:.75rem;padding:2px 8px;border-radius:99px;background:#e8eefc;color:var(--acc);white-space:nowrap}.conf.medium{background:#fdf2dc;color:#8a5a00}
+.links a{color:var(--acc);margin-right:10px;font-size:.9rem}
+.actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}
+button,.btn,select{font:inherit;padding:10px;border-radius:10px;border:1px solid var(--line);background:#fff;text-align:center;text-decoration:none;color:var(--ink)}
+.btn.wa{background:var(--wa);color:#fff;border-color:var(--wa)}.btn.off{color:var(--mute);font-size:.85rem}
+ul{margin:0;padding-left:20px}
+</style></head><body><main>
+<h1>Website Prospects</h1><p class="meta">0 prospects · WhatsApp is not confirmed for any number — tap to check.</p>
+
+</main><script>
+function cp(id,b){var t=document.getElementById(id).innerText;var done=function(){var o=b.innerText;b.innerText='Copied';setTimeout(function(){b.innerText=o},1200)};
+if(navigator.clipboard){navigator.clipboard.writeText(t).then(done,function(){fb(t);done()})}else{fb(t);done()}}
+function fb(t){var a=document.createElement('textarea');a.value=t;document.body.appendChild(a);a.select();try{document.execCommand('copy')}catch(e){}a.remove()}
+function save(s){try{localStorage.setItem('prospect-status-'+s.dataset.key,s.value)}catch(e){}}
+document.querySelectorAll('select[id^=s]').forEach(function(s){try{var v=localStorage.getItem('prospect-status-'+s.dataset.key);if(v)s.value=v}catch(e){}});
+</script></body></html>
