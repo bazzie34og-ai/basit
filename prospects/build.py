@@ -20,7 +20,7 @@ FIELDS = [
     "track_record", "activity", "human_detail", "pain_points",
     "opener", "bridge", "confidence", "confidence_reason", "strength", "sources",
 ]
-CONF_ORDER = {"High": 0, "Medium": 1}
+CONF_ORDER = {"High": 0, "Medium": 1, "Low": 2}
 
 
 def wa_link(phone):
@@ -93,14 +93,14 @@ main{max-width:720px;margin:0 auto;padding:16px}h1{font-size:1.4rem;margin:.2em 
 .card header{display:flex;justify-content:space-between;gap:8px;align-items:start}h2{font-size:1.15rem;margin:0}
 h3{font-size:.8rem;text-transform:uppercase;letter-spacing:.04em;color:var(--mute);margin:14px 0 4px}
 .meta,.small{color:var(--mute);font-size:.9rem;margin:4px 0}.msg{background:#f1f4fb;border-radius:10px;padding:10px;margin:0}
-.conf{font-size:.75rem;padding:2px 8px;border-radius:99px;background:#e8eefc;color:var(--acc);white-space:nowrap}.conf.medium{background:#fdf2dc;color:#8a5a00}
+.conf{font-size:.75rem;padding:2px 8px;border-radius:99px;background:#e8eefc;color:var(--acc);white-space:nowrap}.conf.medium{background:#fdf2dc;color:#8a5a00}.conf.low{background:#f3e8e8;color:#8a2a2a}
 .links a{color:var(--acc);margin-right:10px;font-size:.9rem}
 .actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}
 button,.btn,select{font:inherit;padding:10px;border-radius:10px;border:1px solid var(--line);background:#fff;text-align:center;text-decoration:none;color:var(--ink)}
 .btn.wa{background:var(--wa);color:#fff;border-color:var(--wa)}.btn.off{color:var(--mute);font-size:.85rem}
 ul{margin:0;padding-left:20px}
 </style></head><body><main>
-<h1>Website Prospects</h1><p class="meta">{count} prospects · WhatsApp is not confirmed for any number — tap to check.</p>
+<h1>Website Prospects</h1><p class="meta">{count} prospects · WhatsApp is not confirmed for any number — tap to check. Built from search results only (sites were blocked); check every source before sending.</p>
 {cards}
 </main><script>
 function cp(id,b){var t=document.getElementById(id).innerText;var done=function(){var o=b.innerText;b.innerText='Copied';setTimeout(function(){b.innerText=o},1200)};
