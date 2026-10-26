@@ -69,8 +69,8 @@ def card(i, r):
   <h3>Human detail</h3><p>{e(r.get("human_detail",""))}</p>
   <h3>Pain points</h3><ul>{pains}</ul>
   <h3>Opener</h3><p class="msg" id="o{i}">{e(r.get("opener",""))}</p>
-  <h3>Or: pain-point question</h3><p class="msg" id="p{i}">{e(r.get("pain_message",""))}</p>
-  <div class="actions"><button onclick="cp('p{i}',this)">Copy pain-point msg</button>{wa2}</div>
+  <h3>Or: insider question</h3><p class="msg" id="p{i}">{e(r.get("pain_message",""))}</p>
+  <div class="actions"><button onclick="cp('p{i}',this)">Copy insider question</button>{wa2}</div>
   <h3>Bridge (after they reply)</h3><p class="msg" id="b{i}">{e(r.get("bridge",""))}</p>
   <p class="small">Confidence: {e(r.get("confidence_reason",""))}</p>
   <p class="links">{links}</p>
