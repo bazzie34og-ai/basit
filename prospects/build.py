@@ -18,7 +18,7 @@ FIELDS = [
     "phone", "phone_type", "wa_link", "phone_source",
     "website_status", "website_check",
     "track_record", "activity", "human_detail", "pain_points",
-    "opener", "bridge", "confidence", "confidence_reason", "strength", "sources",
+    "opener", "pain_message", "bridge", "confidence", "confidence_reason", "strength", "sources",
 ]
 CONF_ORDER = {"High": 0, "Medium": 1, "Low": 2}
 
@@ -56,8 +56,10 @@ def card(i, r):
     links = " ".join(f'<a href="{e(u)}" target="_blank" rel="noopener">Open source ↗</a>' for u in r.get("sources") or [])
     if r["wa_link"]:
         wa = f'<a class="btn wa" href="{e(r["wa_link"])}?text={quote(r.get("opener", ""))}" target="_blank" rel="noopener">Open WhatsApp</a>'
+        wa2 = f'<a class="btn wa" href="{e(r["wa_link"])}?text={quote(r.get("pain_message", ""))}" target="_blank" rel="noopener">WhatsApp this one</a>'
     else:
         wa = '<span class="btn off">No WhatsApp (no mobile)</span>'
+        wa2 = wa
     return f"""
 <article class="card" data-id="{i}">
   <header><h2>{e(r.get("business",""))}</h2><span class="conf {e(r.get("confidence","").lower())}">{e(r.get("confidence",""))}</span></header>
@@ -67,6 +69,8 @@ def card(i, r):
   <h3>Human detail</h3><p>{e(r.get("human_detail",""))}</p>
   <h3>Pain points</h3><ul>{pains}</ul>
   <h3>Opener</h3><p class="msg" id="o{i}">{e(r.get("opener",""))}</p>
+  <h3>Or: pain-point question</h3><p class="msg" id="p{i}">{e(r.get("pain_message",""))}</p>
+  <div class="actions"><button onclick="cp('p{i}',this)">Copy pain-point msg</button>{wa2}</div>
   <h3>Bridge (after they reply)</h3><p class="msg" id="b{i}">{e(r.get("bridge",""))}</p>
   <p class="small">Confidence: {e(r.get("confidence_reason",""))}</p>
   <p class="links">{links}</p>
