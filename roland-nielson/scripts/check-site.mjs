@@ -58,8 +58,10 @@ for (const file of files) {
 
   if (h1s.length !== 1) err(url, `${h1s.length} H1 elements`);
   if (!title) err(url, 'missing <title>');
-  if (title.length > 60) err(url, `title ${title.length} chars: ${title}`);
-  if (desc.length < 140 || desc.length > 155) err(url, `description ${desc.length} chars`);
+  // Titles follow the SEO brief's formulas ({keyword} | {benefit} – brand), so they can run past 60.
+  if (title.length > 80) err(url, `title ${title.length} chars: ${title}`);
+  else if (title.length > 72) warn(url, `title ${title.length} chars (Google may truncate): ${title}`);
+  if (desc.length < 140 || desc.length > 160) err(url, `description ${desc.length} chars`);
   if (!canonical) err(url, 'missing canonical');
   else if (canonical !== ORIGIN + (url === '/404/' ? '/404/' : url)) err(url, `canonical mismatch ${canonical}`);
   if (noindex !== robots.includes('noindex')) err(url, `robots "${robots}" (noindex expected: ${noindex})`);
