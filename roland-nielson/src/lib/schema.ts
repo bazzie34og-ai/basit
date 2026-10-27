@@ -1,5 +1,5 @@
 // JSON-LD builders. Nodes connect through stable @id values.
-import { site, plans, rebuildProgram, inPersonAddOn, abs, hasOffice, priceRange } from '../config/site';
+import { site, plans, rebuildProgram, inPersonAddOn, abs, hasOffice, priceRange, areaPages, type AreaPage } from '../config/site';
 import video from '../data/recovery-video.json';
 
 export const ids = {
@@ -85,7 +85,7 @@ export function businessNode() {
     ...(hasOffice && site.office.lat
       ? { geo: { '@type': 'GeoCoordinates', latitude: Number(site.office.lat), longitude: Number(site.office.lng) } }
       : {}),
-    areaServed,
+    areaServed: allAreasServed(),
     openingHoursSpecification: site.hours.map((h) => ({
       '@type': 'OpeningHoursSpecification',
       dayOfWeek: h.days.map((d) => dayMap[d]),
@@ -233,6 +233,50 @@ export function blogPosting(opts: { path: string; title: string; description: st
     mainEntityOfPage: { '@id': abs(`${opts.path}#webpage`) },
     inLanguage: site.lang,
   };
+}
+
+// A service-area page's place: a City, or a Place inside Omaha for neighborhoods.
+export function areaPlace(a: AreaPage) {
+  const state = { '@type': 'State', name: a.state === 'IA' ? 'Iowa' : 'Nebraska' };
+  return a.kind === 'neighborhood'
+    ? { '@type': 'Place', name: `${a.name}, Omaha, NE`, containedInPlace: { '@type': 'City', name: 'Omaha', containedInPlace: state } }
+    : { '@type': 'City', name: a.name, containedInPlace: state };
+}
+// Omaha plus every service-area page (cities and Omaha neighborhoods).
+export const allAreasServed = () => {
+  const cities = new Map(areaServed.map((c) => [c.name, c] as const));
+  for (const a of areaPages) if (a.kind === 'city' && !cities.has(a.name)) cities.set(a.name, areaPlace(a) as (typeof areaServed)[number]);
+  return [...cities.values(), ...areaPages.filter((a) => a.kind === 'neighborhood').map(areaPlace)];
+};
+
+// Service node for the per-service and per-area pages. Offers: "from $149/month" (or a note).
+export function localService(opts: { path: string; name: string; serviceType: string; description: string; area?: AreaPage; priceNote?: string }) {
+  return {
+    '@type': 'Service',
+    '@id': abs(`${opts.path}#service`),
+    name: opts.name,
+    serviceType: opts.serviceType,
+    description: opts.description,
+    provider: { '@id': ids.business },
+    areaServed: opts.area ? areaPlace(opts.area) : allAreasServed(),
+    audience: { '@type': 'PeopleAudience', audienceType: 'Men', suggestedGender: 'male' },
+    url: abs(opts.path),
+    offers: opts.priceNote
+      ? { '@type': 'Offer', description: opts.priceNote, priceSpecification: { '@type': 'PriceSpecification', priceCurrency: 'USD', description: opts.priceNote }, url: abs('/pricing/') }
+      : {
+          '@type': 'Offer',
+          description: 'Plans from $149/month',
+          price: 149,
+          priceCurrency: 'USD',
+          priceSpecification: { '@type': 'UnitPriceSpecification', price: 149, minPrice: 149, priceCurrency: 'USD', unitText: 'MONTH', referenceQuantity: { '@type': 'QuantitativeValue', value: 1, unitCode: 'MON' } },
+          url: abs('/pricing/'),
+          availability: 'https://schema.org/InStock',
+        },
+  };
+}
+
+export function article(opts: { path: string; title: string; description: string; published: string; updated: string; image: string }) {
+  return { ...blogPosting(opts), '@type': 'Article' };
 }
 
 // The site-wide graph, included on every page.
