@@ -1,0 +1,14 @@
+---
+// The "What this is not" box. data-scope: the only places the non-clinical disclaimer words appear.
+import CrisisBox from './CrisisBox.astro';
+---
+<aside class="scope-box" aria-labelledby="scope-h" data-scope data-shared>
+  <p class="eyebrow" id="scope-h">What this is not</p>
+  <p>Roland Nielson is a non-clinical life coach. Coaching is not therapy, counseling, medical care, addiction treatment or crisis support, and it does not diagnose or treat any condition. If you need that kind of help, Roland will say so plainly and point you to licensed professionals. Coaching can run alongside it.</p>
+  <CrisisBox compact />
+</aside>
+<style>
+  .scope-box { border: 1px solid var(--sand); border-left: 3px solid var(--brass); border-radius: var(--radius); padding: var(--space-s) var(--space-m); background: var(--white); margin-top: var(--space-m); }
+  .scope-box .eyebrow { margin-bottom: 0.6rem; }
+  .scope-box p { font-size: 0.98rem; }
+</style>

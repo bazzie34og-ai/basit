@@ -1,0 +1,21 @@
+---
+// Service, service-area and question pages, all at /<slug>/, from the markdown collections.
+// Static pages in src/pages win over these routes; flagged services are filtered out in getServices().
+import ServicePage from '../components/templates/ServicePage.astro';
+import AreaPage from '../components/templates/AreaPage.astro';
+import QuestionPage from '../components/templates/QuestionPage.astro';
+import { getServices, getAreas, getQuestions } from '../lib/content';
+
+export async function getStaticPaths() {
+  const [services, areas, questions] = await Promise.all([getServices(), getAreas(), getQuestions()]);
+  return [
+    ...services.map((entry) => ({ params: { slug: entry.id }, props: { kind: 'service' as const, entry, services, areas } })),
+    ...areas.map((entry) => ({ params: { slug: entry.id }, props: { kind: 'area' as const, entry, services, areas } })),
+    ...questions.map((entry) => ({ params: { slug: entry.id }, props: { kind: 'question' as const, entry, services, areas } })),
+  ];
+}
+const p = Astro.props as any;
+---
+{p.kind === 'service' && <ServicePage entry={p.entry} services={p.services} areas={p.areas} />}
+{p.kind === 'area' && <AreaPage entry={p.entry} services={p.services} areas={p.areas} />}
+{p.kind === 'question' && <QuestionPage entry={p.entry} />}

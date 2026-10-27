@@ -3,8 +3,19 @@
 
 type Gtag = (...args: unknown[]) => void;
 const gtag = (): Gtag | undefined => (window as unknown as { gtag?: Gtag }).gtag;
+const pageType = document.body.dataset.pageType || 'page'; // service, area, hub, question, blog, home, page
 const track = (event: string, params: Record<string, unknown> = {}) =>
-  gtag()?.('event', event, { page_path: location.pathname, ...params });
+  gtag()?.('event', event, { page_path: location.pathname, page_type: pageType, ...params });
+
+// --- Header dropdowns (<details>): one open at a time; close on outside click or Escape --
+const drops = Array.from(document.querySelectorAll<HTMLDetailsElement>('[data-drop]'));
+drops.forEach((d) => d.addEventListener('toggle', () => { if (d.open) drops.forEach((o) => o !== d && (o.open = false)); }));
+document.addEventListener('click', (e) => drops.forEach((d) => { if (d.open && !d.contains(e.target as Node)) d.open = false; }));
+document.addEventListener('keydown', (e) => {
+  if (e.key !== 'Escape') return;
+  const open = drops.find((d) => d.open);
+  if (open) { open.open = false; open.querySelector('summary')?.focus(); }
+});
 
 // --- Mobile menu --------------------------------------------------------------
 const header = document.querySelector<HTMLElement>('[data-header]');

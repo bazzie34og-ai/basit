@@ -1,0 +1,64 @@
+---
+// Answer-first question page (src/content/questions/<slug>.md).
+import { render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import Breadcrumbs from '../Breadcrumbs.astro';
+import AuthorBox from '../AuthorBox.astro';
+import CrisisBox from '../CrisisBox.astro';
+import Faq from '../Faq.astro';
+import Icon from '../Icon.astro';
+import { site, abs } from '../../config/site';
+import { ogSlug } from '../../data/pages';
+import { pathOf, type Question } from '../../lib/content';
+import { faqPage, article } from '../../lib/schema';
+import { isoDate, niceDate, readingMinutes } from '../../lib/blog';
+
+interface Props { entry: Question; }
+const { entry } = Astro.props;
+const d = entry.data;
+const { Content } = await render(entry);
+const path = pathOf(entry.id);
+const published = isoDate(d.published);
+const updated = isoDate(d.updated);
+const crumbs = [{ name: d.title.replace(/\s*\(.*\)$/, ''), path }];
+const schema = [
+  article({ path, title: d.title, description: d.description, published, updated, image: abs(`/og/${ogSlug(path)}.png`) }),
+  ...(d.faqs.length ? [faqPage(path, d.faqs)] : []),
+];
+---
+<Base path={path} title={d.seoTitle} description={d.description} crumbs={crumbs} schema={schema} kind="question" dateModified={updated} ogType="article" article={{ published, updated }}>
+  <article {...(d.scope ? { 'data-scope': '' } : {})}>
+    <header class="page-hero dark grain q-hero">
+      <div class="wrap narrow">
+        <Breadcrumbs crumbs={[{ name: 'Home', path: '/' }, ...crumbs]} />
+        <p class="eyebrow">Straight answers</p>
+        <h1 id="page-h1">{d.title}</h1>
+        <hr class="rule" />
+        <p class="byline">By <a href="/about/" rel="author">Roland Nielson</a>, men's life coach in Omaha · Last updated <time datetime={updated}>{niceDate(d.updated)}</time> · {readingMinutes(entry.body)} min read</p>
+      </div>
+    </header>
+    <div class="section">
+      <div class="wrap narrow prose">
+        <Content />
+        <aside class="next-step card" aria-label="Next step">
+          <p class="eyebrow">Next step</p>
+          <p><strong>Read more about <a href={d.service.path}>{d.service.anchor}</a></strong>, or talk it through on a free 20-minute call.</p>
+          <div class="btn-row">
+            <a class="btn brass" href={site.booking} rel="noopener"><Icon name="calendar" />Book a free 20-minute call</a>
+            <a class="btn ghost" href="/free-call/">How the free call works</a>
+          </div>
+        </aside>
+        {d.faqs.length > 0 && (<><h2 id="faq-h">Quick answers</h2><Faq faqs={d.faqs} /></>)}
+        <AuthorBox />
+        <CrisisBox compact />
+      </div>
+    </div>
+  </article>
+</Base>
+<style>
+  .q-hero h1 { font-size: var(--step-4); }
+  .byline { color: #b9c2cf; font-size: 0.92rem; margin: 0; }
+  .byline a { color: var(--brass-light); }
+  .next-step { margin: var(--space-m) 0; }
+  .next-step p { margin: 0 0 1rem; }
+</style>

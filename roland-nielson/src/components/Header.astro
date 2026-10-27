@@ -1,36 +1,64 @@
 ---
 import Logo from './Logo.astro';
 import Icon from './Icon.astro';
-import { site, tel } from '../config/site';
+import { site, tel, areaLabel } from '../config/site';
+import { serviceMenu, getAreas, pathOf } from '../lib/content';
 
 interface Props { minimal?: boolean; }
 const { minimal = false } = Astro.props;
 const current = Astro.url.pathname;
+// Services mega-menu, grouped. Walk-and-talk lives on the in-person page; Programs also links Pricing.
+const walk = { href: '/in-person-life-coaching-omaha/#walk-and-talk', label: 'Walk-and-talk coaching' };
+const groups = (await serviceMenu()).map((g) => ({
+  ...g,
+  links: [
+    ...g.links.flatMap((l) => (l.href === '/in-person-life-coaching-omaha/' ? [l, walk] : [l])),
+    ...(g.id === 'program' ? [{ href: '/pricing/', label: 'Pricing' }] : []),
+  ],
+}));
+const areas = [{ href: '/omaha-life-coach/', label: 'Omaha (all areas)' }, ...(await getAreas()).map((a) => ({ href: pathOf(a.id), label: areaLabel(a.info) }))];
 const main = [
-  { href: '/mens-life-coaching-omaha/', label: 'Coaching' },
-  { href: '/rebuilding-after-addiction/', label: 'Rebuilding' },
-  { href: '/the-rebuild-program/', label: 'Rebuild Program' },
-  { href: '/pricing/', label: 'Pricing' },
+  { href: '/reviews/', label: 'Reviews' },
   { href: '/about/', label: 'About' },
-  { href: '/blog/', label: 'Blog' },
-  { href: '/contact/', label: 'Contact' },
+  { href: '/pricing/', label: 'Pricing' },
 ];
 const more = [
-  { href: '/accountability-coaching/', label: 'Accountability Coaching' },
-  { href: '/coaching-for-fathers/', label: 'Coaching for Fathers' },
   { href: '/for-families/', label: 'For Families' },
-  { href: '/omaha-life-coach/', label: 'Omaha Metro' },
   { href: '/personal-patterns-assessment/', label: 'Free Assessment' },
+  { href: '/blog/', label: 'Blog' },
   { href: '/faq/', label: 'FAQ' },
-  { href: '/omaha-resources/', label: 'Omaha Resources' },
+  { href: '/contact/', label: 'Contact' },
 ];
 const isCurrent = (href: string) => current === href || (href !== '/' && current.startsWith(href));
+const inGroup = (links: { href: string }[]) => links.some((l) => isCurrent(l.href.split('#')[0]));
 ---
 <header class="site-header" data-header>
   <div class="wrap bar">
     <Logo tone="light" />
     {!minimal && <nav class="desktop-nav" aria-label="Main">
       <ul>
+        <li class="drop">
+          <details data-drop>
+            <summary aria-current={inGroup(groups.flatMap((g) => g.links)) || current === '/services/' ? 'page' : undefined}>Services</summary>
+            <div class="mega">
+              {groups.map((g) => (
+                <div>
+                  <p class="mega-h">{g.label}</p>
+                  <ul>{g.links.map((l) => <li><a href={l.href} aria-current={isCurrent(l.href) ? 'page' : undefined}>{l.label}</a></li>)}</ul>
+                </div>
+              ))}
+              <p class="mega-all"><a href="/services/">All coaching services</a></p>
+            </div>
+          </details>
+        </li>
+        <li class="drop">
+          <details data-drop>
+            <summary aria-current={inGroup(areas) ? 'page' : undefined}>Areas</summary>
+            <div class="mega areas-menu">
+              <ul>{areas.map((l) => <li><a href={l.href} aria-current={isCurrent(l.href) ? 'page' : undefined}>{l.label}</a></li>)}</ul>
+            </div>
+          </details>
+        </li>
         {main.map((l) => (
           <li><a href={l.href} aria-current={isCurrent(l.href) ? 'page' : undefined}>{l.label}</a></li>
         ))}
@@ -38,7 +66,7 @@ const isCurrent = (href: string) => current === href || (href !== '/' && current
     </nav>}
     <div class={`header-cta${minimal ? ' minimal' : ''}`}>
       <a class="phone-link" href={tel}><Icon name="phone" /><span>{site.phone.display}</span></a>
-      <a class="btn brass small" href={site.booking} rel="noopener">Book a Free Call</a>
+      <a class="btn brass small" href="/free-call/">Free call</a>
     </div>
     {!minimal && <button class="menu-btn" type="button" aria-expanded="false" aria-controls="mobile-menu" data-menu-btn>
       <span class="sr-only">Menu</span>
@@ -47,13 +75,26 @@ const isCurrent = (href: string) => current === href || (href !== '/' && current
   </div>
   {!minimal && <div class="mobile-menu" id="mobile-menu" hidden data-menu>
     <nav aria-label="Mobile">
+      <details class="m-group">
+        <summary>Services</summary>
+        {groups.map((g) => (
+          <div class="m-sub">
+            <p class="mega-h">{g.label}</p>
+            <ul>{g.links.map((l) => <li><a href={l.href} aria-current={isCurrent(l.href) ? 'page' : undefined}>{l.label}</a></li>)}</ul>
+          </div>
+        ))}
+      </details>
+      <details class="m-group">
+        <summary>Areas</summary>
+        <ul class="m-sub">{areas.map((l) => <li><a href={l.href} aria-current={isCurrent(l.href) ? 'page' : undefined}>{l.label}</a></li>)}</ul>
+      </details>
       <ul>
         {[...main, ...more].map((l) => (
           <li><a href={l.href} aria-current={isCurrent(l.href) ? 'page' : undefined}>{l.label}</a></li>
         ))}
       </ul>
       <div class="btn-row">
-        <a class="btn brass" href={site.booking} rel="noopener"><Icon name="calendar" />Book a Free Discovery Call</a>
+        <a class="btn brass" href="/free-call/"><Icon name="calendar" />Book a free 20-minute call</a>
         <a class="btn ghost" href={tel}><Icon name="phone" />Call or Text {site.phone.display}</a>
       </div>
     </nav>
@@ -74,7 +115,7 @@ const isCurrent = (href: string) => current === href || (href !== '/' && current
   }
   .bar { height: 100%; display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
   .desktop-nav { display: none; }
-  .desktop-nav ul { display: flex; gap: 1.6rem; list-style: none; margin: 0; padding: 0; }
+  .desktop-nav > ul { display: flex; gap: 1.6rem; list-style: none; margin: 0; padding: 0; align-items: center; }
   .desktop-nav li { margin: 0; }
   .desktop-nav a {
     color: #d9dee6; text-decoration: none; font-size: 0.92rem; font-weight: 600; letter-spacing: 0.02em;
@@ -86,6 +127,37 @@ const isCurrent = (href: string) => current === href || (href !== '/' && current
   }
   .desktop-nav a:hover, .desktop-nav a[aria-current] { color: var(--bone); }
   .desktop-nav a:hover::after, .desktop-nav a[aria-current]::after { transform: scaleX(1); }
+  .drop { position: relative; }
+  .drop summary {
+    list-style: none; cursor: pointer; color: #d9dee6; font-size: 0.92rem; font-weight: 600; letter-spacing: 0.02em;
+    padding: 0.4rem 0; display: inline-flex; align-items: center; gap: 0.35rem; min-height: 44px;
+  }
+  .drop summary::-webkit-details-marker { display: none; }
+  .drop summary::after { content: ''; width: 6px; height: 6px; border-right: 1.5px solid currentColor; border-bottom: 1.5px solid currentColor; transform: rotate(45deg) translateY(-2px); transition: transform 0.2s; }
+  .drop details[open] summary::after { transform: rotate(-135deg) translateY(-1px); }
+  .drop summary:hover, .drop summary[aria-current] { color: var(--bone); }
+  .mega {
+    position: absolute; top: calc(100% + 0.6rem); left: -1.2rem; z-index: 60; background: var(--ink); border: 1px solid rgba(176, 141, 87, 0.35);
+    border-radius: var(--radius); padding: 1.2rem 1.4rem; display: grid; grid-template-columns: repeat(4, minmax(170px, 1fr)); gap: 1rem 1.6rem;
+    box-shadow: 0 24px 50px -24px rgba(0, 0, 0, 0.6); width: max-content; max-width: min(92vw, 900px);
+  }
+  .mega.areas-menu { grid-template-columns: 1fr; }
+  .areas-menu ul { columns: 2; column-gap: 1.6rem; }
+  .mega ul { display: block; list-style: none; margin: 0; padding: 0; }
+  .mega li { margin: 0 0 0.15rem; break-inside: avoid; }
+  .desktop-nav .mega a { display: inline-block; padding: 0.35rem 0; font-size: 0.9rem; font-weight: 500; }
+  .desktop-nav .mega a::after { display: none; }
+  .mega-h { font-size: 0.72rem; letter-spacing: 0.18em; text-transform: uppercase; font-weight: 800; color: var(--brass-light); margin: 0 0 0.4rem; }
+  .mega-all { grid-column: 1 / -1; margin: 0; border-top: 1px solid rgba(176, 141, 87, 0.25); padding-top: 0.7rem; }
+  .desktop-nav .mega-all a { font-weight: 700; color: var(--brass-light); }
+  .m-group { border-bottom: 1px solid rgba(245, 241, 234, 0.08); }
+  .m-group summary { list-style: none; cursor: pointer; padding: 0.85rem 0; color: var(--bone); font-family: var(--serif); font-size: 1.3rem; display: flex; justify-content: space-between; }
+  .m-group summary::-webkit-details-marker { display: none; }
+  .m-group summary::after { content: '+'; color: var(--brass-light); }
+  .m-group[open] summary::after { content: '–'; }
+  .m-sub { margin: 0 0 1rem; }
+  .mobile-menu .m-sub a:not(.btn) { font-family: var(--sans); font-size: 1rem; padding: 0.55rem 0; }
+  .mobile-menu .m-sub li { border-bottom: 0; }
   .header-cta { display: none; align-items: center; gap: 1rem; }
   .phone-link { display: inline-flex; align-items: center; gap: 0.4rem; color: var(--bone); text-decoration: none; font-weight: 700; font-size: 0.92rem; white-space: nowrap; }
   .phone-link:hover { color: var(--brass-light); }

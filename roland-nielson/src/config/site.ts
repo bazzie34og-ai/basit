@@ -77,6 +77,7 @@ export const site = {
   ],
 
   // Google Business Profile. {{GBP_URL}} {{GBP_CID}} {{GBP_REVIEW_LINK}}
+  // gbp.url is the GBP_URL value: it feeds sameAs/hasMap in schema and the "Find us on Google" links.
   gbp: {
     url: '',
     cid: '',
@@ -110,6 +111,35 @@ export const site = {
   // Date shown as "Last updated" on service pages unless a page overrides it.
   contentUpdated: '2026-10-16',
 } as const;
+
+// Feature flags: services Roland must confirm before they go live. A page whose flag is
+// false is not built, linked from anywhere or listed in the sitemap.
+export const flags = {
+  OFFERS_GROUP_COACHING: false,
+  OFFERS_LEADERSHIP: false,
+  OFFERS_YOUNG_MEN: false,
+} as const;
+export type Flag = keyof typeof flags;
+
+// One entry per service-area page (copy lives in src/content/areas/<slug>.md).
+// mapQuery is a city/neighborhood-level search (never an address).
+// schema: City for cities, Place (inside Omaha) for Omaha neighborhoods.
+export const areaPages = [
+  { slug: 'life-coach-north-omaha', name: 'North Omaha', state: 'NE', kind: 'neighborhood', mapQuery: 'North Omaha, Omaha, NE', near: 'Benson, Bennington and Council Bluffs' },
+  { slug: 'life-coach-midtown-omaha', name: 'Midtown Omaha', state: 'NE', kind: 'neighborhood', mapQuery: 'Midtown, Omaha, NE', near: 'Benson, North Omaha and Ralston' },
+  { slug: 'life-coach-benson-omaha', name: 'Benson', state: 'NE', kind: 'neighborhood', mapQuery: 'Benson, Omaha, NE', near: 'Midtown, North Omaha and West Omaha' },
+  { slug: 'life-coach-west-omaha', name: 'West Omaha', state: 'NE', kind: 'neighborhood', mapQuery: 'West Omaha, Omaha, NE', near: 'Elkhorn, Ralston and Gretna' },
+  { slug: 'life-coach-elkhorn-ne', name: 'Elkhorn', state: 'NE', kind: 'city', mapQuery: 'Elkhorn, NE', near: 'West Omaha, Bennington and Gretna' },
+  { slug: 'life-coach-bellevue-ne', name: 'Bellevue', state: 'NE', kind: 'city', mapQuery: 'Bellevue, NE', near: 'Papillion, La Vista and Council Bluffs' },
+  { slug: 'life-coach-papillion-ne', name: 'Papillion', state: 'NE', kind: 'city', mapQuery: 'Papillion, NE', near: 'La Vista, Bellevue and Gretna' },
+  { slug: 'life-coach-la-vista-ne', name: 'La Vista', state: 'NE', kind: 'city', mapQuery: 'La Vista, NE', near: 'Papillion, Ralston and Bellevue' },
+  { slug: 'life-coach-ralston-ne', name: 'Ralston', state: 'NE', kind: 'city', mapQuery: 'Ralston, NE', near: 'La Vista, Midtown and West Omaha' },
+  { slug: 'life-coach-gretna-ne', name: 'Gretna', state: 'NE', kind: 'city', mapQuery: 'Gretna, NE', near: 'Elkhorn, Papillion and West Omaha' },
+  { slug: 'life-coach-bennington-ne', name: 'Bennington', state: 'NE', kind: 'city', mapQuery: 'Bennington, NE', near: 'Elkhorn, North Omaha and West Omaha' },
+  { slug: 'life-coach-council-bluffs-ia', name: 'Council Bluffs', state: 'IA', kind: 'city', mapQuery: 'Council Bluffs, IA', near: 'North Omaha, Midtown and Bellevue' },
+] as const;
+export type AreaPage = (typeof areaPages)[number];
+export const areaLabel = (a: AreaPage) => (a.state === 'IA' ? `${a.name}, IA` : a.name);
 
 export type Plan = {
   id: string;
@@ -204,4 +234,9 @@ export const abs = (path: string) => new URL(path, site.url).href;
 export const hasOffice = Boolean(site.office.streetAddress && site.office.postalCode);
 export const hoursText = `${site.hours.map((h) => `${h.label} ${h.display}`).join(' · ')} · ${site.closedLabel} closed`;
 export const areaNames = site.serviceArea.map((a) => (a.state === 'NE' ? a.name : `${a.name} (${a.state})`));
-export const priceRange = '$149–$399/month';
+export const priceRange = '$149–$399/mo';
+
+// Booking links carry UTM tags naming the page they were clicked on. The build adds these
+// to every on-site link (see the booking-utm integration in astro.config.mjs).
+export const bookingUtm = (pageSlug: string) =>
+  `${site.booking}?utm_source=website&utm_medium=cta&utm_campaign=${encodeURIComponent(pageSlug)}`;

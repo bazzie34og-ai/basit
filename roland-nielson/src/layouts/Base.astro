@@ -19,7 +19,8 @@ interface Props {
   noindex?: boolean;
   crumbs?: { name: string; path: string }[]; // inner pages; Home is added automatically
   schema?: Record<string, unknown>[];
-  pageType?: string;
+  pageType?: string; // schema.org WebPage subtype
+  kind?: 'home' | 'service' | 'area' | 'hub' | 'question' | 'blog' | 'page'; // GA4 page_type
   dateModified?: string;
   preload?: { srcset: string; sizes: string; type: string };
   cta?: false | { heading?: string; text?: string; showHours?: boolean; freeCallLink?: boolean };
@@ -95,7 +96,7 @@ const ga = site.ga4Id;
       </>
     )}
   </head>
-  <body>
+  <body data-page-type={p.kind ?? 'page'}>
     <a class="skip-link" href="#main">Skip to content</a>
     <Header minimal={p.minimalHeader} />
     <main id="main" tabindex="-1">

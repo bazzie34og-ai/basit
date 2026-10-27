@@ -2,12 +2,12 @@
 import ShortForm from './ShortForm.astro';
 import CrisisBox from './CrisisBox.astro';
 import Icon from './Icon.astro';
-import { site, tel, sms, hoursText } from '../config/site';
+import { site, tel, sms } from '../config/site';
 interface Props { heading?: string; text?: string; showHours?: boolean; freeCallLink?: boolean; }
 const {
   heading = 'Tell me what keeps happening.',
   text = "You don't need to clean it up first. Book a free 20-minute call, or leave your name and number and I'll reach out, usually the same evening.",
-  showHours = true,
+  showHours = true, // "Evenings and Saturdays" line (no days or clock times in page copy)
   freeCallLink = false,
 } = Astro.props;
 ---
@@ -23,7 +23,7 @@ const {
         <a class="btn ghost" href={sms}><Icon name="text" />Text</a>
       </div>
       {showHours
-        ? <p class="hours-note">Hours: {hoursText}. In person in Omaha, by video or by phone.</p>
+        ? <p class="hours-note">Evenings and Saturdays, in person in Omaha, by video or by phone. <a href={site.booking} rel="noopener">See open times</a>.</p>
         : <p class="hours-note">In person in Omaha, by video or by phone. See open times on the booking page.</p>}
       {freeCallLink && <p class="hours-note">Not sure yet? <a href="/free-call/">Book a free call</a> and see what it is like first.</p>}
       <CrisisBox compact />

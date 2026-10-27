@@ -1,0 +1,13 @@
+---
+// City-level Google Map (a place search, never an address). Loads lazily.
+interface Props { query: string; label: string; }
+const { query, label } = Astro.props;
+const src = `https://www.google.com/maps?q=${encodeURIComponent(query)}&output=embed`;
+---
+<div class="map-embed">
+  <iframe src={src} title={`Google Map of ${label}`} loading="lazy" referrerpolicy="no-referrer-when-downgrade" width="600" height="380"></iframe>
+</div>
+<style>
+  .map-embed { border-radius: var(--radius); overflow: hidden; border: 1px solid rgba(176, 141, 87, 0.35); background: var(--navy); }
+  .map-embed iframe { display: block; width: 100%; aspect-ratio: 600 / 380; height: auto; border: 0; }
+</style>

@@ -1,21 +1,22 @@
 ---
 import Logo from './Logo.astro';
 import CrisisBox from './CrisisBox.astro';
-import { site, tel, sms, mailto, hasOffice, areaNames } from '../config/site';
+import { site, tel, sms, mailto, hasOffice, areaLabel } from '../config/site';
+import { getServices, getAreas, pathOf } from '../lib/content';
 
-const services = [
-  { href: '/mens-life-coaching-omaha/', label: "Men's life coaching in Omaha" },
-  { href: '/accountability-coaching/', label: 'Accountability coaching' },
-  { href: '/coaching-for-fathers/', label: 'Coaching for fathers' },
-  { href: '/rebuilding-after-addiction/', label: 'Rebuilding after addiction' },
-  { href: '/the-rebuild-program/', label: 'The Rebuild Program' },
-  { href: '/for-families/', label: 'For wives, partners & parents' },
-];
+const services = (await getServices()).map((s) => ({ href: pathOf(s.id), label: s.data.nav }));
+const areas = [{ href: '/omaha-life-coach/', label: 'Omaha' }, ...(await getAreas()).map((a) => ({ href: pathOf(a.id), label: areaLabel(a.info) }))];
 const more = [
+  { href: '/free-call/', label: 'Free 20-minute call' },
   { href: '/pricing/', label: 'Pricing' },
+  { href: '/reviews/', label: 'Reviews' },
   { href: '/about/', label: 'About Roland' },
-  { href: '/omaha-life-coach/', label: 'Omaha metro service area' },
-  { href: '/personal-patterns-assessment/', label: 'Free Personal Patterns Assessment' },
+  { href: '/for-families/', label: 'For families' },
+  { href: '/personal-patterns-assessment/', label: 'Free assessment' },
+  { href: '/how-much-does-a-life-coach-cost-omaha/', label: 'What a life coach costs' },
+  { href: '/what-does-a-life-coach-do/', label: 'What a life coach does' },
+  { href: '/is-life-coaching-worth-it/', label: 'Is coaching worth it?' },
+  { href: '/life-coach-vs-therapist/', label: 'Life coach vs therapist', scope: true },
   { href: '/faq/', label: 'FAQ' },
   { href: '/omaha-resources/', label: 'Omaha resources' },
   { href: '/blog/', label: 'Blog' },
@@ -27,41 +28,38 @@ const year = new Date().getFullYear();
   <h2 id="footer-h" class="sr-only">Contact details and site links</h2>
   <div class="wrap">
     <div class="top">
-      <div class="nap" itemscope>
+      <div class="nap">
         <Logo tone="light" />
         <p class="name"><strong>{site.name}</strong></p>
         {hasOffice ? (
           <p>{site.office.streetAddress}<br />{site.city}, {site.region} {site.office.postalCode}</p>
         ) : (
-          <p>{site.serviceLine}</p>
+          <p>{site.locality}<br /><span class="muted-light">Service-area business: in person across the metro by appointment, video and phone anywhere.</span></p>
         )}
         <p>
           <a href={tel}>{site.phone.display}</a> · <a href={sms}>Text</a><br />
           <a href={mailto}>{site.email}</a>
         </p>
-        <p class="hours">
-          {site.hours.map((h) => <span>{h.label} {h.display}<br /></span>)}
-          <span>{site.closedLabel}: closed</span>
-        </p>
-        <a class="btn brass" href={site.booking} rel="noopener">Book a Free Discovery Call</a>
-      </div>
-      <nav aria-label="Coaching">
-        <p class="col-h">Coaching</p>
-        <ul>{services.map((l) => <li><a href={l.href}>{l.label}</a></li>)}</ul>
-      </nav>
-      <nav aria-label="More">
-        <p class="col-h">More</p>
-        <ul>{more.map((l) => <li><a href={l.href}>{l.label}</a></li>)}</ul>
-      </nav>
-      <div>
-        <p class="col-h">Service area</p>
-        <p class="areas">{areaNames.join(' · ')}</p>
+        <p class="hours">Evenings and Saturdays. <a href={site.booking} rel="noopener">See open times</a>.</p>
+        <a class="btn brass" href="/free-call/">Book a free 20-minute call</a>
         <p class="col-h">Follow</p>
         <ul class="socials">
           {site.socials.map((s) => <li><a href={s.url} rel="noopener me" target="_blank">{s.name}<span class="sr-only"> (opens in a new tab)</span></a></li>)}
           {site.gbp.url && <li><a href={site.gbp.url} rel="noopener" target="_blank">Find us on Google<span class="sr-only"> (opens in a new tab)</span></a></li>}
         </ul>
       </div>
+      <nav aria-label="Coaching services">
+        <p class="col-h"><a href="/services/">Coaching services</a></p>
+        <ul class="compact">{services.map((l) => <li><a href={l.href}>{l.label}</a></li>)}</ul>
+      </nav>
+      <nav aria-label="Service areas">
+        <p class="col-h">Service areas</p>
+        <ul class="compact">{areas.map((l) => <li><a href={l.href}>{l.label}</a></li>)}</ul>
+      </nav>
+      <nav aria-label="More">
+        <p class="col-h">More</p>
+        <ul class="compact">{more.map((l) => <li {...(l.scope ? { 'data-scope': '' } : {})}><a href={l.href}>{l.label}</a></li>)}</ul>
+      </nav>
     </div>
 
     <div class="bottom">
@@ -80,7 +78,8 @@ const year = new Date().getFullYear();
 <style>
   .site-footer { padding-bottom: var(--space-m); font-size: 0.95rem; }
   .top { display: grid; gap: var(--space-m); padding-bottom: var(--space-m); border-bottom: 1px solid rgba(176, 141, 87, 0.25); }
-  @media (min-width: 900px) { .top { grid-template-columns: 1.4fr 1fr 1fr 1.2fr; } }
+  @media (min-width: 720px) { .top { grid-template-columns: 1fr 1fr; } }
+  @media (min-width: 1100px) { .top { grid-template-columns: 1.3fr 1fr 0.8fr 1fr; } }
   .nap p { margin: 0.8rem 0; color: #c7cfdb; }
   .nap .name { margin-top: 1.2rem; }
   .nap .btn { margin-top: 0.6rem; }
@@ -90,7 +89,10 @@ const year = new Date().getFullYear();
   li { margin: 0 0 0.5rem; }
   nav a, .socials a { color: #d9dee6 !important; text-decoration: none; }
   nav a:hover, .socials a:hover { color: var(--bone) !important; text-decoration: underline; }
-  .areas { color: #c7cfdb; line-height: 1.8; }
+  .compact li { margin: 0 0 0.25rem; }
+  .compact a { display: inline-block; padding: 0.2rem 0; font-size: 0.92rem; }
+  .col-h a { color: var(--brass-light) !important; }
+  .muted-light { color: #9fabbb; font-size: 0.9rem; }
   .socials { display: flex; flex-wrap: wrap; gap: 0.4rem 1rem; }
   .bottom { padding-top: var(--space-m); display: grid; gap: 1rem; }
   .scope { font-size: 0.86rem; color: #9fabbb; max-width: 60rem; margin: 0; }

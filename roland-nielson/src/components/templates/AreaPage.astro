@@ -1,0 +1,111 @@
+---
+// One service-area page (src/content/areas/<slug>.md).
+// hero → what men here tell me → in person here → coaching available here → nearby → FAQ → map → CTA band.
+import { render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import PageHero from '../PageHero.astro';
+import Faq from '../Faq.astro';
+import Icon from '../Icon.astro';
+import MapEmbed from '../MapEmbed.astro';
+import { site, tel, inPersonAddOn, areaLabel, type AreaPage as AreaInfo } from '../../config/site';
+import { pathOf, type Service, type Area } from '../../lib/content';
+import { faqPage, localService } from '../../lib/schema';
+import { isoDate } from '../../lib/blog';
+
+interface Props { entry: Area & { info: AreaInfo }; services: Service[]; areas: (Area & { info: AreaInfo })[]; }
+const { entry, services, areas } = Astro.props;
+const d = entry.data;
+const a = entry.info;
+const place = areaLabel(a);
+const { Content } = await render(entry);
+const path = pathOf(entry.id);
+const crumbs = [{ name: 'Omaha', path: '/omaha-life-coach/' }, { name: a.name, path }];
+// Only services that are live (flags) can be linked.
+const offered = d.services.map((x) => ({ ...x, s: services.find((s) => s.id === x.slug) })).filter((x) => x.s);
+const nearby = d.nearby.map((slug) => areas.find((x) => x.id === slug)).filter((x): x is Area & { info: AreaInfo } => Boolean(x));
+const schema = [
+  localService({ path, name: `Men's life coaching in ${a.name}, ${a.state}`, serviceType: d.keyword, description: d.description, area: a }),
+  faqPage(path, d.faqs),
+];
+const updated = isoDate(d.updated);
+---
+<Base path={path} title={d.seoTitle} description={d.description} crumbs={crumbs} schema={schema} kind="area" dateModified={updated} cta={{ heading: `Tell me what keeps happening in ${a.name}.` }}>
+  <PageHero eyebrow={`Life coach · ${a.name}, ${a.state}`} title={d.title} lead={d.intro} crumbs={[{ name: 'Home', path: '/' }, ...crumbs]} updated={updated}>
+    <div class="btn-row">
+      <a class="btn brass" href={site.booking} rel="noopener"><Icon name="calendar" />Book a free 20-minute call</a>
+      <a class="btn ghost" href={tel}><Icon name="phone" />Call or text {site.phone.display}</a>
+    </div>
+  </PageHero>
+
+  <section class="section" aria-labelledby="pains-h">
+    <div class="wrap">
+      <div class="section-head"><p class="eyebrow">{a.name}</p><h2 id="pains-h">{d.painsHeading}</h2></div>
+      <div class="grid-3 pains">{d.pains.map((x) => <div class="card"><h3>{x.h}</h3><p>{x.p}</p></div>)}</div>
+    </div>
+  </section>
+
+  <section class="section white" aria-labelledby="inperson-h">
+    <div class="wrap grid-2 top">
+      <div class="prose">
+        <p class="eyebrow">In person or by video</p>
+        <h2 id="inperson-h">{d.inPersonHeading}</h2>
+        <Content />
+      </div>
+      <div>
+        <h3 class="places-h">Walk-and-talk spots near {a.name}</h3>
+        <ul class="places">{d.places.map((x) => <li><strong>{x.name}.</strong> {x.note}</li>)}</ul>
+        <p class="muted small" data-shared>In-person sessions add {inPersonAddOn.priceLabel} each. Video and phone cost nothing extra. Evenings and Saturdays; see open times on the <a href={site.booking} rel="noopener">booking page</a>.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="services-h">
+    <div class="wrap">
+      <div class="section-head"><p class="eyebrow">Coaching available</p><h2 id="services-h">Coaching available in {place}</h2></div>
+      <div class="grid-3">
+        {offered.map((x) => <a class="card" href={pathOf(x.slug)}><h3>{x.anchor}</h3><p>“{x.s!.data.pain}”</p><span class="more">Learn more</span></a>)}
+      </div>
+      <p class="mt-m">Plans from $149/month, with no long contracts. <a href="/pricing/">See life coaching prices</a>.</p>
+    </div>
+  </section>
+
+  <section class="section sand" aria-labelledby="nearby-h">
+    <div class="wrap">
+      <p class="eyebrow">Nearby</p>
+      <h2 id="nearby-h">Nearby areas I serve</h2>
+      <ul class="tag-row nearby">
+        {nearby.map((n) => <li><a href={pathOf(n.id)}>Life coach in {areaLabel(n.info)}</a></li>)}
+        <li><a href="/omaha-life-coach/">Life coach in Omaha (all areas)</a></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section white" aria-labelledby="faq-h">
+    <div class="wrap">
+      <div class="section-head"><p class="eyebrow">Questions</p><h2 id="faq-h">{a.name} FAQ</h2></div>
+      <Faq faqs={d.faqs} />
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="map-h">
+    <div class="wrap grid-2">
+      <div>
+        <p class="eyebrow">Map</p>
+        <h2 id="map-h">Coaching in and around {place}</h2>
+        <p>A service-area coach: no storefront office. We meet by appointment across {a.name} and the rest of the Omaha metro, or by video.</p>
+      </div>
+      <MapEmbed query={a.mapQuery} label={place} />
+    </div>
+  </section>
+</Base>
+<style>
+  .pains { grid-template-columns: 1fr; }
+  @media (min-width: 820px) { .pains { grid-template-columns: repeat(2, 1fr); } }
+  @media (min-width: 1100px) { .pains { grid-template-columns: repeat(3, 1fr); } }
+  .places-h { font-size: var(--step-2); margin-top: 0; }
+  .places { list-style: none; padding: 0; margin: 0 0 1.2rem; display: grid; gap: 0.9rem; }
+  .places li { margin: 0; border-top: 1px solid var(--brass); padding-top: 0.8rem; }
+  .small { font-size: 0.92rem; }
+  .nearby a { text-decoration: none; font-weight: 700; color: var(--ink); }
+  .nearby a:hover { text-decoration: underline; }
+</style>

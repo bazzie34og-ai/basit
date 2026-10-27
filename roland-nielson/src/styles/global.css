@@ -243,7 +243,7 @@ a.card:hover .more::after { margin-left: 4px; }
 
 /* Steps */
 .steps { list-style: none; padding: 0; margin: 0; display: grid; gap: var(--space-s); counter-reset: step; }
-@media (min-width: 820px) { .steps { grid-template-columns: repeat(4, 1fr); } }
+@media (min-width: 820px) { .steps { grid-template-columns: repeat(4, 1fr); } .steps.three { grid-template-columns: repeat(3, 1fr); } }
 .steps li { counter-increment: step; border-top: 1px solid var(--brass); padding-top: 1.2rem; margin: 0; }
 .steps li::before { content: '0' counter(step); display: block; font-family: var(--serif); font-style: italic; color: var(--brass); font-size: var(--step-2); margin-bottom: 0.6rem; }
 .steps h3 { font-size: var(--step-1); margin-bottom: 0.4rem; }

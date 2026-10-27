@@ -1,0 +1,35 @@
+---
+// "Why men in Omaha choose Roland": the same six reasons on the home page, hub and every
+// service page. data-shared keeps it out of the duplicate-content check (it's meant to repeat).
+interface Props { heading?: string; tone?: 'dark' | 'light'; }
+const { heading = 'Why men in Omaha choose Roland', tone = 'dark' } = Astro.props;
+const items = [
+  { h: 'Built for men.', p: 'Every plan, every word and every session is built for men and the pressure they carry.' },
+  { h: 'After work.', p: 'Evening and Saturday sessions, so you never have to leave work to talk about your life.' },
+  { h: 'Clear prices.', p: 'Plans from $149/month, shown up front. No long contracts and no hard sell.' },
+  { h: 'A coach, not a couch.', p: 'Practical and forward-looking: what you will do this week, not years of talking about the past.' },
+  { h: 'Been there.', p: 'Roland grew up in North Omaha and rebuilt his own life starting in 2011.' },
+  { h: 'Your family can reach out.', p: 'A wife, mother or brother can book the free call for him.', href: '/for-families/' },
+];
+---
+<section class={`section ${tone === 'dark' ? 'dark grain' : 'white'} gap-block`} aria-labelledby="gap-h" data-shared>
+  <div class="wrap">
+    <div class="section-head">
+      <p class="eyebrow">Why Roland</p>
+      <h2 id="gap-h">{heading}</h2>
+    </div>
+    <ul class="gap-grid">
+      {items.map((x) => (
+        <li><strong>{x.h}</strong> {x.p}{x.href && <> <a href={x.href}>How families can help</a>.</>}</li>
+      ))}
+    </ul>
+  </div>
+</section>
+<style>
+  .gap-grid { list-style: none; padding: 0; margin: 0; display: grid; gap: var(--space-s) var(--space-m); }
+  @media (min-width: 720px) { .gap-grid { grid-template-columns: 1fr 1fr; } }
+  @media (min-width: 1100px) { .gap-grid { grid-template-columns: repeat(3, 1fr); } }
+  .gap-grid li { margin: 0; border-top: 1px solid rgba(176, 141, 87, 0.5); padding-top: 0.9rem; }
+  .dark .gap-grid li { color: #c7cfdb; }
+  .gap-grid strong { display: block; font-family: var(--serif); font-weight: 400; font-size: var(--step-1); margin-bottom: 0.2rem; }
+</style>
