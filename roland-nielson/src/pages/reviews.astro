@@ -1,0 +1,60 @@
+---
+// Reviews page. Until real Google reviews exist: an honest intro, a way to leave one and Roland's story.
+// Only real, permission-granted reviews ever go in src/data/testimonials.ts. No Review/AggregateRating schema.
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import RecoveryVideo from '../components/RecoveryVideo.astro';
+import YouTubeLite from '../components/YouTubeLite.astro';
+import Testimonials from '../components/Testimonials.astro';
+import Icon from '../components/Icon.astro';
+import { site } from '../config/site';
+import { testimonials } from '../data/testimonials';
+import { recoveryVideo, youtubeVideo } from '../lib/schema';
+
+const path = '/reviews/';
+const googleLink = site.gbp.url || '';
+---
+<Base path={path} crumbs={[{ name: 'Reviews', path }]} schema={[recoveryVideo(), youtubeVideo()]}>
+  <PageHero eyebrow="Reviews" title="Reviews of Roland Nielson, men's life coach in Omaha" lead="I started coaching men in November 2025, so the first Google reviews are still coming in. I won't post made-up praise or star ratings. Here's what you can look at instead, and how to be one of the first to leave an honest review." crumbs={[{ name: 'Home', path: '/' }, { name: 'Reviews', path }]}>
+    <div class="btn-row">
+      <a class="btn brass" href="/review/"><Icon name="text" />Leave an honest review</a>
+      {googleLink && <a class="btn ghost" href={googleLink} rel="noopener">Read reviews on Google</a>}
+    </div>
+  </PageHero>
+
+  {testimonials.length === 0 && (
+    <section class="section" aria-labelledby="first-h">
+      <div class="wrap narrow prose">
+        <p class="eyebrow">Be one of my first reviews</p>
+        <h2 id="first-h">Be one of my first reviews</h2>
+        <p>If we've worked together, even for a few sessions, an honest Google review helps other men in Omaha decide whether to make the call. Good, bad or somewhere in between: say what was true for you.</p>
+        <p>Never worked with me? That's fine too. Don't take anyone's word for it, mine included. Book the <a href="/free-call/">free 20-minute call</a>, ask the hard questions and judge for yourself. It costs nothing and there's no sales pitch.</p>
+        <p>When real reviews come in, they'll show up on this page, word for word, with the reviewer's permission.</p>
+      </div>
+    </section>
+  )}
+
+  <Testimonials />
+
+  <section class="section white" aria-labelledby="story-h">
+    <div class="wrap grid-2">
+      <div>
+        <p class="eyebrow">Hear it from me</p>
+        <h2 id="story-h">My story, in my own words</h2>
+        <p>Before you trust a coach, you should know who he is. I grew up in North Omaha, lived through addiction and rebuilt my life starting in 2011. I'm a father of four. <a href="/about/">Read the full story</a>.</p>
+      </div>
+      <RecoveryVideo />
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="msg-h">
+    <div class="wrap grid-2">
+      <div>
+        <p class="eyebrow">A short message</p>
+        <h2 id="msg-h">Who I work with and how</h2>
+        <p>A short video about who I coach and what working with me actually looks like. Then decide if a free call makes sense. <a href="/omaha-life-coach/">See how coaching works across Omaha</a>.</p>
+      </div>
+      <YouTubeLite />
+    </div>
+  </section>
+</Base>

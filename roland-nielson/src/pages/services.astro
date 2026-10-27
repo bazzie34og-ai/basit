@@ -1,0 +1,37 @@
+---
+// Every live coaching service, grouped like the header mega-menu. Flagged services never appear.
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import GapBlock from '../components/GapBlock.astro';
+import { site } from '../config/site';
+import { getServices, pathOf, serviceGroups } from '../lib/content';
+
+const path = '/services/';
+const services = await getServices();
+const groups = serviceGroups.map((g) => ({ ...g, items: services.filter((s) => s.data.group === g.id) })).filter((g) => g.items.length);
+const schema = [{
+  '@type': 'ItemList',
+  name: "Men's coaching services in Omaha",
+  itemListElement: services.map((s, i) => ({ '@type': 'ListItem', position: i + 1, name: s.data.serviceName, url: `${site.url}${pathOf(s.id)}` })),
+}];
+---
+<Base path={path} crumbs={[{ name: 'Services', path }]} schema={schema}>
+  <PageHero eyebrow="Coaching services · Omaha, NE" title="Men's coaching services in Omaha" lead="Every service is one-on-one coaching with Roland Nielson, in person in Omaha, on a walk-and-talk, by video or by phone. Plans from $149/month, and the first 20-minute call is free." crumbs={[{ name: 'Home', path: '/' }, { name: 'Services', path }]} />
+  {groups.map((g, gi) => (
+    <section class={`section ${gi % 2 ? 'white' : ''}`} aria-labelledby={`g-${g.id}`}>
+      <div class="wrap">
+        <div class="section-head"><p class="eyebrow">{g.label}</p><h2 id={`g-${g.id}`}>{g.label === 'For who' ? 'Coaching for who you are right now' : g.label === 'How we meet' ? 'How we meet' : g.label === 'Programs' ? 'Programs' : 'Coaching by challenge'}</h2></div>
+        <div class="grid-3">
+          {g.items.map((s) => (
+            <a class="card" href={pathOf(s.id)}>
+              <h3>{s.data.nav}</h3>
+              <p>“{s.data.pain}”</p>
+              <span class="more">{s.data.serviceName} in Omaha</span>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+  ))}
+  <GapBlock />
+</Base>

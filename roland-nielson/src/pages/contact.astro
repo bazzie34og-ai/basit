@@ -4,7 +4,7 @@ import PageHero from '../components/PageHero.astro';
 import ContactForm from '../components/ContactForm.astro';
 import CrisisBox from '../components/CrisisBox.astro';
 import Icon from '../components/Icon.astro';
-import { site, tel, sms, mailto, hasOffice, areaNames, hoursText } from '../config/site';
+import { site, tel, sms, mailto, hasOffice, areaNames } from '../config/site';
 import { abs } from '../config/site';
 import { ids } from '../lib/schema';
 
@@ -22,7 +22,7 @@ const napLines = [
   `Phone: ${site.phone.display}`,
   `Email: ${site.email}`,
   `Website: ${site.url}/`,
-  `Hours: ${hoursText}`,
+  'When: evenings and Saturdays (open times on the booking page)',
   `Service area: ${areaNames.join(', ')}`,
   `Category: ${site.category}`,
 ];
@@ -57,12 +57,9 @@ const schema = [{ '@type': 'ContactPage', '@id': abs(`${path}#contact`), url: ab
           <p><a href={site.booking} rel="noopener">Book the free 20-minute discovery call</a></p>
         </div>
         <div class="card">
-          <h2 class="h3s">Hours</h2>
-          <ul class="hours-list">
-            {site.hours.map((h) => <li><span>{h.label}</span><span>{h.display}</span></li>)}
-            <li><span>{site.closedLabel}</span><span>Closed</span></li>
-          </ul>
-          <p class="muted small">Central time. Messages outside hours get a reply the next working evening.</p>
+          <h2 class="h3s">When</h2>
+          <p>Evenings and Saturdays. <a href={site.booking} rel="noopener">See open times on the booking page</a>.</p>
+          <p class="muted small">Messages get a reply within 24 hours, usually the same evening.</p>
         </div>
         <div class="card">
           <h2 class="h3s">Where</h2>

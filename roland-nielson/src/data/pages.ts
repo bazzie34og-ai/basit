@@ -15,75 +15,42 @@ export type PageMeta = {
 };
 
 const UPDATED = '2026-10-16';
+const TODAY = '2026-10-27';
 const heroImg = { loc: '/images/roland-nielson-mens-life-coach-omaha.jpg', title: 'Roland Nielson, men\'s life coach in Omaha' };
 const noteImg = { loc: '/images/rebuilding-after-addiction-coaching-omaha.webp', title: 'Roland Nielson holding a note about healing' };
 
 export const pages: PageMeta[] = [
   {
     path: '/',
-    title: "Men's Life Coach in Omaha, NE | Roland Nielson",
+    title: "Men's Life Coach Omaha, NE | Roland Nielson – Omaha Men's Life Coaching",
     description:
-      "Men's life coaching in Omaha for fathers, working men and men rebuilding. Evenings and Saturdays, in person or online. Book a free 20-minute call today.",
+      "Feel stuck, start strong and slip, snap at home? Men's life coach in Omaha with a simple plan and weekly check-ins. Plans from $149. Free 20-minute call.",
     nav: 'Home',
-    og: { eyebrow: "Men's Life Coaching · Omaha, NE", headline: 'For men ready to rebuild' },
-    lastmod: UPDATED,
+    og: { eyebrow: "Men's Life Coaching · Omaha, NE", headline: 'For men who feel stuck' },
+    lastmod: TODAY,
     priority: 1,
     images: [heroImg],
     videos: ['youtube'],
   },
   {
-    path: '/mens-life-coaching-omaha/',
-    title: 'Life Coaching for Men in Omaha | Roland Nielson',
+    path: '/services/',
+    title: "Men's Coaching Services in Omaha | Roland Nielson",
     description:
-      'One-on-one life coaching for men in Omaha who feel stuck, overwhelmed or done starting over. Plain talk, a real plan, weekly sessions. Book a free call.',
-    nav: "Men's Life Coaching",
-    og: { eyebrow: 'Life coaching for men · Omaha', headline: 'Tired of living the same day?' },
-    lastmod: UPDATED,
-    priority: 0.9,
-  },
-  {
-    path: '/accountability-coaching/',
-    title: 'Accountability Coach in Omaha | Discipline & Habits',
-    description:
-      'Accountability coaching in Omaha for men who start strong and slip. Simple habits, weekly check-ins and a plan built for bad days. Book a free call now.',
-    nav: 'Accountability Coaching',
-    og: { eyebrow: 'Accountability coaching · Omaha', headline: 'Accountability that holds on a bad Tuesday' },
-    lastmod: UPDATED,
-    priority: 0.9,
-  },
-  {
-    path: '/coaching-for-fathers/',
-    title: 'Coaching for Fathers & Husbands in Omaha',
-    description:
-      'Coaching for Omaha fathers and husbands who want to be present at home, calm under pressure and keep their word. Evening sessions. Book a free call.',
-    nav: 'Coaching for Fathers',
-    og: { eyebrow: 'Coaching for fathers · Omaha', headline: 'Be the dad who comes home and stays' },
-    lastmod: UPDATED,
-    priority: 0.9,
-    images: [noteImg],
-  },
-  {
-    path: '/rebuilding-after-addiction/',
-    title: 'Life Coaching for Men Rebuilding After Addiction',
-    description:
-      'Coaching from lived experience for Omaha men rebuilding after addiction: structure, routine, accountability and trust. Not a program. Book a free call.',
-    nav: 'Rebuilding After Addiction',
-    og: { eyebrow: 'Rebuilding after addiction · Omaha', headline: 'Life after the hardest chapter' },
-    lastmod: UPDATED,
-    priority: 0.9,
-    images: [noteImg],
-    videos: ['recovery'],
-  },
-  {
-    path: '/the-rebuild-program/',
-    title: "The Rebuild Program | 3–6 Month Men's Coaching",
-    description:
-      "The Rebuild Program is a 3–6 month men's coaching program in Omaha: habits, mindset, relationships and discipline with weekly support. Apply by call.",
-    nav: 'The Rebuild Program',
-    og: { eyebrow: 'Premium coaching · 3–6 months', headline: 'The Rebuild Program' },
-    lastmod: UPDATED,
+      "Every coaching service Roland Nielson offers men in Omaha: accountability, discipline, fathers, recovery, confidence and more. Free 20-minute call to start.",
+    nav: 'Services',
+    og: { eyebrow: 'Coaching services · Omaha, NE', headline: 'Find the coaching that fits' },
+    lastmod: TODAY,
     priority: 0.8,
-    videos: ['recovery'],
+  },
+  {
+    path: '/reviews/',
+    title: "Reviews | Roland Nielson – Omaha Men's Life Coaching",
+    description:
+      "Reviews of Roland Nielson, men's life coach in Omaha. A new practice, so here's an honest look at how he works while the first Google reviews come in.",
+    nav: 'Reviews',
+    og: { eyebrow: 'Reviews', headline: 'Be one of my first reviews' },
+    lastmod: TODAY,
+    priority: 0.6,
   },
   {
     path: '/pricing/',
@@ -119,22 +86,22 @@ export const pages: PageMeta[] = [
   },
   {
     path: '/omaha-life-coach/',
-    title: "Life Coach in Omaha, NE | Men's Coaching Across the Metro",
+    title: 'Life Coach Omaha, NE | Life Coaching for Men Across the Metro',
     description:
-      "Men's life coaching across Omaha, Bellevue, Papillion, Elkhorn and Council Bluffs. In person or by video. Book a free 20-minute call with Roland Nielson.",
-    nav: 'Omaha Metro',
+      'Stuck in the same week? Roland Nielson coaches men across Omaha, Bellevue, Papillion, Elkhorn and Council Bluffs, in person or by video. Free 20-minute call.',
+    nav: 'Omaha',
     og: { eyebrow: 'Life coach in Omaha, NE', headline: 'Life coaching for men across the Omaha metro' },
-    lastmod: '2026-10-20',
+    lastmod: TODAY,
     priority: 0.9,
   },
   {
     path: '/free-call/',
-    title: "Free 20-Minute Call | Men's Life Coach in Omaha",
+    title: 'Free Life Coaching Consultation Omaha | Free 20-Minute Call',
     description:
-      "Not sure coaching is for you? Book a free, no-pressure 20-minute call with Roland Nielson, men's life coach in Omaha, and talk about what keeps happening.",
+      "Not sure coaching is for you? Talk it through with Roland Nielson, men's life coach in Omaha. No pressure, no sales pitch, no cost. Free 20-minute call.",
     nav: 'Free Call',
     og: { eyebrow: 'Free 20-minute call · No pressure', headline: 'Tell me what keeps happening' },
-    lastmod: '2026-10-20',
+    lastmod: TODAY,
     priority: 0.9,
   },
   {

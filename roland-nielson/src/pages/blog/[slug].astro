@@ -5,7 +5,8 @@ import Breadcrumbs from '../../components/Breadcrumbs.astro';
 import AuthorBox from '../../components/AuthorBox.astro';
 import CrisisBox from '../../components/CrisisBox.astro';
 import { getPosts, postPath, isoDate, niceDate, readingMinutes, type Post } from '../../lib/blog';
-import { pages, ogSlug } from '../../data/pages';
+import { ogSlug } from '../../data/pages';
+import { allEntries } from '../../lib/registry';
 import { abs } from '../../config/site';
 import { blogPosting } from '../../lib/schema';
 
@@ -21,12 +22,13 @@ const d = post.data;
 const published = isoDate(d.published);
 const updated = isoDate(d.updated);
 const ogImage = `/og/${ogSlug(path)}.png`;
-const relatedServices = d.related.map((r) => pages.find((p) => p.path === r)).filter(Boolean);
+const entries = await allEntries();
+const relatedServices = d.related.map((r) => entries.find((p) => p.path === r)).filter(Boolean);
 const relatedPosts = all.filter((p) => p.id !== post.id).slice(0, 3);
 const crumbs = [{ name: 'Blog', path: '/blog/' }, { name: d.title.split(':')[0], path }];
 const schema = [blogPosting({ path, title: d.title, description: d.description, published, updated, image: abs(ogImage) })];
 ---
-<Base path={path} title={d.seoTitle} description={d.description} ogType="article" crumbs={crumbs} schema={schema} dateModified={updated} article={{ published, updated }}>
+<Base path={path} title={d.seoTitle} description={d.description} ogType="article" crumbs={crumbs} schema={schema} dateModified={updated} article={{ published, updated }} kind="blog">
   <article {...(d.scope ? { 'data-scope': '' } : {})}>
     <header class="page-hero dark grain post-hero">
       <div class="wrap narrow">
@@ -44,7 +46,7 @@ const schema = [blogPosting({ path, title: d.title, description: d.description, 
         {relatedServices.length > 0 && (
           <aside class="related-services" aria-label="Related coaching">
             <p class="eyebrow">Related coaching</p>
-            <ul>{relatedServices.map((s) => <li><a href={s!.path}>{s!.nav}</a></li>)}</ul>
+            <ul>{relatedServices.map((s) => <li><a href={s!.path}>{s!.nav ?? s!.title}</a></li>)}</ul>
           </aside>
         )}
         <CrisisBox compact />

@@ -45,7 +45,7 @@ export const faqs: FaqItem[] = [
   },
   {
     q: 'Do you offer evening and Saturday sessions?',
-    a: `Yes. I coach Tuesday to Friday from 5:00 to 8:00 PM and Saturday from 11:00 AM to 1:00 PM, Central time. Sunday and Monday are closed. Evenings and Saturdays exist on purpose: most men I work with have jobs and kids, and they cannot leave work at 2 PM to talk about their life.`,
+    a: `Yes. I coach evenings and Saturdays, on purpose: most men I work with have jobs and kids, and they can't leave work in the middle of the afternoon to talk about their life. Sessions can be in person in Omaha, by video once the kids are down or by phone on the drive home. <a href="${site.booking}" rel="noopener">See open times on the booking page</a>.`,
     home: true,
   },
   {

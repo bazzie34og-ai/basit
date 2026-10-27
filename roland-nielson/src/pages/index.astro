@@ -7,6 +7,9 @@ import PlanCards from '../components/PlanCards.astro';
 import ServiceArea from '../components/ServiceArea.astro';
 import Faq from '../components/Faq.astro';
 import Testimonials from '../components/Testimonials.astro';
+import GapBlock from '../components/GapBlock.astro';
+import { getServices, getAreas, pathOf, serviceGroups } from '../lib/content';
+import { areaLabel } from '../config/site';
 import heroImg from '../assets/roland-nielson-mens-life-coach-omaha.jpg';
 import noteImg from '../assets/rebuilding-after-addiction-coaching-omaha.jpg';
 import { site, tel } from '../config/site';
@@ -33,14 +36,15 @@ const pillars = [
   { n: '02', h: 'Stop before you react.', p: 'Learn to sit with anger, stress or shame without letting it run the house. Notice it, name it, choose.' },
   { n: '03', h: 'Do what you said.', p: 'Keep small promises until keeping your word is normal again. Trust gets rebuilt one kept promise at a time.' },
 ];
-const forWho = [
-  { href: '/mens-life-coaching-omaha/', h: 'Men who feel stuck', p: 'Life coaching for men in Omaha who are tired of living the same day.' },
-  { href: '/accountability-coaching/', h: 'Men who start strong and slip', p: 'Accountability coaching built for bad days, not just good ones.' },
-  { href: '/coaching-for-fathers/', h: 'Fathers and husbands', p: 'Coaching for dads who want to be present, patient and home.' },
-  { href: '/rebuilding-after-addiction/', h: 'Men rebuilding after addiction', p: 'Structure, routine and trust from someone who has lived it.' },
-  { href: '/the-rebuild-program/', h: 'Men ready for a full reset', p: 'The Rebuild Program: 3–6 months of high-accountability coaching.' },
-  { href: '/for-families/', h: 'Worried about him?', p: 'For wives, partners and parents of men who keep getting stuck.' },
-];
+const services = await getServices();
+const areas = await getAreas();
+const groupCopy: Record<string, { h: string; p: string }> = {
+  challenge: { h: 'Coaching for what keeps getting in your way', p: 'Feeling stuck, slipping by Thursday, snapping at home, second-guessing everything. Pick the one that sounds most like your week.' },
+  who: { h: 'Coaching for dads, men over 40 and men starting over', p: 'Fathers, divorced dads, men in recovery and men rebuilding after a lost job, each with a plan built for that season.' },
+  meet: { h: 'In person, on a walk or online', p: 'Sit across from me in Omaha, walk and talk, or meet by video or phone from anywhere.' },
+  program: { h: 'The Rebuild Program', p: 'A 3–6 month, high-accountability program for men who need to rebuild more than one thing at once.' },
+};
+const groups = serviceGroups.map((g) => ({ ...g, ...groupCopy[g.id], items: services.filter((s) => s.data.group === g.id) })).filter((g) => g.items.length);
 const steps = [
   { h: 'Free call', p: '20 minutes. Tell me what keeps happening. I tell you honestly if I can help.' },
   { h: 'Plan', p: 'We map your week and pick the two or three things that matter most.' },
@@ -48,13 +52,13 @@ const steps = [
   { h: 'Real change', p: 'Kept promises stack up. Calmer evenings. A man your family can count on.' },
 ];
 ---
-<Base path="/" cta={{ freeCallLink: true }} preload={preload} schema={[youtubeVideo(), faqPage('/', homeFaqs)]}>
+<Base path="/" kind="home" cta={{ freeCallLink: true }} preload={preload} schema={[youtubeVideo(), faqPage('/', homeFaqs)]}>
   <section class="hero dark grain" aria-labelledby="page-h1">
     <div class="wrap hero-grid">
       <div class="hero-copy">
         <p class="eyebrow">Men's Life Coaching · Omaha, NE</p>
-        <h1 id="page-h1">Men's life coaching in Omaha for men ready to rebuild</h1>
-        <p class="lead">Plain talk, a simple plan and someone who checks in when it gets hard. For fathers, working men and men starting over.</p>
+        <h1 id="page-h1">Men's life coach in Omaha for men who feel stuck</h1>
+        <p class="lead">Roland Nielson – Omaha Men's Life Coaching is a men's life coach in Omaha, NE who helps men who feel stuck build discipline, keep their word and rebuild their lives. Plain talk, a simple plan and someone who checks in when it gets hard.</p>
         <div class="btn-row">
           <a class="btn brass" href={site.booking} rel="noopener"><Icon name="calendar" />Book a Free Discovery Call</a>
           <a class="btn ghost" href={tel}><Icon name="phone" />Call or Text Roland</a>
@@ -75,10 +79,10 @@ const steps = [
     </div>
     <div class="wrap">
       <ul class="trust" aria-label="At a glance">
+        <li><Icon name="pin" />Built for men</li>
         <li><Icon name="clock" />Evenings &amp; Saturdays</li>
-        <li><Icon name="pin" />In person, video or phone</li>
-        <li><span class="dollar" aria-hidden="true">$</span>Plans from $149/month</li>
-        <li><Icon name="calendar" />Free 20-min call</li>
+        <li><span class="dollar" aria-hidden="true">$</span>Prices shown</li>
+        <li><Icon name="calendar" />Free 20-minute call</li>
       </ul>
     </div>
   </section>
@@ -93,7 +97,7 @@ const steps = [
   <section class="section" aria-labelledby="pain-h">
     <div class="wrap">
       <div class="section-head reveal">
-        <p class="eyebrow">Does this sound like you?</p>
+        <p class="eyebrow">Is this you?</p>
         <h2 id="pain-h">You're not lazy. You're tired of living the same day.</h2>
         <p>Most men who call me aren't falling apart. They're holding it together with tape.</p>
       </div>
@@ -139,18 +143,21 @@ const steps = [
     </div>
   </section>
 
-  <section class="section" aria-labelledby="who-h">
+  <section class="section" aria-labelledby="services-h">
     <div class="wrap">
       <div class="section-head reveal">
-        <p class="eyebrow">Who it's for</p>
-        <h2 id="who-h">Men 30 to 55 with real lives and real pressure</h2>
-        <p>Pick the one that sounds closest.</p>
+        <p class="eyebrow">Coaching services</p>
+        <h2 id="services-h" class="sr-only">Men's life coaching services in Omaha</h2>
+        <p>Men 30 to 55 with real lives and real pressure. Every service is one-on-one with Roland.</p>
       </div>
-      <div class="grid-3">
-        {forWho.map((x) => (
-          <a class="card reveal" href={x.href}><h3>{x.h}</h3><p>{x.p}</p><span class="more">Learn more</span></a>
-        ))}
-      </div>
+      {groups.map((g) => (
+        <div class="svc-group reveal">
+          <h2 class="group-h">{g.h}</h2>
+          <p class="muted">{g.p}</p>
+          <ul class="svc-links">{g.items.map((x) => <li><a href={pathOf(x.id)}>{x.data.nav}</a></li>)}</ul>
+        </div>
+      ))}
+      <p class="mt-m"><a class="text-link" href="/services/">See all coaching services</a> · <a class="text-link" href="/for-families/">Worried about him? A page for families</a></p>
     </div>
   </section>
 
@@ -208,10 +215,18 @@ const steps = [
 
   <Testimonials limit={3} />
 
-  <section class="section white" aria-labelledby="area-h">
+  <GapBlock />
+
+  <section class="section white" aria-labelledby="areas-h">
     <div class="wrap reveal">
-      <ServiceArea heading="Coaching across the Omaha metro" intro="In person by appointment from Bennington to Bellevue and Elkhorn to Council Bluffs. Video and phone from anywhere." />
-      <p class="mt-m"><a class="text-link" href="/omaha-life-coach/">How coaching across Omaha works, area by area</a></p>
+      <p class="eyebrow">Areas we serve</p>
+      <h2 id="areas-h">Areas we serve across the Omaha metro</h2>
+      <p class="lead">In person by appointment from Bennington to Bellevue and Elkhorn to Council Bluffs. Video and phone from anywhere.</p>
+      <ul class="tag-row area-tags">
+        <li><a href="/omaha-life-coach/">Life coach in Omaha</a></li>
+        {areas.map((a) => <li><a href={pathOf(a.id)}>{areaLabel(a.info)}</a></li>)}
+      </ul>
+      <div class="mt-m"><ServiceArea embed heading="Where I coach" headingId="map-h" intro="Based in Omaha, NE. A service-area coach with no storefront office." /></div>
     </div>
   </section>
 
@@ -246,4 +261,11 @@ const steps = [
   .story-photo { aspect-ratio: 720 / 687; }
   .ppa-actions { display: grid; gap: 0.8rem; justify-items: start; }
   .ppa-actions .small { font-size: 0.92rem; margin: 0; }
+  .svc-group { border-top: 1px solid var(--sand); padding-top: var(--space-s); margin-top: var(--space-s); }
+  .group-h { font-size: var(--step-3); margin-bottom: 0.3rem; }
+  .svc-links { list-style: none; padding: 0; margin: 0.6rem 0 0; display: flex; flex-wrap: wrap; gap: 0.5rem 1.4rem; }
+  .svc-links li { margin: 0; }
+  .svc-links a { font-weight: 700; }
+  .area-tags a { text-decoration: none; color: var(--ink); }
+  .area-tags a:hover { text-decoration: underline; }
 </style>
