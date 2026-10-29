@@ -23,6 +23,6 @@ const largest = p.widths[p.widths.length - 1];
     alt={alt ?? p.alt}
     loading={eager ? 'eager' : 'lazy'}
     decoding={eager ? 'sync' : 'async'}
-    fetchpriority={eager ? 'high' : undefined}
+    fetchpriority={eager ? 'auto' : undefined}
   />
 </picture>

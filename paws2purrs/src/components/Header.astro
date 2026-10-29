@@ -7,7 +7,7 @@ const { waService, path } = Astro.props;
 ---
 <header class="site-header" data-header>
   <div class="header-inner">
-    <a href="/" class="brand" aria-label="Paws 2 Purrs home">
+    <a href="/" class="brand">
       <Logo class="brand-logo" />
     </a>
     <nav class="main-nav" aria-label="Main">
@@ -19,7 +19,7 @@ const { waService, path } = Astro.props;
     </nav>
     <div class="header-actions">
       <span class="pill pill--moss header-pill"><span class="pulse-dot" aria-hidden="true"></span>{biz.availabilityPill}</span>
-      <a class="btn btn--honey header-call" href={tel} data-track="call_click">
+      <a class="btn btn--honey header-call" href={tel} data-track="call_click" aria-label={`Call Vanessa on ${biz.phone.display}`}>
         <Icon name="phone" />
         <span class="header-call__short">Call</span>
         <span class="header-call__num">{biz.phone.display}</span>

@@ -18,3 +18,8 @@ By default, the form opens the visitor's email app with the message already fill
 
 ## Deploy
 Upload `index.html` to any static host, such as GitHub Pages, Netlify, Vercel or Cloudflare Pages.
+
+---
+
+## Paws 2 Purrs site
+This repo also contains the **Paws 2 Purrs Dog Daycare & Boarding** website (Astro) in [`paws2purrs/`](paws2purrs/README.md).

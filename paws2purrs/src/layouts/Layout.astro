@@ -64,9 +64,8 @@ const ga = biz.analytics.ga4Id;
     <meta name="twitter:card" content="summary_large_image" />
 
     <link rel="preload" href="/fonts/lora-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin />
-    <link rel="preload" href="/fonts/plus-jakarta-sans-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin />
     {pre && (
-      <link rel="preload" as="image" type="image/avif" fetchpriority="high"
+      <link rel="preload" as="image" type="image/avif"
         imagesrcset={pre.widths.map((w: number) => `/images/${pre.slug}-${w}.avif ${w}w`).join(', ')}
         imagesizes={preloadSizes} />
     )}
