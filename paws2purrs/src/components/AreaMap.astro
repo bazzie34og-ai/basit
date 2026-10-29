@@ -1,0 +1,52 @@
+---
+// Click-to-load Google map of the Arnold area (never the home address).
+import Icon from './Icon.astro';
+import { biz } from '../lib/site';
+const src = `https://www.google.com/maps?q=${encodeURIComponent(biz.mapEmbedQuery)}&z=12&output=embed`;
+---
+<div class="map" data-map={src}>
+  <div class="map__frame">
+    <svg class="map__art" viewBox="0 0 600 420" aria-hidden="true">
+      <rect width="600" height="420" fill="#E7DFCD" />
+      <path d="M-20 300c90-30 150 10 240-20s130-90 230-80 120 40 170 30" fill="none" stroke="#D3C7AE" stroke-width="22" stroke-linecap="round" />
+      <path d="M80-10c30 90 10 160 60 230s40 140 20 210" fill="none" stroke="#fff" stroke-width="7" opacity=".8" />
+      <path d="M-10 120c120 20 230-10 330 30s190 10 290-20" fill="none" stroke="#fff" stroke-width="5" opacity=".75" />
+      <path d="M300-10c-10 80 30 140 10 220s30 140 60 220" fill="none" stroke="#fff" stroke-width="9" opacity=".85" />
+      <g fill="#C9D3BC"><ellipse cx="470" cy="90" rx="70" ry="40" /><ellipse cx="150" cy="360" rx="80" ry="34" /><ellipse cx="520" cy="330" rx="60" ry="46" /><ellipse cx="90" cy="70" rx="60" ry="30" /></g>
+      <circle cx="300" cy="200" r="120" fill="#20372A" opacity=".07" />
+      <circle cx="300" cy="200" r="64" fill="#20372A" opacity=".08" />
+      <g font-family="Plus Jakarta Sans, sans-serif" font-size="13" font-weight="700" fill="#5B4030" letter-spacing="1.5">
+        <text x="250" y="182">ARNOLD</text>
+        <text x="400" y="250">MAPPERLEY</text>
+        <text x="180" y="300">WOODTHORPE</text>
+        <text x="270" y="78">REDHILL</text>
+        <text x="80" y="200">BESTWOOD</text>
+        <text x="470" y="170">GEDLING</text>
+        <text x="460" y="380">CARLTON</text>
+        <text x="150" y="392">SHERWOOD</text>
+        <text x="120" y="250">DAYBROOK</text>
+      </g>
+    </svg>
+    <div class="map__overlay">
+      <span class="map__pin"><Icon name="paw" /></span>
+      <p><strong>{biz.address.display}</strong><br />Exact address shared when you book.</p>
+      <button type="button" class="btn btn--pine" data-map-load><Icon name="pin" />Load interactive map</button>
+      <p class="map__note">Loads Google Maps (Google may set cookies).</p>
+    </div>
+  </div>
+</div>
+
+<style>
+  .map { border-radius: var(--r-lg); overflow: hidden; border: 1px solid var(--line); box-shadow: var(--shadow); background: #e7dfcd; }
+  .map__frame { position: relative; aspect-ratio: 10 / 7; }
+  .map__frame :global(iframe) { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+  .map__art { width: 100%; height: 100%; object-fit: cover; }
+  .map__overlay {
+    position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center;
+    text-align: center; gap: 10px; padding: 20px;
+  }
+  .map__overlay p { margin: 0; background: rgba(255, 253, 248, 0.92); padding: 8px 14px; border-radius: 12px; font-size: 0.95rem; }
+  .map__overlay .map__note { background: none; font-size: 0.78rem; color: #4e4a40; padding: 0; }
+  .map__pin { width: 54px; height: 54px; border-radius: 50% 50% 50% 4px; transform: rotate(-45deg); background: var(--pine); display: grid; place-items: center; color: var(--honey); box-shadow: var(--shadow); }
+  .map__pin :global(svg) { width: 26px; height: 26px; transform: rotate(45deg); }
+</style>

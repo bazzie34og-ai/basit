@@ -1,0 +1,105 @@
+---
+import Layout from '../layouts/Layout.astro';
+import HomeHero from '../components/HomeHero.astro';
+import TrustRow from '../components/TrustRow.astro';
+import ServicesBento from '../components/ServicesBento.astro';
+import DayTimeline from '../components/DayTimeline.astro';
+import Promises from '../components/Promises.astro';
+import MeetVanessa from '../components/MeetVanessa.astro';
+import Reviews from '../components/Reviews.astro';
+import PickupBand from '../components/PickupBand.astro';
+import Gallery from '../components/Gallery.astro';
+import AreaMap from '../components/AreaMap.astro';
+import Faq from '../components/Faq.astro';
+import EnquirySection from '../components/EnquirySection.astro';
+import LeafDivider from '../components/LeafDivider.astro';
+import Icon from '../components/Icon.astro';
+import { reviews } from '../data/reviews';
+import { faq } from '../data/faqs';
+import { biz, areaPages } from '../lib/site';
+import { faqSchema } from '../lib/schema';
+
+const homeFaqs = faq(['licensed', 'times', 'size', 'pickup', 'cost']);
+const homeReviews = ['loki', 'io', 'gracie', 'husky', 'lexi', 'walks'].map((id) => reviews.find((r) => r.id === id)!);
+---
+<Layout
+  title="Dog Daycare & Boarding in Arnold, Nottingham | Paws 2 Purrs"
+  description="Licensed, insured dog daycare and home boarding in Arnold, Nottingham. Woodland walks, a real home (not kennels), daily photo updates. Call or WhatsApp Vanessa."
+  path="/"
+  preloadPhoto="hero"
+  preloadSizes="(min-width: 900px) 460px, 78vw"
+  schema={[faqSchema(homeFaqs)]}
+>
+  <HomeHero />
+  <TrustRow />
+  <ServicesBento />
+  <DayTimeline />
+  <Promises />
+  <MeetVanessa />
+
+  <section class="section bg-linen grain" aria-labelledby="letters-title">
+    <div class="wrap">
+      <div class="section-head section-head--center reveal">
+        <p class="label">Letters from owners</p>
+        <h2 id="letters-title">Don't take our word for it. Ask <em>Loki</em>.</h2>
+        <p>Real Google reviews, word for word, from owners whose dogs have been coming to Vanessa for years. {biz.facebook.recommend} on Facebook ({biz.facebook.reviewCount} reviews).</p>
+      </div>
+      <Reviews items={homeReviews} />
+      <div class="btn-row center-row">
+        <a class="btn btn--outline" href={biz.google.reviewsUrl} target="_blank" rel="noopener"><Icon name="google" />Read all reviews on Google</a>
+        <a class="btn btn--pine" href="/reviews/">More letters <Icon name="arrow" /></a>
+      </div>
+    </div>
+  </section>
+
+  <PickupBand />
+
+  <section class="section bg-cream" aria-labelledby="pack-title">
+    <div class="wrap">
+      <div class="section-head section-head--center reveal">
+        <p class="label">Meet the pack</p>
+        <h2 id="pack-title">Real dogs, real days out, <em>zero</em> stock photos</h2>
+        <p>Every photo on this site was taken by Vanessa on a normal day with the pack.</p>
+      </div>
+      <Gallery keys={['lakeDoodle', 'howl', 'smallLog', 'lakeEdge', 'hero', 'spaniels', 'smallFluffy', 'brindlePath']} />
+      <div class="btn-row center-row"><a class="btn btn--outline" href="/gallery/">See the whole gallery <Icon name="arrow" /></a></div>
+    </div>
+  </section>
+
+  <LeafDivider />
+
+  <section class="section bg-cream" aria-labelledby="areas-title">
+    <div class="wrap areas-grid">
+      <div class="reveal">
+        <p class="label">Areas we cover</p>
+        <h2 id="areas-title">Based in Arnold, caring for dogs across <em>north-east</em> Nottingham</h2>
+        <p class="lede">Paws 2 Purrs is in Arnold, NG5, in Gedling borough. The exact address is shared when you book. If you're nearby, Vanessa would love to hear from you.</p>
+        <ul class="link-cloud">
+          <li><a href="/dog-daycare-arnold-nottingham/">Dog daycare in Arnold</a></li>
+          {areaPages.map((a) => <li><a href={a.href}>{a.name}</a></li>)}
+        </ul>
+        <p class="small muted mt-2">Not on the list? Ask anyway. Vanessa will tell you straight away if she can help.</p>
+      </div>
+      <div class="reveal reveal-d1"><AreaMap /></div>
+    </div>
+  </section>
+
+  <section class="section bg-paper" aria-labelledby="faq-title">
+    <div class="wrap wrap--narrow">
+      <div class="section-head reveal">
+        <p class="label">Good questions</p>
+        <h2 id="faq-title">The things owners ask <em>first</em></h2>
+      </div>
+      <Faq items={homeFaqs} />
+      <p class="mt-2"><a class="text-link" href="/faq/">All the questions and answers <Icon name="arrow" /></a></p>
+    </div>
+  </section>
+
+  <EnquirySection path="/" />
+</Layout>
+
+<style>
+  .center-row { justify-content: center; margin-top: 28px; }
+  .areas-grid { display: grid; gap: 40px; align-items: center; }
+  @media (min-width: 960px) { .areas-grid { grid-template-columns: 1fr 1fr; gap: 64px; } }
+</style>

@@ -1,0 +1,48 @@
+---
+import Photo from './Photo.astro';
+import Icon from './Icon.astro';
+import { biz } from '../lib/site';
+interface Props { link?: boolean }
+const { link = true } = Astro.props;
+---
+<section class="section bg-cream grain meet" aria-labelledby="meet-title">
+  <div class="wrap meet-grid">
+    <div class="meet-media reveal">
+      <div class="arch arch--ring meet-arch"><Photo name="vanessaSelfie" sizes="(min-width: 900px) 380px, 80vw" /></div>
+      <p class="meet-note">“I love Huskies” <span>– Vanessa</span></p>
+    </div>
+    <div class="meet-copy reveal reveal-d1">
+      <p class="label">Meet Vanessa</p>
+      <h2 id="meet-title">Hello, I'm Vanessa. Your dog's new <em>favourite</em> person.</h2>
+      <p>I've been caring for dogs for {biz.experienceYears} years. Paws 2 Purrs runs from my own home in Arnold, so your dog spends the day on woodland adventures and the evening somewhere warm and familiar, never in a kennel. I'm licensed by Gedling Borough Council and fully insured.</p>
+      <p>I love every dog that comes through the door, but I'll admit it: huskies are my favourites. Big, boisterous, nervous or small, they all get to be themselves here. My son helps me with the walks, so you might meet him too.</p>
+      <p>I bake homemade treats as well. The roasted pumpkin and sweet potato cookies go down very well. It gives me great pleasure seeing dogs thrive, and sending you the photos to prove it.</p>
+      <p class="signature">Vanessa x</p>
+      <ul class="meet-facts">
+        <li><Icon name="clock" />{biz.experienceYears} years' experience</li>
+        <li><Icon name="shield" />Licensed &amp; insured</li>
+        <li><Icon name="heart" />Her son helps with walks</li>
+      </ul>
+      {link && <a class="text-link" href="/about/">More about Vanessa <Icon name="arrow" /></a>}
+    </div>
+  </div>
+</section>
+
+<style>
+  .meet-grid { display: grid; gap: 48px; align-items: center; }
+  @media (min-width: 900px) { .meet-grid { grid-template-columns: 0.85fr 1.15fr; gap: 80px; } }
+  .meet-media { position: relative; width: min(100%, 380px); margin-inline: auto; }
+  .meet-arch { aspect-ratio: 579 / 1000; }
+  @media (max-width: 899px) { .meet-media { width: min(76%, 320px); } .meet-arch { aspect-ratio: 3 / 4; } }
+  .meet-note {
+    position: absolute; right: -24px; bottom: 40px; background: var(--paper); padding: 12px 18px; border-radius: 16px;
+    font-family: var(--serif); font-style: italic; font-size: 1.15rem; color: var(--pine); box-shadow: var(--shadow); transform: rotate(3deg); margin: 0;
+  }
+  .meet-note span { font-size: 0.85rem; color: var(--bark); font-style: normal; font-family: var(--sans); }
+  @media (max-width: 899px) { .meet-note { right: -18px; bottom: 24px; font-size: 1rem; } }
+  .meet-copy p { color: #343a33; font-size: 1.06rem; }
+  .signature { font-family: var(--serif); font-style: italic; font-size: 2rem; color: var(--bark) !important; margin: 0.2em 0 1em; transform: rotate(-3deg); display: inline-block; }
+  .meet-facts { list-style: none; padding: 0; margin: 0 0 1.4rem; display: flex; flex-wrap: wrap; gap: 8px; }
+  .meet-facts li { display: inline-flex; align-items: center; gap: 0.5em; background: var(--linen); border: 1px solid var(--line); border-radius: 999px; padding: 0.4em 0.9em; font-size: 0.88rem; font-weight: 600; color: var(--pine); }
+  .meet-facts :global(svg) { width: 17px; height: 17px; color: var(--moss); }
+</style>

@@ -1,0 +1,70 @@
+---
+import Icon from './Icon.astro';
+import { biz, tel, sms, whatsapp, mail, hasEmail } from '../lib/site';
+interface Props { waService?: string; formService?: string; dark?: boolean }
+const { waService = 'daycare or boarding', formService = '', dark = false } = Astro.props;
+const enquireHref = `/contact/?service=${encodeURIComponent(formService)}#enquire`;
+---
+<ul class:list={['contact-options', { 'contact-options--dark': dark }]} data-track-area="contact-options">
+  <li>
+    <a class="co-card" href={tel} data-track="call_click">
+      <span class="co-icon co-icon--honey"><Icon name="phone" /></span>
+      <span class="co-text"><span class="co-label">Call</span><strong>{biz.phone.display}</strong></span>
+    </a>
+  </li>
+  <li>
+    <a class="co-card" href={whatsapp(waService)} target="_blank" rel="noopener" data-track="whatsapp_click">
+      <span class="co-icon co-icon--wa"><Icon name="whatsapp" /></span>
+      <span class="co-text"><span class="co-label">WhatsApp</span><strong>Message Vanessa</strong></span>
+    </a>
+  </li>
+  <li>
+    <a class="co-card" href={sms()} data-track="sms_click">
+      <span class="co-icon"><Icon name="sms" /></span>
+      <span class="co-text"><span class="co-label">Text</span><strong>Send a text</strong></span>
+    </a>
+  </li>
+  <li>
+    {hasEmail ? (
+      <a class="co-card" href={mail()} data-track="email_click">
+        <span class="co-icon"><Icon name="mail" /></span>
+        <span class="co-text"><span class="co-label">Email</span><strong>{biz.email}</strong></span>
+      </a>
+    ) : (
+      <a class="co-card" href={enquireHref} data-enquire data-track="email_click">
+        <span class="co-icon"><Icon name="mail" /></span>
+        <span class="co-text"><span class="co-label">Email</span><strong>Use the enquiry form</strong></span>
+      </a>
+    )}
+  </li>
+</ul>
+
+<style>
+  .contact-options { list-style: none; padding: 0; margin: 0; display: grid; gap: 10px; grid-template-columns: 1fr 1fr; }
+  @media (min-width: 1000px) { .contact-options { grid-template-columns: repeat(4, 1fr); } }
+  .co-card {
+    display: flex; align-items: center; gap: 12px; min-height: 76px; padding: 14px 16px;
+    background: var(--paper); border: 1px solid var(--line); border-radius: var(--r);
+    text-decoration: none; color: var(--ink); height: 100%;
+    transition: transform 0.25s var(--ease), box-shadow 0.25s var(--ease), border-color 0.2s;
+  }
+  .co-card:hover { transform: translateY(-2px); box-shadow: var(--shadow); border-color: #d3c6ad; color: var(--ink); }
+  .co-icon {
+    flex: none; display: grid; place-items: center; width: 44px; height: 44px; border-radius: 50%;
+    background: var(--linen); color: var(--pine);
+  }
+  .co-icon :global(svg) { width: 21px; height: 21px; }
+  .co-icon--honey { background: var(--honey); color: var(--pine-deep); }
+  .co-icon--wa { background: transparent; box-shadow: inset 0 0 0 1.5px var(--whatsapp); color: var(--whatsapp-ink); }
+  .co-text { display: flex; flex-direction: column; line-height: 1.25; min-width: 0; }
+  .co-label { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--bark); }
+  .co-text strong { font-size: 0.98rem; color: var(--pine); overflow-wrap: anywhere; }
+  .contact-options--dark .co-card { background: rgba(247, 242, 232, 0.06); border-color: rgba(247, 242, 232, 0.16); color: var(--cream); }
+  .contact-options--dark .co-card:hover { background: rgba(247, 242, 232, 0.1); border-color: rgba(247, 242, 232, 0.35); }
+  .contact-options--dark .co-icon { background: rgba(247, 242, 232, 0.1); color: var(--cream); }
+  .contact-options--dark .co-icon--honey { background: var(--honey); color: var(--pine-deep); }
+  .contact-options--dark .co-icon--wa { background: transparent; color: var(--whatsapp); }
+  .contact-options--dark .co-label { color: #e9d6b4; }
+  .contact-options--dark .co-text strong { color: var(--cream); }
+  @media (max-width: 380px) { .co-card { padding: 12px; gap: 10px; } .co-text strong { font-size: 0.9rem; } }
+</style>

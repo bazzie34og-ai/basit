@@ -1,0 +1,73 @@
+---
+import Photo from './Photo.astro';
+import Icon from './Icon.astro';
+import { biz, tel, whatsapp } from '../lib/site';
+const sealText = `LICENSED & INSURED · ${biz.experienceYears} YEARS' EXPERIENCE · `;
+---
+<section class="hero grain" aria-labelledby="hero-title">
+  <div class="hero-light" aria-hidden="true"></div>
+  <div class="wrap hero-grid">
+    <div class="hero-copy">
+      <p class="label">Dog daycare · Home boarding · Arnold NG5</p>
+      <h1 id="hero-title">Dog Daycare &amp; <em>Home</em> Boarding in Arnold, Nottingham</h1>
+      <p class="lede">Small-pack woodland adventures by day, a warm sofa by night. Vanessa has cared for dogs from her own home in Arnold for {biz.experienceYears} years, fully licensed and insured.</p>
+      <div class="btn-row hero-ctas" data-track-area="hero">
+        <a class="btn btn--honey btn--lg" href={tel} data-track="call_click"><Icon name="phone" />Call Vanessa</a>
+        <a class="btn btn--outline btn--wa btn--lg" href={whatsapp()} target="_blank" rel="noopener" data-track="whatsapp_click"><span class="wa-ring"><Icon name="whatsapp" /></span>WhatsApp</a>
+      </div>
+      <p class="hero-note"><a class="pill pill--honey" href="/contact/#enquire"><Icon name="calendar" />{biz.diaryPill}</a><span>Taking on new daycare clients</span></p>
+    </div>
+
+    <div class="hero-media">
+      <div class="arch arch--ring hero-arch">
+        <Photo name="hero" eager sizes="(min-width: 900px) 460px, 78vw" />
+      </div>
+      <figure class="polaroid hero-polaroid" style="--tilt:-7deg">
+        <Photo name="vanessaHusky" sizes="(min-width: 900px) 190px, 36vw" alt="Vanessa from Paws 2 Purrs with a husky" />
+        <figcaption>Vanessa x</figcaption>
+      </figure>
+      <div class="hero-seal" aria-hidden="true">
+        <svg viewBox="0 0 120 120">
+          <defs><path id="seal-circle" d="M60 60m-45 0a45 45 0 1 1 90 0a45 45 0 1 1-90 0" /></defs>
+          <circle cx="60" cy="60" r="58" fill="#20372A" />
+          <circle cx="60" cy="60" r="53" fill="none" stroke="#D4913A" stroke-width=".8" stroke-dasharray="2 3" />
+          <text font-family="Plus Jakarta Sans, sans-serif" font-size="9.4" font-weight="700" letter-spacing="1.9" fill="#F7F2E8">
+            <textPath href="#seal-circle" textLength="280">{sealText}</textPath>
+          </text>
+        </svg>
+        <span class="hero-seal__paw"><Icon name="paw" /></span>
+      </div>
+      <p class="sr-only">Licensed and insured, {biz.experienceYears} years' experience.</p>
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero { padding: clamp(28px, 5vw, 64px) 0 clamp(56px, 7vw, 96px); overflow: hidden; }
+  .hero-light {
+    position: absolute; inset: 0; z-index: -2; pointer-events: none;
+    background:
+      radial-gradient(ellipse 60% 70% at 82% 20%, rgba(212, 145, 58, 0.2), transparent 70%),
+      radial-gradient(ellipse 50% 50% at 10% 100%, rgba(92, 122, 85, 0.12), transparent 70%);
+  }
+  .hero-grid { display: grid; gap: 48px; align-items: center; }
+  @media (min-width: 900px) { .hero-grid { grid-template-columns: 1.08fr 0.92fr; gap: 56px; } }
+  .hero-copy h1 { margin-bottom: 0.4em; max-width: 13em; }
+  .hero-copy .lede { margin-bottom: 1.8rem; }
+  .hero-note { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px; margin: 1.4rem 0 0; font-size: 0.92rem; font-weight: 600; color: var(--bark); }
+  .hero-note .pill svg { width: 16px; height: 16px; }
+  .hero-note .pill:hover { background: #dc9c48; }
+
+  .hero-media { position: relative; width: min(100%, 460px); margin-inline: auto; padding: 0 0 34px 34px; }
+  @media (max-width: 899px) { .hero-media { width: min(86%, 380px); padding: 0 0 28px 22px; } }
+  .hero-arch { aspect-ratio: 0.86; }
+  .hero-polaroid { position: absolute; left: -10px; bottom: 0; width: 41%; z-index: 3; padding: 7px 7px 0; }
+  .hero-polaroid figcaption { padding: 6px 2px 9px; font-size: 1.05rem; text-align: center; }
+  @media (max-width: 899px) { .hero-polaroid { left: -14px; width: 38%; } .hero-polaroid figcaption { font-size: 0.9rem; } }
+  .hero-seal { position: absolute; top: -8px; right: -18px; width: 118px; height: 118px; z-index: 3; filter: drop-shadow(0 10px 18px rgba(21, 37, 28, 0.28)); }
+  .hero-seal svg { width: 100%; height: 100%; animation: spin 40s linear infinite; }
+  .hero-seal__paw { position: absolute; inset: 0; display: grid; place-items: center; color: var(--honey); }
+  .hero-seal__paw :global(svg) { width: 34px; height: 34px; }
+  @media (max-width: 899px) { .hero-seal { width: 92px; height: 92px; right: -14px; top: -6px; } .hero-seal__paw :global(svg) { width: 26px; height: 26px; } }
+  @keyframes spin { to { transform: rotate(360deg); } }
+</style>

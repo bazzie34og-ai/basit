@@ -1,0 +1,58 @@
+---
+// The same closing CTA on every service and area page (LaCaze conversion system).
+import Icon from './Icon.astro';
+import Photo from './Photo.astro';
+import ContactOptions from './ContactOptions.astro';
+import LeafDivider from './LeafDivider.astro';
+import { biz, tel, whatsapp, meetGreetTitle, licenceLine, type PhotoKey } from '../lib/site';
+interface Props { waService?: string; formService?: string; photo?: PhotoKey; heading?: string }
+const { waService = 'daycare or boarding', formService = '', photo: ph = 'vanessaHusky', heading = meetGreetTitle } = Astro.props;
+const ann = biz.announcement;
+---
+<section class="cta section bg-linen grain" aria-labelledby="cta-title" data-track-area="cta-block">
+  <div class="wrap">
+    <div class="cta-card bg-pine grain reveal">
+      <div class="cta-copy">
+        <p class="label">Come and say hello</p>
+        <h2 id="cta-title">{heading}</h2>
+        <p class="cta-lede">Meet Vanessa (and some of the pack) before you book anything. Ask your questions, let your dog have a good sniff around, and see if it feels right. No pressure.</p>
+        {ann.enabled && <p class="cta-ann"><span aria-hidden="true">{ann.emoji}</span> {ann.text}</p>}
+        <div class="btn-row">
+          <a class="btn btn--honey btn--lg" href={tel} data-track="call_click"><Icon name="phone" />Call Vanessa</a>
+          <a class="btn btn--cream-outline btn--wa btn--lg" href={whatsapp(waService)} target="_blank" rel="noopener" data-track="whatsapp_click"><span class="wa-ring"><Icon name="whatsapp" /></span>WhatsApp</a>
+          <a class="btn btn--cream-outline btn--lg" href={`/contact/?service=${encodeURIComponent(formService)}#enquire`} data-enquire><Icon name="form" />Enquire</a>
+        </div>
+        <p class="cta-small">{licenceLine} · {biz.experienceYears} years' experience · Arnold, Nottingham NG5</p>
+      </div>
+      <div class="cta-media" aria-hidden="true">
+        <figure class="polaroid" style="--tilt: 4deg">
+          <Photo name={ph} sizes="(min-width: 900px) 260px, 50vw" />
+          <figcaption>See you soon! Vanessa x</figcaption>
+        </figure>
+      </div>
+    </div>
+    <LeafDivider class="cta-leaf" />
+    <h3 class="cta-sub">Or pick whichever's easiest</h3>
+    <ContactOptions waService={waService} formService={formService} />
+  </div>
+</section>
+
+<style>
+  .cta { padding-bottom: clamp(96px, 12vw, 150px); }
+  .cta-card {
+    border-radius: 36px; padding: clamp(32px, 5vw, 64px); display: grid; gap: 36px; align-items: center;
+    overflow: hidden; box-shadow: var(--shadow-lg);
+  }
+  @media (min-width: 900px) { .cta-card { grid-template-columns: 1.5fr 0.8fr; } }
+  .cta-copy h2 { color: var(--cream); font-size: clamp(2rem, 4vw, 3.1rem); }
+  .cta-lede { color: #d9dccf; font-size: 1.1rem; max-width: 34em; }
+  .cta-ann {
+    display: inline-block; background: rgba(212, 145, 58, 0.16); border: 1px solid rgba(212, 145, 58, 0.45);
+    color: #f6dcb3; border-radius: 999px; padding: 0.4em 1em; font-weight: 600; font-size: 0.93rem; margin-bottom: 1.4rem;
+  }
+  .cta-small { margin: 1.3rem 0 0; font-size: 0.86rem; color: #b8bdae; }
+  .cta-media { display: none; justify-self: center; width: min(260px, 100%); }
+  @media (min-width: 900px) { .cta-media { display: block; } }
+  .cta-leaf { margin-top: 48px; margin-bottom: 4px; }
+  .cta-sub { text-align: center; font-size: 1.2rem; margin: 6px 0 22px; }
+</style>

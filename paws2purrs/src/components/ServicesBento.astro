@@ -1,0 +1,103 @@
+---
+import Photo from './Photo.astro';
+import Icon from './Icon.astro';
+import { biz } from '../lib/site';
+---
+<section class="section bg-cream" aria-labelledby="services-title">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <p class="label">What Vanessa does</p>
+      <h2 id="services-title">Care for every kind of <em>day</em>, and every kind of dog</h2>
+      <p>Whether you need a full day of adventures, a week away, a midday walk or someone to feed the cat, it's the same person, the same home and the same care.</p>
+    </div>
+
+    <div class="bento">
+      <article class="b-card b-card--lg arch-hover reveal">
+        <div class="arch b-photo"><Photo name="daycareGroup" sizes="(min-width: 960px) 240px, 90vw" /></div>
+        <div class="b-body">
+          <p class="b-meta"><Icon name="clock" />Around {biz.daycareHours.dropOff} – {biz.daycareHours.collect}</p>
+          <h3>Doggy daycare</h3>
+          <p>A small pack, woodland and adventure walks, water and ball play, then garden games and enrichment. They come home tired, muddy and very happy.</p>
+          <ul class="b-list">
+            <li><Icon name="tree" />Woods, farm fields &amp; water spots</li>
+            <li><Icon name="camera" />Photo updates through the day</li>
+          </ul>
+          <a class="text-link" href="/dog-daycare-arnold-nottingham/">About daycare <Icon name="arrow" /></a>
+        </div>
+      </article>
+
+      <article class="b-card b-card--lg b-card--linen arch-hover reveal reveal-d1">
+        <div class="arch b-photo"><Photo name="boarding" sizes="(min-width: 960px) 240px, 90vw" /></div>
+        <div class="b-body">
+          <p class="b-meta"><Icon name="moon" />Overnights · weekends · holidays</p>
+          <h3>Home boarding</h3>
+          <p>A home from home, not kennels. Dogs share the sofa, sleep where they normally would, and join the daycare pack for their walks.</p>
+          <ul class="b-list">
+            <li><Icon name="sofa" />Real home, real sofa</li>
+            <li><Icon name="ruler" />No size limit · minimum stay {biz.minimumStay}</li>
+          </ul>
+          <a class="text-link" href="/dog-boarding-arnold-nottingham/">About home boarding <Icon name="arrow" /></a>
+        </div>
+      </article>
+
+      <article class="b-card b-card--sm reveal">
+        <span class="b-icon"><Icon name="car" /></span>
+        <h3>Dog walks</h3>
+        <p>Adventure walks with pick-up and drop-off, for days when you just can't get home.</p>
+        <a class="text-link" href="/dog-walking-arnold-nottingham/">Walks <Icon name="arrow" /></a>
+      </article>
+
+      <article class="b-card b-card--sm b-card--paper reveal reveal-d1">
+        <span class="b-icon"><Icon name="key" /></span>
+        <h3>Dog pop-ins</h3>
+        <p>A visit at home for a wee break, fresh water and a fuss while you're out.</p>
+        <a class="text-link" href="/dog-walking-arnold-nottingham/#pop-ins">Pop-ins <Icon name="arrow" /></a>
+      </article>
+
+      <article class="b-card b-card--sm b-card--pine reveal reveal-d2">
+        <span class="b-icon"><Icon name="cat" /></span>
+        <h3>Cats &amp; small pets</h3>
+        <p>The <em>Purrs</em> in Paws 2 Purrs: cat pop-ins and small animal feeds while you're away.</p>
+        <a class="text-link" href="/cat-sitting-arnold-nottingham/">Cat visits <Icon name="arrow" /></a>
+      </article>
+    </div>
+  </div>
+</section>
+
+<style>
+  .bento { display: grid; gap: 18px; }
+  @media (min-width: 700px) { .bento { grid-template-columns: repeat(6, 1fr); } .b-card--lg { grid-column: span 6; } .b-card--sm { grid-column: span 2; } }
+  @media (min-width: 1060px) { .b-card--lg { grid-column: span 3; } }
+  .b-card {
+    position: relative; border-radius: var(--r-lg); border: 1px solid var(--line); background: var(--paper);
+    padding: 24px; display: flex; flex-direction: column; gap: 8px;
+    transition: transform 0.35s var(--ease), box-shadow 0.35s var(--ease);
+  }
+  .b-card:hover { transform: translateY(-3px); box-shadow: var(--shadow); }
+  .b-card--lg { display: grid; gap: 24px; padding: 18px; }
+  @media (min-width: 560px) { .b-card--lg { grid-template-columns: 0.85fr 1.15fr; align-items: center; padding: 20px 28px 20px 20px; } }
+  .b-card--linen { background: var(--linen); }
+  .b-photo { aspect-ratio: 3 / 3.4; box-shadow: none; }
+  @media (max-width: 559px) { .b-photo { aspect-ratio: 4 / 3.6; } }
+  .b-body h3 { font-size: clamp(1.6rem, 2.4vw, 2rem); margin-bottom: 0.35em; }
+  .b-body p { color: #3b413a; }
+  .b-meta { display: inline-flex; align-items: center; gap: 0.5em; font-size: 0.78rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--bark); margin-bottom: 0.7rem; }
+  .b-meta :global(svg) { width: 16px; height: 16px; }
+  .b-list { list-style: none; padding: 0; margin: 0 0 1.2rem; display: grid; gap: 6px; font-size: 0.93rem; font-weight: 600; color: var(--pine); }
+  .b-list li { display: flex; align-items: center; gap: 0.55em; }
+  .b-list :global(svg) { width: 18px; height: 18px; color: var(--moss); flex: none; }
+  .b-card--sm { background: var(--linen); }
+  .b-card--paper { background: var(--paper); }
+  .b-card--sm h3 { margin: 6px 0 0; }
+  .b-card--sm p { font-size: 0.97rem; color: #3b413a; flex: 1; }
+  .b-card--sm .text-link { align-self: flex-start; }
+  .b-icon { display: grid; place-items: center; width: 52px; height: 52px; border-radius: 16px; background: var(--paper); color: var(--moss); border: 1px solid var(--line); }
+  .b-card--paper .b-icon { background: var(--linen); }
+  .b-icon :global(svg) { width: 26px; height: 26px; }
+  .b-card--pine { background: var(--pine); border-color: var(--pine); color: #dfe2d6; }
+  .b-card--pine h3 { color: var(--cream); }
+  .b-card--pine p { color: #d3d7ca; }
+  .b-card--pine em { color: var(--honey); font-family: var(--serif); }
+  .b-card--pine .b-icon { background: rgba(247, 242, 232, 0.08); border-color: rgba(247, 242, 232, 0.18); color: var(--honey); }
+  .b-card--pine .text-link { color: var(--cream); }
+</style>

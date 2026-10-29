@@ -1,0 +1,43 @@
+---
+import EnquiryForm from './EnquiryForm.astro';
+import ContactOptions from './ContactOptions.astro';
+import Icon from './Icon.astro';
+import { biz, meetGreetTitle, licenceLine } from '../lib/site';
+interface Props { path: string; waService?: string; formService?: string; headingTag?: 'h1' | 'h2'; heading?: string }
+const { path, waService, formService = '', headingTag: H = 'h2', heading = meetGreetTitle } = Astro.props;
+const ann = biz.announcement;
+---
+<section class="section bg-linen grain enquiry" id="enquire" aria-labelledby="enquire-title" data-track-area="enquiry">
+  <div class="wrap enquiry-grid">
+    <div class="enquiry-copy">
+      <p class="label">Let's meet your dog</p>
+      <H id="enquire-title" class="enquiry-title">{heading}</H>
+      <p class="lede">Tell Vanessa a little about your dog and what you need. She'll be in touch, usually the same day, to arrange a meet &amp; greet.</p>
+      {ann.enabled && <p class="enquiry-ann"><span aria-hidden="true">{ann.emoji}</span> {ann.text}</p>}
+      <p class="enquiry-or"><Icon name="phone" />Prefer to talk? Pick whichever's easiest:</p>
+      <ContactOptions waService={waService} formService={formService} />
+      <p class="small muted enquiry-foot">{licenceLine} · {biz.address.display} (exact address shared when you book)</p>
+    </div>
+    <div class="enquiry-form">
+      <EnquiryForm path={path} defaultService={formService} />
+    </div>
+  </div>
+</section>
+
+<style>
+  .enquiry { padding-bottom: clamp(96px, 12vw, 150px); }
+  .enquiry-grid { display: grid; gap: 40px; align-items: start; }
+  @media (min-width: 1000px) {
+    .enquiry-grid { grid-template-columns: 0.9fr 1.1fr; gap: 64px; }
+    .enquiry-copy { position: sticky; top: calc(var(--header-h) + 32px); }
+    .enquiry-copy :global(.contact-options) { grid-template-columns: 1fr 1fr; }
+  }
+  .enquiry-title { font-size: clamp(2rem, 4.2vw, 3.2rem); }
+  .enquiry-ann {
+    display: inline-block; background: var(--honey-soft); border: 1px solid #ecd2a6; color: var(--bark);
+    border-radius: 999px; padding: 0.4em 1em; font-weight: 700; font-size: 0.92rem;
+  }
+  .enquiry-or { display: flex; align-items: center; gap: 8px; font-weight: 700; color: var(--pine); margin: 1.4rem 0 0.8rem; }
+  .enquiry-or :global(svg) { width: 18px; height: 18px; color: var(--moss); }
+  .enquiry-foot { margin-top: 1.2rem; }
+</style>

@@ -1,0 +1,110 @@
+---
+// "A day in the pack": scroll-snap rail on phones, winding woodland path with a
+// self-drawing paw trail on desktop.
+import Photo from './Photo.astro';
+import Icon from './Icon.astro';
+import type { PhotoKey } from '../lib/site';
+interface Props { headingLevel?: 'h2' | 'h3' }
+const stops: { time: string; title: string; text: string; photo: PhotoKey; icon: string }[] = [
+  { time: '7:30am', title: 'Drop-off', text: "Hellos, waggy tails and a good sniff of who's in today.", photo: 'smallFluffy', icon: 'sun' },
+  { time: 'Morning', title: 'Woodland walk', text: 'Off to the woods and farm fields. Most dogs are off lead or on long lines.', photo: 'brindlePath', icon: 'tree' },
+  { time: 'Midday', title: 'Water & ball play', text: 'Paddles at the water spots, with ball play on the way.', photo: 'lakePaddle', icon: 'water' },
+  { time: 'Afternoon', title: 'Garden & enrichment', text: 'Toys in the big enclosed garden, a paddling pool in summer, and the odd homemade treat.', photo: 'cookies', icon: 'ball' },
+  { time: 'Later on', title: 'Rest & cuddles', text: 'A well-earned snooze and a fuss while everyone recharges.', photo: 'brindleSmile', icon: 'heart' },
+  { time: '5pm', title: 'Home time', text: 'Collected around 5pm, tired, muddy and happy.', photo: 'spaniels', icon: 'home' },
+];
+// Wave through the photo centres (viewBox 1200 x 560)
+const pts = stops.map((_, i) => [100 + i * 200, i % 2 ? 308 : 88]);
+let d = `M0 ${pts[0][1] + 40} C 40 ${pts[0][1] + 20}, 60 ${pts[0][1]}, ${pts[0][0]} ${pts[0][1]}`;
+for (let i = 1; i < pts.length; i++) {
+  const [x0, y0] = pts[i - 1], [x1, y1] = pts[i];
+  d += ` C ${x0 + 100} ${y0}, ${x1 - 100} ${y1}, ${x1} ${y1}`;
+}
+const last = pts[pts.length - 1];
+d += ` C ${last[0] + 60} ${last[1]}, 1160 ${last[1] - 30}, 1200 ${last[1] - 60}`;
+---
+<section class="section bg-linen grain day" aria-labelledby="day-title">
+  <div class="wrap">
+    <div class="section-head section-head--center reveal">
+      <p class="label">A day in the pack</p>
+      <h2 id="day-title">Muddy paws, happy hearts, <em>home</em> by five</h2>
+      <p>Here's how a daycare day usually goes. Every day is a little different, depending on the weather and who's in the pack.</p>
+    </div>
+  </div>
+
+  <div class="day-track">
+    <div class="day-trail" data-trail aria-hidden="true">
+      <svg viewBox="0 0 1200 560" preserveAspectRatio="none">
+        <path d={d} class="trail-base" data-trail-path vector-effect="non-scaling-stroke" />
+        <path d={d} class="trail-draw" data-trail-draw vector-effect="non-scaling-stroke" />
+      </svg>
+    </div>
+    <ol class="day-rail">
+      {stops.map((s, i) => (
+        <li class="stop">
+          <div class="arch stop-photo"><Photo name={s.photo} sizes="(min-width: 1000px) 170px, 64vw" /></div>
+          <div class="stop-text">
+            <p class="stop-time"><Icon name={s.icon} />{s.time}</p>
+            <h3>{s.title}</h3>
+            <p>{s.text}</p>
+          </div>
+          <span class="stop-num" aria-hidden="true">{i + 1}</span>
+        </li>
+      ))}
+    </ol>
+  </div>
+  <p class="wrap day-hint hide-desktop" aria-hidden="true">Swipe for the rest of the day <Icon name="arrow" /></p>
+</section>
+
+<style>
+  .day { overflow: hidden; }
+  .day-track { position: relative; max-width: 1240px; margin-inline: auto; }
+  .day-rail {
+    list-style: none; margin: 0; display: flex; gap: 16px; overflow-x: auto; scroll-snap-type: x mandatory;
+    padding: 18px var(--gutter) 22px; scroll-padding-inline: var(--gutter); -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .day-rail::-webkit-scrollbar { display: none; }
+  .stop {
+    flex: 0 0 min(74vw, 300px); scroll-snap-align: start; position: relative;
+    background: var(--paper); border: 1px solid var(--line); border-radius: var(--r-lg); padding: 14px 14px 18px;
+  }
+  .stop::before {
+    content: ''; position: absolute; top: -14px; left: 26px; right: -30px; border-top: 2px dashed #c9b994;
+  }
+  .stop:last-child::before { right: 26px; }
+  .stop-num {
+    position: absolute; top: -26px; left: 14px; width: 26px; height: 26px; border-radius: 50%; background: var(--honey);
+    color: var(--pine-deep); font-size: 0.78rem; font-weight: 800; display: grid; place-items: center; box-shadow: 0 0 0 4px var(--linen);
+  }
+  .stop-photo { aspect-ratio: 4 / 4.2; box-shadow: none; }
+  .stop-text { padding: 12px 4px 0; }
+  .stop-time { display: inline-flex; align-items: center; gap: 0.45em; margin: 0 0 4px; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--bark); }
+  .stop-time :global(svg) { width: 16px; height: 16px; color: var(--moss); }
+  .stop h3 { font-size: 1.3rem; margin-bottom: 0.25em; }
+  .stop p:last-child { margin: 0; font-size: 0.95rem; color: #3b413a; }
+  .day-trail { display: none; }
+  .day-hint { display: flex; align-items: center; gap: 8px; font-size: 0.86rem; font-weight: 600; color: var(--bark); margin-top: 4px; }
+  .day-hint :global(svg) { width: 16px; height: 16px; }
+
+  @media (min-width: 1000px) {
+    .day-rail { display: grid; grid-template-columns: repeat(6, 1fr); gap: 20px; overflow: visible; padding: 0 var(--gutter) 30px; }
+    .stop { background: none; border: 0; padding: 0; text-align: center; }
+    .stop:nth-child(even) { margin-top: 220px; }
+    .stop::before, .stop-num { display: none; }
+    .stop-photo { width: 78%; margin-inline: auto; aspect-ratio: 3 / 3.8; box-shadow: var(--shadow); border: 5px solid var(--paper); }
+    .stop-text { padding-top: 16px; }
+    .stop-time { background: var(--paper); border: 1px solid var(--line); padding: 4px 10px; border-radius: 999px; }
+    .day-trail { display: block; position: absolute; inset: 0 var(--gutter); pointer-events: none; }
+    .day-trail svg { width: 100%; height: 560px; overflow: visible; }
+    .trail-base { fill: none; stroke: #bfae87; stroke-width: 2; stroke-dasharray: 2 9; stroke-linecap: round; }
+    .trail-draw { fill: none; stroke: var(--honey); stroke-width: 2.5; stroke-linecap: round; opacity: 0.55; }
+    .day-trail :global(.trail-paw) {
+      position: absolute; width: 14px; height: 14px; margin: -7px 0 0 -7px; color: var(--honey-deep);
+      background: currentColor; transform: rotate(var(--r)) scale(0.4); opacity: 0;
+      -webkit-mask: var(--paw-mask) center / contain no-repeat; mask: var(--paw-mask) center / contain no-repeat;
+      transition: opacity 0.4s, transform 0.4s var(--ease);
+    }
+    .day-trail :global(.trail-paw.is-on) { opacity: 0.9; transform: rotate(var(--r)) scale(1); }
+  }
+</style>

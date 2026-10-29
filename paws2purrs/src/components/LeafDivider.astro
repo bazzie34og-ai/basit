@@ -1,0 +1,17 @@
+---
+// Hand-drawn style leaf sprig used between sections.
+interface Props { class?: string }
+const { class: cls = '' } = Astro.props;
+---
+<div class={`leaf-divider ${cls}`} aria-hidden="true">
+  <svg viewBox="0 0 132 28" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M4 15c18-1 34-1 52 0M76 15c18 1 34 1 52 0" opacity=".55" />
+    <path d="M66 24c0-6 .4-12 0-19" />
+    <path d="M66 12c-3.4-3.2-8-3.8-11-2.6 2.2 3.6 6.6 4.8 11 2.6Z" />
+    <path d="M66 9c3-3.6 7.6-4.6 10.8-3.6-2 3.8-6.4 5.4-10.8 3.6Z" />
+    <path d="M66 18.5c-3.8-2.4-8.4-2.2-11.2-.6 2.8 3.2 7.4 3.6 11.2.6Z" />
+    <path d="M66 16c3.6-2.8 8.2-3 11.2-1.6-2.4 3.4-7 4.2-11.2 1.6Z" />
+    <circle cx="44" cy="15" r="1.3" fill="currentColor" stroke="none" />
+    <circle cx="88" cy="15" r="1.3" fill="currentColor" stroke="none" />
+  </svg>
+</div>

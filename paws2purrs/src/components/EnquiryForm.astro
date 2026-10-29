@@ -1,0 +1,202 @@
+---
+// Two-step "Meet & greet" enquiry form, submitted by Netlify Forms.
+// Works without JS (both steps show); JS adds steps, validation and the WhatsApp summary.
+import Icon from './Icon.astro';
+import { meetGreet } from '../lib/site';
+interface Props { path: string; defaultService?: string }
+const { path, defaultService = '' } = Astro.props;
+const serviceOptions = ['Daycare', 'Boarding', 'Walks', 'Pop-ins', 'Cat visits', 'Not sure'];
+const prompts = ['Nervous around new people or dogs', 'Takes medication', 'Can be reactive on lead', 'Not neutered / spayed', 'Allergies or a special diet'];
+const contactMethods = ['Call', 'WhatsApp', 'Text', 'Email'];
+const uid = path.replace(/[^a-z0-9]/gi, '') || 'home';
+---
+<form
+  class="enq"
+  name="enquiry"
+  method="POST"
+  action="/thank-you/"
+  data-netlify="true"
+  netlify-honeypot="bot-field"
+  data-enquiry
+  data-default-service={defaultService}
+  novalidate
+>
+  <input type="hidden" name="form-name" value="enquiry" />
+  <input type="hidden" name="page" value={path} />
+  <p class="enq-hp" aria-hidden="true"><label>Don't fill this in if you're human: <input name="bot-field" tabindex="-1" autocomplete="off" /></label></p>
+
+  <div class="enq-head">
+    <p class="enq-kicker"><Icon name="paw" />{meetGreet.charAt(0).toUpperCase() + meetGreet.slice(1)} enquiry</p>
+    <ol class="enq-dots" aria-hidden="true">
+      <li data-step-dot class="is-active"><span>1</span>Your dog</li>
+      <li data-step-dot><span>2</span>You</li>
+    </ol>
+  </div>
+
+  <fieldset class="enq-step" data-step="1">
+    <legend class="enq-legend">Your dog <span>Step 1 of 2</span></legend>
+
+    <div class="chips-field">
+      <p class="field-label" id="svc-label">What would you like? <span class="req">*</span></p>
+      <div class="svc-chips" role="radiogroup" aria-labelledby="svc-label">
+        {serviceOptions.map((s) => (
+          <label class="svc-chip"><input type="radio" name="service" value={s} required /><span>{s}</span></label>
+        ))}
+      </div>
+      <p class="field-error" aria-live="polite"></p>
+    </div>
+
+    <div class="field-row">
+      <div class="field">
+        <label for={`dates-${uid}`} class="field-label">Dates or days needed</label>
+        <input id={`dates-${uid}`} name="dates" type="text" placeholder="e.g. Mondays & Weds, or 20–27 Dec" autocomplete="off" />
+        <p class="field-error" aria-live="polite"></p>
+      </div>
+      <div class="field">
+        <label for={`start-${uid}`} class="field-label">Start date <span class="opt">(optional)</span></label>
+        <input id={`start-${uid}`} name="start_date" type="date" />
+        <p class="field-error" aria-live="polite"></p>
+      </div>
+    </div>
+
+    <div class="field-row field-row--3">
+      <div class="field">
+        <label for={`dog-${uid}`} class="field-label">Dog's name <span class="req">*</span></label>
+        <input id={`dog-${uid}`} name="dog_name" type="text" required autocomplete="off" placeholder="e.g. Bramble" />
+        <p class="field-error" aria-live="polite"></p>
+      </div>
+      <div class="field">
+        <label for={`breed-${uid}`} class="field-label">Breed</label>
+        <input id={`breed-${uid}`} name="breed" type="text" autocomplete="off" placeholder="e.g. Husky" />
+        <p class="field-error" aria-live="polite"></p>
+      </div>
+      <div class="field">
+        <label for={`age-${uid}`} class="field-label">Age</label>
+        <input id={`age-${uid}`} name="age" type="text" autocomplete="off" placeholder="e.g. 3 years" />
+        <p class="field-error" aria-live="polite"></p>
+      </div>
+    </div>
+
+    <div class="field">
+      <label for={`notes-${uid}`} class="field-label">Anything we should know?</label>
+      <div class="prompt-chips" aria-label="Quick add">
+        {prompts.map((p) => <button type="button" class="prompt-chip" data-prompt={p} aria-pressed="false"><Icon name="plus" />{p}</button>)}
+      </div>
+      <textarea id={`notes-${uid}`} name="notes" rows="3" placeholder="Tell Vanessa a little about your dog: how they are with other dogs, any worries, routines…"></textarea>
+      <p class="field-error" aria-live="polite"></p>
+    </div>
+
+    <button type="button" class="btn btn--pine btn--lg btn--block enq-next" data-next>Next: your details <Icon name="arrow" /></button>
+  </fieldset>
+
+  <fieldset class="enq-step" data-step="2">
+    <legend class="enq-legend">You <span>Step 2 of 2</span></legend>
+
+    <div class="field-row">
+      <div class="field">
+        <label for={`name-${uid}`} class="field-label">Your name <span class="req">*</span></label>
+        <input id={`name-${uid}`} name="name" type="text" required autocomplete="name" />
+        <p class="field-error" aria-live="polite"></p>
+      </div>
+      <div class="field">
+        <label for={`mobile-${uid}`} class="field-label">Mobile <span class="req">*</span></label>
+        <input id={`mobile-${uid}`} name="mobile" type="tel" inputmode="tel" required autocomplete="tel" placeholder="07…" />
+        <p class="field-error" aria-live="polite"></p>
+      </div>
+    </div>
+    <div class="field-row">
+      <div class="field">
+        <label for={`email-${uid}`} class="field-label">Email <span class="opt">(optional)</span></label>
+        <input id={`email-${uid}`} name="email" type="email" autocomplete="email" inputmode="email" />
+        <p class="field-error" aria-live="polite"></p>
+      </div>
+      <div class="field">
+        <label for={`area-${uid}`} class="field-label">Area or postcode</label>
+        <input id={`area-${uid}`} name="area" type="text" autocomplete="postal-code" placeholder="e.g. Mapperley or NG5" />
+        <p class="field-error" aria-live="polite"></p>
+      </div>
+    </div>
+    <div class="chips-field">
+      <p class="field-label" id={`cm-${uid}`}>Best way to reach you</p>
+      <div class="svc-chips svc-chips--sm" role="radiogroup" aria-labelledby={`cm-${uid}`}>
+        {contactMethods.map((m, i) => (
+          <label class="svc-chip"><input type="radio" name="contact_method" value={m} checked={i === 0} /><span>{m}</span></label>
+        ))}
+      </div>
+      <p class="field-error" aria-live="polite"></p>
+    </div>
+
+    <div class="enq-actions">
+      <button type="button" class="btn btn--outline enq-back" data-back><Icon name="arrow" />Back</button>
+      <button type="submit" class="btn btn--honey btn--lg">Send to Vanessa</button>
+    </div>
+    <p class="enq-consent">By sending, you agree Paws 2 Purrs may call, text or email you about your enquiry. See our <a href="/privacy/">privacy policy</a>.</p>
+  </fieldset>
+</form>
+
+<style>
+  .enq {
+    background: var(--paper); border: 1px solid var(--line); border-radius: var(--r-lg);
+    padding: clamp(20px, 4vw, 36px); box-shadow: var(--shadow); scroll-margin-top: calc(var(--header-h) + 16px);
+  }
+  .enq-hp { position: absolute; left: -9999px; }
+  .enq-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px 20px; margin-bottom: 18px; }
+  .enq-kicker { display: inline-flex; align-items: center; gap: 8px; margin: 0; font-size: 0.74rem; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: var(--bark); }
+  .enq-kicker :global(svg) { width: 16px; height: 16px; color: var(--honey); }
+  .enq-dots { display: none; list-style: none; margin: 0; padding: 0; gap: 16px; font-size: 0.85rem; font-weight: 600; color: var(--muted); }
+  :global(.is-stepped) .enq-dots { display: flex; }
+  .enq-dots li { display: flex; align-items: center; gap: 7px; }
+  .enq-dots span { display: grid; place-items: center; width: 26px; height: 26px; border-radius: 50%; border: 1.5px solid var(--line); font-size: 0.8rem; }
+  .enq-dots .is-active { color: var(--pine); }
+  .enq-dots .is-active span { background: var(--pine); border-color: var(--pine); color: var(--cream); }
+  .enq-dots .is-done span { background: var(--moss); border-color: var(--moss); color: var(--cream); }
+  .enq-step { border: 0; padding: 0; margin: 0; min-width: 0; }
+  .enq-step + .enq-step { margin-top: 28px; }
+  :global(.is-stepped) .enq-step + .enq-step { margin-top: 0; }
+  .enq-legend { font-family: var(--serif); font-size: 1.6rem; color: var(--pine); padding: 0; margin-bottom: 16px; display: flex; align-items: baseline; gap: 12px; width: 100%; }
+  .enq-legend span { font-family: var(--sans); font-size: 0.8rem; color: var(--muted); font-weight: 600; }
+  .field, .chips-field { margin-bottom: 16px; }
+  .field-row { display: grid; gap: 0 14px; }
+  @media (min-width: 560px) { .field-row { grid-template-columns: 1fr 1fr; } .field-row--3 { grid-template-columns: 1.2fr 1fr 0.8fr; } }
+  .field-label { display: block; font-weight: 700; font-size: 0.92rem; color: var(--pine); margin-bottom: 6px; }
+  .req { color: var(--honey-deep); }
+  .opt { font-weight: 500; color: var(--muted); }
+  .enq input[type='text'], .enq input[type='tel'], .enq input[type='email'], .enq input[type='date'], .enq textarea {
+    width: 100%; min-height: 52px; padding: 12px 14px; font: inherit; font-size: 1rem; color: var(--ink);
+    background: var(--cream); border: 1.5px solid var(--line); border-radius: 14px; transition: border-color 0.2s, box-shadow 0.2s, background-color 0.2s;
+  }
+  .enq textarea { min-height: 96px; resize: vertical; }
+  .enq input:focus, .enq textarea:focus { outline: none; border-color: var(--moss); background: #fff; box-shadow: 0 0 0 4px rgba(92, 122, 85, 0.18); }
+  .enq ::placeholder { color: #8b8a80; }
+  .has-error input, .has-error textarea { border-color: #b4462f; background: #fff8f5; }
+  .field-error { margin: 6px 0 0; color: #a3391f; font-size: 0.88rem; font-weight: 600; min-height: 0; }
+  .field-error:empty { display: none; }
+  .svc-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+  .svc-chip { position: relative; }
+  .svc-chip input { position: absolute; opacity: 0; inset: 0; margin: 0; cursor: pointer; }
+  .svc-chip span {
+    display: inline-flex; align-items: center; min-height: 46px; padding: 0 1.05em; border-radius: 999px;
+    border: 1.5px solid var(--line); background: var(--cream); font-weight: 600; font-size: 0.95rem; color: var(--pine);
+    transition: all 0.2s var(--ease);
+  }
+  .svc-chip:hover span { border-color: var(--moss); }
+  .svc-chip input:checked + span { background: var(--pine); border-color: var(--pine); color: var(--cream); }
+  .svc-chip input:focus-visible + span { outline: 3px solid var(--honey-deep); outline-offset: 2px; }
+  .has-error .svc-chip span { border-color: #d49a8b; }
+  .prompt-chips { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 8px; }
+  .prompt-chip {
+    display: inline-flex; align-items: center; gap: 4px; min-height: 36px; padding: 0 0.8em; border-radius: 999px;
+    border: 1px dashed #cdbf9f; background: transparent; font-size: 0.84rem; color: var(--bark); cursor: pointer; font-weight: 600;
+  }
+  .prompt-chip :global(svg) { width: 14px; height: 14px; }
+  .prompt-chip[aria-pressed='true'] { background: var(--honey-soft); border-style: solid; }
+  .enq-next { margin-top: 6px; }
+  .enq-actions { display: flex; gap: 10px; margin-top: 8px; }
+  .enq-actions .btn--honey { flex: 1; }
+  .enq-back { display: none; }
+  :global(.is-stepped) .enq-back { display: inline-flex; }
+  :global(.is-stepped) .enq-next { display: inline-flex; }
+  .enq-next { display: none; }
+  .enq-back :global(svg) { transform: scaleX(-1); }
+  .enq-consent { margin: 14px 0 0; font-size: 0.84rem; color: var(--muted); }
+</style>

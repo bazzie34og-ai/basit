@@ -1,0 +1,99 @@
+---
+import Logo from './Logo.astro';
+import Icon from './Icon.astro';
+import { biz, services, areaPages, tel, whatsapp, previewMode, licenceLine, fbProof } from '../lib/site';
+interface Props { waService: string }
+const { waService } = Astro.props;
+const year = new Date().getFullYear();
+---
+<footer class="site-footer bg-pine-deep grain">
+  <svg class="footer-ridge" viewBox="0 0 1440 60" preserveAspectRatio="none" aria-hidden="true">
+    <path d="M0 60V34c80-10 150-26 230-22s150 24 240 20 170-30 260-28 160 26 250 24 170-24 250-22 140 16 210 20v34Z" fill="currentColor" />
+  </svg>
+  <div class="wrap footer-grid">
+    <div class="footer-brand">
+      <Logo variant="dark" class="footer-logo" />
+      <p>Dog daycare, home boarding, walks and pop-ins from a real home in Arnold. Run by {biz.owner}, with {biz.experienceYears} years' experience and a lot of muddy towels.</p>
+      <address class="nap">
+        <strong>{biz.name}</strong><br />
+        {biz.address.display}<br />
+        <a href={tel} data-track="call_click">{biz.phone.display}</a>
+      </address>
+      <p class="footer-small">{licenceLine}. Exact address shared when you book.</p>
+    </div>
+    <div>
+      <h2 class="footer-h">Services</h2>
+      <ul class="footer-links">
+        {services.map((s) => <li><a href={s.href}>{s.name}</a></li>)}
+        <li><a href="/christmas-dog-boarding-nottingham/">Christmas boarding</a></li>
+      </ul>
+    </div>
+    <div>
+      <h2 class="footer-h">Areas</h2>
+      <ul class="footer-links">
+        <li><a href="/dog-daycare-arnold-nottingham/">Arnold</a></li>
+        {areaPages.map((a) => <li><a href={a.href}>{a.name}</a></li>)}
+      </ul>
+      <h2 class="footer-h footer-h--gap">More</h2>
+      <ul class="footer-links">
+        <li><a href="/about/">About Vanessa</a></li>
+        <li><a href="/reviews/">Reviews</a></li>
+        <li><a href="/gallery/">Gallery</a></li>
+        <li><a href="/faq/">FAQ</a></li>
+        <li><a href="/contact/">Contact</a></li>
+      </ul>
+    </div>
+    <div class="footer-contact">
+      <h2 class="footer-h">Say hello</h2>
+      <a class="btn btn--honey btn--block" href={tel} data-track="call_click"><Icon name="phone" />Call {biz.phone.display}</a>
+      <a class="btn btn--cream-outline btn--wa btn--block" href={whatsapp(waService)} target="_blank" rel="noopener" data-track="whatsapp_click"><span class="wa-ring"><Icon name="whatsapp" /></span>WhatsApp</a>
+      <div class="socials">
+        <a href={biz.facebook.url} target="_blank" rel="noopener" aria-label="Paws 2 Purrs on Facebook"><Icon name="facebook" /></a>
+        {biz.flags.showInstagram && <a href={biz.instagram.url} target="_blank" rel="noopener" aria-label="Paws 2 Purrs on Instagram"><Icon name="instagram" /></a>}
+        <span class="footer-small">{fbProof} ({biz.facebook.reviewCount} reviews)</span>
+      </div>
+    </div>
+  </div>
+  <div class="wrap footer-base">
+    <p>© {year} {biz.shortName}. All the photos are real dogs in our care.</p>
+    <p><a href="/privacy/">Privacy</a></p>
+    {previewMode && <p class="preview-ribbon">Preview for Paws 2 Purrs</p>}
+  </div>
+</footer>
+
+<style>
+  .site-footer { position: relative; padding: 88px 0 28px; color: #d6d9cd; margin-top: 0; }
+  .footer-ridge { position: absolute; left: 0; right: 0; top: -59px; width: 100%; height: 60px; color: var(--pine-deep); }
+  .footer-grid { display: grid; gap: 40px; }
+  @media (min-width: 760px) { .footer-grid { grid-template-columns: 1.4fr 1fr 1fr; } .footer-contact { grid-column: 1 / -1; } }
+  @media (min-width: 1100px) { .footer-grid { grid-template-columns: 1.5fr 1fr 1fr 1.1fr; } .footer-contact { grid-column: auto; } }
+  .footer-brand :global(.footer-logo) { width: 220px; height: auto; margin-bottom: 18px; }
+  .footer-brand p { font-size: 0.96rem; max-width: 30em; }
+  .nap { font-style: normal; line-height: 1.7; margin: 0 0 14px; color: var(--cream); }
+  .nap a { color: var(--cream); font-weight: 700; }
+  .footer-small { font-size: 0.84rem; color: #b9bdae; }
+  .footer-h { font-family: var(--sans); font-size: 0.74rem; letter-spacing: 0.16em; text-transform: uppercase; color: #e9d6b4; margin-bottom: 12px; font-weight: 700; }
+  .footer-h--gap { margin-top: 26px; }
+  .footer-links { list-style: none; padding: 0; margin: 0; }
+  .footer-links a { display: inline-flex; min-height: 40px; align-items: center; color: #e2e4da; text-decoration: none; font-size: 0.97rem; }
+  .footer-links a:hover { color: var(--honey); }
+  .footer-contact { display: grid; gap: 10px; align-content: start; }
+  @media (min-width: 760px) and (max-width: 1099px) { .footer-contact { grid-template-columns: 1fr 1fr; } .footer-contact .footer-h, .socials { grid-column: 1 / -1; } }
+  .socials { display: flex; align-items: center; gap: 12px; margin-top: 6px; }
+  .socials a {
+    display: grid; place-items: center; width: 48px; height: 48px; border-radius: 50%;
+    border: 1px solid rgba(247, 242, 232, 0.25); color: var(--cream);
+  }
+  .socials a:hover { border-color: var(--honey); color: var(--honey); }
+  .socials :global(svg) { width: 20px; height: 20px; }
+  .footer-base {
+    display: flex; flex-wrap: wrap; gap: 8px 22px; align-items: center; margin-top: 52px; padding-top: 22px;
+    border-top: 1px solid rgba(247, 242, 232, 0.12); font-size: 0.85rem; color: #aeb3a4;
+  }
+  .footer-base p { margin: 0; }
+  .footer-base a { color: #d6d9cd; display: inline-block; padding-block: 10px; }
+  .preview-ribbon {
+    margin-left: auto !important; font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase;
+    border: 1px dashed rgba(212, 145, 58, 0.6); color: #e9c893; padding: 3px 10px; border-radius: 999px;
+  }
+</style>

@@ -1,0 +1,85 @@
+---
+// "Letters from owners": real Google reviews, word for word.
+import Icon from './Icon.astro';
+import type { Review } from '../data/reviews';
+import { biz } from '../lib/site';
+interface Props { items: Review[]; columns?: 2 | 3 }
+const { items, columns = 3 } = Astro.props;
+const g = biz.google.reviewsUrl;
+---
+<div class:list={['letters', `letters--${columns}`]}>
+  {items.map((r, i) => (
+    <article class="letter reveal" style={`--tilt:${[-0.6, 0.5, -0.3, 0.7][i % 4]}deg`}>
+      <span class="letter-stamp" aria-hidden="true"><Icon name="paw" /></span>
+      <h3 class="letter-dog">{r.dog}{r.tenure && <span class="letter-tenure"> · {r.tenure}</span>}</h3>
+      <blockquote class="letter-text">
+        <p>{r.text}</p>
+      </blockquote>
+      {r.truncated && (
+        <a class="letter-more" href={g} target="_blank" rel="noopener">Read the rest on Google <Icon name="external" /></a>
+      )}
+      <footer class="letter-by">
+        <span class="avatar" aria-hidden="true">{r.initials || <Icon name="paw" />}</span>
+        <span class="letter-who">
+          <strong>{r.author}</strong>
+          <span class="g-label"><Icon name="google" />Google review</span>
+        </span>
+      </footer>
+      {r.reply && (
+        <div class="reply">
+          <p class="reply-label">Vanessa replied</p>
+          <p class="reply-text">{r.reply}</p>
+        </div>
+      )}
+    </article>
+  ))}
+</div>
+
+<style>
+  .letters { columns: 1; column-gap: 22px; }
+  @media (min-width: 720px) { .letters { columns: 2; } }
+  @media (min-width: 1080px) { .letters--3 { columns: 3; } }
+  .letter {
+    break-inside: avoid; position: relative; margin: 0 0 22px; padding: 30px 26px 24px;
+    background: var(--paper); border: 1px solid var(--line); border-radius: 22px;
+    box-shadow: var(--shadow-sm); transform: rotate(var(--tilt));
+    background-image: linear-gradient(transparent 31px, rgba(226, 216, 198, 0.45) 32px);
+    background-size: 100% 32px; background-position: 0 14px;
+  }
+  .js .letter.reveal { transform: translateY(22px) rotate(var(--tilt)); }
+  .js .letter.reveal.is-in { transform: rotate(var(--tilt)); }
+  .letter-stamp {
+    position: absolute; top: 16px; right: 16px; width: 40px; height: 46px; display: grid; place-items: center;
+    border: 1.5px dashed #d8c7a6; border-radius: 4px; color: var(--honey); transform: rotate(6deg); background: var(--cream);
+  }
+  .letter-stamp :global(svg) { width: 20px; height: 20px; }
+  .letter-dog {
+    font-style: italic; font-weight: 500; font-size: 1.45rem; margin: 0 52px 14px 0; color: var(--pine); line-height: 1.25;
+  }
+  .letter-tenure { font-size: 0.98rem; color: var(--bark); font-weight: 400; }
+  .letter-text { margin: 0; }
+  .letter-text p { margin: 0; font-size: 1.01rem; line-height: 1.7; color: #2e342e; white-space: pre-line; }
+  .letter-more { display: inline-flex; align-items: center; gap: 0.35em; margin-top: 8px; font-size: 0.9rem; font-weight: 700; min-height: 36px; }
+  .letter-more :global(svg) { width: 14px; height: 14px; }
+  .letter-by { display: flex; align-items: center; gap: 12px; margin-top: 18px; }
+  .avatar {
+    flex: none; display: grid; place-items: center; width: 42px; height: 42px; border-radius: 50%;
+    background: var(--moss); color: var(--cream); font-weight: 700; font-size: 0.88rem; letter-spacing: 0.04em;
+  }
+  .avatar :global(svg) { width: 20px; height: 20px; }
+  .letter-who { display: flex; flex-direction: column; line-height: 1.3; }
+  .letter-who strong { color: var(--pine); }
+  .g-label { display: inline-flex; align-items: center; gap: 5px; font-size: 0.78rem; color: var(--muted); font-weight: 600; }
+  .g-label :global(svg) { width: 13px; height: 13px; color: #5a6b8c; }
+  .reply {
+    margin-top: 16px; margin-left: 18px; padding: 14px 16px; border-radius: 4px 18px 18px 18px;
+    background: #eef1e8; border: 1px solid #dde3d3; position: relative;
+  }
+  .reply::before {
+    content: ''; position: absolute; left: -12px; top: -12px; width: 14px; height: 22px;
+    border-left: 1.5px solid #c9d2bd; border-bottom: 1.5px solid #c9d2bd; border-bottom-left-radius: 10px;
+  }
+  .reply-label { margin: 0 0 4px; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--moss); }
+  .reply-label { color: #4b6645; }
+  .reply-text { margin: 0; font-size: 0.95rem; color: #3a4238; }
+</style>

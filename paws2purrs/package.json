@@ -1,0 +1,19 @@
+{
+  "name": "paws2purrs",
+  "type": "module",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "images": "node scripts/build-images.mjs",
+    "dev": "npm run images && astro dev",
+    "build": "npm run images && astro build",
+    "preview": "astro preview"
+  },
+  "dependencies": {
+    "@astrojs/sitemap": "^3.7.4",
+    "@fontsource-variable/lora": "^5.3.0",
+    "@fontsource-variable/plus-jakarta-sans": "^5.3.0",
+    "astro": "^5.18.2",
+    "sharp": "^0.35.5"
+  }
+}

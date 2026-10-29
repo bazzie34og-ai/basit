@@ -1,0 +1,36 @@
+---
+import Icon from './Icon.astro';
+import type { Faq } from '../data/faqs';
+import { isDev } from '../lib/site';
+interface Props { items: Faq[]; }
+const { items } = Astro.props;
+const shown = items.filter((f) => !f.todo || isDev);
+---
+<div class="faq-list">
+  {shown.map((f) => (
+    <details class:list={['faq', { 'faq--todo': f.todo }]}>
+      <summary><span>{f.q}</span><span class="faq-icon"><Icon name="plus" /></span></summary>
+      <div class="faq-a"><p set:html={f.a} /></div>
+    </details>
+  ))}
+</div>
+
+<style>
+  .faq-list { border-top: 1px solid var(--line); }
+  .faq { border-bottom: 1px solid var(--line); }
+  .faq summary {
+    list-style: none; cursor: pointer; display: flex; align-items: center; justify-content: space-between; gap: 18px;
+    min-height: 64px; padding: 14px 0; font-family: var(--serif); font-size: clamp(1.08rem, 1.6vw, 1.25rem); font-weight: 500; color: var(--pine);
+  }
+  .faq summary::-webkit-details-marker { display: none; }
+  .faq-icon {
+    flex: none; display: grid; place-items: center; width: 36px; height: 36px; border-radius: 50%;
+    border: 1px solid var(--line); background: var(--paper); transition: transform 0.3s var(--ease), background-color 0.2s;
+  }
+  .faq-icon :global(svg) { width: 18px; height: 18px; }
+  .faq[open] .faq-icon { transform: rotate(45deg); background: var(--honey); border-color: var(--honey); }
+  .faq summary:hover .faq-icon { border-color: var(--moss); }
+  .faq-a { padding: 0 52px 20px 0; color: #3b413a; max-width: 46rem; }
+  .faq-a p { margin: 0; }
+  .faq--todo { background: var(--honey-soft); }
+</style>

@@ -1,0 +1,146 @@
+{
+  "hero": {
+    "width": 720,
+    "height": 794,
+    "widths": [
+      360,
+      540,
+      720
+    ]
+  },
+  "vanessaHusky": {
+    "width": 720,
+    "height": 1056,
+    "widths": [
+      360,
+      540,
+      720
+    ]
+  },
+  "vanessaSelfie": {
+    "width": 579,
+    "height": 1097,
+    "widths": [
+      360,
+      540,
+      579
+    ]
+  },
+  "daycareGroup": {
+    "width": 720,
+    "height": 947,
+    "widths": [
+      360,
+      540,
+      720
+    ]
+  },
+  "lakeDoodle": {
+    "width": 720,
+    "height": 956,
+    "widths": [
+      360,
+      540,
+      720
+    ]
+  },
+  "lakePaddle": {
+    "width": 720,
+    "height": 958,
+    "widths": [
+      360,
+      540,
+      720
+    ]
+  },
+  "lakeEdge": {
+    "width": 720,
+    "height": 957,
+    "widths": [
+      360,
+      540,
+      720
+    ]
+  },
+  "howl": {
+    "width": 720,
+    "height": 954,
+    "widths": [
+      360,
+      540,
+      720
+    ]
+  },
+  "spaniels": {
+    "width": 720,
+    "height": 946,
+    "widths": [
+      360,
+      540,
+      720
+    ]
+  },
+  "boarding": {
+    "width": 718,
+    "height": 951,
+    "widths": [
+      360,
+      540,
+      718
+    ]
+  },
+  "smallFluffy": {
+    "width": 720,
+    "height": 957,
+    "widths": [
+      360,
+      540,
+      720
+    ]
+  },
+  "smallLog": {
+    "width": 720,
+    "height": 946,
+    "widths": [
+      360,
+      540,
+      720
+    ]
+  },
+  "brindlePath": {
+    "width": 720,
+    "height": 958,
+    "widths": [
+      360,
+      540,
+      720
+    ]
+  },
+  "brindleSmile": {
+    "width": 720,
+    "height": 932,
+    "widths": [
+      360,
+      540,
+      720
+    ]
+  },
+  "taxi": {
+    "width": 720,
+    "height": 943,
+    "widths": [
+      360,
+      540,
+      720
+    ]
+  },
+  "cookies": {
+    "width": 720,
+    "height": 941,
+    "widths": [
+      360,
+      540,
+      720
+    ]
+  }
+}

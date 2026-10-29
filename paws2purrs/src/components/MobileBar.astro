@@ -1,0 +1,38 @@
+---
+import Icon from './Icon.astro';
+import { tel, whatsapp } from '../lib/site';
+interface Props { waService: string; formService: string }
+const { waService, formService } = Astro.props;
+---
+<nav class="mobile-bar" aria-label="Quick contact" data-mobile-bar>
+  <a class="mb-btn mb-btn--call" href={tel} data-track="call_click"><Icon name="phone" /><span>Call</span></a>
+  <a class="mb-btn mb-btn--wa" href={whatsapp(waService)} target="_blank" rel="noopener" data-track="whatsapp_click">
+    <span class="wa-dot"><Icon name="whatsapp" /></span><span>WhatsApp</span>
+  </a>
+  <a class="mb-btn mb-btn--enq" href={`/contact/?service=${encodeURIComponent(formService)}#enquire`} data-enquire><Icon name="form" /><span>Enquire</span></a>
+</nav>
+
+<style>
+  .mobile-bar {
+    position: fixed; left: 0; right: 0; bottom: 0; z-index: 70;
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;
+    padding: 8px 10px calc(8px + env(safe-area-inset-bottom, 0px));
+    background: rgba(255, 253, 248, 0.96);
+    -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px);
+    border-top: 1px solid var(--line); box-shadow: 0 -8px 24px -12px rgba(60, 40, 20, 0.25);
+    transition: transform 0.3s var(--ease);
+  }
+  .mobile-bar.is-hidden { transform: translateY(110%); }
+  .mb-btn {
+    display: flex; align-items: center; justify-content: center; gap: 7px; min-height: 52px;
+    border-radius: 14px; font-weight: 700; font-size: 0.95rem; text-decoration: none;
+  }
+  .mb-btn :global(svg) { width: 20px; height: 20px; }
+  .mb-btn--call { background: var(--honey); color: var(--pine-deep); }
+  .mb-btn--wa { border: 1.5px solid var(--pine); color: var(--pine); background: var(--paper); }
+  .wa-dot { display: grid; place-items: center; width: 26px; height: 26px; border-radius: 50%; box-shadow: inset 0 0 0 1.5px var(--whatsapp); color: var(--whatsapp-ink); }
+  .wa-dot :global(svg) { width: 15px; height: 15px; }
+  .mb-btn--enq { background: var(--pine); color: var(--cream); }
+  .mb-btn:active { transform: scale(0.97); }
+  @media (min-width: 900px) { .mobile-bar { display: none; } }
+</style>

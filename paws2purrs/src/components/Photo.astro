@@ -1,0 +1,28 @@
+---
+import { photo, type PhotoKey } from '../lib/site';
+interface Props {
+  name: PhotoKey;
+  sizes?: string;
+  eager?: boolean;
+  alt?: string;
+  class?: string;
+  style?: string;
+}
+const { name, sizes = '(min-width: 900px) 420px, 90vw', eager = false, alt, class: cls, style } = Astro.props;
+const p = photo(name);
+const srcset = (ext: string) => p.widths.map((w: number) => `/images/${p.slug}-${w}.${ext} ${w}w`).join(', ');
+const largest = p.widths[p.widths.length - 1];
+---
+<picture class={cls} style={style}>
+  <source type="image/avif" srcset={srcset('avif')} sizes={sizes} />
+  <source type="image/webp" srcset={srcset('webp')} sizes={sizes} />
+  <img
+    src={`/images/${p.slug}-${largest}.jpg`}
+    width={p.width}
+    height={p.height}
+    alt={alt ?? p.alt}
+    loading={eager ? 'eager' : 'lazy'}
+    decoding={eager ? 'sync' : 'async'}
+    fetchpriority={eager ? 'high' : undefined}
+  />
+</picture>

@@ -1,0 +1,24 @@
+---
+// Inline SVG recreation of the Paws 2 Purrs logo (matches /assets/logos PNGs).
+// textLength locks the wordmark width so it never reflows or stretches.
+interface Props { variant?: 'light' | 'dark'; class?: string; title?: string }
+const { variant = 'light', class: cls = '', title = 'Paws 2 Purrs Dog Daycare & Boarding, Arnold' } = Astro.props;
+const dark = variant === 'dark';
+const c = dark
+  ? { disc: '#F7F2E8', toe: '#20372A', word: '#F7F2E8', sub: '#E2D3B4' }
+  : { disc: '#20372A', toe: '#F7F2E8', word: '#20372A', sub: '#5B4030' };
+const id = `logo-${variant}-${Math.random().toString(36).slice(2, 7)}`;
+---
+<svg class={`logo ${cls}`} viewBox="0 0 336 80" role="img" aria-labelledby={id} xmlns="http://www.w3.org/2000/svg">
+  <title id={id}>{title}</title>
+  <circle cx="40" cy="40" r="38" fill={c.disc} />
+  <g fill={c.toe}>
+    <ellipse cx="40" cy="50" rx="15.5" ry="11.5" />
+    <ellipse cx="20.5" cy="36" rx="5.6" ry="6.8" transform="rotate(-18 20.5 36)" />
+    <ellipse cx="31" cy="24.5" rx="6" ry="7.6" transform="rotate(-6 31 24.5)" />
+    <ellipse cx="59.5" cy="36" rx="5.6" ry="6.8" transform="rotate(18 59.5 36)" />
+  </g>
+  <path fill="#D4913A" d="M49.5 33.6c-.4-.3-7.6-5.3-7.6-10.2 0-2.6 2-4.4 4.2-4.4 1.5 0 2.7.8 3.4 2 .7-1.2 1.9-2 3.4-2 2.2 0 4.2 1.8 4.2 4.4 0 4.9-7.2 9.9-7.6 10.2Z" />
+  <text x="94" y="47" fill={c.word} font-family="Lora, Georgia, serif" font-weight="600" font-size="43" textLength="236" lengthAdjust="spacingAndGlyphs">Paws <tspan fill="#D4913A">2</tspan> Purrs</text>
+  <text x="95" y="69" fill={c.sub} font-family="'Plus Jakarta Sans', system-ui, sans-serif" font-weight="600" font-size="9.4" letter-spacing="2.6" textLength="234" lengthAdjust="spacing">DAYCARE &amp; BOARDING · ARNOLD</text>
+</svg>

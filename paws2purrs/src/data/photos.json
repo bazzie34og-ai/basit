@@ -1,0 +1,115 @@
+{
+  "hero": {
+    "file": "01-hero-pack-walk-paws2purrs-sign-arnold.jpg",
+    "slug": "dog-daycare-arnold-nottingham-pack-walk",
+    "alt": "The Paws 2 Purrs daycare pack, huskies, a doodle and small dogs, on a woodland track in Arnold, Nottingham, next to Vanessa's hand-painted Paws2Purrs sign",
+    "caption": "Pack photo by the sign. Everyone (nearly) looked.",
+    "tags": ["woods", "huskies"]
+  },
+  "vanessaHusky": {
+    "file": "02-owner-vanessa-with-husky-woodland.jpg",
+    "slug": "vanessa-paws-2-purrs-owner-with-husky",
+    "alt": "Vanessa, owner of Paws 2 Purrs, smiling in the woods cheek to cheek with a husky",
+    "caption": "Me and one of my favourite huskies.",
+    "tags": ["woods", "huskies"]
+  },
+  "vanessaSelfie": {
+    "file": "03-owner-vanessa-selfie-with-pack.jpg",
+    "slug": "vanessa-dog-walker-arnold-with-pack",
+    "alt": "Vanessa taking a selfie on a woodland walk with huskies from the pack behind her",
+    "caption": "Selfie with the pack, mid-walk.",
+    "tags": ["woods", "huskies"],
+    "crop": { "top": 60 }
+  },
+  "daycareGroup": {
+    "file": "04-daycare-pack-woodland-group.jpg",
+    "slug": "doggy-daycare-nottingham-woodland-group",
+    "alt": "A mixed group of daycare dogs, including huskies, a terrier and a black Labrador cross, among fallen trees in autumn woodland",
+    "caption": "Autumn woods, full pack, muddy paws guaranteed.",
+    "tags": ["woods", "huskies"]
+  },
+  "lakeDoodle": {
+    "file": "05-husky-and-doodle-by-the-lake.jpg",
+    "slug": "husky-and-doodle-lake-walk-nottingham",
+    "alt": "A husky and a cream doodle standing together on a sandy lakeside under a bright blue sky",
+    "caption": "Beach day, Nottingham style.",
+    "tags": ["water", "huskies"]
+  },
+  "lakePaddle": {
+    "file": "06-husky-paddling-in-lake.jpg",
+    "slug": "husky-paddling-lake-dog-walk",
+    "alt": "A husky on a long line paddling out into a calm lake",
+    "caption": "Long line on, straight in for a paddle.",
+    "tags": ["water", "huskies"]
+  },
+  "lakeEdge": {
+    "file": "07-husky-at-waters-edge.jpg",
+    "slug": "husky-at-waters-edge-dog-walking-arnold",
+    "alt": "A grey and white husky stepping out of the water at the edge of a lake",
+    "caption": "Back out of the water and looking very pleased.",
+    "tags": ["water", "huskies"]
+  },
+  "howl": {
+    "file": "08-husky-howling-sunny-woodland.jpg",
+    "slug": "husky-howling-woodland-dog-daycare",
+    "alt": "A husky lying in sunny grass by a fallen log, head back mid-howl",
+    "caption": "Huskies don't bark. They sing.",
+    "tags": ["woods", "huskies"]
+  },
+  "spaniels": {
+    "file": "09-spaniel-and-small-dog-woodland-walk.jpg",
+    "slug": "spaniel-and-small-dog-woodland-walk-arnold",
+    "alt": "A Cavalier-type spaniel and a small long-haired dog on leads on a shady woodland path",
+    "caption": "Small legs, big adventures.",
+    "tags": ["woods"]
+  },
+  "boarding": {
+    "file": "10-cocker-spaniel-boarding-home-from-home.jpg",
+    "slug": "home-dog-boarding-arnold-cocker-spaniel",
+    "alt": "A black and tan cocker spaniel settled in a soft dog bed in a cosy living room, home boarding rather than kennels",
+    "caption": "Home boarding means a proper bed and a warm room.",
+    "tags": ["home"]
+  },
+  "smallFluffy": {
+    "file": "11-small-fluffy-dog-happy-in-field.jpg",
+    "slug": "small-dog-daycare-nottingham-happy-in-field",
+    "alt": "A small fluffy ginger dog looking up happily from long grass in a field",
+    "caption": "Small dogs welcome. This face says it all.",
+    "tags": ["woods"]
+  },
+  "smallLog": {
+    "file": "12-small-dog-on-mossy-log.jpg",
+    "slug": "small-dog-on-mossy-log-woodland",
+    "alt": "A small tan and black dog standing proudly on a mossy log among autumn leaves",
+    "caption": "King of the log.",
+    "tags": ["woods"]
+  },
+  "brindlePath": {
+    "file": "13-brindle-dog-on-woodland-path.jpg",
+    "slug": "brindle-dog-woodland-path-walk",
+    "alt": "A brindle dog trotting along a narrow woodland path towards the camera",
+    "caption": "Heading back to see what's taking us so long.",
+    "tags": ["woods"]
+  },
+  "brindleSmile": {
+    "file": "14-brindle-dog-smiling-by-log.jpg",
+    "slug": "brindle-dog-smiling-dog-walk-nottingham",
+    "alt": "A brindle dog with eyes closed and a huge happy grin, resting by a log",
+    "caption": "Pure contentment after a long walk.",
+    "tags": ["woods"]
+  },
+  "taxi": {
+    "file": "15-husky-with-ball-pet-taxi-car.jpg",
+    "slug": "dog-pick-up-drop-off-arnold-husky-in-car",
+    "alt": "A husky in the back of the car holding a yellow and blue ball, ready to be picked up for a walk",
+    "caption": "Pet taxi. Ball compulsory.",
+    "tags": ["home", "huskies"]
+  },
+  "cookies": {
+    "file": "16-husky-and-homemade-pumpkin-cookies.jpg",
+    "slug": "homemade-dog-treats-husky-pumpkin-cookies",
+    "alt": "A husky eyeing a plate of homemade roasted pumpkin and sweet potato dog cookies",
+    "caption": "Homemade pumpkin and sweet potato cookies. Supervised by a husky.",
+    "tags": ["home", "huskies"]
+  }
+}

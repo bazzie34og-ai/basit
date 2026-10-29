@@ -1,0 +1,100 @@
+{
+  "_readme": "Single source of truth for the site. Edit values here, rebuild, done. Anything marked TODO needs confirming with Vanessa (see README).",
+
+  "name": "Paws 2 Purrs Dog Daycare & Boarding",
+  "shortName": "Paws 2 Purrs",
+  "owner": "Vanessa",
+  "ownerSurname": "",
+
+  "siteUrl": "https://paws2purrs-preview.netlify.app",
+
+  "phone": {
+    "display": "07837 729815",
+    "e164": "+447837729815",
+    "schema": "+44 7837 729815"
+  },
+  "whatsappNumber": "447837729815",
+  "email": "",
+
+  "address": {
+    "street": "Cross Street",
+    "locality": "Arnold",
+    "city": "Nottingham",
+    "region": "Nottinghamshire",
+    "postcode": "NG5 7BD",
+    "country": "GB",
+    "display": "Arnold, Nottingham NG5",
+    "borough": "Gedling"
+  },
+  "geo": { "latitude": 53.005, "longitude": -1.127 },
+  "mapEmbedQuery": "Arnold, Nottingham NG5",
+
+  "flags": {
+    "previewMode": true,
+    "showFullAddress": false,
+    "showPrices": false,
+    "freeMeetAndGreet": false,
+    "fiveStarLicence": false,
+    "showInstagram": false,
+    "puppiesConfirmed": false
+  },
+
+  "experienceYears": 10,
+  "licence": {
+    "authority": "Gedling Borough Council",
+    "number": "",
+    "starRating": 5
+  },
+  "daycareHours": { "dropOff": "7:30am", "collect": "5pm" },
+  "openingHours": "",
+  "minimumStay": "1 day",
+
+  "announcement": {
+    "enabled": true,
+    "id": "xmas-2026",
+    "emoji": "🎄",
+    "text": "Limited Christmas boarding left · 2027 diary now open",
+    "link": "/christmas-dog-boarding-nottingham/",
+    "linkText": "Ask about dates"
+  },
+  "availabilityPill": "Taking new clients",
+  "diaryPill": "2027 diary now open",
+
+  "facebook": {
+    "url": "https://www.facebook.com/p/Paws-2-Purrs-Dog-Daycare-and-boarding-100063788760995/",
+    "recommend": "100% recommend",
+    "reviewCount": 19
+  },
+  "instagram": {
+    "handle": "@paw_2_purrs",
+    "url": "https://www.instagram.com/paw_2_purrs/"
+  },
+  "google": {
+    "reviewsUrl": "https://www.google.com/maps/search/?api=1&query=Paws+2+Purrs+Dog+Daycare+and+Boarding+Arnold+NG5+7BD",
+    "profileConfirmed": false
+  },
+
+  "analytics": { "ga4Id": "" },
+  "searchConsoleVerification": "",
+
+  "areas": [
+    { "name": "Arnold", "slug": "", "confirmed": true, "home": true },
+    { "name": "Mapperley", "slug": "dog-daycare-mapperley", "confirmed": false },
+    { "name": "Woodthorpe", "slug": "dog-daycare-woodthorpe-sherwood", "confirmed": false },
+    { "name": "Sherwood", "slug": "dog-daycare-woodthorpe-sherwood", "confirmed": false },
+    { "name": "Redhill", "slug": "dog-daycare-redhill-bestwood", "confirmed": false },
+    { "name": "Bestwood", "slug": "dog-daycare-redhill-bestwood", "confirmed": false },
+    { "name": "Daybrook", "slug": "dog-daycare-redhill-bestwood", "confirmed": false },
+    { "name": "Gedling", "slug": "dog-daycare-gedling-carlton", "confirmed": false },
+    { "name": "Carlton", "slug": "dog-daycare-gedling-carlton", "confirmed": false }
+  ],
+
+  "prices": [
+    { "service": "Doggy daycare (full day)", "price": "TODO", "note": "" },
+    { "service": "Home boarding (per night)", "price": "TODO", "note": "" },
+    { "service": "Dog walk", "price": "TODO", "note": "Pick-up and drop-off included" },
+    { "service": "Dog pop-in", "price": "TODO", "note": "" },
+    { "service": "Cat pop-in", "price": "TODO", "note": "" },
+    { "service": "Small animal feed", "price": "TODO", "note": "" }
+  ]
+}

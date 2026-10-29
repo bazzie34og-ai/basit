@@ -1,0 +1,46 @@
+---
+import Photo from './Photo.astro';
+import Icon from './Icon.astro';
+import { whatsapp } from '../lib/site';
+---
+<section class="section bg-pine grain pickup" aria-labelledby="pickup-title">
+  <div class="wrap pickup-grid">
+    <div class="pickup-media reveal">
+      <div class="pickup-field" aria-hidden="true"></div>
+      <div class="arch pickup-arch"><Photo name="taxi" sizes="(min-width: 900px) 340px, 70vw" /></div>
+      <span class="pickup-tag"><Icon name="car" />Pet taxi</span>
+    </div>
+    <div class="pickup-copy reveal reveal-d1">
+      <p class="label">Pick-up &amp; drop-off</p>
+      <h2 id="pickup-title">Stuck at work? Your dog's walk <em>comes to them</em></h2>
+      <p>Vanessa's dog walks include pick-up and drop-off. She collects your dog, takes them out with the pack for a proper adventure, and brings them home again, happy and worn out.</p>
+      <ul class="pickup-list">
+        <li><Icon name="check" />Collected from your door</li>
+        <li><Icon name="check" />Group adventure walks</li>
+        <li><Icon name="check" />Dropped home again</li>
+      </ul>
+      <div class="btn-row">
+        <a class="btn btn--honey" href={whatsapp('dog walks with pick-up and drop-off')} target="_blank" rel="noopener" data-track="whatsapp_click"><Icon name="whatsapp" />Ask about walks</a>
+        <a class="btn btn--cream-outline" href="/dog-walking-arnold-nottingham/">Walks &amp; pop-ins <Icon name="arrow" /></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .pickup-grid { display: grid; gap: 48px; align-items: center; }
+  @media (min-width: 900px) { .pickup-grid { grid-template-columns: 0.9fr 1.1fr; gap: 80px; } }
+  .pickup-media { position: relative; width: min(100%, 360px); margin-inline: auto; }
+  .pickup-field { position: absolute; inset: 12% -10% -6% -10%; background: var(--moss); opacity: 0.35; border-radius: 40px; transform: rotate(-4deg); }
+  .pickup-arch { aspect-ratio: 720 / 943; border: 6px solid var(--cream); }
+  .pickup-tag {
+    position: absolute; left: -12px; top: 28%; display: inline-flex; align-items: center; gap: 8px;
+    background: var(--honey); color: var(--pine-deep); font-weight: 800; padding: 10px 16px; border-radius: 999px;
+    box-shadow: var(--shadow); transform: rotate(-6deg); font-size: 0.95rem;
+  }
+  .pickup-tag :global(svg) { width: 20px; height: 20px; }
+  .pickup-copy p { color: #d6dacd; font-size: 1.08rem; }
+  .pickup-list { list-style: none; padding: 0; margin: 0 0 1.8rem; display: grid; gap: 8px; }
+  .pickup-list li { display: flex; align-items: center; gap: 10px; font-weight: 600; color: var(--cream); }
+  .pickup-list :global(svg) { width: 20px; height: 20px; color: var(--honey); }
+</style>

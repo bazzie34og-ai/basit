@@ -1,0 +1,49 @@
+---
+import Icon from './Icon.astro';
+import { promises as all, type Promise_ } from '../data/promises';
+import { tel } from '../lib/site';
+interface Props { items?: Promise_[]; title?: string }
+const { items = all.slice(0, 8), title = 'Why owners trust Vanessa' } = Astro.props;
+---
+<section class="section bg-pine-deep grain promises" aria-labelledby="promises-title">
+  <div class="wrap promises-grid">
+    <div class="promises-head reveal">
+      <p class="label">Your worries, answered</p>
+      <h2 id="promises-title">{title.replace('Vanessa', '')}<em>Vanessa</em></h2>
+      <p>Handing over your dog is a big deal. These are the questions owners ask most, and the honest answers, backed by the people who already trust her.</p>
+      <a class="btn btn--honey" href={tel} data-track="call_click"><Icon name="phone" />Ask Vanessa yourself</a>
+    </div>
+    <ol class="promise-list">
+      {items.map((p, i) => (
+        <li class="promise reveal">
+          <span class="promise-icon"><Icon name={p.icon} /></span>
+          <div>
+            <p class="worry">“{p.worry}”</p>
+            <h3>{p.promise}</h3>
+            <p class="proof">{p.proof}</p>
+          </div>
+        </li>
+      ))}
+    </ol>
+  </div>
+</section>
+
+<style>
+  .promises-grid { display: grid; gap: 40px; }
+  @media (min-width: 960px) {
+    .promises-grid { grid-template-columns: 0.8fr 1.2fr; gap: 72px; align-items: start; }
+    .promises-head { position: sticky; top: calc(var(--header-h) + 40px); }
+  }
+  .promises-head p { color: #cdd1c4; font-size: 1.08rem; margin-bottom: 1.6rem; }
+  .promise-list { list-style: none; padding: 0; margin: 0; display: grid; }
+  @media (min-width: 700px) { .promise-list { grid-template-columns: 1fr 1fr; column-gap: 36px; } }
+  .promise { display: flex; gap: 16px; padding: 22px 0; border-top: 1px solid rgba(247, 242, 232, 0.13); }
+  .promise-icon {
+    flex: none; display: grid; place-items: center; width: 44px; height: 44px; border-radius: 50%;
+    border: 1px solid rgba(212, 145, 58, 0.5); color: var(--honey);
+  }
+  .promise-icon :global(svg) { width: 21px; height: 21px; }
+  .worry { font-family: var(--serif); font-style: italic; color: #e7cfa4; margin: 0 0 4px; font-size: 1.02rem; }
+  .promise h3 { font-family: var(--sans); font-size: 1.06rem; font-weight: 700; color: var(--cream); margin: 0 0 4px; line-height: 1.35; }
+  .proof { margin: 0; color: #c4c9ba; font-size: 0.94rem; }
+</style>

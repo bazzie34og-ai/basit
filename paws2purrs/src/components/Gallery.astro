@@ -1,0 +1,92 @@
+---
+// "Meet the pack": polaroid masonry with filter chips and a swipeable lightbox.
+import Photo from './Photo.astro';
+import Icon from './Icon.astro';
+import { photo, type PhotoKey } from '../lib/site';
+interface Props { keys: PhotoKey[]; filters?: boolean }
+const { keys, filters = false } = Astro.props;
+const tilts = [-2.4, 1.8, -1.2, 2.6, -2, 1.2, -2.8, 2.2];
+const chips = [
+  { id: 'all', label: 'All' },
+  { id: 'woods', label: 'Woods' },
+  { id: 'water', label: 'Water' },
+  { id: 'home', label: 'Home' },
+  { id: 'huskies', label: 'Huskies' },
+];
+---
+{filters && (
+  <div class="chips" role="group" aria-label="Filter photos">
+    {chips.map((c, i) => <button type="button" class="chip" data-filter={c.id} aria-pressed={i === 0 ? 'true' : 'false'}>{c.label}</button>)}
+  </div>
+)}
+<div class="pack">
+  {keys.map((k, i) => {
+    const p = photo(k);
+    return (
+      <figure class="pack-item polaroid" style={`--tilt:${tilts[i % tilts.length]}deg`} data-tags={p.tags.join(' ')}>
+        <button type="button" class="pack-open" data-lb-open data-caption={p.caption} aria-label={`Enlarge photo: ${p.caption}`}>
+          <Photo name={k} sizes="(min-width: 1100px) 280px, (min-width: 700px) 30vw, 46vw" />
+          <span class="pack-zoom" aria-hidden="true"><Icon name="expand" /></span>
+        </button>
+        <figcaption>{p.caption}</figcaption>
+      </figure>
+    );
+  })}
+</div>
+
+<dialog class="lb" data-lightbox aria-label="Photo viewer">
+  <div class="lb__inner">
+    <div class="lb__img"></div>
+    <div class="lb__bar">
+      <p class="lb__cap"></p>
+      <span class="lb__count"></span>
+    </div>
+  </div>
+  <button type="button" class="lb__btn lb__prev" data-lb-prev><Icon name="arrow" /><span class="sr-only">Previous photo</span></button>
+  <button type="button" class="lb__btn lb__next" data-lb-next><Icon name="arrow" /><span class="sr-only">Next photo</span></button>
+  <button type="button" class="lb__btn lb__close" data-lb-close><Icon name="close" /><span class="sr-only">Close</span></button>
+</dialog>
+
+<style>
+  .chips { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-bottom: 40px; }
+  .chip {
+    min-height: 46px; padding: 0 1.25em; border-radius: 999px; border: 1.5px solid var(--line); background: var(--paper);
+    font-weight: 700; color: var(--pine); cursor: pointer; transition: all 0.2s var(--ease);
+  }
+  .chip:hover { border-color: var(--moss); }
+  .chip[aria-pressed='true'] { background: var(--pine); border-color: var(--pine); color: var(--cream); }
+  .pack { columns: 2; column-gap: 16px; }
+  @media (min-width: 700px) { .pack { columns: 3; column-gap: 26px; } }
+  @media (min-width: 1100px) { .pack { columns: 4; } }
+  .pack-item { break-inside: avoid; margin: 0 0 22px; transition: transform 0.35s var(--ease), box-shadow 0.35s var(--ease); }
+  @media (min-width: 700px) { .pack-item { margin-bottom: 32px; } }
+  .pack-item[hidden] { display: none; }
+  .pack-item:hover { transform: rotate(0deg) translateY(-4px); z-index: 2; position: relative; }
+  .pack-open { display: block; position: relative; width: 100%; padding: 0; border: 0; background: none; cursor: zoom-in; }
+  .pack-open :global(img) { aspect-ratio: auto; }
+  .pack-zoom {
+    position: absolute; right: 8px; bottom: 8px; width: 36px; height: 36px; border-radius: 50%; display: grid; place-items: center;
+    background: rgba(255, 253, 248, 0.9); color: var(--pine); opacity: 0; transition: opacity 0.2s;
+  }
+  .pack-zoom :global(svg) { width: 18px; height: 18px; }
+  .pack-open:hover .pack-zoom, .pack-open:focus-visible .pack-zoom { opacity: 1; }
+  @media (max-width: 699px) { .pack-item figcaption { font-size: 0.86rem; } }
+
+  .lb { padding: 0; border: 0; background: transparent; max-width: 100vw; max-height: 100vh; width: 100vw; height: 100vh; margin: 0; }
+  .lb::backdrop { background: rgba(21, 37, 28, 0.92); }
+  .lb[open] { display: grid; place-items: center; }
+  .lb__inner { background: var(--paper); padding: 12px 12px 0; border-radius: 6px; max-width: min(92vw, 560px); box-shadow: var(--shadow-lg); }
+  .lb__img :global(img) { max-height: 74vh; width: auto; margin: 0 auto; border-radius: 3px; }
+  .lb__bar { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding: 12px 4px 14px; }
+  .lb__cap { margin: 0; font-family: var(--serif); font-style: italic; color: var(--bark); }
+  .lb__count { font-size: 0.82rem; color: var(--muted); white-space: nowrap; }
+  .lb__btn {
+    position: fixed; width: 52px; height: 52px; border-radius: 50%; border: 0; background: var(--cream); color: var(--pine);
+    display: grid; place-items: center; cursor: pointer; box-shadow: var(--shadow);
+  }
+  .lb__btn :global(svg) { width: 22px; height: 22px; }
+  .lb__prev { left: 16px; top: 50%; transform: translateY(-50%) scaleX(-1); }
+  .lb__next { right: 16px; top: 50%; transform: translateY(-50%); }
+  .lb__close { right: 16px; top: 16px; }
+  @media (max-width: 699px) { .lb__prev, .lb__next { top: auto; bottom: 18px; transform: none; } .lb__prev { transform: scaleX(-1); } }
+</style>
