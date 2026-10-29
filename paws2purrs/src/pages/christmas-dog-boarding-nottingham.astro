@@ -1,0 +1,111 @@
+---
+import Layout from '../layouts/Layout.astro';
+import PageHero from '../components/PageHero.astro';
+import AsideCard from '../components/AsideCard.astro';
+import Reviews from '../components/Reviews.astro';
+import Faq from '../components/Faq.astro';
+import AreaLinks from '../components/AreaLinks.astro';
+import CtaBlock from '../components/CtaBlock.astro';
+import Photo from '../components/Photo.astro';
+import { byIds } from '../data/reviews';
+import { faq } from '../data/faqs';
+import { meetGreet } from '../lib/site';
+import { serviceSchema, faqSchema, breadcrumbSchema } from '../lib/schema';
+
+const path = '/christmas-dog-boarding-nottingham/';
+const trail = [{ name: 'Christmas boarding', path }];
+const faqs = faq(['christmas', 'kennels', 'minimum', 'updates', 'cats', 'cost']);
+const desc = 'Christmas dog boarding in Arnold, Nottingham. A cosy home from home over the holidays, not kennels. Limited spaces left and the 2027 diary is open. Ask Vanessa.';
+---
+<Layout
+  title="Christmas Dog Boarding in Nottingham | Paws 2 Purrs"
+  description={desc}
+  path={path}
+  waService="Christmas boarding"
+  formService="Boarding"
+  preloadPhoto="cookies"
+  schema={[serviceSchema('Christmas dog boarding in Nottingham', desc, path, 'Dog boarding'), faqSchema(faqs), breadcrumbSchema(trail)]}
+>
+  <PageHero
+    label="Christmas 2026 · limited spaces"
+    title="Christmas Dog Boarding in Arnold, <em>Nottingham</em>"
+    lede="Off to family for Christmas, or finally taking that winter break? Your dog can spend the holidays somewhere warm and familiar, with sofa cuddles, frosty woodland walks and friends to play with."
+    photo="cookies"
+    trail={trail}
+    waService="Christmas boarding"
+    facts={[
+      { icon: 'gift', text: 'Limited Christmas spaces' },
+      { icon: 'calendar', text: '2027 diary open' },
+      { icon: 'shield', text: 'Licensed & insured' },
+    ]}
+    sticker={{ title: 'Ask early', text: 'Christmas spaces go quickly. Send your dates today.' }}
+  />
+
+  <section class="section section--tight bg-cream">
+    <div class="wrap split">
+      <div class="prose">
+        <h2 class="mt-0">A home-from-home Christmas</h2>
+        <p>Christmas is one of the busiest times of year for dog boarding, and a time when a dog most needs somewhere that feels like home. At Paws 2 Purrs your dog stays in Vanessa's own home in Arnold, not a kennel. They share the sofa, sleep where they normally would, and join the pack for walks in the woods and fields.</p>
+        <p>It's all the things that make home boarding special, with a bit of festive cheer on top. Vanessa even bakes her own dog treats, like the roasted pumpkin and sweet potato cookies in the photo.</p>
+
+        <h2>Limited spaces, so ask early</h2>
+        <p>Because Paws 2 Purrs is a small home boarding business, there are only so many places, and Christmas availability is limited. If you know your dates, send them to Vanessa now. Even if you're not sure yet, it's worth asking.</p>
+        <p>Planning further ahead? The <strong>2027 diary is now open</strong>, so you can book next year's holidays, half-terms and weekends away too.</p>
+
+        <div class="photo-pair">
+          <figure class="polaroid" style="--tilt:-2.5deg"><Photo name="daycareGroup" sizes="(min-width: 960px) 300px, 45vw" /><figcaption>Winter walks with the pack</figcaption></figure>
+          <figure class="polaroid"><Photo name="boarding" sizes="(min-width: 960px) 300px, 45vw" /><figcaption>Then home to a cosy bed</figcaption></figure>
+        </div>
+
+        <h2>New to Paws 2 Purrs?</h2>
+        <p>If your dog hasn't stayed with Vanessa before, a {meetGreet} before Christmas is a great idea. It gives your dog a chance to meet her, and gives you the chance to ask everything: routines, food, medication, and how they are with other dogs. If you can fit in a daycare day before the big stay, even better.</p>
+
+        <h2>What to send Vanessa</h2>
+        <ul>
+          <li>Your drop-off and collection dates</li>
+          <li>Your dog's name, breed and age</li>
+          <li>Anything she should know: nerves, medication, diet</li>
+          <li>Whether you need cat pop-ins at home too</li>
+        </ul>
+
+        <h2>The cat's covered too</h2>
+        <p>Going away for Christmas with a cat at home? Vanessa offers <a href="/cat-sitting-arnold-nottingham/">cat pop-ins and small animal feeds</a> too, so the whole household is looked after.</p>
+
+        <AreaLinks service="Christmas dog boarding" />
+      </div>
+      <div class="split__aside">
+        <AsideCard
+          title="Christmas boarding"
+          waService="Christmas boarding"
+          formService="Boarding"
+          items={[
+            { icon: 'gift', text: 'Limited Christmas availability' },
+            { icon: 'sofa', text: 'A real home, never kennels' },
+            { icon: 'tree', text: 'Daily walks with the pack' },
+            { icon: 'camera', text: 'Photo updates while you&rsquo;re away' },
+            { icon: 'calendar', text: '2027 diary now open' },
+          ]}
+        />
+      </div>
+    </div>
+  </section>
+
+  <section class="section bg-linen grain" aria-labelledby="xm-reviews">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <p class="label">From boarding owners</p>
+        <h2 id="xm-reviews">Peace of mind while you're <em>away</em></h2>
+      </div>
+      <Reviews items={byIds(['lexi', 'reign', 'lola'])} />
+    </div>
+  </section>
+
+  <section class="section section--tight bg-paper" aria-labelledby="xm-faq">
+    <div class="wrap wrap--narrow">
+      <h2 id="xm-faq">Christmas boarding questions</h2>
+      <Faq items={faqs} />
+    </div>
+  </section>
+
+  <CtaBlock waService="Christmas boarding" formService="Boarding" photo="cookies" heading="Ask about Christmas dates" />
+</Layout>

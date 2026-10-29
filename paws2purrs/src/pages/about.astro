@@ -1,0 +1,111 @@
+---
+import Layout from '../layouts/Layout.astro';
+import PageHero from '../components/PageHero.astro';
+import Promises from '../components/Promises.astro';
+import CtaBlock from '../components/CtaBlock.astro';
+import Photo from '../components/Photo.astro';
+import Icon from '../components/Icon.astro';
+import { promises } from '../data/promises';
+import { biz } from '../lib/site';
+import { breadcrumbSchema } from '../lib/schema';
+const path = '/about/';
+const trail = [{ name: 'About Vanessa', path }];
+const regulars = [
+  { dog: 'Gracie', time: 'Over 5 years', note: '"the longest serving dog" in Vanessa\'s daycare, and "great at teaching the newbies the ropes".' },
+  { dog: 'Loki', time: 'Around 6 years', note: 'Takes medication, and his owner is "confident in Vanessa\'s care".' },
+  { dog: 'Reign', time: 'About 4 years', note: 'Daycare and boarding. Vanessa: "I love Reign to bits".' },
+  { dog: 'Lola', time: '3+ years', note: 'A Labrador who\'s "always excited to go to daycare".' },
+];
+---
+<Layout
+  title="About Vanessa | Paws 2 Purrs, Arnold"
+  description="Meet Vanessa, who has run Paws 2 Purrs dog daycare and home boarding from her home in Arnold, Nottingham for 10 years. Licensed, insured and husky-mad."
+  path={path}
+  preloadPhoto="vanessaHusky"
+  schema={[breadcrumbSchema(trail)]}
+>
+  <PageHero
+    label="About Paws 2 Purrs"
+    title="Meet Vanessa, Ten Years of Happy <em>Dogs</em>"
+    lede="Paws 2 Purrs is one person, one home and a lot of muddy paws. Here's a little about the woman behind it."
+    photo="vanessaHusky"
+    polaroid="cookies"
+    trail={trail}
+    facts={[
+      { icon: 'clock', text: `${biz.experienceYears} years' experience` },
+      { icon: 'shield', text: 'Licensed by Gedling Borough Council' },
+      { icon: 'umbrella', text: 'Fully insured' },
+    ]}
+  />
+
+  <section class="section section--tight bg-cream">
+    <div class="wrap split">
+      <div class="prose">
+        <h2 class="mt-0">Hello, I'm Vanessa</h2>
+        <p>I've been looking after other people's dogs for {biz.experienceYears} years now. Paws 2 Purrs runs from my own home in Arnold, Nottingham. I'm licensed by Gedling Borough Council and fully insured, and I take that side of things seriously, because you're trusting me with a member of your family.</p>
+        <p>Daycare dogs arrive around 7:30am and go home around 5pm. In between we're out in the woods, the farm fields and by the water, with plenty of ball play on the way. Most of the dogs are off lead or on long lines. In summer there's a paddling pool and toys in the big enclosed garden. When dogs board with me, they live as part of the house: they share the sofa and sleep where they normally would.</p>
+        <p>I love every dog that comes to me, but I can't pretend: huskies are my favourites. There's no size limit here, so big, bouncy, boisterous dogs are very welcome, and so are the little ones.</p>
+        <p>My son helps me with the walks, so don't be surprised if you meet him too. And I like to bake. After one walk we made roasted pumpkin and sweet potato cookies for one of the pack. They went down very well.</p>
+        <p>It gives me great pleasure seeing dogs thrive. Some of my dogs have been coming to me for years.</p>
+        <p class="sig">Vanessa x</p>
+
+        <h2>Why "Paws 2 Purrs"?</h2>
+        <p>Because it isn't only dogs. As well as daycare, boarding, walks and dog pop-ins, I do <a href="/cat-sitting-arnold-nottingham/">cat pop-ins and small animal feeds</a>. Paws and purrs, all looked after.</p>
+        <img class="about-logo" src="/images/paws-2-purrs-logo-stacked_on-light.png" width="640" height="468" alt="Paws 2 Purrs Daycare & Boarding, Arnold logo" loading="lazy" />
+      </div>
+      <div class="split__aside">
+        <figure class="polaroid" style="--tilt:2deg"><Photo name="vanessaSelfie" sizes="(min-width: 960px) 380px, 80vw" /><figcaption>Out with the pack</figcaption></figure>
+      </div>
+    </div>
+  </section>
+
+  <section class="section bg-linen grain" aria-labelledby="regulars-title">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <p class="label">The long-servers</p>
+        <h2 id="regulars-title">Some of the pack have been with Vanessa for <em>years</em></h2>
+        <p>The best sign of a good daycare? Dogs who keep coming back, year after year.</p>
+      </div>
+      <ul class="regulars">
+        {regulars.map((r) => (
+          <li class="reveal">
+            <span class="reg-badge"><Icon name="paw" /></span>
+            <h3>{r.dog}</h3>
+            <p class="reg-time">{r.time}</p>
+            <p>{r.note}</p>
+          </li>
+        ))}
+      </ul>
+      <p class="mt-2"><a class="text-link" href="/reviews/">Read their owners' reviews <Icon name="arrow" /></a></p>
+    </div>
+  </section>
+
+  <section class="section section--tight bg-cream" aria-labelledby="treats-title">
+    <div class="wrap treats">
+      <div class="arch arch--ring treats-arch reveal"><Photo name="cookies" sizes="(min-width: 900px) 320px, 70vw" /></div>
+      <div class="reveal reveal-d1">
+        <p class="label">Homemade treats</p>
+        <h2 id="treats-title">Baked in Arnold, <em>supervised</em> by huskies</h2>
+        <p class="lede">"After our walk today we baked roasted pumpkin and sweet potato cookies." It's the little things, like a batch of homemade treats, that make Paws 2 Purrs feel like a home rather than a business.</p>
+      </div>
+    </div>
+  </section>
+
+  <Promises items={promises} title="Why owners trust Vanessa" />
+  <CtaBlock photo="vanessaSelfie" />
+</Layout>
+
+<style>
+  .sig { font-family: var(--serif); font-style: italic; font-size: 2rem; color: var(--bark); transform: rotate(-3deg); display: inline-block; }
+  .about-logo { width: min(320px, 80%); margin: 1rem 0; }
+  .regulars { list-style: none; padding: 0; margin: 0; display: grid; gap: 18px; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+  .regulars li { background: var(--paper); border: 1px solid var(--line); border-radius: var(--r-lg); padding: 26px; position: relative; }
+  .regulars h3 { font-style: italic; font-weight: 500; font-size: 1.8rem; margin: 10px 0 2px; }
+  .reg-time { font-size: 0.78rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--bark); }
+  .regulars p:last-child { margin: 0; color: #3b413a; }
+  .reg-badge { display: grid; place-items: center; width: 44px; height: 44px; border-radius: 50%; background: var(--honey); color: var(--pine-deep); }
+  .reg-badge :global(svg) { width: 22px; height: 22px; }
+  .treats { display: grid; gap: 40px; align-items: center; }
+  @media (min-width: 900px) { .treats { grid-template-columns: 0.7fr 1.3fr; gap: 72px; } }
+  .treats-arch { width: min(100%, 320px); aspect-ratio: 720 / 941; margin-inline: auto; }
+</style>

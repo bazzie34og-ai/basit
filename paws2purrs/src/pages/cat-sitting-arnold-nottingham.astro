@@ -1,0 +1,123 @@
+---
+import Layout from '../layouts/Layout.astro';
+import PageHero from '../components/PageHero.astro';
+import AsideCard from '../components/AsideCard.astro';
+import Faq from '../components/Faq.astro';
+import AreaLinks from '../components/AreaLinks.astro';
+import CtaBlock from '../components/CtaBlock.astro';
+import Icon from '../components/Icon.astro';
+import PriceTable from '../components/PriceTable.astro';
+import { faq } from '../data/faqs';
+import { meetGreet } from '../lib/site';
+import { serviceSchema, faqSchema, breadcrumbSchema } from '../lib/schema';
+
+const path = '/cat-sitting-arnold-nottingham/';
+const trail = [{ name: 'Cats & small pets', path }];
+const faqs = faq(['cats', 'licensed', 'where', 'minimum', 'cost']);
+const desc = 'Cat sitting in Arnold, Nottingham: cat pop-ins and small animal feeds while you are away, from a licensed, insured local pet carer. Call or WhatsApp Vanessa.';
+---
+<Layout
+  title="Cat Sitting & Pop-ins in Arnold | Paws 2 Purrs"
+  description={desc}
+  path={path}
+  waService="cat visits"
+  formService="Cat visits"
+  schema={[
+    serviceSchema('Cat pop-ins in Arnold, Nottingham', desc, path, 'Cat sitting'),
+    serviceSchema('Small animal feeds in Arnold, Nottingham', 'Feeding visits for small pets while their owners are away.', path, 'Pet sitting'),
+    faqSchema(faqs), breadcrumbSchema(trail),
+  ]}
+>
+  <PageHero
+    label="Cats & small pets · Arnold"
+    title="Cat Pop-ins &amp; Small Animal Feeds in <em>Arnold</em>"
+    lede="The “Purrs” in Paws 2 Purrs. While you're away, Vanessa pops in to look after your cat or feed your small pets, so they can stay happily at home."
+    trail={trail}
+    waService="cat visits"
+    facts={[
+      { icon: 'cat', text: 'Cat pop-ins' },
+      { icon: 'bowl', text: 'Small animal feeds' },
+      { icon: 'shield', text: 'Licensed & insured' },
+    ]}
+  >
+    <div slot="media" class="cat-art">
+      <svg viewBox="0 0 200 240" aria-hidden="true">
+        <g fill="none" stroke="#F7F2E8" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M62 196c-8-22-6-52 8-72l-6-44 26 22c6-2 14-2 20 0l26-22-6 44c14 20 16 50 8 72" />
+          <path d="M62 196c10 8 66 8 76 0" />
+          <path d="M138 190c22 0 34-10 34-26s-14-22-24-14" />
+          <path d="M86 130h.1M114 130h.1" stroke-width="7" />
+          <path d="M96 146l4 4 4-4M100 150v6M90 160c4 3 16 3 20 0" />
+          <path d="M70 142l-20-4M70 150l-20 4M130 142l20-4M130 150l20 4" stroke-width="2" opacity=".7" />
+        </g>
+        <path d="M100 54c-1-1-10-7-10-13 0-3 2.5-5.5 5.5-5.5 2 0 3.5 1 4.5 2.5 1-1.5 2.5-2.5 4.5-2.5 3 0 5.5 2.5 5.5 5.5 0 6-9 12-10 13Z" fill="#D4913A" />
+      </svg>
+      <p>Purrs welcome</p>
+    </div>
+  </PageHero>
+
+  <section class="section section--tight bg-cream">
+    <div class="wrap split">
+      <div class="prose">
+        <h2 class="mt-0">Why a pop-in, not a cattery?</h2>
+        <p>Most cats are happiest at home, with their own sofa, their own window and their own routine. A cat pop-in means your cat can stay put while you're away, and someone you trust calls in to look after them.</p>
+        <p>That's what the “Purrs” in Paws 2 Purrs is all about. Alongside the dogs, Vanessa offers <strong>cat pop-ins (cat visits)</strong> and <strong>small animal feeds</strong> for owners in Arnold and nearby.</p>
+
+        <h2>What a visit covers</h2>
+        <p>Every pet is different, so tell Vanessa what yours needs: feeding, fresh water, litter, medication, a bit of company, or just a check that all's well. She'll tell you what she can do, and you can agree the details at your {meetGreet}.</p>
+
+        <h2>Small animal feeds</h2>
+        <p>Rabbits, guinea pigs and other small pets need looking after too. If you're off for a weekend or a week, Vanessa can call in to feed them. Let her know what you have, what they eat and anything else she should know.</p>
+
+        <h2>Going away with the dog and leaving the cat?</h2>
+        <p>Plenty of households have both. If your dog is coming to Vanessa for <a href="/dog-boarding-arnold-nottingham/">home dog boarding</a>, ask about pop-ins for the cat at home at the same time. One message, everyone looked after: paws <em>and</em> purrs.</p>
+
+        <h2>Why owners trust Vanessa</h2>
+        <ul>
+          <li>Licensed by Gedling Borough Council and fully insured</li>
+          <li>10 years' experience caring for other people's pets</li>
+          <li>100% recommended on Facebook (19 reviews)</li>
+          <li>A local, owner-run business based in Arnold, NG5</li>
+        </ul>
+
+        <h2>Getting started</h2>
+        <p>Send Vanessa your dates and a few words about your pets. She'll get back to you, usually the same day, and arrange a time to meet and go through everything: keys, routines, feeding, and who to call if anything comes up.</p>
+
+        <div class="callout"><p><strong>Prices &amp; availability:</strong> prices depend on how many visits you need. Message Vanessa for a quick quote. Christmas is busy, so ask early.</p></div>
+        <PriceTable />
+
+        <AreaLinks service="Cat sitting" />
+      </div>
+      <div class="split__aside">
+        <AsideCard
+          title="Cats & small pets"
+          waService="cat visits"
+          formService="Cat visits"
+          items={[
+            { icon: 'cat', text: 'Cat pop-ins while you&rsquo;re away' },
+            { icon: 'bowl', text: 'Small animal feeds' },
+            { icon: 'home', text: 'Your pets stay in their own home' },
+            { icon: 'key', text: 'Pair with dog boarding' },
+            { icon: 'shield', text: 'Licensed by Gedling Borough Council · insured' },
+          ]}
+        />
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--tight bg-paper" aria-labelledby="cat-faq">
+    <div class="wrap wrap--narrow">
+      <h2 id="cat-faq">Cat sitting questions</h2>
+      <Faq items={faqs} />
+      <p class="mt-2"><a class="text-link" href="/faq/">All questions <Icon name="arrow" /></a></p>
+    </div>
+  </section>
+
+  <CtaBlock waService="cat visits" formService="Cat visits" photo="vanessaHusky" heading="Book a cat visit" />
+</Layout>
+
+<style>
+  .cat-art { height: 100%; aspect-ratio: 4 / 5; background: var(--pine); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; }
+  .cat-art svg { width: 62%; }
+  .cat-art p { margin: 0; font-family: var(--serif); font-style: italic; font-size: 1.4rem; color: #f0cf9c; }
+</style>

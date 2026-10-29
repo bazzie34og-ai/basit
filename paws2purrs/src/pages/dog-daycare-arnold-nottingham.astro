@@ -1,0 +1,129 @@
+---
+import Layout from '../layouts/Layout.astro';
+import PageHero from '../components/PageHero.astro';
+import AsideCard from '../components/AsideCard.astro';
+import DayTimeline from '../components/DayTimeline.astro';
+import Reviews from '../components/Reviews.astro';
+import Faq from '../components/Faq.astro';
+import AreaLinks from '../components/AreaLinks.astro';
+import CtaBlock from '../components/CtaBlock.astro';
+import Photo from '../components/Photo.astro';
+import PriceTable from '../components/PriceTable.astro';
+import { byIds } from '../data/reviews';
+import { faq } from '../data/faqs';
+import { biz, meetGreet } from '../lib/site';
+import { serviceSchema, faqSchema, breadcrumbSchema } from '../lib/schema';
+
+const path = '/dog-daycare-arnold-nottingham/';
+const trail = [{ name: 'Doggy daycare', path }];
+const faqs = faq(['times', 'nervous', 'medication', 'size', 'updates', 'offlead', 'cost']);
+const desc = 'Licensed, insured doggy daycare in Arnold, Nottingham. Small-pack woodland, field and lakeside walks, drop-off around 7:30am, collect around 5pm. Call Vanessa.';
+---
+<Layout
+  title="Doggy Daycare in Arnold, Nottingham | Paws 2 Purrs"
+  description={desc}
+  path={path}
+  waService="daycare"
+  formService="Daycare"
+  preloadPhoto="daycareGroup"
+  schema={[serviceSchema('Doggy daycare in Arnold, Nottingham', desc, path, 'Dog daycare'), faqSchema(faqs), breadcrumbSchema(trail)]}
+>
+  <PageHero
+    label="Doggy daycare · Arnold, Nottingham"
+    title="Doggy Daycare in Arnold, Full of Woodland <em>Adventures</em>"
+    lede="A small pack, proper outdoor adventures and a home to come back to. Drop your dog off around 7:30am and collect a tired, muddy, very happy dog around 5pm."
+    photo="daycareGroup"
+    trail={trail}
+    waService="daycare"
+    facts={[
+      { icon: 'clock', text: `Around ${biz.daycareHours.dropOff} – ${biz.daycareHours.collect}` },
+      { icon: 'shield', text: 'Licensed & insured' },
+      { icon: 'camera', text: 'Photo updates' },
+    ]}
+    sticker={{ title: 'Taking new clients', text: 'Daycare spaces available now. Ask Vanessa.' }}
+  />
+
+  <section class="section section--tight bg-cream">
+    <div class="wrap split">
+      <div class="prose">
+        <h2 class="mt-0">What daycare with Vanessa is like</h2>
+        <p>Paws 2 Purrs isn't a big unit with a wall of kennels. It's Vanessa's own home in Arnold, a small pack of regulars, and a lot of time outdoors. Your dog spends the day with a group of friends, heading out to the woods, farm fields and water spots, with ball play on the way.</p>
+        <p>Most dogs are off lead or on long lines, depending on the dog and the place. Back home there's a large enclosed garden with toys, and in summer a paddling pool for cooling off. Every so often Vanessa bakes something too, like the roasted pumpkin and sweet potato cookies she made after one walk.</p>
+        <p>It's the kind of day that leaves a dog properly content: tired legs, a full nose and lots of friends.</p>
+
+        <div class="photo-pair">
+          <figure class="polaroid" style="--tilt:-2.5deg"><Photo name="lakeDoodle" sizes="(min-width: 960px) 300px, 45vw" /><figcaption>Lakeside, with a friend</figcaption></figure>
+          <figure class="polaroid"><Photo name="howl" sizes="(min-width: 960px) 300px, 45vw" /><figcaption>A happy husky sing-song</figcaption></figure>
+        </div>
+
+        <h2>How a daycare day works</h2>
+        <ul>
+          <li><strong>Around 7:30am:</strong> drop-off in Arnold. A quick hello, and your dog joins their friends.</li>
+          <li><strong>Morning and midday:</strong> out for woodland and adventure walks, with water and ball play.</li>
+          <li><strong>Afternoon:</strong> garden time, toys and enrichment, then a well-earned rest.</li>
+          <li><strong>Around 5pm:</strong> collection. Expect a very relaxed dog for the rest of the evening.</li>
+        </ul>
+        <p>Through the day Vanessa sends photo and video updates, so you can see what your dog is up to while you're at work. Owners say it's one of the best bits.</p>
+
+        <h2>Which dogs is it right for?</h2>
+        <p>There's no size limit. Big, boisterous breeds are welcome, and huskies are Vanessa's favourites. Small dogs are just as welcome and fit right in with the pack.</p>
+        <p><strong>Nervous dogs</strong> are welcome. One owner, Jill, told Google her dog IO "is a nervous dog who doesn't like being without us. Within a couple of visits he was running up the drive to be with his friends each day."</p>
+        <p><strong>Dogs on medication</strong> are in safe hands too. Claire, whose dog Loki has been coming for around six years, says: "Loki also has to take medication and I am confident in Vanessa's care when he is with her."</p>
+        <p>The minimum booking is one day, so you can start with a single day and see how your dog gets on.</p>
+
+        <h2>Your {meetGreet} first</h2>
+        <p>Before your dog's first day, you'll meet Vanessa. It's the time to ask anything, talk about your dog's routine and quirks, and let your dog have a good sniff around. Tell her about anything that matters: worries, medication, how they are with other dogs, or whether they're neutered. Then you can decide together whether daycare suits your dog.</p>
+
+        <h2>What to have ready</h2>
+        <p>Vanessa will tell you exactly what she needs at your {meetGreet}. It helps to have these to hand:</p>
+        <ul>
+          <li>Your dog's lead, collar or harness</li>
+          <li>Any medication, with clear written instructions</li>
+          <li>Food, if your dog is on a special diet</li>
+          <li>Your vet's details and an emergency contact</li>
+        </ul>
+
+        <div class="callout"><p><strong>Prices &amp; availability:</strong> prices depend on how many days you need. Message Vanessa for a quick quote. She's taking on new daycare clients now, and the 2027 diary is open.</p></div>
+        <PriceTable />
+
+        <AreaLinks service="Dog daycare" />
+      </div>
+      <div class="split__aside">
+        <AsideCard
+          title="Daycare at a glance"
+          waService="daycare"
+          formService="Daycare"
+          items={[
+            { icon: 'clock', text: `Drop-off around ${biz.daycareHours.dropOff}, collect around ${biz.daycareHours.collect}` },
+            { icon: 'tree', text: 'Woods, farm fields and water spots' },
+            { icon: 'home', text: 'Large enclosed garden, toys and a summer paddling pool' },
+            { icon: 'camera', text: 'Photo and video updates' },
+            { icon: 'ruler', text: 'No size limit · minimum 1 day' },
+            { icon: 'shield', text: 'Licensed by Gedling Borough Council · insured' },
+          ]}
+        />
+      </div>
+    </div>
+  </section>
+
+  <DayTimeline />
+
+  <section class="section bg-cream" aria-labelledby="dc-reviews">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <p class="label">Daycare regulars</p>
+        <h2 id="dc-reviews">Dogs who've been coming for <em>years</em></h2>
+      </div>
+      <Reviews items={byIds(['gracie', 'loki', 'io', 'lola', 'reign', 'husky'])} />
+    </div>
+  </section>
+
+  <section class="section section--tight bg-paper" aria-labelledby="dc-faq">
+    <div class="wrap wrap--narrow">
+      <h2 id="dc-faq">Daycare questions</h2>
+      <Faq items={faqs} />
+    </div>
+  </section>
+
+  <CtaBlock waService="daycare" formService="Daycare" photo="smallFluffy" />
+</Layout>

@@ -1,0 +1,17 @@
+---
+// Service page -> every area page, with descriptive anchors.
+import { areaPages } from '../lib/site';
+interface Props { service: string; title?: string }
+const { service, title = 'Covering Arnold and nearby' } = Astro.props;
+---
+<div class="area-links">
+  <h2 class="area-links__h">{title}</h2>
+  <p>Vanessa is based in Arnold, NG5. Owners from these nearby areas are a short drive away:</p>
+  <ul class="link-cloud">
+    {areaPages.map((a) => <li><a href={a.href}>{service} near {a.name}</a></li>)}
+  </ul>
+</div>
+<style>
+  .area-links { margin-top: 2.6rem; padding: 26px; background: var(--linen); border-radius: var(--r-lg); }
+  .area-links__h { font-size: 1.5rem; margin-top: 0 !important; }
+</style>

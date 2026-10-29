@@ -1,0 +1,32 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Crumbs from '../components/Crumbs.astro';
+import Gallery from '../components/Gallery.astro';
+import CtaBlock from '../components/CtaBlock.astro';
+import photos from '../data/photos.json';
+import type { PhotoKey } from '../lib/site';
+import { breadcrumbSchema } from '../lib/schema';
+const path = '/gallery/';
+const trail = [{ name: 'Gallery', path }];
+const order: PhotoKey[] = ['hero', 'lakeDoodle', 'howl', 'vanessaHusky', 'smallLog', 'lakePaddle', 'boarding', 'brindlePath', 'daycareGroup', 'taxi', 'smallFluffy', 'lakeEdge', 'cookies', 'spaniels', 'brindleSmile', 'vanessaSelfie'];
+const _check: number = Object.keys(photos).length;
+---
+<Layout
+  title="Photo Gallery | Paws 2 Purrs"
+  description="Real photos from Paws 2 Purrs dog daycare and home boarding in Arnold, Nottingham: woodland walks, lake paddles, huskies and home comforts."
+  path={path}
+  schema={[breadcrumbSchema(trail)]}
+>
+  <Crumbs trail={trail} />
+  <section class="section section--tight bg-cream">
+    <div class="wrap">
+      <div class="section-head section-head--center">
+        <p class="label">The gallery</p>
+        <h1>Meet the <em>Pack</em></h1>
+        <p>Woods, water, home comforts and a lot of huskies. Every photo here is a real Paws 2 Purrs dog on a real day out, taken by Vanessa. Tap any photo to see it bigger.</p>
+      </div>
+      <Gallery keys={order} filters />
+    </div>
+  </section>
+  <CtaBlock photo="smallLog" />
+</Layout>

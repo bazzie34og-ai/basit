@@ -1,0 +1,45 @@
+---
+import Layout from '../layouts/Layout.astro';
+import PageHero from '../components/PageHero.astro';
+import Reviews from '../components/Reviews.astro';
+import CtaBlock from '../components/CtaBlock.astro';
+import Icon from '../components/Icon.astro';
+import { reviews } from '../data/reviews';
+import { biz } from '../lib/site';
+import { breadcrumbSchema } from '../lib/schema';
+const path = '/reviews/';
+const trail = [{ name: 'Reviews', path }];
+---
+<Layout
+  title="Reviews | Paws 2 Purrs Dog Daycare Arnold"
+  description="Real Google reviews of Paws 2 Purrs dog daycare and home boarding in Arnold, Nottingham, word for word. 100% recommended on Facebook (19 reviews)."
+  path={path}
+  preloadPhoto="brindleSmile"
+  schema={[breadcrumbSchema(trail)]}
+>
+  <PageHero
+    label="Letters from owners"
+    title="What Owners (and Their Dogs) <em>Say</em>"
+    lede={`Every review below is copied word for word from Vanessa's Google Business Profile. Where Google cuts a review short, we've left it that way, with a link to read the rest. On Facebook, Paws 2 Purrs is ${biz.facebook.recommend.toLowerCase()} from ${biz.facebook.reviewCount} reviews.`}
+    photo="brindleSmile"
+    trail={trail}
+    facts={[
+      { icon: 'heart', text: `${biz.facebook.recommend} on Facebook` },
+      { icon: 'google', text: 'Google reviews' },
+    ]}
+  />
+  <section class="section section--tight bg-linen grain">
+    <div class="wrap">
+      <Reviews items={reviews} />
+      <div class="btn-row review-btns">
+        <a class="btn btn--outline" href={biz.google.reviewsUrl} target="_blank" rel="noopener"><Icon name="google" />Read all reviews on Google</a>
+        <a class="btn btn--outline" href={biz.facebook.url} target="_blank" rel="noopener"><Icon name="facebook" />Recommendations on Facebook</a>
+      </div>
+      <p class="center small muted">Already a Paws 2 Purrs owner? A Google review really helps other dog owners find Vanessa.</p>
+    </div>
+  </section>
+  <CtaBlock photo="lakeEdge" />
+</Layout>
+<style>
+  .review-btns { justify-content: center; margin: 24px 0 12px; }
+</style>

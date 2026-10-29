@@ -1,0 +1,124 @@
+---
+import Layout from '../layouts/Layout.astro';
+import PageHero from '../components/PageHero.astro';
+import AsideCard from '../components/AsideCard.astro';
+import Reviews from '../components/Reviews.astro';
+import Faq from '../components/Faq.astro';
+import AreaLinks from '../components/AreaLinks.astro';
+import CtaBlock from '../components/CtaBlock.astro';
+import Photo from '../components/Photo.astro';
+import PriceTable from '../components/PriceTable.astro';
+import { byIds } from '../data/reviews';
+import { faq } from '../data/faqs';
+import { meetGreet } from '../lib/site';
+import { serviceSchema, faqSchema, breadcrumbSchema } from '../lib/schema';
+
+const path = '/dog-walking-arnold-nottingham/';
+const trail = [{ name: 'Walks & pop-ins', path }];
+const faqs = faq(['pickup', 'offlead', 'size', 'updates', 'licensed', 'cost']);
+const desc = 'Dog walking in Arnold, Nottingham with pick-up and drop-off, plus dog pop-in visits. Woodland and lakeside adventures with Vanessa and her son. Licensed & insured.';
+---
+<Layout
+  title="Dog Walking & Pop-ins in Arnold | Paws 2 Purrs"
+  description={desc}
+  path={path}
+  waService="dog walks"
+  formService="Walks"
+  preloadPhoto="spaniels"
+  schema={[
+    serviceSchema('Dog walking with pick-up and drop-off in Arnold', desc, path, 'Dog walking'),
+    serviceSchema('Dog pop-in visits in Arnold', 'Home visits for dogs while their owners are out.', path + '#pop-ins', 'Pet sitting'),
+    faqSchema(faqs), breadcrumbSchema(trail),
+  ]}
+>
+  <PageHero
+    label="Dog walks & pop-ins · Arnold"
+    title="Dog Walks &amp; Pop-ins, with Pick-up and <em>Drop-off</em>"
+    lede="Your dog gets a proper adventure even on your busiest days. Vanessa collects them, takes them out with the pack, and brings them home happy and tired."
+    photo="spaniels"
+    polaroid="taxi"
+    trail={trail}
+    waService="dog walks"
+    facts={[
+      { icon: 'car', text: 'Pick-up & drop-off' },
+      { icon: 'tree', text: 'Woods, fields & water' },
+      { icon: 'shield', text: 'Licensed & insured' },
+    ]}
+  />
+
+  <section class="section section--tight bg-cream">
+    <div class="wrap split">
+      <div class="prose">
+        <h2 class="mt-0">Adventure walks, not a lap of the block</h2>
+        <p>A walk with Paws 2 Purrs is a proper outing. Groups head to the woods, farm fields and water spots, with ball play along the way. Most dogs are off lead or on long lines, depending on the dog and the place, so they get to run, sniff and explore with their friends.</p>
+        <p>It's the same kind of adventure the daycare dogs enjoy, squeezed into the middle of your working day. Your dog comes home with muddy paws, a happy face and the urge for a long nap.</p>
+
+        <h2>Pick-up and drop-off included</h2>
+        <p>The walking service includes pick-up and drop-off. Vanessa collects your dog, takes them out, and brings them home again, so you don't need to rush back or rearrange your day. If you're not sure whether your street is on her route, just ask.</p>
+
+        <div class="photo-pair">
+          <figure class="polaroid" style="--tilt:-2.5deg"><Photo name="lakePaddle" sizes="(min-width: 960px) 300px, 45vw" /><figcaption>A quick paddle, mid-walk</figcaption></figure>
+          <figure class="polaroid"><Photo name="brindlePath" sizes="(min-width: 960px) 300px, 45vw" /><figcaption>Woodland paths</figcaption></figure>
+        </div>
+
+        <h2>A mother-and-son team</h2>
+        <p>Vanessa's son helps with the walks, so you might meet him too. Karena, whose dog they walk, wrote on Google: "This lady &amp; her son walk our dog,they are a lovely team &amp; very reliable,our dog loves his walk &amp; is always happy to go with them."</p>
+        <p>Like every Paws 2 Purrs service, walks are covered by Vanessa's licence from Gedling Borough Council and her insurance, and backed by 10 years' experience with other people's dogs.</p>
+
+        <h2 id="pop-ins">Dog pop-ins</h2>
+        <p>Not every dog needs a long walk. Some just need a friendly face in the middle of the day: a wee break in the garden, fresh water and a fuss. That's what a dog pop-in is for. They're handy for older dogs or any dog who'd rather not be on their own all day.</p>
+        <p>Tell Vanessa what your dog needs on a visit and she'll tell you what she can do.</p>
+
+        <h2>Who walks suit</h2>
+        <ul>
+          <li>Owners who work long days and can't get home at lunchtime</li>
+          <li>Energetic dogs who need more than a quick lead walk</li>
+          <li>Big breeds: there's no size limit, and huskies are Vanessa's favourites</li>
+          <li>Dogs who love company and would enjoy a pack outing</li>
+        </ul>
+
+        <h2>Starting with a {meetGreet}</h2>
+        <p>Before the first walk, meet Vanessa. Talk about your dog's recall, how they are with other dogs, and anything that worries you. Together you'll work out whether group walks, pop-ins or daycare suit your dog best.</p>
+
+        <div class="callout"><p><strong>Prices &amp; availability:</strong> prices depend on how often and how long. Message Vanessa for a quick quote.</p></div>
+        <PriceTable />
+
+        <AreaLinks service="Dog walking" />
+      </div>
+      <div class="split__aside">
+        <AsideCard
+          title="Walks at a glance"
+          waService="dog walks"
+          formService="Walks"
+          items={[
+            { icon: 'car', text: 'Pick-up and drop-off included' },
+            { icon: 'tree', text: 'Woods, farm fields and water spots' },
+            { icon: 'ball', text: 'Off lead or long lines where it&rsquo;s safe' },
+            { icon: 'key', text: 'Dog pop-ins for midday breaks' },
+            { icon: 'heart', text: 'Vanessa and her son' },
+            { icon: 'shield', text: 'Licensed by Gedling Borough Council · insured' },
+          ]}
+        />
+      </div>
+    </div>
+  </section>
+
+  <section class="section bg-linen grain" aria-labelledby="wk-reviews">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <p class="label">Walk reviews</p>
+        <h2 id="wk-reviews">"A lovely team &amp; very <em>reliable</em>"</h2>
+      </div>
+      <Reviews items={byIds(['walks', 'lexi', 'husky'])} />
+    </div>
+  </section>
+
+  <section class="section section--tight bg-paper" aria-labelledby="wk-faq">
+    <div class="wrap wrap--narrow">
+      <h2 id="wk-faq">Walks &amp; pop-ins questions</h2>
+      <Faq items={faqs} />
+    </div>
+  </section>
+
+  <CtaBlock waService="dog walks" formService="Walks" photo="taxi" />
+</Layout>

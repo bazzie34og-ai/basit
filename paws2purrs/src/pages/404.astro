@@ -1,0 +1,31 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Icon from '../components/Icon.astro';
+import Photo from '../components/Photo.astro';
+import { tel, whatsapp } from '../lib/site';
+---
+<Layout title="Page not found | Paws 2 Purrs" description="Sorry, that page has wandered off." path="/404/" noindex>
+  <section class="section bg-cream grain">
+    <div class="wrap nf">
+      <figure class="polaroid nf-pic" style="--tilt:-3deg">
+        <Photo name="brindlePath" eager sizes="300px" alt="A brindle dog trotting along a woodland path, looking for the right page" />
+        <figcaption>Still looking for that page…</figcaption>
+      </figure>
+      <div>
+        <p class="label">404</p>
+        <h1>This page has gone off <em>sniffing</em></h1>
+        <p class="lede">We can't find the page you were after. It may have moved, or the link might be wrong. You can always get straight through to Vanessa:</p>
+        <div class="btn-row">
+          <a class="btn btn--honey btn--lg" href={tel} data-track="call_click"><Icon name="phone" />Call Vanessa</a>
+          <a class="btn btn--outline btn--wa btn--lg" href={whatsapp()} target="_blank" rel="noopener" data-track="whatsapp_click"><span class="wa-ring"><Icon name="whatsapp" /></span>WhatsApp</a>
+        </div>
+        <p class="mt-2"><a class="text-link" href="/">Back to the home page <Icon name="arrow" /></a></p>
+      </div>
+    </div>
+  </section>
+</Layout>
+<style>
+  .nf { display: grid; gap: 48px; align-items: center; }
+  @media (min-width: 900px) { .nf { grid-template-columns: 0.7fr 1.3fr; } }
+  .nf-pic { width: min(300px, 76%); margin-inline: auto; }
+</style>

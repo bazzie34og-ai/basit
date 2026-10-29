@@ -1,0 +1,122 @@
+---
+import Layout from '../layouts/Layout.astro';
+import PageHero from '../components/PageHero.astro';
+import AsideCard from '../components/AsideCard.astro';
+import Reviews from '../components/Reviews.astro';
+import Faq from '../components/Faq.astro';
+import AreaLinks from '../components/AreaLinks.astro';
+import CtaBlock from '../components/CtaBlock.astro';
+import Photo from '../components/Photo.astro';
+import Icon from '../components/Icon.astro';
+import PriceTable from '../components/PriceTable.astro';
+import { byIds } from '../data/reviews';
+import { faq } from '../data/faqs';
+import { biz, meetGreet } from '../lib/site';
+import { serviceSchema, faqSchema, breadcrumbSchema } from '../lib/schema';
+
+const path = '/dog-boarding-arnold-nottingham/';
+const trail = [{ name: 'Home boarding', path }];
+const faqs = faq(['kennels', 'minimum', 'size', 'updates', 'medication', 'christmas', 'cost']);
+const desc = 'Licensed home dog boarding in Arnold, Nottingham: a home from home, not kennels. Sofa cuddles, woodland walks with the pack, photo updates. Ask Vanessa.';
+---
+<Layout
+  title="Home Dog Boarding in Arnold, Nottingham | Paws 2 Purrs"
+  description={desc}
+  path={path}
+  waService="boarding"
+  formService="Boarding"
+  preloadPhoto="boarding"
+  schema={[serviceSchema('Home dog boarding in Arnold, Nottingham', desc, path, 'Dog boarding'), faqSchema(faqs), breadcrumbSchema(trail)]}
+>
+  <PageHero
+    label="Home boarding · Arnold, Nottingham"
+    title="Home Dog Boarding: a Home from Home, <em>Not</em> Kennels"
+    lede="Overnights, weekends and holidays in a real family home. Your dog shares the sofa, sleeps where they normally would, and spends the days on woodland adventures with the pack."
+    photo="boarding"
+    trail={trail}
+    waService="boarding"
+    facts={[
+      { icon: 'moon', text: 'Overnights, weekends & holidays' },
+      { icon: 'shield', text: 'Licensed & insured' },
+      { icon: 'ruler', text: 'No size limit' },
+    ]}
+    sticker={{ title: '🎄 Christmas', text: 'Limited boarding left. 2027 diary open.' }}
+  />
+
+  <section class="section section--tight bg-cream">
+    <div class="wrap split">
+      <div class="prose">
+        <h2 class="mt-0">What a stay with Vanessa is like</h2>
+        <p>Leaving your dog when you go away is hard. Leaving them somewhere they'll spend the night in a kennel is harder. Home boarding at Paws 2 Purrs is different: your dog stays in Vanessa's own home in Arnold and lives as part of the household while you're away.</p>
+        <p>That means a proper home-from-home. Dogs share the sofa, sleep where they normally would, and have a large enclosed garden to potter about in. During the day, boarding dogs join the daycare pack for their walks, so they get the same woodland, farm-field and water adventures as the daycare regulars.</p>
+        <p>Kate's springer spaniel, Lexi, boards whenever Kate goes away. In Kate's words: "My springer spaniel absolutely loves her stays, she boards whenever I go away and loves the long daily walks in the woods and different places with the other dogs."</p>
+
+        <div class="photo-pair">
+          <figure class="polaroid" style="--tilt:-2.5deg"><Photo name="lakeEdge" sizes="(min-width: 960px) 300px, 45vw" /><figcaption>Boarders join the pack walks</figcaption></figure>
+          <figure class="polaroid"><Photo name="cookies" sizes="(min-width: 960px) 300px, 45vw" /><figcaption>Homemade treats, husky approved</figcaption></figure>
+        </div>
+
+        <h2>Overnights, weekends and holidays</h2>
+        <p>Whether it's one night for a wedding, a long weekend or a fortnight in the sun, the minimum stay is just one day. Marianne, whose Labrador Lola has been coming to Vanessa for over three years, uses daycare and boarding: "we also use the overnights and weekend services too".</p>
+        <p>Some boarders, like Reign and Lola, come to daycare too, so a sleepover is just a longer visit to friends. If your dog is new to her, a {meetGreet} first helps them get to know her before the big sleepover.</p>
+
+        <h2>You'll know they're happy</h2>
+        <p>You shouldn't have to spend your holiday wondering. Vanessa sends photos and videos while your dog stays, so you can see them out on their walks and settled at home. As Kate puts it: "Vanessa always sends me videos or photos of her having fun…"</p>
+
+        <h2>Big dogs, nervous dogs, dogs on medication</h2>
+        <p>There's no size limit, and huskies are Vanessa's favourites, so big, boisterous breeds are very welcome. One husky owner called her "a proper dog whisperer". If your dog takes medication or gets anxious, tell Vanessa when you enquire and talk it through at your {meetGreet}.</p>
+
+        <h2>What to pack</h2>
+        <p>Vanessa will tell you what she needs at your {meetGreet}. Owners usually find it helps to bring:</p>
+        <ul>
+          <li>Their usual food, so their tummy stays settled</li>
+          <li>Any medication, with clear written instructions</li>
+          <li>Something that smells of home, like a blanket or favourite toy</li>
+          <li>Lead, collar or harness, plus your vet's details and an emergency contact</li>
+        </ul>
+
+        <div class="callout">
+          <p><strong><Icon name="gift" style="width:18px;height:18px;display:inline;vertical-align:-3px" /> Christmas boarding:</strong> spaces are limited, so ask early. <a href="/christmas-dog-boarding-nottingham/">Christmas dog boarding in Nottingham</a>.</p>
+        </div>
+        <div class="callout"><p><strong>Prices &amp; availability:</strong> prices depend on your dates. Message Vanessa with them for a quick quote.</p></div>
+        <PriceTable />
+
+        <AreaLinks service="Home dog boarding" />
+      </div>
+      <div class="split__aside">
+        <AsideCard
+          title="Boarding at a glance"
+          waService="boarding"
+          formService="Boarding"
+          items={[
+            { icon: 'sofa', text: 'A real home: sofa, their usual sleeping spot' },
+            { icon: 'tree', text: 'Daily walks with the daycare pack' },
+            { icon: 'home', text: 'Large enclosed garden' },
+            { icon: 'camera', text: 'Photo and video updates' },
+            { icon: 'calendar', text: `Minimum stay ${biz.minimumStay} · no size limit` },
+            { icon: 'shield', text: 'Licensed by Gedling Borough Council · insured' },
+          ]}
+        />
+      </div>
+    </div>
+  </section>
+
+  <section class="section bg-linen grain" aria-labelledby="bd-reviews">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <p class="label">From boarding owners</p>
+        <h2 id="bd-reviews">"She boards whenever I go <em>away</em>"</h2>
+      </div>
+      <Reviews items={byIds(['lexi', 'husky', 'reign', 'lola', 'gracie', 'loki'])} />
+    </div>
+  </section>
+
+  <section class="section section--tight bg-paper" aria-labelledby="bd-faq">
+    <div class="wrap wrap--narrow">
+      <h2 id="bd-faq">Boarding questions</h2>
+      <Faq items={faqs} />
+    </div>
+  </section>
+
+  <CtaBlock waService="boarding" formService="Boarding" photo="boarding" />
+</Layout>

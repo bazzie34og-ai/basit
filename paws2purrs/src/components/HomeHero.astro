@@ -52,7 +52,8 @@ const sealText = `LICENSED & INSURED · ${biz.experienceYears} YEARS' EXPERIENCE
   }
   .hero-grid { display: grid; gap: 48px; align-items: center; }
   @media (min-width: 900px) { .hero-grid { grid-template-columns: 1.08fr 0.92fr; gap: 56px; } }
-  .hero-copy h1 { margin-bottom: 0.4em; max-width: 13em; }
+  .hero-copy h1 { margin-bottom: 0.4em; max-width: 14.5em; }
+  @media (max-width: 520px) { .hero-ctas .btn { flex: 1 1 0; padding-inline: 0.9em; font-size: 1rem; } }
   .hero-copy .lede { margin-bottom: 1.8rem; }
   .hero-note { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px; margin: 1.4rem 0 0; font-size: 0.92rem; font-weight: 600; color: var(--bark); }
   .hero-note .pill svg { width: 16px; height: 16px; }

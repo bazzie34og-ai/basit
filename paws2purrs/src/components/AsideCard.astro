@@ -1,0 +1,14 @@
+---
+import Icon from './Icon.astro';
+import { tel, whatsapp } from '../lib/site';
+interface Props { title: string; items: { icon: string; text: string }[]; waService: string; formService: string }
+const { title, items, waService, formService } = Astro.props;
+---
+<aside class="aside-card" data-track-area="aside">
+  <h3>{title}</h3>
+  <ul>{items.map((i) => <li><Icon name={i.icon} /><span set:html={i.text} /></li>)}</ul>
+  <a class="btn btn--honey" href={tel} data-track="call_click"><Icon name="phone" />Call Vanessa</a>
+  <a class="btn btn--outline btn--wa" href={whatsapp(waService)} target="_blank" rel="noopener" data-track="whatsapp_click"><span class="wa-ring"><Icon name="whatsapp" /></span>WhatsApp</a>
+  <a class="btn btn--pine" href={`/contact/?service=${encodeURIComponent(formService)}#enquire`} data-enquire><Icon name="form" />Send an enquiry</a>
+  <p class="small muted" style="margin:14px 0 0;text-align:center">Ask about prices &amp; availability</p>
+</aside>

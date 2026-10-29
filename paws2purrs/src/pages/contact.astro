@@ -1,0 +1,43 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Crumbs from '../components/Crumbs.astro';
+import EnquirySection from '../components/EnquirySection.astro';
+import AreaMap from '../components/AreaMap.astro';
+import Icon from '../components/Icon.astro';
+import { biz, areaPages } from '../lib/site';
+import { breadcrumbSchema } from '../lib/schema';
+const path = '/contact/';
+const trail = [{ name: 'Contact', path }];
+---
+<Layout
+  title="Contact Paws 2 Purrs | Call or WhatsApp Vanessa"
+  description="Call, WhatsApp or text Vanessa on 07837 729815, or send a quick enquiry to book a meet & greet for dog daycare or home boarding in Arnold, Nottingham."
+  path={path}
+  schema={[breadcrumbSchema(trail)]}
+>
+  <Crumbs trail={trail} />
+  <EnquirySection path={path} headingTag="h1" heading="Let's Meet Your Dog" />
+  <section class="section section--tight bg-cream" aria-labelledby="where-title">
+    <div class="wrap where">
+      <div>
+        <p class="label">Where we are</p>
+        <h2 id="where-title">Arnold, Nottingham <em>NG5</em></h2>
+        <p class="lede">Paws 2 Purrs is run from Vanessa's home in Arnold, in Gedling borough. The exact address is shared when you book.</p>
+        <ul class="where-list">
+          <li><Icon name="clock" /><span><strong>Daycare day:</strong> drop-off around {biz.daycareHours.dropOff}, collection around {biz.daycareHours.collect}</span></li>
+          <li><Icon name="phone" /><span><strong>Phone &amp; WhatsApp:</strong> <a href={`tel:${biz.phone.e164}`}>{biz.phone.display}</a></span></li>
+          <li><Icon name="facebook" /><span><strong>Facebook:</strong> <a href={biz.facebook.url} target="_blank" rel="noopener">Paws 2 Purrs Dog Daycare and boarding</a></span></li>
+          <li><Icon name="pin" /><span><strong>Nearby areas:</strong> {areaPages.map((a, i) => <><a href={a.href}>{a.name}</a>{i < areaPages.length - 1 ? ', ' : ''}</>)}</span></li>
+        </ul>
+      </div>
+      <AreaMap />
+    </div>
+  </section>
+</Layout>
+<style>
+  .where { display: grid; gap: 40px; align-items: center; padding-bottom: 60px; }
+  @media (min-width: 960px) { .where { grid-template-columns: 1fr 1fr; gap: 64px; } }
+  .where-list { list-style: none; padding: 0; margin: 0; display: grid; gap: 14px; }
+  .where-list li { display: flex; gap: 12px; align-items: flex-start; }
+  .where-list svg { width: 22px; height: 22px; color: var(--moss); flex: none; margin-top: 3px; }
+</style>

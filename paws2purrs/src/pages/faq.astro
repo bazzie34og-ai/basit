@@ -1,0 +1,41 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Crumbs from '../components/Crumbs.astro';
+import Faq from '../components/Faq.astro';
+import CtaBlock from '../components/CtaBlock.astro';
+import Icon from '../components/Icon.astro';
+import { faqs } from '../data/faqs';
+import { tel, whatsapp } from '../lib/site';
+import { faqSchema, breadcrumbSchema } from '../lib/schema';
+const path = '/faq/';
+const trail = [{ name: 'FAQ', path }];
+const live = faqs.filter((f) => !f.todo);
+---
+<Layout
+  title="Dog Daycare & Boarding FAQ | Paws 2 Purrs"
+  description="Answers about Paws 2 Purrs dog daycare and home boarding in Arnold: licence and insurance, drop-off times, nervous dogs, medication, size limits, cats and Christmas."
+  path={path}
+  schema={[faqSchema(live), breadcrumbSchema(trail)]}
+>
+  <Crumbs trail={trail} />
+  <section class="section section--tight bg-cream">
+    <div class="wrap faq-grid">
+      <div class="faq-intro">
+        <p class="label">FAQ</p>
+        <h1>Your Questions, <em>Answered</em></h1>
+        <p class="lede">The things dog owners ask Vanessa most. Can't see yours? Just ask her.</p>
+        <div class="btn-row">
+          <a class="btn btn--honey" href={tel} data-track="call_click"><Icon name="phone" />Call</a>
+          <a class="btn btn--outline btn--wa" href={whatsapp()} target="_blank" rel="noopener" data-track="whatsapp_click"><span class="wa-ring"><Icon name="whatsapp" /></span>WhatsApp</a>
+        </div>
+      </div>
+      <div><Faq items={faqs} /></div>
+    </div>
+  </section>
+  <CtaBlock />
+</Layout>
+<style>
+  .faq-grid { display: grid; gap: 40px; }
+  @media (min-width: 960px) { .faq-grid { grid-template-columns: 0.8fr 1.2fr; gap: 72px; } .faq-intro { position: sticky; top: calc(var(--header-h) + 32px); align-self: start; } }
+  .faq-intro h1 { font-size: clamp(2.1rem, 4.4vw, 3.4rem); }
+</style>

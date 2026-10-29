@@ -1,0 +1,65 @@
+---
+import Photo from './Photo.astro';
+import Icon from './Icon.astro';
+import Crumbs from './Crumbs.astro';
+import { tel, whatsapp, type PhotoKey } from '../lib/site';
+interface Props {
+  label: string;
+  title: string; // may contain one <em>
+  lede: string;
+  photo?: PhotoKey;
+  trail: { name: string; path: string }[];
+  waService?: string;
+  facts?: { icon: string; text: string }[];
+  sticker?: { title: string; text: string };
+  polaroid?: PhotoKey;
+}
+const { label, title, lede, photo, trail, waService = 'daycare or boarding', facts = [], sticker, polaroid } = Astro.props;
+---
+<Crumbs trail={trail} />
+<section class="page-hero grain">
+  <div class="page-hero__light" aria-hidden="true"></div>
+  <div class="wrap page-hero__grid">
+    <div>
+      <p class="label">{label}</p>
+      <h1 set:html={title} />
+      <p class="lede" set:html={lede} />
+      <div class="btn-row" data-track-area="page-hero">
+        <a class="btn btn--honey btn--lg" href={tel} data-track="call_click"><Icon name="phone" />Call Vanessa</a>
+        <a class="btn btn--outline btn--wa btn--lg" href={whatsapp(waService)} target="_blank" rel="noopener" data-track="whatsapp_click"><span class="wa-ring"><Icon name="whatsapp" /></span>WhatsApp</a>
+      </div>
+      {facts.length > 0 && (
+        <ul class="page-hero__facts">
+          {facts.map((f) => <li><Icon name={f.icon} />{f.text}</li>)}
+        </ul>
+      )}
+    </div>
+    <div class="page-hero__media">
+      {photo ? (
+        <div class="arch arch--ring"><Photo name={photo} eager sizes="(min-width: 900px) 440px, 80vw" /></div>
+      ) : (
+        <div class="arch arch--ring"><slot name="media" /></div>
+      )}
+      {polaroid && (
+        <figure class="polaroid page-hero__polaroid" style="--tilt:-6deg" aria-hidden="true">
+          <Photo name={polaroid} sizes="160px" />
+        </figure>
+      )}
+      {sticker && <p class="sticker page-hero__sticker"><strong>{sticker.title}</strong>{sticker.text}</p>}
+    </div>
+  </div>
+</section>
+
+<style>
+  .page-hero { overflow: hidden; }
+  .page-hero__light {
+    position: absolute; inset: 0; z-index: -2; pointer-events: none;
+    background: radial-gradient(ellipse 55% 65% at 85% 25%, rgba(212, 145, 58, 0.18), transparent 70%);
+  }
+  .page-hero h1 { font-size: clamp(2.1rem, 4.6vw, 3.6rem); }
+  .page-hero__media { padding: 0 0 26px 20px; }
+  @media (max-width: 899px) { .page-hero__media { width: min(80%, 360px); } }
+  .page-hero__polaroid { position: absolute; left: -16px; bottom: 0; width: 36%; z-index: 2; padding: 6px 6px 18px; }
+  .page-hero__sticker { right: -12px; bottom: 44px; transform: rotate(2deg); }
+  @media (max-width: 899px) { .page-hero__sticker { right: -18px; bottom: 30px; max-width: 180px; font-size: 0.8rem; } }
+</style>
