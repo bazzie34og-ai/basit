@@ -1,0 +1,36 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import { business } from '../config/site';
+const crumbs = [{ name: 'Home', href: '/' }, { name: 'Privacy', href: '/privacy/' }];
+---
+<BaseLayout title="Privacy Policy | Bond Cleaning Brisbane Co." description="How Bond Cleaning Brisbane Co. collects, uses and protects your details and photos under the Australian Privacy Principles." crumbs={crumbs}>
+  <PageHero eyebrow="Last updated October 2026" h1="Privacy Policy" narrow>
+    <p class="lead">We collect only what we need to quote and do your bond clean, and we never sell it. This policy follows the Australian Privacy Principles.</p>
+  </PageHero>
+  <section class="section section--bg">
+    <div class="container prose">
+      <h2>What we collect</h2>
+      <ul>
+        <li><strong>Quote form:</strong> your suburb, property size, carpets, name, mobile, email, inspection date, property type, whether it's furnished or has pets, add-ons, notes, and the contact method you prefer.</li>
+        <li><strong>Photos you upload</strong> of the property, so we can price it accurately.</li>
+        <li><strong>Technical details:</strong> the page you sent the form from and any campaign tags in the link (for example utm_source), so we know which pages help people.</li>
+        <li><strong>Job records:</strong> the photo report, invoice, access arrangements and any agent's list you forward to us.</li>
+      </ul>
+      <h2>Why we collect it</h2>
+      <p>To give you a fixed price, book and carry out the clean, send your photo report and invoice, handle any re-clean, and keep records as the law requires. We use your details to contact you about your quote and booking only.</p>
+      <h2>How we contact you</h2>
+      <p>One follow-up after a quote, on the channel you chose. We don't add you to marketing lists without your consent, and every marketing message we ever send will have an unsubscribe option, as the Spam Act 2003 requires.</p>
+      <h2>Photos of your property</h2>
+      <p>Photos you send and photos in your report are used for your job. We only use a job photo on our website or Google profile with no personal details, addresses or identifying items in shot, and you can ask us not to use yours at all.</p>
+      <h2>Who we share it with</h2>
+      <p>Only with people needed to do your job: our cleaners, your property manager if you ask us to deal with them, and our licensed pest control partner if you book flea treatment. Our form and email providers store data on our behalf. We don't sell or rent personal information.</p>
+      <h2>Storage and security</h2>
+      <p>Form submissions are stored by our website host (Netlify) and in our business email. We keep job records for as long as tax and consumer law require, then delete them. Access is limited to our team.</p>
+      <h2>Your rights</h2>
+      <p>You can ask to see, correct or delete the personal information we hold about you. Email <a href={`mailto:${business.email}`}>{business.email}</a>. If you're not happy with how we handle a privacy concern, you can contact the Office of the Australian Information Commissioner (oaic.gov.au).</p>
+      <h2>Cookies and analytics</h2>
+      <p>The site doesn't use advertising cookies. If we add Google Analytics, it will measure visits and form use in aggregate, and this page will be updated first.</p>
+    </div>
+  </section>
+</BaseLayout>

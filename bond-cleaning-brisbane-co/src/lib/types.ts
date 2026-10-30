@@ -37,6 +37,8 @@ export interface ServiceContent {
   /** Short reassurance under the CTA row */
   chips?: string[];
   heroPhoto: PhotoKey;
+  /** Hero alt carrying the primary keyword; must stay truthful about what the photo shows. */
+  heroAlt?: string;
   photos: PhotoKey[];
   problem: { h2: string; quotes: string[]; paras: string[] };
   included: { h2: string; intro?: string; groups: { h3: string; items: string[] }[] };

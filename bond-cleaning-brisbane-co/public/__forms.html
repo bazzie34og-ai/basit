@@ -1,0 +1,14 @@
+<!doctype html>
+<html lang="en-AU"><head><meta charset="utf-8"><meta name="robots" content="noindex"><title>Forms</title></head>
+<body>
+<!-- Static copies of the Netlify forms so they register at deploy time even if a page changes. Field names must match the live forms. -->
+<form name="quote" data-netlify="true" netlify-honeypot="bot-field" enctype="multipart/form-data" hidden>
+  <input type="hidden" name="form-name" value="quote"><input name="bot-field"><input name="subject"><input name="page_url"><input name="form_location"><input name="utm_source"><input name="utm_medium"><input name="utm_campaign">
+  <select name="suburb"><option>x</option></select><input name="bedrooms"><input name="bathrooms"><input name="carpets">
+  <input name="name"><input name="mobile" type="tel"><input name="email" type="email"><input name="inspection_date" type="date"><select name="property_type"><option>x</option></select><select name="contact_preference"><option>x</option></select>
+  <input name="furnished"><input name="pets"><input type="checkbox" name="addons"><input type="file" name="photo_1"><input type="file" name="photo_2"><input type="file" name="photo_3"><textarea name="notes"></textarea><input type="checkbox" name="consent">
+</form>
+<form name="partner" data-netlify="true" netlify-honeypot="bot-field" hidden>
+  <input type="hidden" name="form-name" value="partner"><input name="bot-field"><input name="subject"><input name="agency"><input name="name"><input name="phone" type="tel"><input name="email" type="email"><select name="portfolio"><option>x</option></select><select name="turnovers"><option>x</option></select><textarea name="notes"></textarea>
+</form>
+</body></html>

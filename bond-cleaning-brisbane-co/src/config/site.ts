@@ -103,6 +103,7 @@ export const prices: Record<string, number | null> = {
   furnished: null,
   packageCarpet: null, // bond + carpet (2 bed reference)
   packagePet: null, // bond + carpet + flea (2 bed reference)
+  urgent: null, // only used if noUrgentSurcharge is switched off
 };
 
 export const priceRows = [

@@ -1,0 +1,40 @@
+---
+/** Renders a free-form content Section, with an optional shared component beside it. */
+import type { Section } from '../../lib/types';
+import { t } from '../../lib/tpl';
+import PhotoReport from '../PhotoReport.astro';
+import Packages from '../Packages.astro';
+import AskBox from '../AskBox.astro';
+import PartnerForm from '../PartnerForm.astro';
+import BeforeArrive from '../BeforeArrive.astro';
+import NoNeed from '../NoNeed.astro';
+import DayTimeline from '../DayTimeline.astro';
+import PriceCards from '../PriceCards.astro';
+interface Props { s: Section; i: number }
+const { s, i } = Astro.props;
+const bg = s.bg === 'bg' ? 'section--bg' : s.bg === 'sand' ? 'section--sand' : '';
+const hid = `${s.id ?? 'sec'}-${i}-h2`;
+const wide = s.component === 'packages' || s.component === 'houseTable' || s.component === 'apartmentTable' || s.component === 'moveTimeline';
+const side = s.component && !wide;
+---
+<section class:list={['section', bg]} id={s.id} aria-labelledby={hid}>
+  <div class="container">
+    <div class:list={[side && 'split split--top']}>
+      <div class:list={[!side && !wide && 'prose', wide && 'section-head']} style={wide ? 'max-width:820px' : undefined}>
+        {s.eyebrow && <p class="eyebrow">{t(s.eyebrow)}</p>}
+        <h2 id={hid} set:html={t(s.h2)} />
+        <div class="prose" set:html={t(s.html)} />
+      </div>
+      {s.component === 'photoReport' && <div class="reveal"><PhotoReport /></div>}
+      {s.component === 'askBox' && <AskBox h3 />}
+      {s.component === 'partnerForm' && <PartnerForm />}
+      {s.component === 'beforeArrive' && <BeforeArrive />}
+      {s.component === 'noNeed' && <NoNeed />}
+      {s.component === 'seal' && <img src="/images/brand/seal.svg" alt="Inspection Ready seal: our re-clean guarantee" width="280" height="280" loading="lazy" style="margin-inline:auto;width:min(280px,70%)" />}
+    </div>
+    {s.component === 'packages' && <Packages />}
+    {s.component === 'houseTable' && <PriceCards only={['b3', 'b4', 'b5']} />}
+    {s.component === 'apartmentTable' && <PriceCards only={['b1', 'b2', 'b2b2']} />}
+    {s.component === 'moveTimeline' && <DayTimeline items={[['2 weeks out', 'Book removalist and clean'], ['10am', 'Removalists leave'], ['5pm', 'Photo report in your inbox'], ['9am next day', 'Final inspection']]} />}
+  </div>
+</section>

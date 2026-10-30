@@ -1,0 +1,158 @@
+---
+// Intent tier 4 (researching). Link magnet. Primary: bond cleaning checklist qld.
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import Icon from '../components/Icon.astro';
+import PhotoFigure from '../components/PhotoFigure.astro';
+import FaqList from '../components/FaqList.astro';
+import CtaBand from '../components/CtaBand.astro';
+import type { PhotoKey } from '../data/photos';
+import { pick } from '../data/faqs';
+import { faqPage } from '../lib/schema';
+import { rta, RTA_CLEAN } from '../content/shared';
+
+type Item = [string, boolean?];
+const rooms: { id: string; name: string; icon: string; photo?: PhotoKey; items: Item[] }[] = [
+  { id: 'kitchen', name: 'Kitchen', icon: 'kitchen', photo: 'oven', items: [
+    ['Oven cavity, racks, trays and door glass degreased'], ['Rangehood filters soaked and degreased, canopy wiped', true], ['Cooktop, knobs and splashback'],
+    ['Inside every cupboard and drawer, including shelves and hinges'], ['Under-sink cupboard cleaned and dried', true], ['Dishwasher filter, door seals and spray arms', true],
+    ['Sink, taps and plughole descaled'], ['Benchtops and edges'], ['Fridge space: floor, walls and under where it stood', true], ['Light fittings and switches'],
+  ] },
+  { id: 'bathroom', name: 'Bathrooms and toilets', icon: 'bath', photo: 'shower', items: [
+    ['Shower screen and tiles: soap scum removed'], ['Grout scrubbed, surface mould treated on silicone and ceiling'], ['Bath, inside and out'],
+    ['Toilet inside, seat hinges, base and behind the pedestal'], ['Vanity and drawers inside and out'], ['Mirrors streak-free'],
+    ['Exhaust fan cover dusted and washed', true], ['Floor waste and floor tiles'], ['Towel rails, toilet roll holder and taps'],
+  ] },
+  { id: 'bedrooms', name: 'Bedrooms', icon: 'bed', photo: 'fan', items: [
+    ['Ceiling fan, blade by blade', true], ['Light fittings: insects and dust removed'], ['Wardrobe shelves, rails, tracks and mirrored doors'],
+    ['Skirting boards wiped by hand', true], ['Light switches and power points', true], ['Walls spot cleaned for marks and scuffs'],
+    ['Air-con filter and vents'], ['Carpets vacuumed edge to edge, or steam cleaned if required'],
+  ] },
+  { id: 'living', name: 'Living and dining', icon: 'sofa', items: [
+    ['Ceiling fans and light fittings'], ['Top of door frames and picture rails', true], ['Skirting boards and doors'],
+    ['Built-in cabinets and TV units inside'], ['Cobwebs from corners and cornices'], ['Floors: vinyl, tiles, timber or carpet'],
+  ] },
+  { id: 'laundry', name: 'Laundry', icon: 'laundry', photo: 'laundry', items: [
+    ['Laundry tub, taps and splashback'], ['Behind and under the washing machine space', true], ['Cupboards inside and out'],
+    ['Floor waste and corners'], ['Walls and door'], ['Dryer lint area and exhaust'],
+  ] },
+  { id: 'windows', name: 'Windows and doors', icon: 'window', items: [
+    ['Window tracks vacuumed, scrubbed and wiped dry', true], ['Sliding door tracks and runners', true], ['Window sills and frames, mould on seals'],
+    ['Glass inside, and outside where safe to reach'], ['Flyscreens washed'], ['Blinds dusted slat by slat'], ['Door handles, locks and the front door'],
+  ] },
+  { id: 'outdoor', name: 'Outdoor', icon: 'garage', items: [
+    ['Patio or balcony swept and washed'], ['Balcony glass and drains'], ['Garage swept, cobwebs down, oil marks treated'],
+    ['Driveway and paths if part of the lease'], ['Outdoor lights and power points'], ['Bins emptied and rinsed'],
+  ] },
+  { id: 'extras', name: 'Extras: pets and carpets', icon: 'paw', photo: 'carpet', items: [
+    ['Carpets steam cleaned if cleaned at move-in or required by a pet clause'], ['Carpet cleaning receipt kept for the agent'], ['Pet hair removed from vents, skirting and door seals'],
+    ['Flea treatment by a licensed operator, if your lease requires it'], ['Pest control certificate kept for the agent'], ['Yard: pet droppings removed'],
+  ] },
+];
+const total = rooms.reduce((n, r) => n + r.items.length, 0);
+const faqs = pick('A6', 'A1', 'A5', 'D24');
+const crumbs = [{ name: 'Home', href: '/' }, { name: 'Bond cleaning checklist', href: '/bond-cleaning-checklist/' }];
+---
+<BaseLayout title="Bond Cleaning Checklist QLD | Bond Cleaning Brisbane Co." description="The room-by-room bond cleaning checklist we clean to, based on what Queensland property managers check at the final inspection. Tick it off online or print it." crumbs={crumbs} schema={[faqPage(faqs)]}>
+  <PageHero eyebrow="Free · Printable · QLD" h1="The Brisbane Bond Cleaning Checklist (QLD)">
+    <div class="lead">
+      <p>This is the room-by-room checklist we clean to. It follows what Queensland property managers check against the entry condition report. Use this bond cleaning checklist (QLD) to do the job yourself, or to check any cleaner's work before your final inspection.</p>
+    </div>
+    <div class="btn-row no-print">
+      <button class="btn btn--primary btn--lg" type="button" data-print><Icon name="printer" />Download or print as PDF</button>
+      <a class="btn btn--secondary btn--lg" href="#rooms">Start ticking</a>
+    </div>
+    <p class="small muted">Your ticks are saved in this browser only, so you can come back to it. Nothing is sent to us.</p>
+  </PageHero>
+
+  <div class="print-only container">
+    <img src="/images/brand/logo-horizontal.svg" alt="Bond Cleaning Brisbane Co." width="220" height="46" style="width:220px" />
+    <p>bondcleaningco.com · The QLD bond cleaning checklist we clean to</p>
+  </div>
+
+  <section class="section section--bg" aria-labelledby="agents-h2">
+    <div class="container">
+      <div class="split split--top">
+        <div class="prose">
+          <p class="eyebrow">How the inspection works</p>
+          <h2 id="agents-h2">What do agents check at the final inspection?</h2>
+          <p set:html={`Your property manager compares the property with the entry condition report you signed when you moved in, room by room, using the exit condition report (Form 14a). Anything dirtier than it was at the start, beyond fair wear and tear, can be claimed against your bond. The ${rta(RTA_CLEAN, 'RTA explains the cleaning standard here')}.`} />
+          <p>The end of lease cleaning checklist below is grouped the way an inspection runs. Items marked <span class="badge badge--soft">Often missed</span> are the ones we see on agents' lists most.</p>
+        </div>
+        <div class="card">
+          <h3>Commonly missed at inspection</h3>
+          <ul class="ticks mb-0">
+            <li>Window and sliding door tracks</li><li>Top of door frames</li><li>Skirting boards</li><li>Light switches</li><li>Rangehood filter</li><li>Exhaust fans</li><li>Inside the dishwasher filter</li><li>Under the fridge space</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="rooms" aria-labelledby="list-h2">
+    <div class="container">
+      <h2 id="list-h2" class="visually-hidden">Room-by-room checklist</h2>
+      <div class="cl-progress" data-cl-progress><span><span data-cl-done>0</span> of {total} done</span><span class="bar" aria-hidden="true"><span data-cl-bar></span></span><button class="btn btn--sm btn--secondary no-print" type="button" data-cl-reset>Reset</button></div>
+      {rooms.map((r) => (
+        <div class="checklist-room" id={r.id}>
+          <div class:list={[r.photo && 'split split--top']}>
+            <div>
+              <div class="checklist-room__head">
+                <h2><Icon name={r.icon} />{r.name}</h2>
+                <span class="checklist-count" data-cl-count={r.id}>0 / {r.items.length}</span>
+              </div>
+              <ul class="cl-items">
+                {r.items.map(([label, missed], i) => (
+                  <li><label><input type="checkbox" data-cl={`${r.id}-${i}`} /><span>{label}{missed && <span class="badge badge--soft missed">Often missed</span>}</span></label></li>
+                ))}
+              </ul>
+            </div>
+            {r.photo && <div class="no-print"><PhotoFigure k={r.photo} sizes="(min-width: 960px) 480px, 92vw" /></div>}
+          </div>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <section class="section section--bg" aria-labelledby="faq-h2">
+    <div class="container container--narrow">
+      <div class="section-head"><p class="eyebrow">Questions</p><h2 id="faq-h2">Checklist questions</h2></div>
+      <FaqList items={faqs} />
+      <p class="mt-2 no-print">Rather not do it yourself? Our <a href="/end-of-lease-cleaning-brisbane/">end of lease cleaning</a> follows this list exactly, with a photo of every room. See <a href="/pricing/">bond cleaning prices</a>.</p>
+    </div>
+  </section>
+  <CtaBand h2="When you're ready, we'll price it from photos." p="Every item on this checklist, cleaned and photographed, with a free re-clean if the agent flags anything we cleaned." />
+</BaseLayout>
+
+<script>
+  const KEY = 'bcbc_checklist';
+  let state: Record<string, boolean> = {};
+  try { state = JSON.parse(localStorage.getItem(KEY) || '{}'); } catch { /* storage unavailable */ }
+  const boxes = Array.from(document.querySelectorAll<HTMLInputElement>('[data-cl]'));
+  const update = () => {
+    const done = boxes.filter((b) => b.checked).length;
+    document.querySelector('[data-cl-done]')!.textContent = String(done);
+    (document.querySelector('[data-cl-bar]') as HTMLElement).style.width = `${(done / boxes.length) * 100}%`;
+    document.querySelectorAll<HTMLElement>('[data-cl-count]').forEach((el) => {
+      const room = el.dataset.clCount!;
+      const list = boxes.filter((b) => b.dataset.cl!.startsWith(`${room}-`));
+      el.textContent = `${list.filter((b) => b.checked).length} / ${list.length}`;
+    });
+  };
+  boxes.forEach((b) => {
+    b.checked = !!state[b.dataset.cl!];
+    b.addEventListener('change', () => {
+      state[b.dataset.cl!] = b.checked;
+      try { localStorage.setItem(KEY, JSON.stringify(state)); } catch { /* ignore */ }
+      update();
+    });
+  });
+  document.querySelector('[data-cl-reset]')?.addEventListener('click', () => {
+    boxes.forEach((b) => (b.checked = false));
+    state = {};
+    try { localStorage.removeItem(KEY); } catch { /* ignore */ }
+    update();
+  });
+  document.querySelector('[data-print]')?.addEventListener('click', () => window.print());
+  update();
+</script>

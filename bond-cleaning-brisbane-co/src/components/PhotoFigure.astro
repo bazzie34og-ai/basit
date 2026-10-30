@@ -5,13 +5,15 @@ interface Props { k: PhotoKey; eager?: boolean; sizes?: string; caption?: boolea
 const { k, eager = false, sizes = '(min-width: 1024px) 380px, (min-width: 640px) 46vw, 92vw', caption = true, zoom = true, alt } = Astro.props;
 const p = photos[k];
 const full = await getImage({ src: p.src, width: 1080, format: 'webp' });
-const img = (
-  <Image src={p.src} alt={alt ?? p.alt} widths={[400, 800, 1080]} sizes={sizes} format="webp" width={1080} height={1080} loading={eager ? 'eager' : 'lazy'} decoding="async" fetchpriority={eager ? 'high' : 'auto'} />
-);
+const imgAlt = alt ?? p.alt;
+const Wrap = zoom ? 'button' : 'div';
+const wrapProps = zoom
+  ? { class: 'photo__btn', type: 'button', 'data-lightbox-src': full.src, 'data-lightbox-alt': imgAlt, 'data-lightbox-caption': p.caption, 'aria-label': `Open larger photo: ${p.caption}` }
+  : { class: 'photo-feature' };
 ---
 <figure class="photo" data-room={p.room}>
-  {zoom ? (
-    <button class="photo__btn" type="button" data-lightbox-src={full.src} data-lightbox-alt={alt ?? p.alt} data-lightbox-caption={p.caption} aria-label={`Open larger photo: ${p.caption}`}>{img}</button>
-  ) : <div class="photo-feature">{img}</div>}
+  <Wrap {...wrapProps}>
+    <Image src={p.src} alt={imgAlt} widths={[400, 800, 1080]} sizes={sizes} format="webp" width={1080} height={1080} loading={eager ? 'eager' : 'lazy'} decoding="async" fetchpriority={eager ? 'high' : 'auto'} />
+  </Wrap>
   {caption && <figcaption>{p.caption}</figcaption>}
 </figure>

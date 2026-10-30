@@ -1,0 +1,56 @@
+---
+// Intent tier 4 (researching). Article + FAQPage schema.
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import FaqList from '../../components/FaqList.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import QuoteForm from '../../components/QuoteForm.astro';
+import { posts, type Post } from '../../content/blog';
+import { business } from '../../config/site';
+import { article, faqPage } from '../../lib/schema';
+
+export function getStaticPaths() {
+  return posts.map((post) => ({ params: { slug: post.slug }, props: { post } }));
+}
+const { post } = Astro.props as { post: Post };
+const url = `/blog/${post.slug}/`;
+const crumbs = [{ name: 'Home', href: '/' }, { name: 'Guides', href: '/blog/' }, { name: post.title, href: url }];
+const others = posts.filter((p) => p.slug !== post.slug);
+---
+<BaseLayout title={`${post.title} | ${business.name}`} description={post.description} crumbs={crumbs} ogType="article" schema={[article({ title: post.title, description: post.description, url, published: post.published }), faqPage(post.faqs)]}>
+  <Fragment set:html={`<!-- Intent tier 4 · ${post.query} -->`} />
+  <article>
+    <header class="page-hero">
+      <div class="container article-head">
+        <p class="eyebrow">Guide</p>
+        <h1>{post.title}</h1>
+        <p class="article-meta"><span>By {business.name}</span><time datetime={post.published}>{new Date(post.published).toLocaleDateString('en-AU', { day: 'numeric', month: 'long', year: 'numeric' })}</time><span>{post.readMins} min read</span></p>
+      </div>
+    </header>
+    <div class="section section--tight" style="padding-top:0">
+      <div class="container">
+        <div class="split split--top" style="grid-template-columns:minmax(0,1fr)">
+          <div class="prose" set:html={post.html} />
+        </div>
+      </div>
+    </div>
+  </article>
+  <section class="section section--bg" aria-labelledby="faq-h2">
+    <div class="container container--narrow">
+      <div class="section-head"><p class="eyebrow">Quick answers</p><h2 id="faq-h2">Questions about this guide</h2></div>
+      <FaqList items={post.faqs} />
+    </div>
+  </section>
+  <section class="section" aria-labelledby="more-h2">
+    <div class="container">
+      <div class="section-head"><p class="eyebrow">More guides</p><h2 id="more-h2">Keep reading</h2></div>
+      <ul class="area-chips">{others.map((p) => <li><a href={`/blog/${p.slug}/`}>{p.title}</a></li>)}</ul>
+    </div>
+  </section>
+  <section class="section section--bg quote-section" aria-labelledby="bq-h2">
+    <div class="container">
+      <div class="section-head section-head--center"><p class="eyebrow">No pressure</p><h2 id="bq-h2">When you're ready, we'll price it from photos</h2></div>
+      <QuoteForm id="qb" anchor location={`blog-${post.slug}`} />
+    </div>
+  </section>
+  <CtaBand quoteHref="#quote" />
+</BaseLayout>

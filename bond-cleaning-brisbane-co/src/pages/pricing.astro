@@ -1,0 +1,175 @@
+---
+// Intent tier 2 (ready to book) and tier 4 (researching cost). Primary: bond cleaning brisbane prices.
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import PriceCards from '../components/PriceCards.astro';
+import Packages from '../components/Packages.astro';
+import QuoteForm from '../components/QuoteForm.astro';
+import FaqList from '../components/FaqList.astro';
+import AskBox from '../components/AskBox.astro';
+import CtaBand from '../components/CtaBand.astro';
+import PromiseChips from '../components/PromiseChips.astro';
+import { addons, priceRows, flags } from '../config/site';
+import { pick } from '../data/faqs';
+import { t, price, flagOn } from '../lib/tpl';
+import { faqPage } from '../lib/schema';
+
+const faqs = pick('B9', 'B10', 'B11', 'B12', 'B13', 'B15', 'F1', 'F22').filter((f) => !f.flag || flagOn(f.flag));
+const crumbs = [{ name: 'Home', href: '/' }, { name: 'Pricing', href: '/pricing/' }];
+const addonPrice = (a: (typeof addons)[number]) =>
+  a.freeWhen && flagOn(a.freeWhen) ? t('{carpet}') : `${a.unit === 'from' ? 'from ' : ''}${price(a.key)}${a.unit !== 'from' && a.unit !== 'each' ? ` ${a.unit}` : ''}`;
+---
+<BaseLayout title="Bond Cleaning Prices Brisbane | Bond Cleaning Brisbane Co." description="Bond cleaning prices in Brisbane, fixed by bedrooms and bathrooms. Price table, packages, add-ons and how long each clean takes. No hourly rates, no surprises on the day." crumbs={crumbs} schema={[faqPage(faqs)]}>
+  <PageHero eyebrow="Fixed prices · Brisbane Northside" h1="Bond Cleaning Prices in Brisbane">
+    <div class="lead">
+      <p set:html={t("Our bond cleans are a fixed price based on bedrooms, bathrooms and condition. Most Brisbane bond cleans land between about $250 and $600 before carpets. Here are ours, with what's included and what costs extra. Bond cleaning Brisbane prices start at {price:b1} for a studio or 1-bed, and your exact price comes back in writing within {replyTime} of your photos.")} />
+    </div>
+    <PromiseChips />
+    <Fragment slot="aside"><QuoteForm id="qt" anchor location="pricing-top" /></Fragment>
+  </PageHero>
+
+  <section class="section section--bg" aria-labelledby="table-h2">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">Price by bedrooms</p>
+        <h2 id="table-h2">Bond cleaning Brisbane prices by property size</h2>
+        <p>Fixed prices for a standard bond clean. Every price includes the oven, rangehood, bathrooms, inside cupboards, tracks, fans, skirting, walls spot cleaned, floors, the photo report and the re-clean promise.</p>
+      </div>
+      <PriceCards />
+      <p class="mt-2 small muted">Prices are for a property in normal lived-in condition. Very heavy build-up, extra bathrooms or a furnished property are priced from your photos, before you book.</p>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="pk-h2">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">Packages</p>
+        <h2 id="pk-h2">Three packages for the whole lease list</h2>
+        <p>Most leases ask for one of these. Pick the one that matches yours, or just send your lease and we'll tell you.</p>
+      </div>
+      <Packages />
+    </div>
+  </section>
+
+  <section class="section section--bg" aria-labelledby="inc-h2">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">Included vs extra</p>
+        <h2 id="inc-h2">End of lease cleaning Brisbane prices: what's in, what's extra</h2>
+      </div>
+      <div class="toggle" role="tablist" aria-label="Show included or extra items" data-toggle>
+        <button type="button" role="tab" aria-selected="true" aria-controls="tab-in" id="t-in">What's included</button>
+        <button type="button" role="tab" aria-selected="false" aria-controls="tab-extra" id="t-extra">What costs extra</button>
+      </div>
+      <div id="tab-in" role="tabpanel" aria-labelledby="t-in">
+        <ul class="ticks ticks--cols">
+          <li>Oven, rangehood and cooktop</li><li>Inside every cupboard, drawer and wardrobe</li><li>Bathrooms, toilets, grout and surface mould</li><li>Laundry tub and machine space</li><li>Window tracks, sills and inside glass</li><li>Sliding doors and flyscreens</li><li>Blinds dusted</li><li>Ceiling fans and light fittings</li><li>Exhaust fans and air-con filters</li><li>Skirting boards, doors and light switches</li><li>Walls spot cleaned</li><li>All floors vacuumed and mopped</li><li>Room-by-room photo report and tax invoice</li><li>Free re-clean if the agent flags anything we cleaned</li>
+        </ul>
+      </div>
+      <div id="tab-extra" role="tabpanel" aria-labelledby="t-extra" hidden>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Add-on</th><th>Price</th></tr></thead>
+            <tbody>{addons.map((a) => <tr><td>{a.name}</td><td set:html={addonPrice(a)} /></tr>)}</tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="time-h2">
+    <div class="container">
+      <div class="split split--top">
+        <div>
+          <p class="eyebrow">Timing</p>
+          <h2 id="time-h2">How long does a bond clean take?</h2>
+          <p>Long enough to finish the checklist. We don't leave at a set number of hours: the crew stays until every item is done and photographed. As a guide, with our usual crew sizes:</p>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Property</th><th>Typical time</th><th>Crew</th></tr></thead>
+            <tbody>{priceRows.map((r) => <tr><td>{r.label}, {r.detail.toLowerCase()}</td><td>{r.time}</td><td>{r.crew}</td></tr>)}</tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--sand" aria-labelledby="fair-h2">
+    <div class="container">
+      <div class="split split--top">
+        <div class="prose">
+          <p class="eyebrow">Cheap bond cleaning Brisbane?</p>
+          <h2 id="fair-h2">Fair price, no surprises</h2>
+          <p>Search "cheap bond cleaning Brisbane" and you'll find adverts from $45 or $99. Those prices are real, but they're usually for one room, by the hour, or for a clean that leaves out the oven, the walls and the guarantee. The full price shows up on the day, when you have no time to say no.</p>
+          <p>A fair bond clean price is one number that covers the whole property, the oven, the tracks and the re-clean, written down before anyone arrives. That's the only way we price.</p>
+          <h3>Why fixed beats hourly</h3>
+          <ul>
+            <li><strong>Hourly rewards slow work.</strong> A fixed price rewards finishing the checklist properly.</li>
+            <li><strong>Hourly moves on the day.</strong> A fixed price is agreed from your photos before we come.</li>
+            <li><strong>Hourly makes the guarantee awkward.</strong> Who pays for the return visit? With us, nobody: it's included.</li>
+          </ul>
+          <h3>What can change a price (honestly)</h3>
+          <p>Only things we couldn't see in your photos and agree with you first: a garage or balcony you didn't mention, an oven far worse than pictured, a room full of belongings, or an extra bathroom. If we find one, we show you, agree it in writing before starting, and you can say no. We never change the price mid-clean.</p>
+        </div>
+        <AskBox h3 />
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="calc-h2">
+    <div class="container container--narrow">
+      <div class="section-head">
+        <p class="eyebrow">DIY vs professional</p>
+        <h2 id="calc-h2">How much does a DIY bond clean really cost you?</h2>
+        <p>Professional cleaning isn't legally required in Queensland. Whether it's worth paying for depends on your time, the products you'd buy and the risk of a re-clean. Try your own numbers.</p>
+      </div>
+      <form class="card" data-calc onsubmit="return false">
+        <div class="calc">
+          <div class="field"><label for="c-hours">Hours you'd spend cleaning</label><input class="input" id="c-hours" type="number" inputmode="decimal" min="1" value="12" /></div>
+          <div class="field"><label for="c-rate">What an hour of your time is worth ($)</label><input class="input" id="c-rate" type="number" inputmode="decimal" min="0" value="35" /></div>
+          <div class="field"><label for="c-gear">Products and hire, e.g. carpet machine ($)</label><input class="input" id="c-gear" type="number" inputmode="decimal" min="0" value="120" /></div>
+        </div>
+        <div class="field" style="margin-top:16px"><label for="c-risk">Chance the agent asks for a re-clean</label>
+          <select class="select" id="c-risk"><option value="0.15">Low (15%)</option><option value="0.3" selected>Medium (30%)</option><option value="0.5">High (50%)</option></select>
+          <span class="hint">We assume an agent-arranged re-clean takes about $200 from your bond.</span>
+        </div>
+        <div class="calc-result" role="status" aria-live="polite"><span>Your DIY cost is about</span><br /><strong data-calc-out>$713</strong><br /><span class="small">Compare it with your fixed price below. Ours includes the re-clean if anything we cleaned is flagged.</span></div>
+      </form>
+      <p class="mt-2">Want the full answer? Read <a href="/blog/is-a-professional-bond-clean-worth-it/">is a professional bond clean worth it</a>.</p>
+    </div>
+  </section>
+
+  <section class="section section--bg" aria-labelledby="faq-h2">
+    <div class="container container--narrow">
+      <div class="section-head"><p class="eyebrow">Questions</p><h2 id="faq-h2">Bond cleaning price questions</h2></div>
+      <FaqList items={faqs} />
+    </div>
+  </section>
+
+  <section class="section quote-section" aria-labelledby="bq-h2">
+    <div class="container">
+      <div class="section-head section-head--center"><p class="eyebrow">Your exact number</p><h2 id="bq-h2">Get your fixed price in writing</h2></div>
+      <QuoteForm id="qb" location="pricing-bottom" />
+    </div>
+  </section>
+  <CtaBand quoteHref="#quote" />
+</BaseLayout>
+
+<script>
+  const tl = document.querySelector('[data-toggle]');
+  if (tl) {
+    const tabs = Array.from(tl.querySelectorAll<HTMLButtonElement>('[role="tab"]'));
+    tabs.forEach((tab) => tab.addEventListener('click', () => {
+      tabs.forEach((x) => { x.setAttribute('aria-selected', String(x === tab)); document.getElementById(x.getAttribute('aria-controls')!)!.hidden = x !== tab; });
+    }));
+  }
+  const calc = document.querySelector<HTMLFormElement>('[data-calc]');
+  if (calc) {
+    const n = (id: string) => parseFloat((document.getElementById(id) as HTMLInputElement).value) || 0;
+    const out = calc.querySelector('[data-calc-out]')!;
+    const run = () => { out.textContent = `$${Math.round(n('c-hours') * n('c-rate') + n('c-gear') + n('c-risk') * 200).toLocaleString('en-AU')}`; };
+    calc.addEventListener('input', run);
+    run();
+  }
+</script>

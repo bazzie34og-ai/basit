@@ -1,0 +1,47 @@
+---
+// Intent tier 2. Hub. Primary: bond cleaning north brisbane.
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import NorthsideMap from '../components/NorthsideMap.astro';
+import CtaBand from '../components/CtaBand.astro';
+import { areaGroups, business } from '../config/site';
+import { areaBySlug, areaUrl } from '../lib/data';
+import { telHref } from '../lib/tpl';
+const crumbs = [{ name: 'Home', href: '/' }, { name: 'Areas', href: '/areas/' }];
+const blurb: Record<string, string> = {
+  inner: 'Apartment towers, walk-ups and Queenslanders, from the CBD to Breakfast Creek. Lift bookings and loading docks are routine here.',
+  northeast: 'Character homes around Racecourse Road, riverfront apartments at Portside, and highsets towards Chermside.',
+  north: 'Family homes and townhouses up Gympie Road, from Kedron Brook to the Moreton Bay region.',
+  northwest: 'Townhouse complexes and family homes along South Pine Road and around Brookside.',
+};
+---
+<BaseLayout title="Areas We Clean | Bond Cleaning Brisbane Co." description="Bond cleaning across Brisbane's Northside and inner north: 20 suburbs from Brisbane City and New Farm to Chermside, Aspley and North Lakes, each with local access notes." crumbs={crumbs}>
+  <PageHero eyebrow="Northside and inner north only" h1="Bond Cleaning Across Brisbane's Northside">
+    <p class="lead">We do bond cleaning in North Brisbane and the inner north only: 20 suburbs, from the CBD and New Farm up Gympie Road and Sandgate Road to Chermside, Aspley and North Lakes. Our bond cleaners in North Brisbane work these streets every week, so we know which towers need a lift booking, which Queenslanders have a downstairs laundry and which agencies inspect hardest.</p>
+    <Fragment slot="aside"><div class="map-card"><NorthsideMap links /></div></Fragment>
+  </PageHero>
+  <section class="section section--bg" aria-labelledby="groups-h2">
+    <div class="container">
+      <h2 id="groups-h2" class="visually-hidden">Suburbs by region</h2>
+      <div class="grid grid-2">
+        {areaGroups.map((g) => (
+          <div class="card">
+            <p class="eyebrow">{g.name}</p>
+            <h3>{g.name} Brisbane</h3>
+            <p class="muted">{blurb[g.key]}</p>
+            <ul class="list-inline" style="display:grid;gap:8px">
+              {g.slugs.map((s) => {
+                const a = areaBySlug(s);
+                return <li><a href={areaUrl(s)}>Bond cleaning {a.name}</a> <span class="muted small">{a.pc} · {a.homes}</span></li>;
+              })}
+            </ul>
+          </div>
+        ))}
+      </div>
+      <div class="notice mt-3">
+        <p class="mb-0"><strong>Not on the list?</strong> Call us on <a href={telHref()}>{business.phone}</a>. We may still be able to help if you're close to one of these suburbs. We don't clean the Southside under this brand.</p>
+      </div>
+    </div>
+  </section>
+  <CtaBand />
+</BaseLayout>

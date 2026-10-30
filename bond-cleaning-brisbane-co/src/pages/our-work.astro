@@ -1,0 +1,65 @@
+---
+// Intent tier 3 (evaluating). Primary: bond cleaning before and after.
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import PhotoFigure from '../components/PhotoFigure.astro';
+import BeforeAfter from '../components/BeforeAfter.astro';
+import PhotoReport from '../components/PhotoReport.astro';
+import CtaBand from '../components/CtaBand.astro';
+import { photos, photoOrder } from '../data/photos';
+import { serviceBySlug } from '../lib/data';
+const rooms = ['Kitchen', 'Bathroom', 'Carpet', 'Laundry', 'Fans'];
+const crumbs = [{ name: 'Home', href: '/' }, { name: 'Our work', href: '/our-work/' }];
+const svcName = (url: string) => serviceBySlug(url.replace(/\//g, '')).name;
+---
+<BaseLayout title="Before & After Bond Cleans Brisbane | Bond Cleaning Brisbane Co." description="Before and after photos from our bond and end of lease cleans across Brisbane's Northside: ovens, showers, carpets, cupboards, laundries and ceiling fans." crumbs={crumbs}>
+  <PageHero eyebrow="Real jobs · Real photos" h1="Our Work: Brisbane Bond Cleans, Before and After">
+    <p class="lead">Bond cleaning before and after photos from our own jobs on Brisbane's Northside. No stock images, no staged rooms: these are the spots property managers check first, photographed the way they look in your report.</p>
+    <Fragment slot="aside"><BeforeAfter caption="Drag the handle: oven door glass, before and after our bond clean." /></Fragment>
+  </PageHero>
+
+  <section class="section section--bg" aria-labelledby="gal-h2">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">Gallery</p>
+        <h2 id="gal-h2">End of lease cleaning results in Brisbane, by room</h2>
+        <p>Filter by room. Tap any photo to see it full size.</p>
+      </div>
+      <div class="filters" role="group" aria-label="Filter photos by room" data-filters>
+        <button type="button" aria-pressed="true" data-filter="all">All</button>
+        {rooms.map((r) => <button type="button" aria-pressed="false" data-filter={r}>{r}</button>)}
+      </div>
+      <ul class="photo-grid" role="list" data-gallery>
+        {photoOrder.map((k) => (
+          <li data-room-item={photos[k].room}>
+            <PhotoFigure k={k} />
+            <p class="small mb-0"><a href={photos[k].service}>{svcName(photos[k].service)}</a></p>
+          </li>
+        ))}
+      </ul>
+      <p class="mt-2 small muted">New jobs are added as they happen, with the suburb and service. Want to see a result for your type of property? Ask us when you send your photos.</p>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="rep-h2">
+    <div class="container">
+      <div class="split">
+        <div>
+          <p class="eyebrow">Every job</p>
+          <h2 id="rep-h2">The same photos go in your report</h2>
+          <p class="lead">Every bond clean ends with a dated, room-by-room photo report and tax invoice, emailed the same day. Share it with your agent, keep it for your records, or post it in the group chat when someone asks for a bond cleaner.</p>
+        </div>
+        <PhotoReport />
+      </div>
+    </div>
+  </section>
+  <CtaBand />
+</BaseLayout>
+<script>
+  const btns = Array.from(document.querySelectorAll<HTMLButtonElement>('[data-filter]'));
+  const items = Array.from(document.querySelectorAll<HTMLElement>('[data-gallery] [data-room-item]'));
+  btns.forEach((b) => b.addEventListener('click', () => {
+    btns.forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
+    items.forEach((it) => (it.hidden = b.dataset.filter !== 'all' && it.dataset.roomItem !== b.dataset.filter));
+  }));
+</script>

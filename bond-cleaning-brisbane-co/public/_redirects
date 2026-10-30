@@ -1,0 +1,12 @@
+# 301 redirects. Format: /old-path/  /new-path/  301
+# The homepage owns "bond cleaning brisbane", so this URL never gets its own page:
+/bond-cleaning-brisbane/          /                                   301
+/bond-cleaning-brisbane           /                                   301
+# Common alternative URLs people (and old links) might use:
+/end-of-lease-cleaning/           /end-of-lease-cleaning-brisbane/    301
+/exit-cleaning-brisbane/          /vacate-cleaning-brisbane/          301
+/bond-cleaning-chermside-qld/     /bond-cleaning-chermside/           301
+/checklist/                       /bond-cleaning-checklist/           301
+/prices/                          /pricing/                           301
+/guarantee/                       /bond-back-guarantee/               301
+/quote/                           /contact/                           301

@@ -1,0 +1,49 @@
+---
+// Intent tier 3 (evaluating). Primary: bond cleaning brisbane reviews. Real Google reviews only (src/data/reviews.json).
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import Icon from '../components/Icon.astro';
+import Reviews from '../components/Reviews.astro';
+import PhotoGrid from '../components/PhotoGrid.astro';
+import CtaBand from '../components/CtaBand.astro';
+import reviews from '../data/reviews.json';
+import { business } from '../config/site';
+const crumbs = [{ name: 'Home', href: '/' }, { name: 'Reviews', href: '/reviews/' }];
+const hasReviews = (reviews as unknown[]).length > 0;
+---
+<BaseLayout title="Reviews | Bond Cleaning Brisbane Co." description="Bond Cleaning Brisbane Co. reviews: real Google reviews only, plus before and after photos from our Brisbane bond cleans. If we've cleaned for you, we'd love your review." crumbs={crumbs}>
+  <PageHero eyebrow="Real Google reviews only" h1="What Our Customers Say">
+    {!hasReviews && (
+      <>
+        <p class="lead">We're new to Google. If we've cleaned for you, we'd love your review. Honest ones help other Brisbane renters choose, and they help us get better.</p>
+        <div class="btn-row"><a class="btn btn--primary btn--lg" href={business.gbpReviewLink} rel="noopener"><Icon name="message" />Leave a review on Google</a></div>
+      </>
+    )}
+    {hasReviews && <p class="lead">Every review below is from our Google Business Profile, copied word for word, with the reviewer's name as it appears on Google.</p>}
+  </PageHero>
+  <Reviews limit={50} h2="Google reviews of our bond cleans in Brisbane" />
+  <section class="section section--bg" aria-labelledby="promise-h2">
+    <div class="container">
+      <div class="split split--top">
+        <div class="prose">
+          <p class="eyebrow">Our review promise</p>
+          <h2 id="promise-h2">Bond cleaning Brisbane reviews you can trust</h2>
+          <ul>
+            <li>We only show real Google reviews, never testimonials we wrote or collected ourselves.</li>
+            <li>We never offer anything in exchange for a review.</li>
+            <li>We never ask anyone to change or remove a review. If we got something wrong, tell us and we'll make it right.</li>
+            <li>One brand only. No lookalike businesses reviewing each other.</li>
+          </ul>
+        </div>
+        <div class="card card--tint"><h3>Until the reviews come in</h3><p class="mb-0">Judge us on the work. Below are real before and after photos from our bond cleans, and every customer gets the same dated photo report.</p></div>
+      </div>
+    </div>
+  </section>
+  <section class="section" aria-labelledby="proof-h2">
+    <div class="container">
+      <div class="section-head"><p class="eyebrow">Proof of work</p><h2 id="proof-h2">Before and after, from our Brisbane jobs</h2></div>
+      <PhotoGrid />
+    </div>
+  </section>
+  <CtaBand />
+</BaseLayout>

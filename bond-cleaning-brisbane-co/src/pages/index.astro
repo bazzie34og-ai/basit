@@ -1,0 +1,276 @@
+---
+// Intent tier 2 (ready to book) with tier 3 "why us" blocks. Pillar page for "bond cleaning brisbane".
+import { getImage } from 'astro:assets';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Icon from '../components/Icon.astro';
+import QuoteForm from '../components/QuoteForm.astro';
+import BeforeAfter from '../components/BeforeAfter.astro';
+import PromiseChips from '../components/PromiseChips.astro';
+import TrustRow from '../components/TrustRow.astro';
+import IncludedRooms from '../components/IncludedRooms.astro';
+import Pains from '../components/Pains.astro';
+import PhotoGrid from '../components/PhotoGrid.astro';
+import Steps from '../components/Steps.astro';
+import DayTimeline from '../components/DayTimeline.astro';
+import PhotoReport from '../components/PhotoReport.astro';
+import Packages from '../components/Packages.astro';
+import PriceCards from '../components/PriceCards.astro';
+import Guarantee from '../components/Guarantee.astro';
+import AreasGrid from '../components/AreasGrid.astro';
+import NorthsideMap from '../components/NorthsideMap.astro';
+import MythFact from '../components/MythFact.astro';
+import NoNeed from '../components/NoNeed.astro';
+import NeverDo from '../components/NeverDo.astro';
+import AskBox from '../components/AskBox.astro';
+import Reviews from '../components/Reviews.astro';
+import FaqList from '../components/FaqList.astro';
+import CtaBand from '../components/CtaBand.astro';
+import { business, serviceGroups } from '../config/site';
+import { servicesInGroup } from '../lib/data';
+import { serviceShort } from '../content/services/index';
+import { pick } from '../data/faqs';
+import { slider } from '../data/photos';
+import { t, telHref, waHref, flagOn } from '../lib/tpl';
+import { website, faqPage } from '../lib/schema';
+
+const title = 'Bond Cleaning in Brisbane | Bond Cleaning Brisbane Co. | End of Lease & Vacate Cleaning Northside';
+const description = "Fixed-price bond cleaning across Brisbane's Northside. Agent checklist, photo report on the day, free re-clean if anything's flagged. Call [PHONE].";
+const faqs = pick('A1', 'A2', 'B9', 'C16', 'F1', 'F2', 'F3', 'D22').filter((f) => !f.flag || flagOn(f.flag));
+const lcp = await getImage({ src: slider.after, widths: [360, 520, 720, 900], sizes: '(min-width: 1024px) 460px, 92vw', format: 'webp' });
+const preload = { href: lcp.src, srcset: lcp.srcSet.attribute, sizes: '(min-width: 1024px) 460px, 92vw', type: 'image/webp' };
+const groupH2: Record<string, string> = {
+  core: 'Bond and end of lease cleaning services',
+  carpet: 'Carpet and upholstery cleaning for the bond',
+  addon: 'Add-ons agents look for',
+};
+---
+<BaseLayout title={title} description={description} schema={[website(), faqPage(faqs)]} preload={preload}>
+  <!-- 1. Hero -->
+  <section class="hero" aria-labelledby="h1">
+    <div class="container container--wide">
+      <div class="hero__grid">
+        <div>
+          <p class="eyebrow">Brisbane Northside &amp; inner north</p>
+          <h1 id="h1">Bond Cleaning in Brisbane</h1>
+          <div class="lead hero__lead">
+            <p set:html={t(`${business.identity} A fixed-price bond clean, done to your agent's checklist, with a room-by-room photo report the same day. If your property manager flags anything we cleaned, we come back {reclean} and fix it free.`)} />
+            <p class="mb-0">Serving the CBD, New Farm, the Valley and up to Chermside, Aspley and North Lakes.</p>
+          </div>
+          <div class="btn-row btn-row--stack">
+            <a class="btn btn--primary btn--lg" href="#quote">Get my fixed price</a>
+            <a class="btn btn--secondary btn--lg" href={telHref()} data-track="call_click" data-track-location="home-hero"><Icon name="phone" />Call {business.phone}</a>
+          </div>
+          <PromiseChips />
+        </div>
+        <div class="hero__visual">
+          <BeforeAfter eager />
+          <QuoteForm id="qh" anchor location="home-hero" />
+        </div>
+      </div>
+      <TrustRow />
+    </div>
+  </section>
+
+  <!-- 2. Same job, four names -->
+  <section class="section section--bg section--tight" aria-labelledby="names-h2">
+    <div class="container">
+      <div class="split split--top">
+        <div>
+          <p class="eyebrow">Same job, four names</p>
+          <h2 id="names-h2">Bond clean, end of lease clean, vacate clean, exit clean</h2>
+        </div>
+        <div>
+          <p>In Queensland, a bond clean, an <a href="/end-of-lease-cleaning-brisbane/">end of lease clean</a>, a <a href="/vacate-cleaning-brisbane/">vacate or exit clean</a> and a <a href="/move-out-cleaning-brisbane/">move-out clean</a> are all the same job: getting the property back to the condition on your entry report, less fair wear and tear, so your bond comes back in full. Whatever your agent's email calls it, this is the clean they mean, and it's the only thing we do.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. What's included -->
+  <section class="section" aria-labelledby="inc-h2">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">What's included</p>
+        <h2 id="inc-h2">What a bond clean in Brisbane includes</h2>
+        <p>Every room, cleaned to the exit condition report (Form 14a) your property manager will walk through. These are the items agents flag most.</p>
+      </div>
+      <IncludedRooms />
+      <p class="mt-2"><a class="btn btn--secondary" href="/bond-cleaning-checklist/">See the full QLD bond cleaning checklist <Icon name="arrowRight" /></a></p>
+    </div>
+  </section>
+
+  <!-- 4. What goes wrong -->
+  <section class="section section--bg" aria-labelledby="wrong-h2">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">Why we exist</p>
+        <h2 id="wrong-h2">We built this company around what goes wrong with bond cleans</h2>
+        <p>We went through Brisbane renters' reviews and forum posts about bond cleaners. The same five complaints came up again and again. Here is what they said, and what we do instead.</p>
+      </div>
+      <Pains />
+    </div>
+  </section>
+
+  <!-- 5. Before & after -->
+  <section class="section" aria-labelledby="ba-h2">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">Proof</p>
+        <h2 id="ba-h2">Bond Cleaning Brisbane: Before &amp; After Results</h2>
+        <p>Real results from our bond and end of lease cleans across Brisbane's Northside. These are the spots property managers check first at the exit inspection.</p>
+      </div>
+      <PhotoGrid />
+      <p class="mt-2"><a class="text-link" href="/our-work/">See all our before and after bond cleans <Icon name="arrowRight" /></a></p>
+    </div>
+  </section>
+
+  <!-- 6. How it works + day-of timeline -->
+  <Steps bg h2="How booking a bond clean works" intro="From the first photo to the agent's sign-off. No hourly rates, no deposits, no chasing.">
+    <h3 class="mt-3">A typical move-out day</h3>
+    <p class="muted">Removalists leave at 10. We arrive at 11. Photos in your inbox by 5. Inspection at 9 the next morning.</p>
+    <DayTimeline />
+  </Steps>
+
+  <!-- 7. Inspection walk-through -->
+  <section class="section" aria-labelledby="walk-h2">
+    <div class="container">
+      <div class="split split--top">
+        <div>
+          <p class="eyebrow">The final inspection</p>
+          <h2 id="walk-h2">What your property manager checks, room by room</h2>
+          <p class="lead">Picture the inspection. The agent arrives with the entry condition report on a tablet and walks the same route every time. Here's what they do, and what we've already done.</p>
+          <img src="/images/brand/seal.svg" alt="Inspection Ready seal from Bond Cleaning Brisbane Co." width="160" height="160" loading="lazy" style="width:140px;margin-top:2rem" />
+        </div>
+        <ol class="walk">
+          <li><h3>They open the oven</h3><p>Door glass, racks and the back wall. We degrease all three and separate the glass where the model allows.</p></li>
+          <li><h3>They look up at the rangehood</h3><p>A greasy filter is an instant note. We soak and degrease every filter and wipe the canopy.</p></li>
+          <li><h3>They run a finger along the skirting</h3><p>Dust on skirting is the classic claim. We wipe every board in every room by hand.</p></li>
+          <li><h3>They look up at the fan</h3><p>Fan blades hold years of dust. We clean each blade, top and bottom.</p></li>
+          <li><h3>They slide the window and check the track</h3><p>Tracks and sliding doors top most agent lists. We vacuum, scrub and wipe them dry.</p></li>
+          <li><h3>They open the cupboards</h3><p>Including the one under the sink. We clean inside every cupboard, drawer and wardrobe.</p></li>
+          <li><h3>They check the shower grout</h3><p>Soap scum and mould show in the light. We scrub grout and treat surface mould, then photograph it.</p></li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8. Your photo report -->
+  <section class="section section--bg" aria-labelledby="report-h2">
+    <div class="container">
+      <div class="split">
+        <div>
+          <p class="eyebrow">Proof, not promises</p>
+          <h2 id="report-h2">Your photo report, the same day</h2>
+          <p class="lead">Before we lock up, we photograph every room. You get a dated report and the tax invoice by email, ready to forward to your agent.</p>
+          <ul class="ticks">
+            <li>Every room, every item on the Form 14a checklist</li>
+            <li>Finish time logged, so you know the job was completed</li>
+            <li>Carpet receipts and pest certificates included when booked</li>
+            <li>Your evidence if the agent ever disputes the clean</li>
+          </ul>
+        </div>
+        <PhotoReport />
+      </div>
+    </div>
+  </section>
+
+  <!-- 9. Services -->
+  <section class="section" aria-labelledby="svc-h2">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">Services</p>
+        <h2 id="svc-h2">Everything a Brisbane bond clean needs, and nothing else</h2>
+        <p>We only do bond cleans and the add-ons a bond clean needs. No offices, no weekly cleaning. Every crew does exit cleans every day.</p>
+      </div>
+      {serviceGroups.map((g) => (
+        <div class="mt-3">
+          <h3 style="font-size:var(--fs-h3)">{groupH2[g.key]}</h3>
+          <div class="grid grid-4" style="margin-top:1rem">
+            {servicesInGroup(g.key).map((s) => (
+              <article class="card card--flat card--link">
+                <h4 style="font-family:var(--font-head);font-size:1.0625rem;margin:0 0 .35rem;color:var(--navy-800)"><a href={s.url} style="color:inherit;text-decoration:none">{s.name}</a></h4>
+                <p class="muted small mb-0">{serviceShort[s.slug]}</p>
+                <a class="card-link" href={s.url} aria-hidden="true" tabindex="-1"></a>
+              </article>
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <!-- 10. Pricing teaser + packages -->
+  <section class="section section--bg" aria-labelledby="price-h2">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">Price</p>
+        <h2 id="price-h2">Bond cleaning prices in Brisbane, fixed by bedrooms</h2>
+        <p set:html={t('Most Brisbane bond cleans cost between about $250 and $600 before carpets. Ours are fixed by bedrooms and bathrooms, from {price:b1} for a 1-bed unit. No hourly rates, no surprises on the day.')} />
+      </div>
+      <PriceCards only={['b1', 'b2', 'b3']} />
+      <h3 class="mt-3">Three packages, one booking</h3>
+      <p class="muted">Bond clean on its own, with carpets, or with carpets and flea treatment for pet owners.</p>
+      <Packages />
+      <p class="mt-2"><a href="/pricing/">See all bond cleaning prices, add-ons and how long each clean takes</a></p>
+    </div>
+  </section>
+
+  <!-- 11. Guarantee -->
+  <Guarantee />
+
+  <!-- 12. Areas -->
+  <section class="section" aria-labelledby="areas-h2">
+    <div class="container">
+      <div class="split split--top">
+        <div>
+          <p class="eyebrow">Areas</p>
+          <h2 id="areas-h2">Bond cleaning across Brisbane's Northside</h2>
+          <p>We only work Brisbane's Northside and inner north, from the CBD and New Farm up Gympie Road and Sandgate Road to Chermside, Aspley and North Lakes. Staying local means we know the buildings, the lift bookings, the Queenslanders with VJ walls and the agencies that inspect the hardest. Bond cleaning north Brisbane, every week, in these 20 suburbs:</p>
+        </div>
+        <div class="map-card"><NorthsideMap links /></div>
+      </div>
+      <div class="mt-2"><AreasGrid postcodes /></div>
+      <p class="mt-2">Not on the list? <a href="/contact/">Contact us</a>, we may still be able to help nearby. See <a href="/areas/">all areas we clean</a>.</p>
+    </div>
+  </section>
+
+  <!-- 13. QLD rules + no need to be there -->
+  <section class="section section--bg" aria-labelledby="rules-h2">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">QLD rules in plain English</p>
+        <h2 id="rules-h2">Bond cleaning myths and facts in Queensland</h2>
+        <p>New to renting in Australia, or just not sure what's required? Here's what the Residential Tenancies Authority (RTA) actually says.</p>
+      </div>
+      <MythFact />
+      <div class="split split--top mt-3">
+        <NoNeed />
+        <AskBox h3 />
+      </div>
+      <p class="mt-2">More rules and answers in our <a href="/faq/">bond cleaning FAQ</a>.</p>
+    </div>
+  </section>
+
+  <!-- 14. What we never do -->
+  <section class="section" aria-labelledby="never-h2">
+    <div class="container"><NeverDo /></div>
+  </section>
+
+  <!-- 15. Reviews: hidden until real Google reviews are added to src/data/reviews.json -->
+  <Reviews />
+
+  <!-- 16. FAQs -->
+  <section class="section section--bg" aria-labelledby="faq-h2">
+    <div class="container container--narrow">
+      <div class="section-head">
+        <p class="eyebrow">Questions</p>
+        <h2 id="faq-h2">Bond cleaning Brisbane FAQs</h2>
+      </div>
+      <FaqList items={faqs} />
+      <p class="mt-2">See all <a href="/faq/">55 bond cleaning questions, answered</a>.</p>
+    </div>
+  </section>
+
+  <!-- 17. Final CTA -->
+  <CtaBand quoteHref="#quote" />
+</BaseLayout>

@@ -1,0 +1,36 @@
+---
+// Noindex. Journey stages 4 and 7: confirmation and review request.
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import Icon from '../components/Icon.astro';
+import { business } from '../config/site';
+import { telHref, waHref, t } from '../lib/tpl';
+---
+<BaseLayout title="Thank You | Bond Cleaning Brisbane Co." description="Thanks for your quote request." noindex>
+  <PageHero eyebrow="Request received" h1="Thanks. Your fixed price is on its way.">
+    <p class="lead" set:html={t("We'll text you a fixed price within {replyTime} during business hours. If you sent photos, they're with your coordinator now.")} />
+    <div class="btn-row">
+      <a class="btn btn--mint btn--lg" href={telHref()} data-track="call_click" data-track-location="thank-you"><Icon name="phone" />Urgent? Call {business.phone}</a>
+      <a class="btn btn--secondary btn--lg" href={waHref('Hi, I just sent a quote request. Here are some photos:')} target="_blank" rel="noopener" data-track="whatsapp_click" data-track-location="thank-you"><Icon name="whatsapp" />Send more photos</a>
+    </div>
+    <Fragment slot="aside">
+      <div class="card">
+        <h2 style="font-size:var(--fs-h3)">What happens next</h2>
+        <ol class="walk">
+          <li><h3>Your fixed price</h3><p set:html={t('By text or your chosen channel, within {replyTime} during business hours.')} /></li>
+          <li><h3>Written confirmation</h3><p>Date, arrival window, what's included and what isn't.</p></li>
+          <li><h3>The clean and your photo report</h3><p>Emailed the same day with your tax invoice.</p></li>
+          <li><h3>The agent signs off</h3><p>If they send a list, forward it and we come back free.</p></li>
+        </ol>
+      </div>
+    </Fragment>
+  </PageHero>
+  <section class="section section--bg">
+    <div class="container">
+      <div class="grid grid-2">
+        <div class="card"><h2 style="font-size:var(--fs-h3)">While you wait</h2><p>Tick through the <a href="/bond-cleaning-checklist/">QLD bond cleaning checklist</a>, or read <a href="/blog/what-brisbane-property-managers-check-at-a-final-inspection/">what property managers check at a final inspection</a>.</p></div>
+        <div class="card"><h2 style="font-size:var(--fs-h3)">Got your bond back?</h2><p>If we've already cleaned for you, a short Google review helps other renters find a cleaner they can trust.</p><a class="btn btn--secondary" href={business.gbpReviewLink} rel="noopener">Leave a Google review</a></div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

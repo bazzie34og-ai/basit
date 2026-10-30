@@ -1,0 +1,228 @@
+---
+/**
+ * Service page template (playbook order): breadcrumb → H1 → answer first → CTA row →
+ * hero before/after → pain points → what's included → unique sections → process →
+ * before/after → testimonial slot (hidden) → price → 20 areas → FAQs → related → CTA.
+ * Intent tier decides the hero: 1 = call-first, 2 = form above the fold,
+ * 3 = guarantee terms first, 5 = B2B (form and partner details).
+ */
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Icon from '../Icon.astro';
+import QuoteForm from '../QuoteForm.astro';
+import PromiseChips from '../PromiseChips.astro';
+import TrustRow from '../TrustRow.astro';
+import PhotoFigure from '../PhotoFigure.astro';
+import PhotoGrid from '../PhotoGrid.astro';
+import Steps from '../Steps.astro';
+import AreasGrid from '../AreasGrid.astro';
+import FaqList from '../FaqList.astro';
+import CtaBand from '../CtaBand.astro';
+import Reviews from '../Reviews.astro';
+import SectionBlock from './SectionBlock.astro';
+import { business, serviceGroups } from '../../config/site';
+import { photos } from '../../data/photos';
+import { serviceBySlug } from '../../lib/data';
+import { serviceContent } from '../../content/services/index';
+import { t, telHref, waHref, flagOn } from '../../lib/tpl';
+import { serviceSchema, faqPage } from '../../lib/schema';
+import type { ServiceData } from '../../lib/types';
+
+interface Props { svc: ServiceData }
+const { svc } = Astro.props;
+const c = serviceContent[svc.slug];
+const group = serviceGroups.find((g) => g.key === svc.group)!;
+const cap = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
+const heroAlt = c.heroAlt ?? `${cap(svc.primary.replace(/ brisbane$/, ' Brisbane'))}: ${photos[c.heroPhoto].alt}`;
+const faqs = c.faqs.filter((f) => !f.flag || flagOn(f.flag));
+const related = c.related.map(serviceBySlug);
+const morePhotos = c.photos.filter((p) => p !== c.heroPhoto);
+const crumbs = [
+  { name: 'Home', href: '/' },
+  { name: 'Services', href: '/services/' },
+  { name: svc.name, href: svc.url },
+];
+const schema = [serviceSchema({ name: svc.name, serviceType: svc.gbp, url: svc.url, description: c.intro }), faqPage(faqs)];
+const waMsg = c.tier === 1 ? "Hi, I need an urgent bond clean. Here are photos and the agent's list:" : undefined;
+---
+<BaseLayout title={svc.title} description={svc.meta} crumbs={crumbs} schema={schema}>
+  <Fragment set:html={`<!-- Intent tier ${c.tier} · ${svc.primary} -->`} />
+  <section class="page-hero">
+    <div class="container">
+      <div class="page-hero__grid">
+        <div>
+          <p class="eyebrow">{group.name} · Brisbane Northside</p>
+          <h1>{svc.h1}</h1>
+          {c.tier === 1 && (
+            <div class="urgent-bar on-navy">
+              <p class="mb-0" style="color:#fff;font-weight:600">Call now. We answer {business.hours}.</p>
+              <a class="big-phone" href={telHref()} data-track="call_click" data-track-location="urgent-hero"><Icon name="phone" />{business.phone}</a>
+              <div class="btn-row" style="margin:18px 0 0">
+                <a class="btn btn--mint btn--lg" href={telHref()} data-track="call_click" data-track-location="urgent-hero-btn"><Icon name="phone" />Call now</a>
+                <a class="btn btn--outline-light btn--lg" href={waHref(waMsg)} target="_blank" rel="noopener" data-track="whatsapp_click" data-track-location="urgent-hero"><Icon name="whatsapp" />WhatsApp us the agent's list</a>
+              </div>
+            </div>
+          )}
+          <div class="lead hero__lead" set:html={t(c.intro)} />
+          {c.tier !== 1 && (
+            <div class="btn-row btn-row--stack">
+              <a class="btn btn--primary btn--lg" href="#quote">Get my fixed price</a>
+              <a class="btn btn--secondary btn--lg" href={telHref()} data-track="call_click" data-track-location="service-hero"><Icon name="phone" />Call {business.phone}</a>
+              <a class="btn btn--secondary btn--lg" href={waHref()} target="_blank" rel="noopener" data-track="whatsapp_click" data-track-location="service-hero"><Icon name="whatsapp" />WhatsApp</a>
+            </div>
+          )}
+          <PromiseChips />
+          <TrustRow />
+        </div>
+        <div>
+          {c.tier === 3 ? (
+            <div class="card" style="text-align:center">
+              <img src="/images/brand/seal.svg" alt="Inspection Ready seal from Bond Cleaning Brisbane Co." width="180" height="180" style="margin:0 auto 1rem;width:180px" />
+              <p class="quote-card__title" style="margin-bottom:.5rem">The short version</p>
+              <ul class="ticks" style="text-align:left">
+                <li>Free re-clean of anything we cleaned that the agent flags</li>
+                <li set:html={t('We come back {reclean} of your list')} />
+                <li>On every bond clean, nothing to buy to unlock it</li>
+                <li>Written on your quote and invoice</li>
+              </ul>
+              <a class="btn btn--primary btn--block" href="#quote">Get my fixed price</a>
+            </div>
+          ) : (
+            <QuoteForm id="qt" anchor location={`${svc.slug}-top`} title={c.tier === 1 ? 'Price it from photos' : 'Get your fixed price'} />
+          )}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--bg" aria-labelledby="problem-h2">
+    <div class="container">
+      <div class="split">
+        <PhotoFigure k={c.heroPhoto} eager alt={heroAlt} sizes="(min-width: 960px) 560px, 92vw" />
+        <div>
+          <p class="eyebrow">Sound familiar?</p>
+          <h2 id="problem-h2">{c.problem.h2}</h2>
+          {c.problem.quotes.map((q) => <blockquote class="pain" style="margin:0 0 12px;padding:18px 22px"><p class="mb-0" style="font-family:var(--font-head);color:var(--navy-800);font-size:1.0625rem;line-height:1.45">{q}</p></blockquote>)}
+          {c.problem.paras.map((p) => <p set:html={t(p)} />)}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="inc-h2">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">What's included</p>
+        <h2 id="inc-h2">{c.included.h2}</h2>
+        {c.included.intro && <p>{c.included.intro}</p>}
+      </div>
+      <div class="grid grid-3">
+        {c.included.groups.map((g, i) => (
+          <div class="card card--flat reveal" style={`--i:${i % 3}`}>
+            <h3>{g.h3}</h3>
+            <ul class="ticks mb-0">{g.items.map((it) => <li set:html={t(it)} />)}</ul>
+          </div>
+        ))}
+      </div>
+      <p class="mt-2">Want every item? See the full <a href="/bond-cleaning-checklist/">QLD bond cleaning checklist</a> we work from.</p>
+    </div>
+  </section>
+
+  {c.sections.map((s, i) => <SectionBlock s={s} i={i} />)}
+
+  {c.tier === 3 && (
+    <section class="section section--bg quote-section" aria-label="Get a quote"><div class="container"><QuoteForm id="qm" anchor location={`${svc.slug}-mid`} /></div></section>
+  )}
+
+  <Steps intro="The same four steps on every job, whether it's a studio in the city or a house in North Lakes." />
+
+  {morePhotos.length > 0 && (
+    <section class="section section--bg" aria-labelledby="ba-h2">
+      <div class="container">
+        <div class="section-head">
+          <p class="eyebrow">Before and after</p>
+          <h2 id="ba-h2">Real results from Brisbane bond cleans</h2>
+          <p>Photos from our own jobs. These are the spots property managers check first.</p>
+        </div>
+        <PhotoGrid keys={morePhotos} cols={morePhotos.length === 1 ? 2 : morePhotos.length === 2 ? 2 : 3} />
+        <p class="mt-2"><a class="text-link" href="/our-work/">See more of our work <Icon name="arrowRight" /></a></p>
+      </div>
+    </section>
+  )}
+
+  <Reviews />
+
+  <section class="section" aria-labelledby="price-h2">
+    <div class="container">
+      <div class="split split--top">
+        <div class="prose">
+          <p class="eyebrow">Price</p>
+          <h2 id="price-h2">{c.price.h2}</h2>
+          <div set:html={t(c.price.html)} />
+          <p><a href="/pricing/">See all bond cleaning prices and add-ons</a></p>
+        </div>
+        <div class="card card--tint">
+          <h3>How your fixed price works</h3>
+          <ul class="ticks mb-0">
+            <li>Set from your photos, before we arrive</li>
+            <li>Written down with what's included and what isn't</li>
+            <li>Any change agreed with you in writing before work starts</li>
+            <li set:html={t('{?payAfter}[Pay after the clean], once you\'ve seen the photos{/payAfter}{!payAfter}Payment terms on your quote{/payAfter}')} />
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--bg" aria-labelledby="areas-h2">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">Areas</p>
+        <h2 id="areas-h2">{svc.name} across Brisbane's Northside</h2>
+        <p>{c.areasIntro}</p>
+      </div>
+      <AreasGrid />
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="faq-h2">
+    <div class="container container--narrow">
+      <div class="section-head">
+        <p class="eyebrow">Questions</p>
+        <h2 id="faq-h2">{c.faqH2 ?? `${svc.name}: your questions answered`}</h2>
+      </div>
+      <FaqList items={faqs} />
+      <p class="mt-2">More answers on our <a href="/faq/">bond cleaning FAQ</a>, with the Queensland rules explained.</p>
+    </div>
+  </section>
+
+  <section class="section section--bg" aria-labelledby="rel-h2">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">Related</p>
+        <h2 id="rel-h2">Often booked together</h2>
+        <p>Part of our <a href="/">bond cleaning Brisbane</a> service. These are the add-ons and services people book alongside this one.</p>
+      </div>
+      <div class="grid grid-4">
+        {related.map((r) => (
+          <article class="card card--link">
+            <h3 style="font-size:1.125rem">{r.name}</h3>
+            <p class="muted small">{serviceContent[r.slug]?.short}</p>
+            <a class="card__more" href={r.url}>{r.name.toLowerCase().includes('guarantee') ? 'Our bond back guarantee' : r.name}</a>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section quote-section" aria-labelledby="bottom-quote-h2">
+    <div class="container">
+      <div class="section-head section-head--center">
+        <p class="eyebrow">Ready when you are</p>
+        <h2 id="bottom-quote-h2">Get your fixed price in 60 seconds</h2>
+      </div>
+      <QuoteForm id="qb" location={`${svc.slug}-bottom`} />
+    </div>
+  </section>
+
+  <CtaBand h2={c.cta.h2} p={c.cta.p} quoteHref="#quote" />
+</BaseLayout>

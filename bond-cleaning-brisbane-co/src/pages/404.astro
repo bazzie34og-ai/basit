@@ -1,0 +1,18 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import Icon from '../components/Icon.astro';
+import { business } from '../config/site';
+import { telHref } from '../lib/tpl';
+const top = [
+  ['/end-of-lease-cleaning-brisbane/', 'End of lease cleaning'], ['/carpet-steam-cleaning-brisbane/', 'Carpet steam cleaning'], ['/pricing/', 'Bond cleaning prices'],
+  ['/bond-cleaning-checklist/', 'Bond cleaning checklist'], ['/bond-back-guarantee/', 'Our bond back guarantee'], ['/urgent-bond-cleaning-brisbane/', 'Urgent bond cleaning'],
+];
+---
+<BaseLayout title="Page Not Found | Bond Cleaning Brisbane Co." description="That page doesn't exist. Find bond cleaning services and areas, or call us." noindex>
+  <PageHero eyebrow="404" h1="This page has moved out">
+    <p class="lead">Unlike your bond, this one isn't coming back. Try one of these, or call us and we'll help directly.</p>
+    <div class="btn-row"><a class="btn btn--primary btn--lg" href="/">Go to the homepage</a><a class="btn btn--secondary btn--lg" href={telHref()}><Icon name="phone" />Call {business.phone}</a></div>
+    <ul class="area-chips mt-2">{top.map(([h, l]) => <li><a href={h}>{l}</a></li>)}<li><a href="/areas/">Areas we clean</a></li></ul>
+  </PageHero>
+</BaseLayout>

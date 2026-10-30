@@ -1,0 +1,26 @@
+---
+// Hidden, noindex design system reference.
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import PromiseChips from '../components/PromiseChips.astro';
+import FaqList from '../components/FaqList.astro';
+import PhotoReport from '../components/PhotoReport.astro';
+import { pick } from '../data/faqs';
+const swatches = [['--navy-900', '#0B1F31'], ['--navy-800', '#12304A'], ['--navy-600', '#24506F'], ['--navy-100', '#E7EEF4'], ['--mint-500', '#3DDC97'], ['--mint-700', '#0F7A52'], ['--mint-50', '#E9FBF3'], ['--sand-50', '#F7F4EE'], ['--bg', '#F4F7F9'], ['--ink', '#1B2733'], ['--muted', '#5B6B7A'], ['--line', '#DCE3EA'], ['--link', '#1A56DB'], ['--danger', '#C2410C']];
+---
+<BaseLayout title="Style Guide | Bond Cleaning Brisbane Co." description="Design system reference." noindex>
+  <PageHero eyebrow="Design system" h1="Style guide"><p class="lead">Tokens and components used across the site.</p></PageHero>
+  <section class="section section--bg"><div class="container">
+    <h2>Colour</h2>
+    <div class="grid grid-4">{swatches.map(([n, h]) => <div><div class="styleguide-swatch" style={`background:${h}`}></div><p class="small"><strong>{n}</strong><br />{h}</p></div>)}</div>
+    <h2 class="mt-3">Type</h2>
+    <h1>Heading 1 Poppins 700</h1><h2>Heading 2</h2><h3>Heading 3</h3><p class="lead">Lead paragraph Inter 400.</p><p>Body copy with an <a href="/">in-content link</a>.</p>
+    <p class="eyebrow">Eyebrow label</p>
+    <h2 class="mt-3">Buttons and chips</h2>
+    <div class="btn-row"><a class="btn btn--primary" href="#">Primary</a><a class="btn btn--secondary" href="#">Secondary</a><a class="btn btn--mint" href="#">Mint call</a></div>
+    <div class="mt-2"><PromiseChips /></div>
+    <div class="mt-2"><span class="badge">Most booked</span> <span class="badge badge--soft">Often missed</span></div>
+    <h2 class="mt-3">FAQ and report</h2>
+    <div class="split"><FaqList items={pick('A1', 'A2')} /><PhotoReport /></div>
+  </div></section>
+</BaseLayout>

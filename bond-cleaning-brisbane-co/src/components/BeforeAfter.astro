@@ -14,6 +14,8 @@ const sizes = '(min-width: 1024px) 460px, 92vw';
     <Image class="ba__after" src={slider.after} alt="After: the same oven door glass, clean and clear after our bond clean" widths={widths} sizes={sizes} format="webp" loading={eager ? 'eager' : 'lazy'} decoding="async" />
     <input class="ba__range" type="range" min="0" max="100" value="50" step="1" aria-label="Drag to compare the oven door before and after the bond clean" />
     <div class="ba__handle" aria-hidden="true"><span class="ba__knob"><Icon name="arrowsH" /></span></div>
+    <span class="ba__label ba__label--before" aria-hidden="true">Before</span>
+    <span class="ba__label ba__label--after" aria-hidden="true">After</span>
     <span class="ba__hint" data-ba-hint aria-hidden="true">Drag to compare</span>
   </div>
   {caption && <figcaption class="ba-caption">{caption}</figcaption>}

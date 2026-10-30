@@ -1,0 +1,49 @@
+---
+// Intent tier 2. Hub. Primary: bond cleaning services brisbane.
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import Icon from '../components/Icon.astro';
+import CtaBand from '../components/CtaBand.astro';
+import PromiseChips from '../components/PromiseChips.astro';
+import { serviceGroups } from '../config/site';
+import { servicesInGroup } from '../lib/data';
+import { serviceContent } from '../content/services/index';
+const crumbs = [{ name: 'Home', href: '/' }, { name: 'Services', href: '/services/' }];
+const groupH2: Record<string, string> = {
+  core: 'Bond and end of lease cleaning services',
+  carpet: 'Carpet and upholstery cleaning',
+  addon: 'Add-ons for the exit report',
+};
+const groupP: Record<string, string> = {
+  core: "The full clean before you hand back the keys, whatever your agent calls it, plus the rescue and guarantee services that protect your bond.",
+  carpet: 'For leases that ask for professional carpet cleaning, pet clauses and furnished rentals, each with the receipt your agent wants.',
+  addon: 'The extras that turn up on exit condition reports: ovens, tracks, walls and outdoor areas.',
+};
+---
+<BaseLayout title="Bond & End of Lease Cleaning Services | Bond Cleaning Brisbane Co." description="Every bond cleaning service we offer in Brisbane: end of lease, vacate and exit, move-out and move-in, houses, apartments, carpets, ovens, windows and add-ons. Fixed prices, photo reports." crumbs={crumbs}>
+  <PageHero eyebrow="Bond cleans only" h1="Our Bond Cleaning Services">
+    <p class="lead">Our bond cleaning services in Brisbane cover one job done properly: getting your rental back to its entry condition so your bond comes back. A bond clean, end of lease clean, vacate clean and exit clean are all the same thing. Every service below comes with a fixed price, a photo report and the re-clean promise.</p>
+    <PromiseChips />
+  </PageHero>
+  {serviceGroups.map((g, gi) => (
+    <section class:list={['section', gi % 2 === 0 && 'section--bg']} aria-labelledby={`g-${g.key}`}>
+      <div class="container">
+        <div class="section-head"><p class="eyebrow">{g.name}</p><h2 id={`g-${g.key}`}>{groupH2[g.key]}</h2><p>{groupP[g.key]}</p></div>
+        <div class="grid grid-3">
+          {servicesInGroup(g.key).map((s) => {
+            const c = serviceContent[s.slug];
+            return (
+              <article class="card card--link">
+                <div class="icon-wrap"><Icon name={c.icon} /></div>
+                <h3 style="font-size:1.1875rem">{s.name}</h3>
+                <p class="muted mb-0">{c.short}.</p>
+                <a class="card__more" href={s.url}>{s.name} in Brisbane <Icon name="arrowRight" /></a>
+              </article>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+  ))}
+  <CtaBand />
+</BaseLayout>

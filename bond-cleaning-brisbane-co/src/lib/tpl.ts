@@ -55,6 +55,9 @@ const vars: Record<string, () => string> = {
   carpet: carpetText,
   cancel: () => (flags.freeCancellationHours ? b('cancellation', `up to ${flags.freeCancellationHours} hours before`) : ''),
   name: () => business.name,
+  turnaround: () => b('turnaround', '24–48 hours'),
+  dryCarpet: () => b('dryTimes', '3–6 hours'),
+  dryMattress: () => b('dryTimes', '4–6 hours'),
 };
 
 export function t(input: string | undefined | null): string {

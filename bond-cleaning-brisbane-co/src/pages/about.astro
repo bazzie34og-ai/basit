@@ -1,0 +1,73 @@
+---
+// Intent tier 3 (evaluating). Primary: bond cleaning company brisbane.
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import Icon from '../components/Icon.astro';
+import NeverDo from '../components/NeverDo.astro';
+import NorthsideMap from '../components/NorthsideMap.astro';
+import CtaBand from '../components/CtaBand.astro';
+import { business, flags } from '../config/site';
+import { t, b, insuranceText } from '../lib/tpl';
+import { aboutPage } from '../lib/schema';
+const crumbs = [{ name: 'Home', href: '/' }, { name: 'About', href: '/about/' }];
+/** Team block stays hidden until real names and a real photo are supplied. */
+const team: { name: string; role: string; photo: string }[] = [];
+---
+<BaseLayout title="About Us | Bond Cleaning Brisbane Co." description="Bond Cleaning Brisbane Co. is a bond cleaning company in Brisbane that only does exit cleans, only on the Northside and inner north. How we work, insurance, police checks and our standards." crumbs={crumbs} schema={[aboutPage()]}>
+  <PageHero eyebrow="Built for one day: your final inspection" h1="About Bond Cleaning Brisbane Co.">
+    <p class="lead">{business.identity} We're a bond cleaning company in Brisbane that does one thing: the clean that decides whether you get your bond back.</p>
+    <Fragment slot="aside"><img src="/images/brand/logo-stacked.svg" alt="Bond Cleaning Brisbane Co. logo" width="360" height="216" style="width:min(320px,80%);margin:24px auto 0" /></Fragment>
+  </PageHero>
+
+  <section class="section section--sand" aria-labelledby="story-h2">
+    <div class="container prose">
+      <p class="eyebrow">Our story</p>
+      <h2 id="story-h2">Built for one day: your final inspection</h2>
+      <p>Most cleaning companies do a bit of everything. We do one thing. Bond Cleaning Brisbane Co. was set up by [FOUNDER / TEAM NAME] after seeing the same thing again and again: tenants who'd paid for a "bond clean" and still lost part of their bond to dusty fan blades, greasy rangehood filters and grime in the window tracks.</p>
+      <p>So we built the company around the exit inspection itself. We work from the same checklist your property manager uses. We photograph every room when we finish, so you have proof. We give you a fixed price before we arrive, so there's no argument on the day. And if the agent finds something we missed, we come back and fix it, free, <span set:html={t('{reclean}')} />.</p>
+      <p>We only work Brisbane's Northside and inner north, from the CBD and New Farm up to Chermside, Aspley and North Lakes. Staying local means we know the buildings, the lift bookings, the Queenslanders with VJ walls, and the agencies that inspect the hardest.</p>
+    </div>
+  </section>
+
+  {team.length > 0 && (
+    <section class="section" aria-labelledby="team-h2">
+      <div class="container">
+        <div class="section-head"><p class="eyebrow">The team</p><h2 id="team-h2">The people who clean your rental</h2></div>
+        <div class="grid grid-3">{team.map((m) => <figure class="card"><img src={m.photo} alt={m.name} width="600" height="600" loading="lazy" /><figcaption><strong>{m.name}</strong><br />{m.role}</figcaption></figure>)}</div>
+      </div>
+    </section>
+  )}
+
+  <section class="section" aria-labelledby="how-h2">
+    <div class="container">
+      <div class="section-head"><p class="eyebrow">How we work</p><h2 id="how-h2">One brand, one team, one standard</h2></div>
+      <div class="grid grid-3">
+        <div class="card card--flat"><div class="icon-wrap"><Icon name="shield" /></div><h3>Insured</h3><p class="mb-0">{insuranceText()}. If something is damaged, we tell you straight away and make it right. [Certificate of currency shown here once confirmed.]</p></div>
+        <div class="card card--flat"><div class="icon-wrap"><Icon name="checkCircle" /></div><h3>{flags.policeChecked ? b('policeChecked', 'Police-checked cleaners') : 'Trained cleaners'}</h3><p class="mb-0" set:html={t('Every cleaner is trained on our bond checklist before working on a job{?ownCrews}. [Our own crews do every clean]{/ownCrews}. [Add true details of how we hire and train.]')} /></div>
+        <div class="card card--flat"><div class="icon-wrap"><Icon name="users" /></div><h3>One coordinator</h3><p class="mb-0">You deal with one named person from quote to sign-off. One business email ({business.email}), one phone number, one brand. We don't run lookalike sites under other names.</p></div>
+        <div class="card card--flat"><div class="icon-wrap"><Icon name="lock" /></div><h3>Lock-up checklist</h3><p class="mb-0">Windows shut, taps off, lights off, doors locked, keys back where you asked. It's the last page of every photo report.</p></div>
+        <div class="card card--flat"><div class="icon-wrap"><Icon name="camera" /></div><h3>Proof on every job</h3><p class="mb-0">A dated photo report and tax invoice, emailed the same day.</p></div>
+        <div class="card card--flat"><div class="icon-wrap"><Icon name="message" /></div><h3>Respectful follow-up</h3><p class="mb-0">One follow-up after a quote, on the channel you choose. Real Google reviews only, and we never ask anyone to change one.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--bg" aria-labelledby="never-h2">
+    <div class="container"><NeverDo /></div>
+  </section>
+
+  <section class="section" aria-labelledby="north-h2">
+    <div class="container">
+      <div class="split">
+        <div class="prose">
+          <p class="eyebrow">Why Northside only</p>
+          <h2 id="north-h2">Local bond cleaners, on purpose</h2>
+          <p>We could take jobs across all of Brisbane. We don't, because driving from Springfield to Sandgate isn't how you do a good bond clean. Keeping to the Northside and inner north means shorter travel, reliable start times, backup crews nearby if someone is sick, and a team that knows which CBD towers need a dock booking and which Wavell Heights highsets have a downstairs laundry.</p>
+          <p>See <a href="/areas/">the 20 suburbs we clean</a>.</p>
+        </div>
+        <div class="map-card"><NorthsideMap /></div>
+      </div>
+    </div>
+  </section>
+  <CtaBand />
+</BaseLayout>

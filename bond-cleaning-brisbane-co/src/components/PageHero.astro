@@ -1,0 +1,17 @@
+---
+interface Props { eyebrow: string; h1: string; narrow?: boolean }
+const { eyebrow, h1, narrow = false } = Astro.props;
+const hasAside = Astro.slots.has('aside');
+---
+<section class="page-hero">
+  <div class="container">
+    <div class:list={['page-hero__grid', !hasAside && 'page-hero__grid--single']}>
+      <div class:list={[narrow && 'prose']}>
+        <p class="eyebrow">{eyebrow}</p>
+        <h1>{h1}</h1>
+        <slot />
+      </div>
+      {hasAside && <div><slot name="aside" /></div>}
+    </div>
+  </div>
+</section>

@@ -1,0 +1,50 @@
+---
+// Intent tier 2 (ready to book). Primary: bond cleaning quote brisbane.
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import Icon from '../components/Icon.astro';
+import QuoteForm from '../components/QuoteForm.astro';
+import AreasGrid from '../components/AreasGrid.astro';
+import AskBox from '../components/AskBox.astro';
+import { business } from '../config/site';
+import { telHref, waHref, mailHref, t } from '../lib/tpl';
+import { contactPage } from '../lib/schema';
+const crumbs = [{ name: 'Home', href: '/' }, { name: 'Contact', href: '/contact/' }];
+---
+<BaseLayout title="Contact & Free Quote | Bond Cleaning Brisbane Co." description="Get a fixed-price bond cleaning quote in Brisbane. Four taps, then your details, and we text your price within 15 minutes during business hours. Phone, WhatsApp or email." crumbs={crumbs} schema={[contactPage()]}>
+  <PageHero eyebrow="Fixed price in writing" h1="Get a Fixed-Price Bond Cleaning Quote">
+    <p class="lead" set:html={t('Get your bond cleaning quote in Brisbane in under a minute. Tell us the suburb and size, add a few photos, and we\'ll text a fixed price within {replyTime} during business hours. Looking for a bond cleaner near you? If you\'re on the Northside or in the inner north, we\'re local.')} />
+    <ul class="footer-nap" style="color:var(--ink)">
+      <li><Icon name="phone" /><a href={telHref()} data-track="call_click" data-track-location="contact">{business.phone}</a></li>
+      <li><Icon name="whatsapp" /><a href={waHref()} target="_blank" rel="noopener" data-track="whatsapp_click" data-track-location="contact">WhatsApp {business.whatsapp}</a></li>
+      <li><Icon name="mail" /><a href={mailHref()}>{business.email}</a></li>
+      <li><Icon name="clock" /><span>{business.hours}</span></li>
+      <li><Icon name="pin" /><span>{business.serviceArea}</span></li>
+    </ul>
+    <div class="notice mt-2"><p class="mb-0"><strong>End of month books out.</strong> Most leases end in the last few days of the month. Lock your date as soon as your removalist is booked.</p></div>
+    <Fragment slot="aside"><QuoteForm id="qc" anchor location="contact" /></Fragment>
+  </PageHero>
+  <section class="section section--bg" aria-labelledby="next-h2">
+    <div class="container">
+      <div class="split split--top">
+        <div>
+          <p class="eyebrow">What happens next</p>
+          <h2 id="next-h2">After you send the form</h2>
+          <ol class="walk">
+            <li><h3>Instant confirmation</h3><p>You see a confirmation page straight away, with our number in case it's urgent.</p></li>
+            <li><h3 set:html={t('A fixed price within {replyTime}')} /><p>During business hours, by text or your chosen channel. If we need one more photo, we'll ask.</p></li>
+            <li><h3>One named coordinator</h3><p>The same person books your date, answers questions and handles the re-clean if the agent sends a list.</p></li>
+            <li><h3>Written confirmation</h3><p>Your date, arrival window, price and what's included, in writing. Nothing to chase.</p></li>
+          </ol>
+        </div>
+        <AskBox h3 />
+      </div>
+    </div>
+  </section>
+  <section class="section" aria-labelledby="areas-h2">
+    <div class="container">
+      <div class="section-head"><p class="eyebrow">Where we clean</p><h2 id="areas-h2">The 20 suburbs we serve</h2><p>No street address: we come to you. We clean Brisbane's Northside and inner north only.</p></div>
+      <AreasGrid postcodes />
+    </div>
+  </section>
+</BaseLayout>

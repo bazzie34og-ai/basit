@@ -1,0 +1,46 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import { flags } from '../config/site';
+import { t, b } from '../lib/tpl';
+const crumbs = [{ name: 'Home', href: '/' }, { name: 'Terms', href: '/terms/' }];
+---
+<BaseLayout title="Terms and Guarantee Conditions | Bond Cleaning Brisbane Co." description="Plain-English terms for bond cleans by Bond Cleaning Brisbane Co.: fixed prices, payment, cancellations, access, the re-clean guarantee and your Australian Consumer Law rights." crumbs={crumbs}>
+  <PageHero eyebrow="Plain English" h1="Terms and Guarantee Conditions" narrow>
+    <p class="lead">The short version: your price is fixed in writing, we clean to the agent's checklist, and if the agent flags anything we cleaned, we come back and fix it free.</p>
+  </PageHero>
+  <section class="section section--bg">
+    <div class="container prose">
+      <h2>1. Your quote and price</h2>
+      <p>We quote a fixed price from your photos and details, in writing, before we book you in. The quote lists what's included and what isn't. If the property differs from the photos (for example an area you didn't mention, or much heavier build-up), we'll show you and agree any change in writing before we start that work. You can say no. We never change the price mid-clean.</p>
+      <h2>2. Payment</h2>
+      <p set:html={t(flags.payAfter ? `${b('payAfter', "You pay after the clean, once you've seen the photo report")}. We don't take deposits.` : 'Payment terms are set out on your quote.')} />
+      <h2>3. Cancelling or changing a booking</h2>
+      <p set:html={t('{?freeCancellationHours}Cancellation is free {cancel} the booking. [Confirm policy for later cancellations.]{/freeCancellationHours} If removalists run late, tell us and we\'ll move your start time where we can.')} />
+      <h2>4. Access and what we need</h2>
+      <ul>
+        <li>Power and water connected on the day.</li>
+        <li>The property empty for a full bond clean (furnished cleans are quoted separately).</li>
+        <li>Keys, a lockbox code or agent access arranged, plus gate codes and parking details.</li>
+        <li>Apartment lift and dock bookings: we arrange them if you give us the building manager's contact. Building fees or lift bonds are the tenant's.</li>
+      </ul>
+      <h2>5. The bond back guarantee (re-clean)</h2>
+      <p set:html={t("If your property manager flags anything we cleaned, send us their list. We come back {reclean} of receiving it and fix it free, and repeat until the agent signs off, as long as the inspection is within {guaranteeDays} of the clean.")} />
+      <ul>
+        <li>It comes with every bond clean. You never need to buy an add-on to activate it.</li>
+        <li>It covers the areas and add-ons on your quote.</li>
+        <li>It doesn't cover damage, repairs, fair wear and tear, marks that need repainting, mould caused by leaks or building faults, areas not booked, or changes made after we left (such as items moved back in).</li>
+        <li>We need access to re-clean. If the agent books their own cleaner without telling us, we can't fix the items, so please send us the list first.</li>
+        <li>No cleaner can guarantee your full bond back, because the bond also covers rent and damage. We guarantee the clean, the photos and the re-clean.</li>
+      </ul>
+      <h2>6. Damage and security</h2>
+      <p set:html={t("We use surface-safe products and a lock-up checklist, and we're {insurance}. If something is damaged during a clean, we tell you straight away and fix it or arrange repair.")} />
+      <h2>7. Exclusions</h2>
+      <p>Repairs, painting, rubbish removal (unless booked), building-related mould, and windows or areas that can't be reached safely. Pest control is carried out by a licensed partner, not by us.</p>
+      <h2>8. Australian Consumer Law</h2>
+      <p>Our guarantee is in addition to your rights under the Australian Consumer Law, not instead of them. Our services come with guarantees that cannot be excluded: they must be provided with due care and skill and be fit for purpose. If they aren't, you're entitled to have the problem fixed or, in some cases, a refund.</p>
+      <h2>9. Contact</h2>
+      <p>Questions about these terms? See the <a href="/contact/">contact page</a>, or read our <a href="/bond-back-guarantee/">bond back guarantee</a> in full.</p>
+    </div>
+  </section>
+</BaseLayout>

@@ -1,0 +1,15 @@
+---
+/** One dynamic route for the 22 service pages and the 20 suburb pages (all at the site root). */
+import ServicePage from '../components/templates/ServicePage.astro';
+import AreaPage from '../components/templates/AreaPage.astro';
+import { services, areas } from '../lib/data';
+
+export function getStaticPaths() {
+  return [
+    ...services.map((svc) => ({ params: { slug: svc.url.replace(/\//g, '') }, props: { kind: 'service', svc } })),
+    ...areas.map((area) => ({ params: { slug: `bond-cleaning-${area.slug}` }, props: { kind: 'area', area } })),
+  ];
+}
+const { kind, svc, area } = Astro.props as any;
+---
+{kind === 'service' ? <ServicePage svc={svc} /> : <AreaPage area={area} />}
