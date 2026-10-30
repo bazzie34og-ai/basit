@@ -18,3 +18,7 @@ By default, the form opens the visitor's email app with the message already fill
 
 ## Deploy
 Upload `index.html` to any static host, such as GitHub Pages, Netlify, Vercel or Cloudflare Pages.
+
+## Bond Cleaning Brisbane Co.
+
+A separate Astro site lives in `bond-cleaning-brisbane-co/` (see its README). The root `netlify.toml` points Netlify at that folder.

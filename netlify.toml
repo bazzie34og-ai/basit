@@ -1,0 +1,4 @@
+# This repo holds more than one site. The Bond Cleaning Brisbane Co. site builds from its own folder;
+# its full config (headers, noindex rules) is in bond-cleaning-brisbane-co/netlify.toml.
+[build]
+  base = "bond-cleaning-brisbane-co"
