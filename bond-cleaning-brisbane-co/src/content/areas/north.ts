@@ -20,7 +20,7 @@ export const north: AreaContent[] = [
     },
     checks: {
       h3: 'What Kedron agents check closely',
-      html: '<p>The Kedron list, from family homes and townhouses:</p>',
+      html: '<p>What vacate cleaning in Kedron usually covers, from family homes and townhouses:</p>',
       items: ['Family-home kitchens and pantries', 'Multiple bathrooms', 'Outdoor patios', 'Garages', 'Townhouse stairs and under-stair cupboards'],
     },
     extra: {
@@ -62,11 +62,11 @@ export const north: AreaContent[] = [
     },
     access: {
       h3: 'Visitor parking near Westfield',
-      html: "<p>Unit complexes near Westfield often have limited visitor parking, so tell us if there's a visitor space. If there isn't, we'll plan street parking a short walk away and bring the equipment in on a trolley.</p>",
+      html: "<p>Unit complexes near Westfield often have limited visitor parking, so tell us if there's a visitor space. If there isn't, we'll plan street parking a short walk away and bring the equipment in on a trolley. Vacate cleaning in Chermside units usually starts mid-morning, once commuters have left the visitor bays.</p>",
     },
     checks: {
       h3: 'What Chermside agents check closely',
-      html: '<p>Our Chermside notes:</p>',
+      html: '<p>Notes from our bond cleaners in Chermside:</p>',
       items: ['Townhouse stairs and balustrades', 'Small courtyards', 'Split-system air-con filters', 'Kitchen cupboards and pantries', 'Bathroom exhaust fans'],
     },
     extra: {
@@ -108,11 +108,11 @@ export const north: AreaContent[] = [
     },
     access: {
       h3: 'Driveway parking',
-      html: '<p>Most homes have driveway parking, which makes it easy for us to bring the carpet machine. If the driveway is full of the removalist\'s truck, we work around it.</p>',
+      html: '<p>Most homes have driveway parking, which makes it easy for us to bring the carpet machine. If the driveway is full of the removalist\'s truck, we work around it. Vacate cleaning in Aspley for a 4-bed usually runs from mid-morning to late afternoon.</p>',
     },
     checks: {
       h3: 'What Aspley agents check',
-      html: '<p>The Aspley exit list:</p>',
+      html: '<p>The list our bond cleaners in Aspley see on most exits:</p>',
       items: ['Bigger kitchens and pantries', 'Garages', 'Sliding doors to the patio', 'Carpeted bedrooms', 'Ceiling fans and light fittings'],
     },
     extra: {
@@ -159,7 +159,7 @@ export const north: AreaContent[] = [
     },
     checks: {
       h3: 'What Carseldine agents check',
-      html: '<p>Typical estate-home items:</p>',
+      html: '<p>Items our bond cleaners in Carseldine see on estate-home exit reports:</p>',
       items: ['Modern kitchens and stone benchtops', 'Multiple bathrooms and ensuites', 'Ducted air-con vents and returns', 'Garages', 'Alfresco areas'],
     },
     extra: {
@@ -201,7 +201,7 @@ export const north: AreaContent[] = [
     },
     access: {
       h3: 'Parking',
-      html: '<p>Driveway parking at most homes. If the removalist is still loading, we\'ll start inside and leave the driveway for them.</p>',
+      html: '<p>Driveway parking at most homes. If the removalist is still loading, our bond cleaners in Bracken Ridge start inside and leave the driveway clear.</p>',
     },
     checks: {
       h3: 'What Bracken Ridge agents check',
@@ -210,7 +210,7 @@ export const north: AreaContent[] = [
     },
     extra: {
       h2: 'Pet-owner cleans in one visit',
-      html: '<p>If your lease says carpets and fleas at the end, the <a href="/pet-owner-bond-cleaning-brisbane/">pet owner bond clean</a> handles both: carpet steam clean, enzyme treatment on urine spots, pet hair from vents and skirting, and flea treatment by {pestPartner}. You get the cleaning invoice, the carpet receipt and the pest certificate together. Carpet cleaning in Bracken Ridge is booked on most of our jobs here for that reason.</p>',
+      html: '<p>If your lease says carpets and fleas at the end, the <a href="/pet-owner-bond-cleaning-brisbane/">pet owner bond clean</a> handles both: carpet steam clean, enzyme treatment on urine spots, pet hair from vents and skirting, and flea treatment by {pestPartner}. You get the cleaning invoice, the carpet receipt and the pest certificate together. Carpet cleaning in Bracken Ridge is booked on most of our jobs here for that reason, and a vacate cleaning in Bracken Ridge with the full pet bundle takes most of a day.</p>',
     },
     photos: ['carpet', 'laundry'],
     photoIntro: 'Carpets and laundries: the family-home pair. Results from our Brisbane jobs:',
@@ -247,7 +247,7 @@ export const north: AreaContent[] = [
     },
     access: {
       h3: 'Travel and access',
-      html: "<p>Wide streets and driveways make access easy; allow travel time if the booking is early morning. North Lakes is at the top of our area, so we schedule crews here in blocks to keep start times reliable.</p>",
+      html: "<p>Wide streets and driveways make access easy; allow travel time if the booking is early morning. North Lakes is at the top of our area, so we schedule crews here in blocks to keep start times reliable. Vacate cleaning in North Lakes for a 4-bed home is a full-day booking.</p>",
     },
     checks: {
       h3: 'What North Lakes agents check',

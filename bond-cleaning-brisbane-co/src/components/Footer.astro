@@ -24,6 +24,7 @@ const otherSvc = services.filter((s) => s.group !== 'core');
         <h2>Bond cleaning</h2>
         <ul class="links">
           <li><a href="/">Bond cleaning Brisbane</a></li>
+          <li><a href="/services/">All bond cleaning services in Brisbane</a></li>
           {coreSvc.map((s) => <li><a href={s.url}>{s.name}</a></li>)}
         </ul>
       </div>
@@ -34,14 +35,14 @@ const otherSvc = services.filter((s) => s.group !== 'core');
         </ul>
         <h2 style="margin-top:28px">Company</h2>
         <ul class="links">
-          <li><a href="/about/">About</a></li>
-          <li><a href="/reviews/">Reviews</a></li>
-          <li><a href="/our-work/">Our work</a></li>
-          <li><a href="/contact/">Contact</a></li>
+          <li><a href="/about/">Our bond cleaning company in Brisbane</a></li>
+          <li><a href="/reviews/">Bond cleaning Brisbane reviews</a></li>
+          <li><a href="/our-work/">Bond cleaning before and after</a></li>
+          <li><a href="/contact/">Get a bond cleaning quote in Brisbane</a></li>
         </ul>
       </div>
       <div>
-        <h2>Areas</h2>
+        <h2><a href="/areas/">Bond cleaning North Brisbane</a></h2>
         <ul class="links footer-areas">
           {areaGroups.flatMap((g) => g.slugs).map((slug) => <li><a href={areaUrl(slug)}>{areaBySlug(slug).name}</a></li>)}
         </ul>
@@ -49,10 +50,10 @@ const otherSvc = services.filter((s) => s.group !== 'core');
       <div>
         <h2>Help</h2>
         <ul class="links">
-          <li><a href="/pricing/">Pricing</a></li>
-          <li><a href="/bond-cleaning-checklist/">Bond cleaning checklist</a></li>
-          <li><a href="/faq/">FAQ</a></li>
-          <li><a href="/blog/">Guides</a></li>
+          <li><a href="/pricing/">Bond cleaning Brisbane prices</a></li>
+          <li><a href="/bond-cleaning-checklist/">Bond cleaning checklist QLD</a></li>
+          <li><a href="/faq/">Bond cleaning FAQ</a></li>
+          <li><a href="/blog/">Bond cleaning tips and guides</a></li>
           <li><a href="/bond-back-guarantee/">Our guarantee</a></li>
           <li><a href="/terms/">Terms</a></li>
           <li><a href="/privacy/">Privacy</a></li>

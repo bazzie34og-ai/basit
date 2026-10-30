@@ -147,7 +147,7 @@ ${callout('Fair wear and tear covers ageing from normal use, like faded paint or
       },
     ],
     price: {
-      h2: 'What an exit clean costs in Brisbane',
+      h2: 'Exit cleaning in Brisbane: what it costs',
       html: '<p>Exit cleaning is priced like every other bond clean we do: by bedrooms and bathrooms, fixed from your photos. From {price:b1} for a studio or 1-bed and {price:b2} for a 2-bed unit. Garages, balconies and patios are add-ons, so tell us when you book and they\'re in your price.</p>',
     },
     faqs: [
@@ -217,7 +217,7 @@ ${callout('Fair wear and tear covers ageing from normal use, like faded paint or
       },
     ],
     price: {
-      h2: 'Move-out cleaning prices',
+      h2: 'Move-out cleaning in Brisbane: prices',
       html: '<p>Fixed by bedrooms and bathrooms from your photos: {price:b1} for a 1-bed unit, {price:b2} for a 2-bed, {price:b3} for a 3-bed house. No hourly rate, so a removalist running late never costs you more.</p>',
     },
     faqs: [
@@ -278,7 +278,7 @@ ${callout('Fair wear and tear covers ageing from normal use, like faded paint or
       },
     ],
     price: {
-      h2: 'Move-in clean prices',
+      h2: 'Move-in cleaning in Brisbane: prices',
       html: "<p>A move-in clean is priced from photos like a bond clean, and is often slightly cheaper because the property is usually in better shape. From {price:b1} for a 1-bed unit. If it's worse than the photos showed, we'll tell you before we start, not after.</p>",
     },
     faqs: [
@@ -314,7 +314,7 @@ ${callout('Fair wear and tear covers ageing from normal use, like faded paint or
       ],
     },
     included: {
-      h2: 'House bond clean: what we cover',
+      h2: 'Bond house cleaning in Brisbane: what we cover',
       groups: [
         { h3: 'Ceiling fans and high fittings', items: ['Every fan blade, on high ceilings too', 'Light fittings, smoke alarm covers and cobwebs'] },
         { h3: 'Windows, louvres and sliding doors', items: ['Window tracks and sliding door tracks', 'Louvre blades one by one', 'Flyscreens washed'] },
@@ -389,7 +389,7 @@ ${callout('Fair wear and tear covers ageing from normal use, like faded paint or
       ],
     },
     included: {
-      h2: 'Unit bond clean checklist',
+      h2: 'Apartment end of lease cleaning in Brisbane: the unit checklist',
       groups: [
         { h3: 'Balcony and balustrade glass', items: ['Glass balustrades both sides where safe', 'Balcony tiles swept and mopped, drain cleared', 'Sliding door tracks and seals'] },
         { h3: 'Galley kitchen', items: ['Range hood filters degreased', 'Oven, cooktop and integrated appliances', 'Stone benchtops with stone-safe products'] },

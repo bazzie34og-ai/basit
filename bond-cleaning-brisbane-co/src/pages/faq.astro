@@ -14,9 +14,11 @@ const crumbs = [{ name: 'Home', href: '/' }, { name: 'FAQ', href: '/faq/' }];
 <BaseLayout title="Bond Cleaning FAQs Queensland | Bond Cleaning Brisbane Co." description="Bond cleaning questions answered with the Queensland rules: do you need professional cleaning, carpets, pest control, fair wear and tear, prices, the guarantee and worries about cleaners." crumbs={crumbs} schema={[faqPage(all)]}>
   <PageHero eyebrow={`${all.length} answers · RTA sources linked`} h1="Bond Cleaning Questions, Answered (QLD Rules)">
     <p class="lead">Our bond cleaning FAQ answers what Brisbane renters actually ask, starting with the answer. Do I need professional bond cleaning in QLD? Is carpet cleaning at end of lease required in QLD? Where a rule comes from the Residential Tenancies Authority (RTA), we link to it. A bond clean, end of lease clean, vacate clean and exit clean are the same thing, so every answer applies to all four.</p>
+    <Fragment slot="aside"><img src="/images/brand/seal.svg" alt="Bond cleaning FAQ from Bond Cleaning Brisbane Co.: the Inspection Ready seal" width="240" height="240" style="width:min(220px,60%);margin:24px auto 0" /></Fragment>
   </PageHero>
   <section class="section section--bg">
     <div class="container container--narrow">
+      <h2 class="mt-0">Bond cleaning FAQ by topic</h2>
       <nav class="faq-jump" aria-label="FAQ sections">
         {groups.map((g) => <a href={`#${g.anchor}`}>{g.key}. {g.title.split(' (')[0]}</a>)}
       </nav>

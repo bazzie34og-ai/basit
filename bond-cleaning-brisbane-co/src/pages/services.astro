@@ -6,11 +6,11 @@ import Icon from '../components/Icon.astro';
 import CtaBand from '../components/CtaBand.astro';
 import PromiseChips from '../components/PromiseChips.astro';
 import { serviceGroups } from '../config/site';
-import { servicesInGroup } from '../lib/data';
+import { servicesInGroup, kwAnchor } from '../lib/data';
 import { serviceContent } from '../content/services/index';
 const crumbs = [{ name: 'Home', href: '/' }, { name: 'Services', href: '/services/' }];
 const groupH2: Record<string, string> = {
-  core: 'Bond and end of lease cleaning services',
+  core: 'Core bond cleaning services in Brisbane',
   carpet: 'Carpet and upholstery cleaning',
   addon: 'Add-ons for the exit report',
 };
@@ -24,6 +24,7 @@ const groupP: Record<string, string> = {
   <PageHero eyebrow="Bond cleans only" h1="Our Bond Cleaning Services">
     <p class="lead">Our bond cleaning services in Brisbane cover one job done properly: getting your rental back to its entry condition so your bond comes back. A bond clean, end of lease clean, vacate clean and exit clean are all the same thing. Every service below comes with a fixed price, a photo report and the re-clean promise.</p>
     <PromiseChips />
+    <Fragment slot="aside"><img src="/images/brand/seal.svg" alt="Bond cleaning services Brisbane: the Inspection Ready seal from Bond Cleaning Brisbane Co." width="260" height="260" style="width:min(240px,60%);margin:24px auto 0" /></Fragment>
   </PageHero>
   {serviceGroups.map((g, gi) => (
     <section class:list={['section', gi % 2 === 0 && 'section--bg']} aria-labelledby={`g-${g.key}`}>
@@ -37,7 +38,7 @@ const groupP: Record<string, string> = {
                 <div class="icon-wrap"><Icon name={c.icon} /></div>
                 <h3 style="font-size:1.1875rem">{s.name}</h3>
                 <p class="muted mb-0">{c.short}.</p>
-                <a class="card__more" href={s.url}>{s.name} in Brisbane <Icon name="arrowRight" /></a>
+                <a class="card__more" href={s.url}>{kwAnchor(s)} <Icon name="arrowRight" /></a>
               </article>
             );
           })}

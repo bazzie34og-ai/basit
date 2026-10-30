@@ -16,7 +16,7 @@ export const eastWest: AreaContent[] = [
     },
     access: {
       h3: 'Pricing a large home properly',
-      html: "<p>Larger character homes take longer; send photos so we can price the house properly up front, including the pool area and entertaining deck if they're in your lease. Most homes have off-street parking, which makes bringing the carpet machine easy.</p>",
+      html: "<p>Larger character homes take longer; send photos so we can price the house properly up front, including the pool area and entertaining deck if they're in your lease. Most homes have off-street parking, which makes bringing the carpet machine easy. Vacate cleaning in Ascot often includes a pool fence and gate; tell us if they're on the exit report.</p>",
     },
     checks: {
       h3: 'What Ascot agents and owners check',
@@ -67,7 +67,7 @@ export const eastWest: AreaContent[] = [
     },
     checks: {
       h3: 'What Hamilton agents check',
-      html: '<p>Hamilton exit items we see most:</p>',
+      html: '<p>Exit items our bond cleaners in Hamilton see most:</p>',
       items: ['Balconies exposed to river weather', 'Salt and grime on glass and rails', 'Large window walls', 'Sliding door tracks', 'Apartment kitchens and integrated appliances'],
     },
     extra: {
@@ -113,7 +113,7 @@ export const eastWest: AreaContent[] = [
     },
     checks: {
       h3: 'What Nundah agents check',
-      html: '<p>Common items on Nundah exit reports:</p>',
+      html: '<p>Common items when we do vacate cleaning in Nundah:</p>',
       items: ['Older-unit bathrooms and grout', 'Window tracks in aluminium frames', 'Timber floors in character homes', 'Kitchen cupboards inside', 'Light fittings and switches'],
     },
     extra: {
@@ -160,7 +160,7 @@ export const eastWest: AreaContent[] = [
     },
     checks: {
       h3: 'What agents check in Wavell Heights',
-      html: '<p>Typical highset exit items:</p>',
+      html: '<p>Typical highset items for our bond cleaners in Wavell Heights:</p>',
       items: ['Timber floors upstairs', 'Stairs: treads, risers and handrails', 'Downstairs laundries', 'Patios and back decks', 'Ceiling fans in bedrooms'],
     },
     extra: {
@@ -202,11 +202,11 @@ export const eastWest: AreaContent[] = [
     },
     access: {
       h3: 'Gate codes and tight internal roads',
-      html: '<p>New townhouse complexes often have tight internal roads, so tell us the unit number and gate code. If visitor parking is limited, we\'ll tell you where we plan to park when we confirm.</p>',
+      html: '<p>New townhouse complexes often have tight internal roads, so tell us the unit number and gate code. If visitor parking is limited, we\'ll tell you where we plan to park when we confirm. Vacate cleaning in Stafford complexes also goes faster when the garage is already empty.</p>',
     },
     checks: {
       h3: 'What agents check in Stafford townhouses',
-      html: '<p>Items we see on Stafford exit reports:</p>',
+      html: '<p>Items our bond cleaners in Stafford see on exit reports:</p>',
       items: ['New-build finishes and paint', 'Stone benchtops and splashbacks', 'Carpeted stairs', 'Courtyards and garages', 'Ducted or split air-con vents'],
     },
     extra: {
@@ -252,7 +252,7 @@ export const eastWest: AreaContent[] = [
     },
     checks: {
       h3: 'What Everton Park agents check',
-      html: '<p>The usual Everton Park list:</p>',
+      html: '<p>What vacate cleaning in Everton Park usually has to cover:</p>',
       items: ['Townhouse kitchens', 'Stairs and balustrades', 'Small yards and courtyards', 'Garages', 'Walls in hallways and kids\' rooms'],
     },
     extra: {
@@ -299,7 +299,7 @@ export const eastWest: AreaContent[] = [
     },
     checks: {
       h3: 'What Mitchelton agents check',
-      html: '<p>Typical items on Mitchelton exits:</p>',
+      html: '<p>What our bond cleaners in Mitchelton see on exit reports:</p>',
       items: ['Family-home floors', 'Windows, tracks and blinds', 'Carpeted bedrooms', 'Kitchens and pantries', 'Garages and patios'],
     },
     extra: {

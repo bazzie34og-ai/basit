@@ -24,7 +24,7 @@ export const carpet: ServiceContent[] = [
       ],
     },
     included: {
-      h2: 'Carpet steam cleaning Brisbane: how we do it',
+      h2: 'End of lease carpet cleaning in Brisbane: how we do it',
       groups: [
         { h3: 'Before we start', items: ['Pre-vacuum to lift grit and hair', 'Stains and traffic lanes pre-treated', 'We point out anything that may not lift'] },
         { h3: 'Hot water extraction', items: ['Hot water and rinse injected into the pile', 'Dirt and solution extracted with high suction', 'Edges and corners done by hand tool'] },
@@ -54,7 +54,7 @@ export const carpet: ServiceContent[] = [
       },
     ],
     price: {
-      h2: 'Carpet cleaning prices',
+      h2: 'Carpet steam cleaning Brisbane prices',
       html: '<p>Carpet steam cleaning is {carpet}. Stairs, hallways and large living areas are counted as rooms on your quote. Pet treatment for urine and odour is priced separately; see <a href="/pet-stain-odour-removal-brisbane/">pet stain and odour removal</a>.</p>',
     },
     faqs: [
@@ -122,7 +122,7 @@ export const carpet: ServiceContent[] = [
       },
     ],
     price: {
-      h2: 'Carpet stain removal prices',
+      h2: 'Carpet stain removal in Brisbane: prices',
       html: '<p>Spot treatment is included in our carpet steam clean ({carpet} with a bond clean). A stain-only visit is quoted from a photo, so you know the price and our honest expectation before we come.</p>',
     },
     faqs: [
@@ -182,7 +182,7 @@ export const carpet: ServiceContent[] = [
       },
     ],
     price: {
-      h2: 'Pet odour removal prices',
+      h2: 'Pet stain and odour removal in Brisbane: prices',
       html: '<p>Priced per treated area on top of the carpet clean, quoted from photos. Spot odour treatment is included in the pet owner bond clean bundle ({price:packagePet} for a 2-bed).</p>',
     },
     faqs: [
@@ -234,9 +234,15 @@ export const carpet: ServiceContent[] = [
         html: `<p>Check two places: the lease and the inventory. If either says mattresses were professionally cleaned at the start, the agent can expect the same at the end. If they're listed as "clean" and they're now stained, cleaning is usually cheaper than a replacement claim. If neither applies and the mattress is clean, you probably don't need it.</p>${callout('Mattress protectors are worth it in a furnished rental. They make this whole page unnecessary.', true)}`,
         bg: 'bg',
       },
+      {
+        id: 'own-bed',
+        eyebrow: 'Your own mattress',
+        h2: 'Mattress steam cleaning before a move',
+        html: "<p>Moving your own bed into a new place? It's the easiest time to clean it, while it's out of the frame and before it goes into a fresh bedroom. Steam cleaning lifts dust mites, sweat marks and the smell that builds up over years, and the low-moisture method means it's dry by bedtime in most Brisbane weather. Book it on the same day as your <a href=\"/move-out-cleaning-brisbane/\">move-out clean</a> and we'll do it before the removalists load it.</p>",
+      },
     ],
     price: {
-      h2: 'Mattress cleaning prices',
+      h2: 'Mattress cleaning in Brisbane: prices',
       html: '<p>{price:mattress} per mattress, any size, with a small extra for double-sided cleaning. Booked with a <a href="/furnished-property-bond-cleaning-brisbane/">furnished bond clean</a>, it goes on the same invoice.</p>',
     },
     faqs: [
@@ -293,9 +299,16 @@ export const carpet: ServiceContent[] = [
         h2: 'We spot test first, every time',
         html: "<p>Before cleaning a whole piece, we test a hidden area for colour run and shrinkage. If the test shows a risk, we stop and tell you, and you don't pay for a clean we can't do safely.</p>",
       },
+      {
+        id: 'furnished',
+        eyebrow: 'Furnished leases',
+        h2: 'Couch cleaning for a furnished rental inspection',
+        html: "<p>If your lease includes the landlord's sofa or dining setting, check the inventory for the words \"clean\" or \"professionally cleaned\". Agents look for food marks on seat cushions, a grey band where heads rest, and pet hair in the seams. We clean the frame and every cushion, and photograph each piece for your report, so the furniture is covered by the same evidence as the rest of the property. Book it with a <a href=\"/furnished-property-bond-cleaning-brisbane/\">furnished property bond clean</a> for one visit and one invoice.</p>",
+        bg: 'bg',
+      },
     ],
     price: {
-      h2: 'Upholstery cleaning prices',
+      h2: 'Upholstery cleaning in Brisbane: prices',
       html: '<p>{price:sofaSeat} per seat. A three-seater is three seats; dining chairs and ottomans are priced per item on your quote.</p>',
     },
     faqs: [

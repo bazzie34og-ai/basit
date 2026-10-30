@@ -20,6 +20,7 @@ const hasReviews = (reviews as unknown[]).length > 0;
       </>
     )}
     {hasReviews && <p class="lead">Every review below is from our Google Business Profile, copied word for word, with the reviewer's name as it appears on Google.</p>}
+    <Fragment slot="aside"><img src="/images/brand/seal.svg" alt="Bond cleaning Brisbane reviews: real Google reviews only, the Inspection Ready seal" width="240" height="240" style="width:min(220px,60%);margin:24px auto 0" /></Fragment>
   </PageHero>
   <Reviews limit={50} h2="Google reviews of our bond cleans in Brisbane" />
   <section class="section section--bg" aria-labelledby="promise-h2">

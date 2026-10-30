@@ -24,5 +24,10 @@ export const areaUrl = (slug: string) => `/bond-cleaning-${slug}/`;
 export const groupOfArea = (slug: string) => areaGroups.find((g) => g.slugs.includes(slug));
 export const servicesInGroup = (group: string) => services.filter((s) => s.group === group);
 
+/** Keyword anchor text for links to a service page, e.g. "Oven cleaning in Brisbane". */
+export const kwAnchor = (s: ServiceData) => {
+  const k = s.primary.replace(/ brisbane$/, ' in Brisbane');
+  return k.charAt(0).toUpperCase() + k.slice(1);
+};
 /** Menu-friendly names for services */
 export const shortName = (s: ServiceData) => s.name;

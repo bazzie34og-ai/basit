@@ -56,7 +56,7 @@ export const addons: ServiceContent[] = [
       },
     ],
     price: {
-      h2: 'Pet owner bond clean prices',
+      h2: 'Pet owner bond cleaning in Brisbane: prices',
       html: '<p>Bond + carpet + flea for a 2-bed: {price:packagePet}. Bond + carpet: {price:packageCarpet}. Flea treatment on its own through our partner: {price:flea}. All fixed from your photos.</p>',
     },
     faqs: [
@@ -116,7 +116,7 @@ export const addons: ServiceContent[] = [
       },
     ],
     price: {
-      h2: 'Oven cleaning prices',
+      h2: 'Oven cleaning in Brisbane: prices',
       html: '<p>Standard oven and rangehood cleaning is included in every bond clean. On its own, or for heavy build-up, a deep clean is {price:ovenDeep}. BBQs are quoted from a photo.</p>',
     },
     faqs: [
@@ -178,7 +178,7 @@ export const addons: ServiceContent[] = [
       },
     ],
     price: {
-      h2: 'Window cleaning prices',
+      h2: 'Window cleaning in Brisbane: prices',
       html: '<p>Tracks, sills, inside glass and blind dusting are included in every bond clean. Detailed slat-by-slat blind washing is {price:blindsDetail} per room. Windows-only visits for sellers or owners are quoted from photos.</p>',
     },
     faqs: [
@@ -237,7 +237,7 @@ export const addons: ServiceContent[] = [
       },
     ],
     price: {
-      h2: 'Wall wash prices',
+      h2: 'Wall washing in Brisbane: prices',
       html: '<p>Spot cleaning: included. Full wall washing: {price:wallRoom} per room. Smoke-affected properties are quoted from photos, because the work varies a lot.</p>',
     },
     faqs: [
@@ -296,9 +296,16 @@ export const addons: ServiceContent[] = [
         h2: 'High pressure water cleaning, used carefully',
         html: `${ticks(['Pressure set to the surface, so pavers and grout aren\'t damaged', 'Apartment balconies cleaned with low-water methods that don\'t flood neighbours below', 'Water-wise: we sweep and pre-treat first to use less water', 'Run-off kept out of stormwater where we can'])}`,
       },
+      {
+        id: 'wet-season',
+        eyebrow: 'Brisbane weather',
+        h2: 'Black mould on pavers after the wet season',
+        html: "<p>After a Brisbane summer, shaded patios, side paths and pool surrounds often grow a dark film of mould and algae. It's slippery as well as ugly, and it shows up clearly in an agent's photos. We pre-treat it, let it work, then pressure wash, so it comes off without blasting the grout out of the pavers. Garage floors get a degreaser on oil stains first; some old stains fade rather than disappear, and we'll tell you which.</p>",
+        bg: 'bg',
+      },
     ],
     price: {
-      h2: 'Pressure washing prices',
+      h2: 'Pressure cleaning in Brisbane: prices',
       html: '<p>From {price:pressure} for a typical patio or driveway, {price:garage} for a single garage, and {price:balcony} for a balcony. All add-ons are priced on your quote before the clean.</p>',
     },
     faqs: [

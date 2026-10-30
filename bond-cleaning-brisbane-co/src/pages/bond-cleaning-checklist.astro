@@ -62,6 +62,7 @@ const crumbs = [{ name: 'Home', href: '/' }, { name: 'Bond cleaning checklist', 
       <button class="btn btn--primary btn--lg" type="button" data-print><Icon name="printer" />Download or print as PDF</button>
       <a class="btn btn--secondary btn--lg" href="#rooms">Start ticking</a>
     </div>
+    <Fragment slot="aside"><img src="/images/brand/seal.svg" alt="Bond cleaning checklist QLD from Bond Cleaning Brisbane Co.: the Inspection Ready seal" width="240" height="240" style="width:min(220px,60%);margin:24px auto 0" /></Fragment>
     <p class="small muted">Your ticks are saved in this browser only, so you can come back to it. Nothing is sent to us.</p>
   </PageHero>
 
@@ -91,7 +92,7 @@ const crumbs = [{ name: 'Home', href: '/' }, { name: 'Bond cleaning checklist', 
 
   <section class="section" id="rooms" aria-labelledby="list-h2">
     <div class="container">
-      <h2 id="list-h2" class="visually-hidden">Room-by-room checklist</h2>
+      <div class="section-head"><p class="eyebrow">Tick as you go</p><h2 id="list-h2">Bond cleaning checklist QLD: room by room</h2></div>
       <div class="cl-progress" data-cl-progress><span><span data-cl-done>0</span> of {total} done</span><span class="bar" aria-hidden="true"><span data-cl-bar></span></span><button class="btn btn--sm btn--secondary no-print" type="button" data-cl-reset>Reset</button></div>
       {rooms.map((r) => (
         <div class="checklist-room" id={r.id}>

@@ -78,7 +78,7 @@ const waMsg = `Hi, I'd like a bond clean quote for a [x] bed in ${area.name}`;
         </div>
         <div class="map-card reveal" role="img" aria-label={`Bond cleaning ${area.name}: map of ${area.name} ${area.pc} and the nearby suburbs we clean`}>
           <NorthsideMap current={area.slug} links />
-          <p class="small muted" style="margin:10px 4px 0">{area.name} {area.pc} and the 19 other suburbs on our Northside runs.</p>
+          <p class="small muted shared" style="margin:10px 4px 0">{area.name} {area.pc} and the 19 other suburbs on our Northside runs.</p>
         </div>
       </div>
     </div>
@@ -159,7 +159,7 @@ const waMsg = `Hi, I'd like a bond clean quote for a [x] bed in ${area.name}`;
       <ul class="area-chips">
         {area.near.map((slug) => <li><a href={areaUrl(slug)}>Bond cleaning {areaBySlug(slug).name}</a></li>)}
       </ul>
-      <p class="mt-2">New to us? Start with how our <a href="/">bond cleaning Brisbane</a> service works, or see <a href="/areas/">all 20 areas we clean</a>.</p>
+      <p class="mt-2 shared">New to us? Start with how our <a href="/">bond cleaning Brisbane</a> service works, or see <a href="/areas/">all 20 areas we clean</a>.</p>
     </div>
   </section>
 

@@ -9,11 +9,12 @@ const crumbs = [{ name: 'Home', href: '/' }, { name: 'Guides', href: '/blog/' }]
 ---
 <BaseLayout title="Bond Cleaning Tips & QLD Guides | Bond Cleaning Brisbane Co." description="Plain-English bond cleaning tips and end of lease guides for Queensland renters: carpets, final inspections, prices and whether a professional clean is worth it." crumbs={crumbs}>
   <PageHero eyebrow="Guides · QLD rules in plain English" h1="Bond Back Guides for Brisbane Renters">
+    <Fragment slot="aside"><img src="/images/brand/seal.svg" alt="Bond cleaning tips from Bond Cleaning Brisbane Co.: the Inspection Ready seal" width="240" height="240" style="width:min(220px,60%);margin:24px auto 0" /></Fragment>
     <p class="lead">Honest bond cleaning tips and end of lease guides for Queensland, written by people who clean Brisbane rentals every week. Every guide starts with the answer and links to the RTA where a rule comes from.</p>
   </PageHero>
   <section class="section section--bg" aria-labelledby="posts-h2">
     <div class="container">
-      <h2 id="posts-h2" class="visually-hidden">Latest guides</h2>
+      <div class="section-head"><p class="eyebrow">Latest</p><h2 id="posts-h2">Latest bond cleaning tips and guides</h2></div>
       <div class="grid grid-2">
         {posts.map((p) => (
           <article class="card card--link blog-card">

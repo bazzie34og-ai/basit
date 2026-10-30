@@ -621,3 +621,7 @@ tr:last-child td { border-bottom: 0; }
 .walk h3 { font-size: 1.125rem; margin-bottom: .25em; }
 .walk p { margin: 0; color: var(--muted); }
 .page-hero__grid--single { grid-template-columns: 1fr !important; max-width: 860px; }
+/* A prose block that is also the container: align with the grid, limit line length only */
+.container.prose { max-width: calc(var(--container) + var(--side) * 2); }
+.container.prose > * { max-width: 720px; }
+@media (max-width: 1023px) { .page-hero img[src$="seal.svg"] { width: 140px !important; } }

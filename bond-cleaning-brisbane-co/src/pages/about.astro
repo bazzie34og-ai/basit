@@ -16,7 +16,7 @@ const team: { name: string; role: string; photo: string }[] = [];
 <BaseLayout title="About Us | Bond Cleaning Brisbane Co." description="Bond Cleaning Brisbane Co. is a bond cleaning company in Brisbane that only does exit cleans, only on the Northside and inner north. How we work, insurance, police checks and our standards." crumbs={crumbs} schema={[aboutPage()]}>
   <PageHero eyebrow="Built for one day: your final inspection" h1="About Bond Cleaning Brisbane Co.">
     <p class="lead">{business.identity} We're a bond cleaning company in Brisbane that does one thing: the clean that decides whether you get your bond back.</p>
-    <Fragment slot="aside"><img src="/images/brand/logo-stacked.svg" alt="Bond Cleaning Brisbane Co. logo" width="360" height="216" style="width:min(320px,80%);margin:24px auto 0" /></Fragment>
+    <Fragment slot="aside"><img src="/images/brand/logo-stacked.svg" alt="Bond Cleaning Brisbane Co., a bond cleaning company in Brisbane" width="360" height="216" style="width:min(320px,80%);margin:24px auto 0" /></Fragment>
   </PageHero>
 
   <section class="section section--sand" aria-labelledby="story-h2">
@@ -40,7 +40,7 @@ const team: { name: string; role: string; photo: string }[] = [];
 
   <section class="section" aria-labelledby="how-h2">
     <div class="container">
-      <div class="section-head"><p class="eyebrow">How we work</p><h2 id="how-h2">One brand, one team, one standard</h2></div>
+      <div class="section-head"><p class="eyebrow">How we work</p><h2 id="how-h2">A bond cleaning company in Brisbane with one standard</h2></div>
       <div class="grid grid-3">
         <div class="card card--flat"><div class="icon-wrap"><Icon name="shield" /></div><h3>Insured</h3><p class="mb-0">{insuranceText()}. If something is damaged, we tell you straight away and make it right. [Certificate of currency shown here once confirmed.]</p></div>
         <div class="card card--flat"><div class="icon-wrap"><Icon name="checkCircle" /></div><h3>{flags.policeChecked ? b('policeChecked', 'Police-checked cleaners') : 'Trained cleaners'}</h3><p class="mb-0" set:html={t('Every cleaner is trained on our bond checklist before working on a job{?ownCrews}. [Our own crews do every clean]{/ownCrews}. [Add true details of how we hire and train.]')} /></div>

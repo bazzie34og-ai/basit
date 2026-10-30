@@ -49,7 +49,7 @@ export const coreB: ServiceContent[] = [
       },
     ],
     price: {
-      h2: 'Furnished bond cleaning prices',
+      h2: 'Furnished bond cleaning in Brisbane: prices',
       html: "<p>A furnished clean takes a little longer than an empty-house clean because there's more to clean. We price it from your photos and the inventory: the bond clean for your bedrooms and bathrooms, plus a furnished allowance of {price:furnished}. Mattresses ({price:mattress} each) and sofas ({price:sofaSeat} a seat) are listed separately.</p>",
     },
     faqs: [
@@ -118,7 +118,7 @@ export const coreB: ServiceContent[] = [
       },
     ],
     price: {
-      h2: 'Rental cleaning rates',
+      h2: 'Real estate cleaning in Brisbane: rates',
       html: '<p>Agency work uses the same fixed price table as our tenant bond cleans: {price:b1} for a 1-bed, {price:b2} for a 2-bed, {price:b3} for a 3-bed house. Partner agencies get priority booking rather than hidden discounts, so tenants and owners always see the same price.</p>',
     },
     faqs: [
@@ -177,7 +177,7 @@ export const coreB: ServiceContent[] = [
       },
     ],
     price: {
-      h2: 'Pre-sale home cleaning prices',
+      h2: 'Pre-sale house cleaning in Brisbane: prices',
       html: "<p>Priced on the same fixed table as our bond cleans: {price:b2} for a 2-bed, {price:b3} for a 3-bed, {price:b4} for a 4-bed. Your agent can book it for you, and the invoice goes to whoever you choose.</p>",
     },
     faqs: [
@@ -244,7 +244,7 @@ export const coreB: ServiceContent[] = [
       },
     ],
     price: {
-      h2: 'Urgent bond clean prices',
+      h2: 'Urgent bond clean in Brisbane: prices',
       html: '<p>Same table as every bond clean: {price:b1} for a 1-bed, {price:b2} for a 2-bed, {price:b3} for a 3-bed. {?noUrgentSurcharge}[No urgent surcharge]{/noUrgentSurcharge}{!noUrgentSurcharge}Any same-day fee is stated in your fixed price{/noUrgentSurcharge}, written in your quote before you say yes.</p>',
     },
     faqs: [
@@ -327,7 +327,7 @@ export const coreB: ServiceContent[] = [
       },
     ],
     price: {
-      h2: 'What the guarantee costs',
+      h2: 'What bond back guarantee cleaning costs you',
       html: '<p>Nothing. It\'s part of every bond clean, from {price:b1} for a 1-bed unit. Compare that with "from $45" adverts that charge separately for the guarantee, the oven or the walls.</p>',
     },
     faqs: [
@@ -400,7 +400,7 @@ export const coreB: ServiceContent[] = [
       },
     ],
     price: {
-      h2: 'Bond re-clean prices',
+      h2: 'Bond re-clean in Brisbane: prices',
       html: '<p>Priced per list, fixed in writing. A short list (oven, tracks, a few fans) costs a fraction of a full bond clean. A long list may be close to a full clean, and if so we\'ll tell you which is better value.</p>',
     },
     faqs: [

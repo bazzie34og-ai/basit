@@ -9,6 +9,7 @@ import FaqList from '../components/FaqList.astro';
 import AskBox from '../components/AskBox.astro';
 import CtaBand from '../components/CtaBand.astro';
 import PromiseChips from '../components/PromiseChips.astro';
+import PhotoFigure from '../components/PhotoFigure.astro';
 import { addons, priceRows, flags } from '../config/site';
 import { pick } from '../data/faqs';
 import { t, price, flagOn } from '../lib/tpl';
@@ -84,6 +85,7 @@ const addonPrice = (a: (typeof addons)[number]) =>
           <p class="eyebrow">Timing</p>
           <h2 id="time-h2">How long does a bond clean take?</h2>
           <p>Long enough to finish the checklist. We don't leave at a set number of hours: the crew stays until every item is done and photographed. As a guide, with our usual crew sizes:</p>
+          <PhotoFigure k="oven" alt="Included in our bond cleaning Brisbane prices: oven door glass before and after, baked-on grease removed" sizes="(min-width: 960px) 520px, 92vw" />
         </div>
         <div class="table-wrap">
           <table>

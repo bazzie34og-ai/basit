@@ -3,15 +3,15 @@
 import { Image } from 'astro:assets';
 import Icon from './Icon.astro';
 import { slider } from '../data/photos';
-interface Props { eager?: boolean; caption?: string }
-const { eager = false, caption } = Astro.props;
+interface Props { eager?: boolean; caption?: string; beforeAlt?: string; afterAlt?: string }
+const { eager = false, caption, beforeAlt = 'Before: oven door glass covered in baked-on grease', afterAlt = 'After: the same oven door glass, clean and clear after our bond clean' } = Astro.props;
 const widths = [360, 520, 720, 900];
 const sizes = '(min-width: 1024px) 460px, 92vw';
 ---
 <figure class="photo mb-0">
   <div class="ba" data-ba style="--pos:50%">
-    <Image src={slider.before} alt="Before: oven door glass covered in baked-on grease" widths={widths} sizes={sizes} format="webp" loading={eager ? 'eager' : 'lazy'} fetchpriority={eager ? 'high' : 'auto'} decoding="async" />
-    <Image class="ba__after" src={slider.after} alt="After: the same oven door glass, clean and clear after our bond clean" widths={widths} sizes={sizes} format="webp" loading={eager ? 'eager' : 'lazy'} decoding="async" />
+    <Image src={slider.before} alt={beforeAlt} widths={widths} sizes={sizes} format="webp" loading={eager ? 'eager' : 'lazy'} fetchpriority={eager ? 'high' : 'auto'} decoding="async" />
+    <Image class="ba__after" src={slider.after} alt={afterAlt} widths={widths} sizes={sizes} format="webp" loading={eager ? 'eager' : 'lazy'} decoding="async" />
     <input class="ba__range" type="range" min="0" max="100" value="50" step="1" aria-label="Drag to compare the oven door before and after the bond clean" />
     <div class="ba__handle" aria-hidden="true"><span class="ba__knob"><Icon name="arrowsH" /></span></div>
     <span class="ba__label ba__label--before" aria-hidden="true">Before</span>

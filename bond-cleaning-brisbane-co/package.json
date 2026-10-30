@@ -7,7 +7,7 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "audit:content": "node scripts/audit.mjs"
+    "audit": "python3 scripts/audit.py"
   },
   "dependencies": {
     "astro": "7.3.8",

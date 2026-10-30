@@ -16,11 +16,11 @@ export const inner: AreaContent[] = [
     },
     access: {
       h3: 'Lifts, docks and parking in the city',
-      html: "<p>Most towers need a booked service lift and loading dock. Send us the building manager's details and we'll organise it. Tell us if visitor parking isn't available; we'll plan the dock time or a nearby car park instead, so the crew isn't circling Adelaide Street with a carpet machine.</p>",
+      html: "<p>Most towers need a booked service lift and loading dock. Send us the building manager's details and we'll organise it. Tell us if visitor parking isn't available; we'll plan the dock time or a nearby car park instead, so the crew isn't circling Adelaide Street with a carpet machine. Our bond cleaners in Brisbane City bring everything up in one trip, so a single dock booking is enough.</p>",
     },
     checks: {
       h3: 'What CBD property managers check closely',
-      html: '<p>In city units the inspection is short and sharp. These are the items we see on agent lists most often:</p>',
+      html: '<p>End of lease cleaning in Brisbane City is judged in a short, sharp inspection. These items come up on agent lists most often:</p>',
       items: ['Balcony glass and sliding door tracks', 'Rangehoods in small galley kitchens', 'Exhaust fans in internal bathrooms', 'Wardrobe tracks and mirrored doors', 'Air-con filters in split systems'],
     },
     extra: {
@@ -62,11 +62,11 @@ export const inner: AreaContent[] = [
     },
     access: {
       h3: 'Getting in around James and Brunswick Streets',
-      html: "<p>Expect lift bookings and limited street parking around James Street and Brunswick Street. We plan the clean around your building's move-out times and use the loading dock or a visitor bay where there is one. Warehouse conversions often have a single goods lift, so tell us early if your removalist needs it too.</p>",
+      html: "<p>Expect lift bookings and limited street parking around James Street and Brunswick Street. We plan the clean around your building's move-out times and use the loading dock or a visitor bay where there is one. Our bond cleaners in Fortitude Valley carry a compact kit, so one goods-lift trip does it. Warehouse conversions often have a single goods lift, so tell us early if your removalist needs it too.</p>",
     },
     checks: {
       h3: 'What agents look for in Valley apartments',
-      html: '<p>Most Valley exit inspections focus on finishes rather than size:</p>',
+      html: '<p>Vacate cleaning in Fortitude Valley is judged on finishes rather than size:</p>',
       items: ['Glass balustrades, inside and out where safe', 'Kitchen splashbacks and stone benchtops', 'Polished concrete floors, streak-free', 'Integrated dishwashers and induction cooktops', 'Bathroom niches and frameless shower screens'],
     },
     extra: {
@@ -109,11 +109,11 @@ export const inner: AreaContent[] = [
     },
     access: {
       h3: 'Walk-ups with no lift',
-      html: "<p>Walk-up blocks with no lift mean we carry equipment up the stairs, so tell us the floor level when you book. Street parking near Merthyr Road and Brunswick Street fills early, especially on weekends near the markets, so we plan an early start.</p>",
+      html: "<p>Walk-up blocks with no lift mean our bond cleaners in New Farm carry equipment up the stairs, so tell us the floor level when you book. Street parking near Merthyr Road and Brunswick Street fills early, especially on weekends near the markets, so we plan an early start.</p>",
     },
     checks: {
       h3: 'What New Farm agents check closely',
-      html: '<p>Older homes and flats get a detailed walk-through:</p>',
+      html: '<p>End of lease cleaning in New Farm means a detailed walk-through of older homes and flats:</p>',
       items: ['Timber floors: no streaks, no water marks', 'VJ walls and picture rails dusted', 'Louvre windows, blade by blade', 'Verandahs swept and rails wiped', 'High ceilings with fans and old light fittings'],
     },
     extra: {
@@ -155,11 +155,11 @@ export const inner: AreaContent[] = [
     },
     access: {
       h3: 'Lift, loading bay and building rules',
-      html: '<p>Most buildings need a booked lift and loading bay, and some have strict move-out time windows, often weekdays only. Send us the building manager\'s details and we\'ll book within the allowed hours. If your building charges a lift bond, it\'s usually the tenant\'s, so check with strata.</p>',
+      html: '<p>Most buildings need a booked lift and loading bay, and some have strict move-out time windows, often weekdays only. Send us the building manager\'s details and we\'ll book within the allowed hours. If your building charges a lift bond, it\'s usually the tenant\'s, so check with strata. Vacate cleaning in Newstead towers is usually booked on a weekday for that reason.</p>',
     },
     checks: {
       h3: 'What agents check in Newstead apartments',
-      html: '<p>Our notes from Newstead exits:</p>',
+      html: '<p>Notes from our bond cleaners in Newstead:</p>',
       items: ['Floor-to-ceiling glass inside, and outside from the balcony', 'Balcony tiles and drainage outlets', 'Integrated fridges, dishwashers and wall ovens', 'Stone benchtops and splashbacks', 'Sliding door tracks onto the balcony'],
     },
     extra: {
@@ -201,11 +201,11 @@ export const inner: AreaContent[] = [
     },
     access: {
       h3: 'Ekka week and event traffic',
-      html: '<p>Plan around the Ekka and big Showgrounds events: traffic and parking get tight, so book early in August. On normal days, most buildings off King Street have a loading bay or visitor parking; tell us which so the crew can get in on time.</p>',
+      html: '<p>Plan around the Ekka and big Showgrounds events: traffic and parking get tight, so end of lease cleaning in Bowen Hills that month needs an early booking. On normal days, most buildings off King Street have a loading bay or visitor parking; tell us which so the crew can get in on time.</p>',
     },
     checks: {
       h3: 'What Bowen Hills agents check',
-      html: '<p>The usual list for apartments in this pocket:</p>',
+      html: '<p>The usual list our bond cleaners in Bowen Hills work through:</p>',
       items: ['Apartment kitchens: oven, cooktop and rangehood', 'Laundries in cupboards, including behind the machine', 'Balcony sliding doors and tracks', 'Bathroom exhaust fans', 'Wardrobe shelves and tracks'],
     },
     extra: {
@@ -247,16 +247,16 @@ export const inner: AreaContent[] = [
     },
     access: {
       h3: 'Stairs and under-house areas',
-      html: '<p>Highset Queenslanders often have stairs and under-house storage. Tell us if the under-house area or laundry downstairs is part of your lease, so it\'s in your fixed price. Most Windsor streets have easy kerbside parking; near the station it\'s tighter on weekdays.</p>',
+      html: '<p>Highset Queenslanders often have stairs and under-house storage. Tell us if the under-house area or laundry downstairs is part of your lease, so it\'s in your fixed price. Most Windsor streets have easy kerbside parking; near the station it\'s tighter on weekdays. End of lease cleaning in Windsor highsets includes the front stairs, so we bring a stair tool.</p>',
     },
     checks: {
       h3: 'What Windsor agents look at',
-      html: '<p>Items we see most often on Windsor exit reports:</p>',
+      html: '<p>Items our bond cleaners in Windsor see most often on exit reports:</p>',
       items: ['Timber floors throughout', 'VJ walls and door frames', 'Ceiling fans in every room', 'Under-house laundries and tubs', 'Front stairs and verandah'],
     },
     extra: {
       h2: 'The downstairs laundry nobody remembers',
-      html: "<p>In a Windsor highset, the laundry is often under the house, next to a concrete floor that collects dust, leaves and spider webs. Agents check it like any other room. We clean the tub, the washing machine space, the walls and the floor, and sweep the under-house area if it's in your lease. Carpet cleaning in Windsor is less common because most homes have timber, but upstairs bedrooms in newer units often need it.</p>",
+      html: "<p>In a Windsor highset, the laundry is often under the house, next to a concrete floor that collects dust, leaves and spider webs. Agents check it like any other room. We clean the tub, the washing machine space, the walls and the floor, and sweep the under-house area if it's in your lease. Carpet cleaning in Windsor is less common because most homes have timber, but upstairs bedrooms in newer units often need it. Vacate cleaning in Windsor units near the station is quicker: usually half a day.</p>",
     },
     photos: ['laundry', 'fan'],
     photoIntro: 'Laundries and fans: the two Windsor items we photograph most. Results from our Brisbane jobs:',
@@ -297,12 +297,12 @@ export const inner: AreaContent[] = [
     },
     checks: {
       h3: 'What Albion agents check closely',
-      html: '<p>Typical Albion exit items:</p>',
+      html: '<p>Typical items when we do vacate cleaning in Albion:</p>',
       items: ['Older bathrooms: grout, silicone and surface mould', 'Window tracks and sills', 'Timber floors', 'Kitchen cupboards in older units', 'Exhaust fans, where there are any'],
     },
     extra: {
       h2: 'Mould in older bathrooms: what we can do',
-      html: '<p>We scrub grout by hand, treat surface mould on tiles, silicone and ceilings, and leave the bathroom dry with the window open. Brisbane\'s wet season makes regrowth quick, so we clean bathrooms last on the day when we can. If mould is coming from a leak or poor ventilation, that\'s a maintenance issue for the owner, and we note it in your report so you\'re not blamed for it. Our bond cleaners in Albion see this every week.</p>',
+      html: '<p>We scrub grout by hand, treat surface mould on tiles, silicone and ceilings, and leave the bathroom dry with the window open. Brisbane\'s wet season makes regrowth quick, so we clean bathrooms last on the day when we can. If mould is coming from a leak or poor ventilation, that\'s a maintenance issue for the owner, and we note it in your report so you\'re not blamed for it. Our bond cleaners in Albion see this every week. Booking end of lease cleaning in Albion for an older unit? Send a bathroom photo first; it tells us most of what we need to know.</p>',
     },
     photos: ['shower', 'cupboard'],
     photoIntro: 'Shower grout and kitchen cupboards are the Albion staples. Results from our Brisbane jobs:',

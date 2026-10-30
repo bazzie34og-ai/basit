@@ -21,7 +21,7 @@ import Reviews from '../Reviews.astro';
 import SectionBlock from './SectionBlock.astro';
 import { business, serviceGroups } from '../../config/site';
 import { photos } from '../../data/photos';
-import { serviceBySlug } from '../../lib/data';
+import { serviceBySlug, kwAnchor } from '../../lib/data';
 import { serviceContent } from '../../content/services/index';
 import { t, telHref, waHref, flagOn } from '../../lib/tpl';
 import { serviceSchema, faqPage } from '../../lib/schema';
@@ -207,7 +207,7 @@ const waMsg = c.tier === 1 ? "Hi, I need an urgent bond clean. Here are photos a
           <article class="card card--link">
             <h3 style="font-size:1.125rem">{r.name}</h3>
             <p class="muted small">{serviceContent[r.slug]?.short}</p>
-            <a class="card__more" href={r.url}>{r.name.toLowerCase().includes('guarantee') ? 'Our bond back guarantee' : r.name}</a>
+            <a class="card__more" href={r.url}>{kwAnchor(r)}</a>
           </article>
         ))}
       </div>
