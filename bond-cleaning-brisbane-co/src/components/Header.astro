@@ -1,0 +1,132 @@
+---
+import Icon from './Icon.astro';
+import NorthsideMap from './NorthsideMap.astro';
+import { business, mainNav, serviceGroups, areaGroups } from '../config/site';
+import { servicesInGroup, areaBySlug, areaUrl } from '../lib/data';
+import { serviceShort } from '../content/services/index';
+import { telHref } from '../lib/tpl';
+
+const path = Astro.url.pathname;
+const isCurrent = (href: string) => (path === href ? 'page' : undefined);
+---
+<header class="site-header" data-header>
+  <div class="container container--wide header-inner">
+    <a class="logo" href="/" aria-label="Bond Cleaning Brisbane Co. home">
+      <img src="/images/brand/logo-horizontal.svg" alt="Bond Cleaning Brisbane Co." width="200" height="42" />
+    </a>
+
+    <nav class="nav" aria-label="Main">
+      <ul>
+        {mainNav.map((item) =>
+          item.mega ? (
+            <li>
+              <button class="nav__link" type="button" aria-expanded="false" aria-controls={`mega-${item.mega}`} data-mega-toggle>
+                {item.label}<Icon name="chevronDown" />
+              </button>
+            </li>
+          ) : (
+            <li><a class="nav__link" href={item.href} aria-current={isCurrent(item.href)}>{item.label}</a></li>
+          )
+        )}
+      </ul>
+    </nav>
+
+    <div class="header-cta">
+      <a class="header-phone" href={telHref()} data-track="call_click" data-track-location="header"><Icon name="phone" />{business.phone}</a>
+      <a class="btn btn--primary btn--sm header-quote" href="/contact/#quote" data-quote-link>Get my fixed price</a>
+      <a class="icon-btn icon-btn--mint header-call-icon" href={telHref()} aria-label={`Call ${business.phone}`} data-track="call_click" data-track-location="header-mobile"><Icon name="phone" /></a>
+      <button class="icon-btn menu-toggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu" data-menu-open><Icon name="menu" /></button>
+    </div>
+  </div>
+
+  <div class="mega" id="mega-services" data-mega>
+    <div class="container container--wide">
+      <div class="mega__grid mega__grid--3">
+        {serviceGroups.map((g) => (
+          <div>
+            <h3>{g.name}</h3>
+            <ul>
+              {servicesInGroup(g.key).map((s) => (
+                <li><a href={s.url}>{s.name}<span>{serviceShort[s.slug]}</span></a></li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
+      <div class="mega__foot">
+        <a href="/services/">All bond cleaning services</a>
+        <a href="/pricing/">Bond cleaning prices</a>
+        <a href="/bond-cleaning-checklist/">The QLD bond cleaning checklist</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="mega" id="mega-areas" data-mega>
+    <div class="container container--wide">
+      <div class="mega__grid mega__grid--areas">
+        {areaGroups.map((g) => (
+          <div>
+            <h3>{g.name}</h3>
+            <ul>
+              {g.slugs.map((slug) => {
+                const a = areaBySlug(slug);
+                return <li><a href={areaUrl(slug)}>{a.name}<span>{a.pc}</span></a></li>;
+              })}
+            </ul>
+          </div>
+        ))}
+        <div class="map-card"><NorthsideMap compact /></div>
+      </div>
+      <div class="mega__foot">
+        <a href="/areas/">All areas we clean</a>
+        <span class="muted">Northside and inner north only, so we know the buildings.</span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="mobile-menu" id="mobile-menu" data-menu role="dialog" aria-modal="true" aria-label="Menu">
+  <div class="mobile-menu__top">
+    <img src="/images/brand/logo-stacked.svg" alt="Bond Cleaning Brisbane Co." width="150" height="90" loading="lazy" />
+    <button class="icon-btn" type="button" aria-label="Close menu" data-menu-close><Icon name="close" /></button>
+  </div>
+  <nav aria-label="Mobile">
+    <ul>
+      <li>
+        <details>
+          <summary>Services <Icon name="chevronDown" /></summary>
+          <ul class="m-sub">
+            {serviceGroups.map((g) => (
+              <>
+                <li class="m-group">{g.name}</li>
+                {servicesInGroup(g.key).map((s) => <li><a href={s.url}>{s.name}</a></li>)}
+              </>
+            ))}
+            <li class="m-group"><a href="/services/">All services</a></li>
+          </ul>
+        </details>
+      </li>
+      <li>
+        <details>
+          <summary>Areas <Icon name="chevronDown" /></summary>
+          <ul class="m-sub">
+            {areaGroups.map((g) => (
+              <>
+                <li class="m-group">{g.name}</li>
+                {g.slugs.map((slug) => <li><a href={areaUrl(slug)}>{areaBySlug(slug).name}</a></li>)}
+              </>
+            ))}
+            <li class="m-group"><a href="/areas/">All areas</a></li>
+          </ul>
+        </details>
+      </li>
+      {mainNav.filter((i) => !i.mega).map((i) => <li><a class="m-link" href={i.href}>{i.label}</a></li>)}
+      <li><a class="m-link" href="/bond-cleaning-checklist/">Checklist</a></li>
+      <li><a class="m-link" href="/contact/">Contact</a></li>
+    </ul>
+  </nav>
+  <div class="mobile-menu__cta">
+    <a class="btn btn--mint btn--lg" href={telHref()} data-track="call_click" data-track-location="menu"><Icon name="phone" />Call {business.phone}</a>
+    <a class="btn btn--primary btn--lg" href="/contact/#quote">Get my fixed price</a>
+  </div>
+</div>

@@ -1,0 +1,68 @@
+---
+import Icon from './Icon.astro';
+import { business, areaGroups } from '../config/site';
+import { services, areaBySlug, areaUrl } from '../lib/data';
+import { telHref, mailHref } from '../lib/tpl';
+const year = new Date().getFullYear();
+const coreSvc = services.filter((s) => s.group === 'core');
+const otherSvc = services.filter((s) => s.group !== 'core');
+---
+<footer class="site-footer on-navy">
+  <div class="container container--wide">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <img class="logo-rev" src="/images/brand/logo-horizontal-reversed.svg" alt="Bond Cleaning Brisbane Co." width="210" height="44" loading="lazy" />
+        <p>{business.identity}</p>
+        <ul class="footer-nap">
+          <li><Icon name="phone" /><span><strong>{business.name}</strong><br /><a href={telHref()} data-track="call_click" data-track-location="footer">{business.phone}</a></span></li>
+          <li><Icon name="mail" /><a href={mailHref()}>{business.email}</a></li>
+          <li><Icon name="pin" /><span>{business.serviceArea}</span></li>
+          <li><Icon name="clock" /><span>{business.hours}</span></li>
+        </ul>
+      </div>
+      <div>
+        <h2>Bond cleaning</h2>
+        <ul class="links">
+          <li><a href="/">Bond cleaning Brisbane</a></li>
+          {coreSvc.map((s) => <li><a href={s.url}>{s.name}</a></li>)}
+        </ul>
+      </div>
+      <div>
+        <h2>Carpets & add-ons</h2>
+        <ul class="links">
+          {otherSvc.map((s) => <li><a href={s.url}>{s.name}</a></li>)}
+        </ul>
+        <h2 style="margin-top:28px">Company</h2>
+        <ul class="links">
+          <li><a href="/about/">About</a></li>
+          <li><a href="/reviews/">Reviews</a></li>
+          <li><a href="/our-work/">Our work</a></li>
+          <li><a href="/contact/">Contact</a></li>
+        </ul>
+      </div>
+      <div>
+        <h2>Areas</h2>
+        <ul class="links footer-areas">
+          {areaGroups.flatMap((g) => g.slugs).map((slug) => <li><a href={areaUrl(slug)}>{areaBySlug(slug).name}</a></li>)}
+        </ul>
+      </div>
+      <div>
+        <h2>Help</h2>
+        <ul class="links">
+          <li><a href="/pricing/">Pricing</a></li>
+          <li><a href="/bond-cleaning-checklist/">Bond cleaning checklist</a></li>
+          <li><a href="/faq/">FAQ</a></li>
+          <li><a href="/blog/">Guides</a></li>
+          <li><a href="/bond-back-guarantee/">Our guarantee</a></li>
+          <li><a href="/terms/">Terms</a></li>
+          <li><a href="/privacy/">Privacy</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <img class="seal" src="/images/brand/seal-reversed.svg" alt="Inspection Ready seal" width="72" height="72" loading="lazy" />
+      <p class="mb-0">© {year} {business.name}. {business.positioning}</p>
+      <p class="mb-0">One brand, one team. We never use the guarantee to sell extras.</p>
+    </div>
+  </div>
+</footer>

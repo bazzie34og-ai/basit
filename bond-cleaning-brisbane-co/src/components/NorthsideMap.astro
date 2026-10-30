@@ -1,0 +1,57 @@
+---
+/**
+ * Static Northside map illustration: navy lines on bg, mint dots for the 20 suburbs.
+ * Positions are projected from real coordinates; North Lakes sits above a scale break.
+ */
+import { areaBySlug, areaUrl } from '../lib/data';
+interface Props { compact?: boolean; current?: string; links?: boolean }
+const { compact = false, current, links = false } = Astro.props;
+
+const coords: Record<string, [number, number]> = {
+  'brisbane-city': [153.023, -27.469], 'fortitude-valley': [153.035, -27.457], 'new-farm': [153.048, -27.467],
+  newstead: [153.046, -27.446], 'bowen-hills': [153.036, -27.444], windsor: [153.029, -27.432], albion: [153.044, -27.43],
+  ascot: [153.062, -27.43], hamilton: [153.07, -27.438], kedron: [153.03, -27.405], chermside: [153.031, -27.385],
+  aspley: [153.019, -27.362], stafford: [153.01, -27.411], 'everton-park': [152.99, -27.401], mitchelton: [152.976, -27.416],
+  nundah: [153.059, -27.401], 'wavell-heights': [153.047, -27.389], carseldine: [153.02, -27.346], 'bracken-ridge': [153.035, -27.317],
+  'north-lakes': [153.02, -27.24],
+};
+const X = (lon: number) => 24 + ((lon - 152.955) / 0.13) * 352;
+const Y = (lat: number) => (lat > -27.3 ? 30 : 92 + ((-27.3 - lat) / 0.18) * 318);
+const pts = (list: [number, number][]) => list.map(([lo, la]) => `${X(lo).toFixed(1)},${Y(la).toFixed(1)}`).join(' ');
+const river = pts([[152.955, -27.488], [152.99, -27.482], [153.008, -27.474], [153.018, -27.479], [153.03, -27.476], [153.036, -27.466], [153.042, -27.476], [153.052, -27.471], [153.056, -27.459], [153.05, -27.451], [153.062, -27.446], [153.075, -27.441], [153.085, -27.432]]);
+const brook = pts([[152.968, -27.42], [152.99, -27.414], [153.01, -27.408], [153.03, -27.402], [153.05, -27.405], [153.07, -27.402], [153.085, -27.398]]);
+const gympie = pts([[153.03, -27.45], [153.03, -27.42], [153.028, -27.39], [153.022, -27.36], [153.02, -27.33], [153.025, -27.305]]);
+const labels = !compact;
+const slugs = Object.keys(coords);
+---
+<svg viewBox="0 0 400 440" role="img" aria-labelledby="map-title" class="northside-map">
+  <title id="map-title">Map of the 20 Brisbane Northside and inner north suburbs we clean</title>
+  <rect x="0" y="0" width="400" height="440" rx="18" fill="#F4F7F9" />
+  <g fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <polyline points={river} stroke="#B9CCDC" stroke-width="9" />
+    <polyline points={brook} stroke="#C9D7E3" stroke-width="3" />
+    <polyline points={gympie} stroke="#24506F" stroke-width="1.5" stroke-dasharray="4 5" opacity=".55" />
+    <path d="M 290 52 L 290 82" stroke="#24506F" stroke-width="1.5" stroke-dasharray="2 4" opacity=".6" />
+  </g>
+  {labels && <text x="300" y="70" font-size="10" fill="#5B6B7A" font-family="Inter, sans-serif">Moreton Bay ↑</text>}
+  {labels && <text x="48" y="432" font-size="10" fill="#5B6B7A" font-family="Inter, sans-serif">Brisbane River</text>}
+  {labels && <text x="250" y="130" font-size="10" fill="#5B6B7A" font-family="Inter, sans-serif" transform="rotate(-62 250 130)">Gympie Rd</text>}
+  {slugs.map((slug) => {
+    const a = areaBySlug(slug);
+    const [lo, la] = coords[slug];
+    const cx = slug === 'north-lakes' ? 230 : X(lo);
+    const cy = Y(la);
+    const isCur = current === slug;
+    const dot = (
+      <g>
+        <title>{`${a.name} ${a.pc}`}</title>
+        {isCur && <circle cx={cx} cy={cy} r="12" fill="#3DDC97" opacity=".25" />}
+        <circle cx={cx} cy={cy} r={isCur ? 7 : 5.5} fill="#3DDC97" stroke="#12304A" stroke-width="1.5" />
+        {labels && (
+          <text x={cx + 9} y={cy + 3.5} font-size="10.5" font-weight={isCur ? 700 : 500} fill="#12304A" font-family="Inter, sans-serif">{a.name}</text>
+        )}
+      </g>
+    );
+    return links ? <a href={areaUrl(slug)} aria-label={`Bond cleaning ${a.name}`}>{dot}</a> : dot;
+  })}
+</svg>

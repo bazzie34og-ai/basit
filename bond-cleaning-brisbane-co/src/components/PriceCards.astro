@@ -1,0 +1,18 @@
+---
+import { priceRows } from '../config/site';
+import { price } from '../lib/tpl';
+interface Props { only?: string[] }
+const { only } = Astro.props;
+const rows = only ? priceRows.filter((r) => only.includes(r.key)) : priceRows;
+---
+<div class="price-cards">
+  {rows.map((r) => (
+    <div class:list={['price-card', r.popular && 'price-card--popular']}>
+      {r.popular && <span class="badge">Most booked</span>}
+      <h3>{r.label}</h3>
+      <p class="meta">{r.detail} · {r.time} · {r.crew}</p>
+      <p class="amount">{r.quoteOnly ? 'Quote' : price(r.key)} <small>fixed</small></p>
+      <a class:list={['btn btn--block', r.popular ? 'btn--primary' : 'btn--secondary']} href="/contact/#quote" data-quote-link>{price(r.key).includes('[') || r.quoteOnly ? 'Get price' : 'Book this clean'}</a>
+    </div>
+  ))}
+</div>

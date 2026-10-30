@@ -1,0 +1,26 @@
+---
+/** Top 5 complaints about bond cleaners → our fix (never naming anyone). */
+import Icon from './Icon.astro';
+import { flags } from '../config/site';
+import { t, b } from '../lib/tpl';
+const items = [
+  { q: '"They said they\'d come back for the agent\'s list, then stopped answering."', fix: t('Re-clean promise in writing. We come back {reclean} and keep coming back until the agent signs off.') },
+  { q: '"The quote was $300. On the day it was $660."', fix: 'Fixed price from your photos, in writing. Any change is agreed with you before work starts, never mid-clean.' },
+  { q: '"No guarantee unless I paid for walls and the oven."', fix: 'One guarantee on every bond clean. Nothing to buy to unlock it, no buried conditions.' },
+  { q: '"They wanted the full amount before they started."', fix: flags.payAfter ? `${b('payAfter', 'Pay after the clean')}, once you've seen the photo report.` : 'Clear payment terms on your quote, agreed before we book you in.' },
+  { q: '"Window tracks, the rangehood and the exhaust fans were all on the agent\'s list."', fix: 'We clean to the Form 14a exit checklist and photograph every room, so nothing is left to memory.' },
+];
+---
+<div class="grid grid-3">
+  {items.map((it, i) => (
+    <div class="pain reveal" style={`--i:${i % 3}`}>
+      <blockquote>{it.q}</blockquote>
+      <p class="fix mb-0"><Icon name="tick" /><span set:html={it.fix} /></p>
+    </div>
+  ))}
+  <div class="pain reveal" style="--i:2;background:var(--navy-900);color:#DCE6EF">
+    <p class="mb-0" style="font-family:var(--font-head);font-size:1.25rem;color:#fff;line-height:1.35">Every promise here is written on your quote.</p>
+    <p class="mb-0">If it's not on paper, it's not a promise. Ask any bond cleaner for the same.</p>
+    <a class="btn btn--mint" href="/contact/#quote" data-quote-link>Get my fixed price</a>
+  </div>
+</div>

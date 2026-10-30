@@ -1,0 +1,24 @@
+---
+import Icon from './Icon.astro';
+import { business } from '../config/site';
+import { telHref, waHref, t } from '../lib/tpl';
+interface Props { h2?: string; p?: string; quoteHref?: string }
+const { h2 = 'Moving out? Get your bond back without the stress.', p = 'Fixed price from your photos, a room-by-room photo report the same day, and a free re-clean if your agent flags anything we cleaned.', quoteHref = '/contact/#quote' } = Astro.props;
+---
+<section class="cta-band on-navy" aria-labelledby="cta-h2">
+  <div class="container">
+    <div class="cta-band__inner">
+      <div>
+        <p class="eyebrow">Inspection ready</p>
+        <h2 id="cta-h2">{h2}</h2>
+        <p set:html={t(p)} />
+        <div class="btn-row btn-row--stack" style="margin-top:28px">
+          <a class="btn btn--mint btn--lg" href={telHref()} data-track="call_click" data-track-location="cta-band"><Icon name="phone" />Call {business.phone}</a>
+          <a class="btn btn--outline-light btn--lg" href={waHref()} target="_blank" rel="noopener" data-track="whatsapp_click" data-track-location="cta-band"><Icon name="whatsapp" />WhatsApp</a>
+          <a class="btn btn--light btn--lg" href={quoteHref} data-quote-link>Get my fixed price</a>
+        </div>
+      </div>
+      <img class="seal" src="/images/brand/seal-reversed.svg" alt="Inspection Ready seal" width="150" height="150" loading="lazy" />
+    </div>
+  </div>
+</section>

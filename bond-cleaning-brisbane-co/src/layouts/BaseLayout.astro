@@ -1,0 +1,85 @@
+---
+import '../styles/global.css';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import MobileBar from '../components/MobileBar.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import Lightbox from '../components/Lightbox.astro';
+import { business } from '../config/site';
+import { localBusiness, breadcrumb, siteUrl } from '../lib/schema';
+import { plain } from '../lib/tpl';
+
+interface Crumb { name: string; href: string }
+interface Props {
+  title: string;
+  description: string;
+  /** Extra JSON-LD objects for this page (LocalBusiness and BreadcrumbList are added automatically) */
+  schema?: object[];
+  crumbs?: Crumb[];
+  noindex?: boolean;
+  ogType?: 'website' | 'article';
+  preload?: { srcset: string; sizes: string; type: string; href: string };
+}
+const { title, description, schema = [], crumbs, noindex = false, ogType = 'website', preload } = Astro.props;
+
+const indexable = import.meta.env.PUBLIC_INDEXABLE === 'true' && !noindex;
+const canonical = siteUrl(Astro.url.pathname);
+const desc = plain(description);
+const ogImage = siteUrl('/images/og-bond-cleaning-brisbane-co.jpg');
+const ld = [localBusiness(), ...(crumbs ? [breadcrumb(crumbs)] : []), ...schema];
+const gtm = business.gtmId;
+const ga4 = business.ga4Id;
+---
+<!doctype html>
+<html lang="en-AU">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>{title}</title>
+    <meta name="description" content={desc} />
+    <link rel="canonical" href={canonical} />
+    {!indexable && <meta name="robots" content="noindex, nofollow" />}
+    <meta name="theme-color" content="#12304A" />
+    <link rel="preload" href="/fonts/poppins-700.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/inter-400.woff2" as="font" type="font/woff2" crossorigin />
+    {preload && <link rel="preload" as="image" href={preload.href} imagesrcset={preload.srcset} imagesizes={preload.sizes} type={preload.type} fetchpriority="high" />}
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    <meta property="og:type" content={ogType} />
+    <meta property="og:site_name" content={business.name} />
+    <meta property="og:locale" content="en_AU" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={desc} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Bond Cleaning Brisbane Co. before and after bond cleaning results in Brisbane" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={desc} />
+    <meta name="twitter:image" content={ogImage} />
+    <script is:inline>document.documentElement.classList.add('js');window.dataLayer=window.dataLayer||[];</script>
+    {ld.map((o) => <script type="application/ld+json" set:html={JSON.stringify(o)} />)}
+    {gtm && <script is:inline define:vars={{ gtm }}>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s);j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer',gtm);</script>}
+    {!gtm && ga4 && <script is:inline async src={`https://www.googletagmanager.com/gtag/js?id=${ga4}`}></script>}
+    {!gtm && ga4 && <script is:inline define:vars={{ ga4 }}>function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config',ga4);</script>}
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <Header />
+    <main id="main" tabindex="-1">
+      {crumbs && <Breadcrumbs items={crumbs} />}
+      <slot />
+    </main>
+    <Footer />
+    <MobileBar />
+    <Lightbox />
+    <script>
+      import '../scripts/site.ts';
+    </script>
+  </body>
+</html>

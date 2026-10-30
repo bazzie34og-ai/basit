@@ -1,0 +1,25 @@
+---
+/** "Your photo report": a mock document, clearly marked SAMPLE. Generic rooms only. */
+import Icon from './Icon.astro';
+const rooms = [
+  { name: 'Kitchen and oven', icon: 'oven' },
+  { name: 'Bathroom', icon: 'bath' },
+  { name: 'Bedroom 1', icon: 'bed' },
+  { name: 'Windows and tracks', icon: 'window' },
+];
+---
+<div class="report" role="img" aria-label="Sample photo report: a branded document with dated photos of the kitchen, bathroom, bedroom and window tracks, each ticked off">
+  <div class="report__top">
+    <img src="/images/brand/logo-horizontal.svg" alt="" width="150" height="32" loading="lazy" />
+    <div class="report__meta">Photo report · Sample<br />Exit clean · 2 bed unit</div>
+  </div>
+  <div class="report__rooms">
+    {rooms.map((r) => (
+      <div class="report__room">
+        <div class="thumb"><Icon name={r.icon} /></div>
+        <span><Icon name="checkCircle" />{r.name}</span>
+      </div>
+    ))}
+  </div>
+  <div class="report__foot"><span>Finished 4:42 pm · 48 photos</span><span>Tax invoice attached</span></div>
+</div>

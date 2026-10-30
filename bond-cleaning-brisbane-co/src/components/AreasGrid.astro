@@ -1,0 +1,19 @@
+---
+import { areaGroups } from '../config/site';
+import { areaBySlug, areaUrl } from '../lib/data';
+interface Props { current?: string; postcodes?: boolean }
+const { current, postcodes = false } = Astro.props;
+---
+<div class="area-groups">
+  {areaGroups.map((g) => (
+    <div class="area-group">
+      <h3>{g.name}</h3>
+      <ul class="area-chips">
+        {g.slugs.map((slug) => {
+          const a = areaBySlug(slug);
+          return <li><a href={areaUrl(slug)} aria-current={current === slug ? 'page' : undefined}>Bond cleaning {a.name}{postcodes && <small>{a.pc}</small>}</a></li>;
+        })}
+      </ul>
+    </div>
+  ))}
+</div>

@@ -1,0 +1,23 @@
+---
+import { t } from '../lib/tpl';
+interface Props { h2?: string; headingId?: string }
+const { h2 = 'Our bond back guarantee, in plain English', headingId = 'guarantee-h2' } = Astro.props;
+---
+<section class="section section--sand" aria-labelledby={headingId}>
+  <div class="container">
+    <div class="guarantee">
+      <img class="seal-lg" src="/images/brand/seal.svg" alt="Inspection Ready seal: the Bond Cleaning Brisbane Co. re-clean promise" width="260" height="260" loading="lazy" />
+      <div>
+        <p class="eyebrow">The re-clean promise</p>
+        <h2 id={headingId}>{h2}</h2>
+        <p class="lead" set:html={t("If your agent flags anything we cleaned, send us their list. We come back {reclean} and fix it free, until the agent signs off. It's written on your quote and invoice.")} />
+        <ul class="ticks">
+          <li>Comes with every bond clean. Nothing to buy to "unlock" it.</li>
+          <li set:html={t('Runs until your final inspection, within {guaranteeDays} of the clean, so it never expires before the agent walks through.')} />
+          <li>Covers everything we cleaned. Not damage, repairs or fair wear and tear.</li>
+        </ul>
+        <a class="text-link" href="/bond-back-guarantee/">Read the full guarantee terms</a>
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,29 @@
+---
+/** Shared "How it works" 4-step timeline. */
+import { flags } from '../config/site';
+import { t, b } from '../lib/tpl';
+interface Props { h2?: string; intro?: string; eyebrow?: string; bg?: boolean }
+const { h2 = 'How it works', intro, eyebrow = 'Four steps', bg = false } = Astro.props;
+const steps = [
+  { h: 'Send photos or answer 4 questions', p: 'Bedrooms, bathrooms, carpets and your inspection date. Photos of the oven, bathroom and carpets help most.' },
+  { h: 'Get a fixed price in writing', p: t('Usually within {replyTime} during business hours. The price, what\'s included and what isn\'t, all in writing.') },
+  { h: "We clean to the agent's checklist", p: 'Room by room, to the exit condition report your property manager uses, and we photograph every room when we finish.' },
+  {
+    h: flags.payAfter ? `${b('payAfter', 'Pay after the clean')}, forward the photos` : 'Forward the photo report',
+    p: t('Send the report to your agent. If they flag anything we cleaned, we come back {reclean} and fix it free.'),
+  },
+];
+---
+<section class:list={['section', bg && 'section--bg']} aria-labelledby="how-h2">
+  <div class="container">
+    <div class="section-head">
+      <p class="eyebrow">{eyebrow}</p>
+      <h2 id="how-h2">{h2}</h2>
+      {intro && <p set:html={t(intro)} />}
+    </div>
+    <ol class="steps">
+      {steps.map((s, i) => <li class="reveal" style={`--i:${i}`}><h3>{s.h}</h3><p>{s.p}</p></li>)}
+    </ol>
+    <slot />
+  </div>
+</section>

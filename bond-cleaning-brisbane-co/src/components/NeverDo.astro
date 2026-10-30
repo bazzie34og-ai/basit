@@ -1,0 +1,25 @@
+---
+/** "What we never do": the 8 promises, house-mark × bullets. */
+import { flags } from '../config/site';
+import { t, b } from '../lib/tpl';
+interface Props { h2?: string; intro?: string; id?: string }
+const { h2 = 'What we never do', intro = 'Every line here is something renters told us went wrong with a bond cleaner. We built the company so none of them can happen on your job.', id = 'never-h2' } = Astro.props;
+const items = [
+  'We never add charges on the day. Any change is agreed in writing before we start.',
+  'We never make the guarantee depend on buying extras.',
+  `We never take a deposit and disappear.${flags.payAfter ? ` ${b('payAfter', 'Pay after the clean')}.` : ''}`,
+  'We never leave before the checklist is done, and we photograph every room to prove it.',
+  t("We never ignore the agent's list. We come back {reclean}."),
+  `We never hand your job to anonymous subcontractors.${flags.ownCrews ? ` ${b('ownCrews', 'Our own trained crews')}.` : ' One coordinator answers for every job.'}`,
+  'We never chase you with sales calls. One follow-up, your choice of channel.',
+  'We never ask for a review in exchange for anything, or pressure anyone to change one.',
+];
+---
+<div class="split split--top">
+  <div>
+    <p class="eyebrow">Our standards</p>
+    <h2 id={id}>{h2}</h2>
+    <p class="lead">{intro}</p>
+  </div>
+  <ol class="crosses">{items.map((i) => <li>{i}</li>)}</ol>
+</div>

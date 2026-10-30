@@ -1,0 +1,9 @@
+---
+import Icon from './Icon.astro';
+import { telHref, waHref } from '../lib/tpl';
+---
+<nav class="mobile-bar" aria-label="Quick contact" data-mobile-bar>
+  <a class="mb-call" href={telHref()} data-track="call_click" data-track-location="sticky-bar"><Icon name="phone" />Call</a>
+  <a class="mb-wa" href={waHref()} target="_blank" rel="noopener" data-track="whatsapp_click" data-track-location="sticky-bar"><Icon name="whatsapp" />WhatsApp</a>
+  <a class="mb-quote" href="/contact/#quote" data-quote-link>Get quote</a>
+</nav>

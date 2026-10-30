@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="Bond Cleaning Brisbane Co.">
+<title>Bond Cleaning Brisbane Co.</title>
+<rect width="64" height="64" rx="14" fill="#12304A"/>
+<g transform="translate(2 1) scale(0.5)" fill="none" stroke-linejoin="round" stroke-linecap="round">
+  <path d="M12 60 L60 22 L108 60" stroke="#fff" stroke-width="15"/>
+  <path d="M26 56 L26 98 L94 98 L94 56" stroke="#fff" stroke-width="13"/>
+  <path d="M45 64 L56 75 L76 53" stroke="#3DDC97" stroke-width="13"/>
+</g>
+</svg>

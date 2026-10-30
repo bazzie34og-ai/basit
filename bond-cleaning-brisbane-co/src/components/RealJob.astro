@@ -1,0 +1,27 @@
+---
+/**
+ * "What the agent's list said": a real job in this suburb. Built but hidden:
+ * it renders nothing until a real job is added to the area's content file.
+ */
+import type { AreaContent } from '../lib/types';
+interface Props { job: AreaContent['realJob']; suburb: string }
+const { job, suburb } = Astro.props;
+---
+{job && (
+  <section class="section section--bg" aria-labelledby="job-h2">
+    <div class="container">
+      <div class="section-head"><p class="eyebrow">A real {suburb} job</p><h2 id="job-h2">What the agent's list said on {job.street}</h2></div>
+      <div class="split split--top">
+        <div class="prose">
+          <p><strong>{job.property}</strong></p>
+          <h3>The agent's list</h3>
+          <ul>{job.agentList.map((i) => <li>{i}</li>)}</ul>
+          <h3>What we found</h3><p>{job.found}</p>
+          <h3>What we did</h3><p>{job.did}</p>
+          <h3>The outcome</h3><p>{job.outcome}</p>
+        </div>
+        <div class="grid">{job.photos.map((src) => <img src={src} alt={`Bond cleaning ${suburb} before and after`} width="1080" height="1080" loading="lazy" />)}</div>
+      </div>
+    </div>
+  </section>
+)}

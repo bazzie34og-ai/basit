@@ -1,0 +1,15 @@
+---
+import type { Faq } from '../data/faqs';
+import { t, flagOn } from '../lib/tpl';
+interface Props { items: Faq[]; openFirst?: boolean }
+const { items, openFirst = false } = Astro.props;
+const list = items.filter((f) => !f.flag || flagOn(f.flag));
+---
+<div class="faq">
+  {list.map((f, i) => (
+    <details open={openFirst && i === 0}>
+      <summary><span set:html={t(f.q)} /><span class="pm" aria-hidden="true"></span></summary>
+      <div class="answer"><p set:html={t(f.a)} /></div>
+    </details>
+  ))}
+</div>

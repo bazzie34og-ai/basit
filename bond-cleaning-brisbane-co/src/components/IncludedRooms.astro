@@ -1,0 +1,17 @@
+---
+/** Shared "What's included" room cards. Item names follow the long-tail terms agents and searchers use. */
+import Icon from './Icon.astro';
+import { rooms } from '../data/rooms';
+interface Props { links?: boolean }
+const { links = true } = Astro.props;
+
+---
+<div class="grid grid-3">
+  {rooms.map((r, i) => (
+    <article class="card room-card reveal" style={`--i:${i % 3}`}>
+      <h3><span class="icon-wrap" style="margin:0;width:44px;height:44px"><Icon name={r.icon} /></span>{r.h3}</h3>
+      <ul class="ticks">{r.items.map((it) => <li>{it}</li>)}</ul>
+      {links && <a class="card__more" href={r.href}>{r.link}<Icon name="arrowRight" class="" /></a>}
+    </article>
+  ))}
+</div>

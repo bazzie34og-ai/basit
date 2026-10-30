@@ -1,0 +1,9 @@
+---
+import PhotoFigure from './PhotoFigure.astro';
+import { photoOrder, type PhotoKey } from '../data/photos';
+interface Props { keys?: PhotoKey[]; cols?: 2 | 3 }
+const { keys = photoOrder, cols = 3 } = Astro.props;
+---
+<ul class:list={['photo-grid', cols === 2 && 'photo-grid--2']} role="list" data-photo-grid>
+  {keys.map((k, i) => <li class="reveal" style={`--i:${i % 3}`} data-room-item><PhotoFigure k={k} sizes={cols === 2 ? '(min-width: 1024px) 560px, (min-width: 640px) 46vw, 92vw' : undefined} /></li>)}
+</ul>

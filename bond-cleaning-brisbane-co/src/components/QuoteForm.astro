@@ -1,0 +1,183 @@
+---
+/**
+ * Two-step quote form (Netlify Forms). Step 1: suburb, bedrooms, bathrooms, carpets.
+ * Step 2: contact and details, optional photos. Works without JS (both steps show).
+ * Every instance on the site posts the same field set to the "quote" form.
+ */
+import Icon from './Icon.astro';
+import { business, prices, priceGuideSpread, areaGroups, flags } from '../config/site';
+import { areaBySlug } from '../lib/data';
+import { t, hasPrices, b } from '../lib/tpl';
+
+interface Props {
+  id?: string;
+  title?: string;
+  sub?: string;
+  location: string;
+  /** Pre-select a suburb on area pages */
+  suburb?: string;
+  anchor?: boolean;
+}
+const { id = 'q', title = 'Get your fixed price', sub = 'Four taps, then your details. Takes under a minute.', location, suburb, anchor = false } = Astro.props;
+const f = (name: string) => `${id}-${name}`;
+const suburbs = areaGroups.flatMap((g) => g.slugs).map((s) => areaBySlug(s).name);
+const guide = hasPrices() ? JSON.stringify({ prices, spread: priceGuideSpread }) : '';
+const addons = ['Oven deep clean', 'Balcony', 'Garage', 'Wall washing', 'Mattress', 'Sofa or upholstery', 'Pressure washing', 'Flea treatment (licensed partner)'];
+---
+<div class="quote-card" id={anchor ? 'quote' : undefined} data-quote-card>
+  <form
+    name="quote"
+    method="POST"
+    action="/thank-you/"
+    data-netlify="true"
+    netlify-honeypot="bot-field"
+    enctype="multipart/form-data"
+    data-quote-form
+    data-location={location}
+    data-guide={guide}
+    novalidate
+  >
+    <input type="hidden" name="form-name" value="quote" />
+    <input type="hidden" name="subject" value="New bond clean quote request" />
+    <p class="hp" aria-hidden="true"><label>Leave this empty <input name="bot-field" tabindex="-1" autocomplete="off" /></label></p>
+    <input type="hidden" name="page_url" value="" data-page-url />
+    <input type="hidden" name="form_location" value={location} />
+    <input type="hidden" name="utm_source" value="" data-utm="utm_source" />
+    <input type="hidden" name="utm_medium" value="" data-utm="utm_medium" />
+    <input type="hidden" name="utm_campaign" value="" data-utm="utm_campaign" />
+
+    <div class="quote-card__head">
+      <p class="quote-card__title">{title}</p>
+      <span class="progress" data-progress>Step 1 of 2</span>
+    </div>
+    <p class="quote-card__sub" data-sub>{sub}</p>
+    <div class="progress-bar" aria-hidden="true"><span data-progress-bar></span></div>
+
+    <div class="form-step" data-step="1">
+      <div class="form-grid">
+        <div class="field">
+          <label for={f('suburb')}>Suburb</label>
+          <select class="select" id={f('suburb')} name="suburb" required>
+            <option value="">Choose your suburb</option>
+            {suburbs.map((s) => <option value={s} selected={s === suburb}>{s}</option>)}
+            <option value="Other">Other (we'll check)</option>
+          </select>
+          <span class="error" data-error></span>
+        </div>
+        <fieldset class="field">
+          <legend>Bedrooms</legend>
+          <div class="seg">
+            {['1', '2', '3', '4', '5+'].map((v, i) => (
+              <><input type="radio" id={f(`bed${i}`)} name="bedrooms" value={v} required checked={v === '2'} /><label for={f(`bed${i}`)}>{v}</label></>
+            ))}
+          </div>
+        </fieldset>
+        <fieldset class="field">
+          <legend>Bathrooms</legend>
+          <div class="seg">
+            {['1', '2', '3', '4'].map((v, i) => (
+              <><input type="radio" id={f(`bath${i}`)} name="bathrooms" value={v} required checked={v === '1'} /><label for={f(`bath${i}`)}>{v}</label></>
+            ))}
+          </div>
+        </fieldset>
+        <fieldset class="field">
+          <legend>Carpets</legend>
+          <div class="seg">
+            {['None', 'Some rooms', 'Most rooms'].map((v, i) => (
+              <><input type="radio" id={f(`carpet${i}`)} name="carpets" value={v} required checked={v === 'None'} /><label for={f(`carpet${i}`)}>{v}</label></>
+            ))}
+          </div>
+        </fieldset>
+        <button class="btn btn--primary btn--block" type="button" data-next>Get my fixed price <Icon name="arrowRight" /></button>
+      </div>
+    </div>
+
+    <div class="form-step" data-step="2">
+      <div class="price-guide" data-guide-out role="status">
+        <Icon name="clock" />
+        <span data-guide-text>We'll text your fixed price within {business.replyTime} during business hours.</span>
+      </div>
+      <div class="form-grid">
+        <div class="form-grid form-grid--2">
+          <div class="field">
+            <label for={f('name')}>Name</label>
+            <input class="input" id={f('name')} name="name" type="text" autocomplete="name" required />
+            <span class="error" data-error></span>
+          </div>
+          <div class="field">
+            <label for={f('mobile')}>Mobile</label>
+            <input class="input" id={f('mobile')} name="mobile" type="tel" inputmode="tel" autocomplete="tel" placeholder="04" required pattern="[0-9 +()]{8,}" />
+            <span class="error" data-error></span>
+          </div>
+        </div>
+        <div class="form-grid form-grid--2">
+          <div class="field">
+            <label for={f('email')}>Email</label>
+            <input class="input" id={f('email')} name="email" type="email" inputmode="email" autocomplete="email" required />
+            <span class="error" data-error></span>
+          </div>
+          <div class="field">
+            <label for={f('date')}>Inspection or move-out date</label>
+            <input class="input" id={f('date')} name="inspection_date" type="date" />
+          </div>
+        </div>
+        <div class="form-grid form-grid--2">
+          <div class="field">
+            <label for={f('type')}>Property type</label>
+            <select class="select" id={f('type')} name="property_type">
+              <option>Unit or apartment</option><option>Townhouse</option><option>House</option><option>Queenslander</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for={f('contact')}>Best way to reach you</label>
+            <select class="select" id={f('contact')} name="contact_preference">
+              <option>Text message</option><option>WhatsApp</option><option>Phone call</option><option>Email</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-grid form-grid--2">
+          <fieldset class="field">
+            <legend>Furnished?</legend>
+            <div class="seg">
+              <input type="radio" id={f('furn0')} name="furnished" value="No" checked /><label for={f('furn0')}>No</label>
+              <input type="radio" id={f('furn1')} name="furnished" value="Yes" /><label for={f('furn1')}>Yes</label>
+            </div>
+          </fieldset>
+          <fieldset class="field">
+            <legend>Pets in the lease?</legend>
+            <div class="seg">
+              <input type="radio" id={f('pet0')} name="pets" value="No" checked /><label for={f('pet0')}>No</label>
+              <input type="radio" id={f('pet1')} name="pets" value="Yes" /><label for={f('pet1')}>Yes</label>
+            </div>
+          </fieldset>
+        </div>
+        <fieldset class="field">
+          <legend>Add-ons <span class="hint">(optional)</span></legend>
+          <div class="checks">
+            {addons.map((a, i) => <label class="check"><input type="checkbox" name="addons" value={a} id={f(`add${i}`)} />{a}</label>)}
+          </div>
+        </fieldset>
+        <div class="field">
+          <span class="field-label" style="font-size:.875rem;font-weight:600;color:var(--navy-800)">Photos <span class="hint">(optional, up to 3, 8 MB total)</span></span>
+          <label class="visually-hidden" for={f('photo1')}>Photo 1</label>
+          <input class="input" id={f('photo1')} name="photo_1" type="file" accept="image/*" />
+          <label class="visually-hidden" for={f('photo2')}>Photo 2</label>
+          <input class="input" id={f('photo2')} name="photo_2" type="file" accept="image/*" />
+          <label class="visually-hidden" for={f('photo3')}>Photo 3</label>
+          <input class="input" id={f('photo3')} name="photo_3" type="file" accept="image/*" />
+          <span class="hint">Oven, bathroom and carpets help us price it exactly.</span>
+          <span class="error" data-file-error></span>
+        </div>
+        <div class="field">
+          <label for={f('notes')}>Anything we should know? <span class="hint">(parking, lift booking, the agent's list)</span></label>
+          <textarea class="textarea" id={f('notes')} name="notes" rows="3"></textarea>
+        </div>
+        <label class="check"><input type="checkbox" name="consent" value="Yes" required id={f('consent')} />OK to contact me about this quote</label>
+        <span class="error" data-consent-error></span>
+        <button class="btn btn--primary btn--block btn--lg" type="submit">Send for my fixed price</button>
+        <button class="form-back" type="button" data-back>← Back to step 1</button>
+      </div>
+    </div>
+    <p class="form-micro" set:html={t(`No spam. We'll contact you once, the way you choose.<br />Fixed price in writing.{?payAfter} ${b('payAfter', 'Pay after the clean')}.{/payAfter}`)} />
+  </form>
+</div>

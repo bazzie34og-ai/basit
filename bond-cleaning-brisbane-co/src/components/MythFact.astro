@@ -1,0 +1,20 @@
+---
+const RTA_CLEAN = 'https://www.rta.qld.gov.au/ending-a-tenancy/vacating-a-property/cleaning';
+const RTA_CARPET = 'https://www.rta.qld.gov.au/ending-a-tenancy/vacating-a-property/carpet-cleaning-and-pest-control';
+const items = [
+  { myth: 'You must use a professional cleaner when you move out.', fact: "You don't. You can clean it yourself, but the property must match the entry condition report, less fair wear and tear.", href: RTA_CLEAN },
+  { myth: 'Carpets always have to be steam cleaned.', fact: 'Carpets go back to the standard they were in at the start. A professional clean can only be required if they were professionally cleaned at move-in, or you agreed to it because of a pet.', href: RTA_CARPET },
+  { myth: 'The agent can make you use their cleaner.', fact: "They can't. A landlord or agent can't require a particular carpet cleaning or pest control company, or charge you a set fee for one.", href: RTA_CARPET },
+  { myth: 'Every tenant needs pest control at the end of a lease.', fact: 'Only if pests came from your tenancy, or pest control was done at the start and you agreed to it, which is common with pets.', href: RTA_CARPET },
+];
+---
+<div class="grid grid-2">
+  {items.map((m, i) => (
+    <div class="myth reveal" style={`--i:${i % 2}`}>
+      <p class="label label--myth">Myth</p>
+      <p><strong>{m.myth}</strong></p>
+      <p class="label label--fact">Fact</p>
+      <p>{m.fact} <a href={m.href} rel="noopener" target="_blank">RTA source</a></p>
+    </div>
+  ))}
+</div>

@@ -1,0 +1,7 @@
+---
+interface Props { items?: [string, string][] }
+const { items = [['10am', 'Removalists leave'], ['11am', 'We arrive and start'], ['5pm', 'Photo report in your inbox'], ['9am', 'Inspection the next morning']] } = Astro.props;
+---
+<div class="day-timeline" role="list" aria-label="A typical move-out day">
+  {items.map(([time, what]) => <div role="listitem"><strong>{time}</strong><span>{what}</span></div>)}
+</div>

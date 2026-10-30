@@ -1,0 +1,20 @@
+---
+/** "5 questions to ask any bond cleaner" (behaviours 10, 13, 38). */
+import { flags } from '../config/site';
+import { t, b } from '../lib/tpl';
+interface Props { h3?: boolean }
+const { h3 = false } = Astro.props;
+const qs = [
+  ['How long does your guarantee last?', t('Make sure it runs past your inspection date. Ours runs until the agent signs off, within {guaranteeDays} of the clean.')],
+  ['Is the price fixed or hourly?', 'Hourly rates creep on the day. Ours is fixed from your photos, in writing.'],
+  ['Do I pay before or after?', flags.payAfter ? `${b('payAfter', 'You pay us after the clean')}, once you've seen the photos.` : 'Know exactly when payment is due before you book.'],
+  ['Will I get a photo report and invoice?', 'Ask for a dated, room-by-room report. Ours is emailed the same day with the tax invoice.'],
+  ['Are you insured and police checked?', t('Ask for the amount. We are {insurance}{?policeChecked}, with [police-checked] cleaners{/policeChecked}.')],
+];
+const Tag = h3 ? 'h3' : 'h2';
+---
+<div class="ask-box">
+  <p class="eyebrow">Comparing quotes?</p>
+  <Tag>5 questions to ask any bond cleaner</Tag>
+  <ol>{qs.map(([q, a]) => <li><strong>{q}</strong> <span set:html={a} /></li>)}</ol>
+</div>

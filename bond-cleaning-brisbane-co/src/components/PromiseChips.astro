@@ -1,0 +1,17 @@
+---
+import Icon from './Icon.astro';
+import { flags } from '../config/site';
+import { b } from '../lib/tpl';
+interface Props { extra?: string[] }
+const { extra = [] } = Astro.props;
+const chips = [
+  'Fixed price from photos',
+  ...(flags.payAfter ? [b('payAfter', 'Pay after the clean')] : []),
+  'Photo-proof report',
+  'Free re-clean if flagged',
+  ...extra,
+];
+---
+<ul class="chips" aria-label="Our promises">
+  {chips.map((c) => <li class="chip"><Icon name="tick" />{c}</li>)}
+</ul>

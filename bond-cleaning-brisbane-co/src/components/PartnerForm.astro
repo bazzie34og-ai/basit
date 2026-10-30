@@ -1,0 +1,32 @@
+---
+/** "Become a partner agency" form (Netlify form "partner"). */
+interface Props { id?: string }
+const { id = 'p' } = Astro.props;
+const f = (n: string) => `${id}-${n}`;
+---
+<div class="quote-card" id="partner" data-quote-card>
+  <form name="partner" method="POST" action="/thank-you/" data-netlify="true" netlify-honeypot="bot-field">
+    <input type="hidden" name="form-name" value="partner" />
+    <input type="hidden" name="subject" value="New partner agency enquiry" />
+    <p class="hp" aria-hidden="true"><label>Leave this empty <input name="bot-field" tabindex="-1" autocomplete="off" /></label></p>
+    <p class="quote-card__title">Become a partner agency</p>
+    <p class="quote-card__sub">Priority slots, one coordinator, a photo report on every job.</p>
+    <div class="form-grid">
+      <div class="field"><label for={f('agency')}>Agency name</label><input class="input" id={f('agency')} name="agency" required autocomplete="organization" /></div>
+      <div class="form-grid form-grid--2">
+        <div class="field"><label for={f('name')}>Your name</label><input class="input" id={f('name')} name="name" required autocomplete="name" /></div>
+        <div class="field"><label for={f('phone')}>Phone</label><input class="input" id={f('phone')} name="phone" type="tel" inputmode="tel" autocomplete="tel" required /></div>
+      </div>
+      <div class="field"><label for={f('email')}>Work email</label><input class="input" id={f('email')} name="email" type="email" inputmode="email" autocomplete="email" required /></div>
+      <div class="form-grid form-grid--2">
+        <div class="field"><label for={f('size')}>Rentals managed</label>
+          <select class="select" id={f('size')} name="portfolio"><option>Under 100</option><option>100–300</option><option>300–600</option><option>600+</option></select></div>
+        <div class="field"><label for={f('turnovers')}>Turnovers a month</label>
+          <select class="select" id={f('turnovers')} name="turnovers"><option>1–5</option><option>6–15</option><option>16–30</option><option>30+</option></select></div>
+      </div>
+      <div class="field"><label for={f('notes')}>Suburbs and anything else</label><textarea class="textarea" id={f('notes')} name="notes" rows="3"></textarea></div>
+      <button class="btn btn--primary btn--block btn--lg" type="submit">Send partner enquiry</button>
+    </div>
+    <p class="form-micro">One reply from your coordinator. No mailing lists.</p>
+  </form>
+</div>

@@ -1,0 +1,11 @@
+---
+import Icon from './Icon.astro';
+import { flags } from '../config/site';
+import { insuranceText, b } from '../lib/tpl';
+---
+<div class="trust-row">
+  <img class="seal" src="/images/brand/seal.svg" alt="Inspection Ready seal from Bond Cleaning Brisbane Co." width="64" height="64" />
+  <span><Icon name="shield" />{insuranceText()}</span>
+  {flags.policeChecked && <span><Icon name="checkCircle" />{b('policeChecked', 'Police-checked cleaners')}</span>}
+  <span><Icon name="camera" />Photo report with every clean</span>
+</div>
